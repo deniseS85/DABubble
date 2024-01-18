@@ -71,6 +71,7 @@
         transition: 225ms ease-in-out;
         padding: 8px;
         border-radius: 30px;
+        margin-top: 10px;
         &:hover {
             background-color: #ECEEFE;
             transform: scale(1.1);
@@ -152,5 +153,45 @@
                 border: 1px solid #3996f2;
             }
         }
+    }
+}
+
+.sign-up-option {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    p {
+        font-size: clamp(0.9375rem, 0.8482rem + 0.4464vw, 1.5625rem);
+        margin: 0;
+        color: rgba(0, 0, 0, 0.7);
+    }
+    a {
+        color: #797EF3;
+        text-decoration: none;    
+        font-size: clamp(0.875rem, 0.8214rem + 0.2679vw, 1.25rem); 
+        transition: 225ms ease-in-out;
+        padding: 10px 30px;
+        border-radius: 30px;
+        &:hover {
+            border: 1px solid #797EF3;
+            transform: scale(1.1);
+        }
+        @media only screen and (max-width: 711px) {
+            border: 1px solid #797EF3;
+            border-radius: 30px;
+        } 
+    }
+    @media only screen and (max-width: 711px) {
+           bottom: 10px;
+           top: unset;
+           right: unset;
+           left: 50%;
+           transform: translate(-50%, -50%);
     }
 }

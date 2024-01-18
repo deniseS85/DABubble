@@ -15,6 +15,7 @@ import { LoginComponent } from './startscreen/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SignupComponent } from './startscreen/signup/signup.component';
 
 
 
@@ -26,7 +27,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     LoginComponent,
     MainscreenComponent,
     ThreadComponent,
-    WorkspaceComponent
+    WorkspaceComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

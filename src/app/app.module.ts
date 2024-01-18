@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserModule } from '@angular/platform-browser';21
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StartscreenComponent } from './startscreen/startscreen.component';

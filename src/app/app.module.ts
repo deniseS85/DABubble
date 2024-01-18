@@ -15,7 +15,9 @@ import { LoginComponent } from './startscreen/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
+import {MatMenuModule} from '@angular/material/menu';
 import { SignupComponent } from './startscreen/signup/signup.component';
+
 
 
 
@@ -36,6 +38,7 @@ import { SignupComponent } from './startscreen/signup/signup.component';
     MatExpansionModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatMenuModule,
     provideFirebaseApp(() => initializeApp({"projectId":"dabubble-69322","appId":"1:486842154610:web:0631e3885b73bc4e4acceb","storageBucket":"dabubble-69322.appspot.com","apiKey":"AIzaSyC2opRUMbcOUpjD2QPCifl1muUI_7Wf-cw","authDomain":"dabubble-69322.firebaseapp.com","messagingSenderId":"486842154610"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

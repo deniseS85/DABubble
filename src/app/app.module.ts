@@ -11,6 +11,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { MainscreenComponent } from './mainscreen/mainscreen.component';
 import { ThreadComponent } from './mainscreen/thread/thread.component';
+import { WorkspaceComponent } from './mainscreen/workspace/workspace.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ThreadComponent } from './mainscreen/thread/thread.component';
     StartscreenComponent,
     LoginAnimationComponent,
     MainscreenComponent,
-    ThreadComponent
+    ThreadComponent,
+    WorkspaceComponent
   ],
   imports: [
     BrowserModule,

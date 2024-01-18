@@ -1,8 +1,8 @@
 .fade-in-animation {
-    animation: zIndexScaleUp 1900ms ease-in-out 1000ms forwards;
+    animation: showLoginContainer 1500ms ease-in-out 1000ms forwards;
 }
 
-@keyframes zIndexScaleUp {
+@keyframes showLoginContainer {
     0% {
         opacity: 0;
     }

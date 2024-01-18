@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginComponent } from './login/login.component';
+
 
 @Component({
   selector: 'app-startscreen',
@@ -7,6 +7,5 @@ import { LoginComponent } from './login/login.component';
   styleUrl: './startscreen.component.scss'
 })
 export class StartscreenComponent {
-    showLogin = true;
 
 }

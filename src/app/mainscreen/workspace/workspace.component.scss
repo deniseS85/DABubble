@@ -1,7 +1,43 @@
 .workspace-container {
-    width: 33vw;
+    width: 25vw;
 }
 
 .server-container {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.server-logo-name {
+    display: flex;
+    gap: 15px;
+
+    img {
+        height: 60px;
+        width: 60px;
+    }
+}
+
+.server-edit-icon {
+    height: 24px;
+    width: 24px;
+}
+
+.channels-container {
+    width: 200px;
+}
+
+mat-expansion-panel {
+    box-shadow: none !important;
+}
+
+mat-panel-title {
+    margin-right: 0 !important;
+    flex-grow: 0;
+    align-items: start;
+}
+
+.channels {
+    display: flex;
+    gap: 15px;
 }

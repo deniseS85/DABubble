@@ -12,6 +12,7 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { MainscreenComponent } from './mainscreen/mainscreen.component';
 import { ThreadComponent } from './mainscreen/thread/thread.component';
 import { WorkspaceComponent } from './mainscreen/workspace/workspace.component';
+import { ChannelChatComponent } from './mainscreen/channel-chat/channel-chat.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { WorkspaceComponent } from './mainscreen/workspace/workspace.component';
     LoginAnimationComponent,
     MainscreenComponent,
     ThreadComponent,
-    WorkspaceComponent
+    WorkspaceComponent,
+    ChannelChatComponent
   ],
   imports: [
     BrowserModule,

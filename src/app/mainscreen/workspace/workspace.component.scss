@@ -1,5 +1,5 @@
 .workspace-container {
-    width: 20vw;
+    width: 25vw;
 }
 
 .server-container {
@@ -23,3 +23,21 @@
     width: 24px;
 }
 
+.channels-container {
+    width: 200px;
+}
+
+mat-expansion-panel {
+    box-shadow: none !important;
+}
+
+mat-panel-title {
+    margin-right: 0 !important;
+    flex-grow: 0;
+    align-items: start;
+}
+
+.channels {
+    display: flex;
+    gap: 15px;
+}

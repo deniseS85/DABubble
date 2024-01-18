@@ -10,15 +10,22 @@
     <img class="server-edit-icon" src="./assets/img/edit_square.png" />
   </div>
 
-  <div>
-    <mat-accordion>
-        <mat-expansion-panel hideToggle>
+  <div class="channels-container">
+    <mat-accordion hideToggle>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Channels
+                <mat-icon *ngIf="!panelOpenState"><img src="./assets/img/arrow_right.png" /></mat-icon>
+                <mat-icon *ngIf="panelOpenState"><img src="./assets/img/arrow_down.png" /></mat-icon>
+            </mat-panel-title>
+            <mat-panel-title class="channels">
+                <img src="./assets/img/channels_icon.png">
+                <span>Channels</span>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p> # Entwicklungen</p>
+          <p># Entwicklerteam</p>
+          <p>+ Channel hinzufügen</p>
         </mat-expansion-panel>
       </mat-accordion>
   </div>

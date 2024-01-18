@@ -9,12 +9,17 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { MainscreenComponent } from './mainscreen/mainscreen.component';
+import { ThreadComponent } from './mainscreen/thread/thread.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     StartscreenComponent,
-    LoginAnimationComponent
+    LoginAnimationComponent,
+    MainscreenComponent,
+    ThreadComponent
   ],
   imports: [
     BrowserModule,

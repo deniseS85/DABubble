@@ -1,0 +1,52 @@
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - 50px);
+    height: calc(100vh - 40px);
+    padding: 20px 25px;
+    
+
+    .mainContainerHeader{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+
+        .mainContainerHeaderLogo{
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            font-weight: 600;
+            font-size: 24px;
+
+            img{
+                height: 70px;
+            }            
+        }
+
+        .mainContainerHeaderSearch{
+            display: flex;
+            align-items: center;
+            
+            input{
+                height: 70px;
+                width: 400px;
+            }
+            
+        }
+
+        .mainContainerHeaderProfil{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 70px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+    }
+}
+

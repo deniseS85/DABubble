@@ -1,5 +1,12 @@
+.fnt-30 {
+    font-size: 30px;
+}
+
 .workspace-container {
     width: 25vw;
+    background-color: white;
+    padding: 32px 30px;
+    border-radius: 30px;
 }
 
 .server-container {
@@ -24,20 +31,103 @@
 }
 
 .channels-container {
-    width: 200px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 mat-expansion-panel {
     box-shadow: none !important;
+    
+    :hover {
+        background: none !important;
+    }
+}
+
+mat-expansion-panel-header {
+    padding: 0 5px;
 }
 
 mat-panel-title {
     margin-right: 0 !important;
     flex-grow: 0;
-    align-items: start;
 }
 
-.channels {
+mat-icon {
+    display: flex;
+    align-items: center;
+}
+
+.channels-title {
     display: flex;
     gap: 15px;
+    width: 220px;
+
+    span {
+       font-size: 20px;
+       font-weight: 700;
+    }
+
+    :hover {
+        color: #535AF1;
+    }
+}
+
+.channel-add-icon {
+    font-size: 30px;
+    padding-top: 5px;
+}
+
+.channels-list {
+    margin-top: 15px;
+    padding-left: 10px;
+    font-size: 18px;
+    font-weight: 400;;
+
+    div {
+        display: flex;
+        gap: 15px;
+    }
+
+    :hover {
+        color: #535AF1;
+    }
+}
+
+.hashtag {
+    font-size: 25px;
+    font-weight:500;
+}
+
+.channel-add {
+    margin-top: 30px;
+    margin-bottom: 15px;
+
+    
+}
+
+.contacts-list {
+    margin-top: 15px;
+    padding-left: 0px;
+    font-size: 18px;
+    font-weight: 400;;
+    
+    div {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+        padding: 5px 5px;
+        border-radius: 35px;
+
+        &:hover {
+            background-color: #ECEEFE !important;
+        }
+    }
+
+    img {
+        width: 50px;
+        height: 50px;
+    }
+
 }

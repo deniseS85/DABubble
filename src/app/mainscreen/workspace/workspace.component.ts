@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './workspace.component.scss'
 })
 export class WorkspaceComponent {
-  panelOpenState = false;
+  panel1OpenState = false;
+  panel2OpenState = false;
 }

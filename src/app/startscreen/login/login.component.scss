@@ -42,7 +42,7 @@
             transition: 225ms ease-in-out;
             cursor: pointer;
             &::placeholder {
-                font-size: clamp(0.75rem, 0.6786rem + 0.3571vw, 1.25rem);
+                font-size: clamp(0.875rem, 0.7768rem + 0.4911vw, 1.5625rem);
             }
             &:hover {
                 border: 1px solid #444DF2;
@@ -52,14 +52,14 @@
         mat-icon {
             position: absolute;
             left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 32.5%;
             color: gray;
-            font-size: clamp(1.25rem, 1.1875rem + 0.3125vw, 1.6875rem);
+            font-size: clamp(0.875rem, 0.7768rem + 0.4911vw, 1.5625rem);
         }
         p {
+            text-align: left;
             position: absolute;
-            left: 22px;
+            left: 10px;
             color: red;
             font-size: clamp(0.75rem, 0.6964rem + 0.2679vw, 1.125rem);
         }
@@ -153,6 +153,4 @@
             }
         }
     }
-   
-
 }

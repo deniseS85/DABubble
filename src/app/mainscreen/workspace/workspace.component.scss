@@ -31,8 +31,25 @@
 }
 
 .server-edit-icon {
+    cursor: pointer;
     height: 24px;
     width: 24px;
+    padding: 8px;
+    margin-right: -10px;
+    border-radius: 50%;
+    
+    &:hover {
+        background-color: #ECEEFE;
+
+        .normal-img {
+            display: none;
+        }
+
+        .hover-img {
+            display: block;
+            padding-bottom: 5px;
+        }
+    }
 }
 
 .channels-container {
@@ -93,42 +110,27 @@ mat-icon {
     }
 }
 
-
-// .image-container {
-//     // position: relative;
-//   }
-  
-//   .image-container img {
-//     // width: 100%;
-//     // height: auto;
-//     // position: absolute;
-//     // top: 0;
-//     // left: 0;
-//     // opacity: 1;
-//     transition: opacity 0.3s ease;
-//   }
-  
-//   .image-container .hover-image {
-//     display: none;
-//   }
-  
-//   .image-container:hover .normal-image {
-//     display: none;
-//   }
-  
-//   .image-container:hover .hover-image {
-//     display: block;
-//   }
-
-
-
-
 .channels-add-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    margin-right: -5px;
     font-size: 30px;
-    padding-top: 5px;
+    padding: 5px;
+    border-radius: 100%;
+
+    &:hover {
+        background-color: #ECEEFE;
+        color: #535AF1;
+    }
 }
 
 .channels-list {
+    
     margin-top: 15px;
     margin-left: 25px;
     font-size: 18px;
@@ -141,6 +143,7 @@ mat-icon {
         margin-left: -25px;
         padding: 10px 25px;
         border-radius: 35px;
+        cursor: pointer;
 
         &:hover {
             background-color: #ECEEFE !important;
@@ -168,6 +171,7 @@ mat-icon {
     gap: 20px;
     font-size: 18px;
     margin: 30px 0 15px 20px;
+    cursor: pointer;
 
     span {
         margin-left: -5px;
@@ -194,6 +198,7 @@ mat-icon {
         margin-bottom: 15px;
         padding: 5px 25px;
         border-radius: 35px;
+        cursor: pointer;
 
         &:hover {
             background-color: #ECEEFE !important;

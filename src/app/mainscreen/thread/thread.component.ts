@@ -7,4 +7,15 @@ import { Component } from '@angular/core';
 })
 export class ThreadComponent {
 
+  threadOpen: boolean =  true;
+  
+  constructor(){
+
+  }
+
+  closeThread(){
+    this.threadOpen = false;
+  }
+
+
 }

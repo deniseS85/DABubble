@@ -12,6 +12,7 @@ import { MainscreenComponent } from './mainscreen/mainscreen.component';
 import { ThreadComponent } from './mainscreen/thread/thread.component';
 import { WorkspaceComponent } from './mainscreen/workspace/workspace.component';
 import { ChannelChatComponent } from './mainscreen/channel-chat/channel-chat.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { ChannelChatComponent } from './mainscreen/channel-chat/channel-chat.com
     provideFirebaseApp(() => initializeApp({"projectId":"dabubble-69322","appId":"1:486842154610:web:0631e3885b73bc4e4acceb","storageBucket":"dabubble-69322.appspot.com","apiKey":"AIzaSyC2opRUMbcOUpjD2QPCifl1muUI_7Wf-cw","authDomain":"dabubble-69322.firebaseapp.com","messagingSenderId":"486842154610"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideDatabase(() => getDatabase())
+    provideDatabase(() => getDatabase()),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

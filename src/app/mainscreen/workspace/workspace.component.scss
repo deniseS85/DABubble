@@ -1,7 +1,25 @@
 .workspace-container {
-    width: 33vw;
+    width: 20vw;
 }
 
 .server-container {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
+.server-logo-name {
+    display: flex;
+    gap: 15px;
+
+    img {
+        height: 60px;
+        width: 60px;
+    }
+}
+
+.server-edit-icon {
+    height: 24px;
+    width: 24px;
+}
+

@@ -83,7 +83,6 @@
         padding: 5px 15px;
         background-color: white;
     }
-
 }
 
 .seperator {
@@ -137,4 +136,21 @@
 
 .mt-180 {
     margin-top: 180px;
+}
+
+.reaction-icons-container {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.added-reaction-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ADB0D9;
+    border-radius: 30px;
+    padding: 5px 15px;
 }

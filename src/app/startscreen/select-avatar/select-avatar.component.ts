@@ -13,6 +13,7 @@ export class SelectAvatarComponent {
     shouldWordBreak: boolean = window.innerWidth <= 577;
     hideElement: boolean = window.innerWidth <= 950;
     avatarSrc = './assets/img/profile.png';
+    showConfirmation: boolean = false;
     
     constructor(public startscreen: StartscreenComponent) { }
 
@@ -28,5 +29,13 @@ export class SelectAvatarComponent {
 
     selectAvatar(avatarNr: number) {
         this.avatarSrc = `./assets/img/avatar${avatarNr}.png`;
+    }
+
+    onSubmit() {
+      this.showConfirmation = true;
+
+      setTimeout(() => {
+          this.showConfirmation = false;
+      }, 3000); 
     }
 }

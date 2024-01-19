@@ -30,7 +30,7 @@
 .header-right {
     display: flex;
     align-items: center;
-    gap: 10px;  
+    gap: 10px;
 }
 
 .all-avatar-channel-members {
@@ -77,4 +77,8 @@
     display: flex;
     flex-direction: row-reverse;
     gap: 30px;
+}
+
+.counter-answers {
+    color: #535AF1;
 }

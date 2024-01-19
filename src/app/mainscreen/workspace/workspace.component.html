@@ -1,6 +1,5 @@
-<p>workspace works!</p>
-
 <div class="workspace-container">
+
   <div class="server-container">
     <div class="server-logo-name">
       <img src="./assets/img/workspace_logo.png" />
@@ -8,4 +7,63 @@
     </div>
     <img class="server-edit-icon" src="./assets/img/edit_square.png" />
   </div>
+
+  <div class="channels-container">
+    <mat-accordion hideToggle>
+        <mat-expansion-panel (opened)="panel1OpenState = true"
+                             (closed)="panel1OpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-icon *ngIf="!panel1OpenState"><img src="./assets/img/arrow_right.png" /></mat-icon>
+                <mat-icon *ngIf="panel1OpenState"><img src="./assets/img/arrow_down.png" /></mat-icon>
+            </mat-panel-title>
+            <mat-panel-title class="channels-title">
+                <img src="./assets/img/channels_icon.png">
+                <span>Channels</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="channels-list">
+            <div>
+                <span class="hashtag">#</span>
+                <span>Entwicklerteam</span>
+            </div>
+            <div class="channel-add">
+                <span><img src="./assets/img/add_circle.png" /></span>
+                <span>Channel hinzufügen</span>
+            </div>
+        </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <div class="channel-add-icon">+</div>
+  </div>
+
+  <div class="direct-message-container">
+    <mat-accordion hideToggle>
+        <mat-expansion-panel (opened)="panel2OpenState = true"
+                             (closed)="panel2OpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-icon *ngIf="!panel2OpenState"><img src="./assets/img/arrow_right.png" /></mat-icon>
+                <mat-icon *ngIf="panel2OpenState"><img src="./assets/img/arrow_down.png" /></mat-icon>
+            </mat-panel-title>
+            <mat-panel-title class="channels-title">
+                <img src="./assets/img/account_circle.png">
+                <span>Direktnachrichten</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="contacts-list">
+            <div>
+                <span><img src="./assets/img/avatarFrederick.png"/></span>
+                <span>Frederik Beck (Du)</span>
+            </div>
+            <div>
+                <span><img src="./assets/img/avatarSofia.png"/></span>
+                <span>Sofia Müller</span>
+            </div>
+            
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+  </div>
+
 </div>

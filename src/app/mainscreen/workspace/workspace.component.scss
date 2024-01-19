@@ -1,7 +1,3 @@
-.fnt-30 {
-    font-size: 30px;
-}
-
 .workspace-container {
     background-color: white;
     padding: 32px 30px;
@@ -18,11 +14,6 @@
     display: flex;
     align-items: center;
     gap: 15px;
-
-    img {
-        height: 60px;
-        width: 60px;
-    }
 }
 
 .server-name {
@@ -60,28 +51,13 @@
 
 mat-expansion-panel {
     box-shadow: none !important;
-    
-    :hover {
-        background: none !important;
-    }
 }
 
 mat-expansion-panel-header {
     padding: 0 5px;
 }
 
-mat-panel-title {
-    margin-right: 0 !important;
-    flex-grow: 0;
-}
-
-mat-icon {
-    display: flex;
-    align-items: center;
-}
-
 .channels-title {
-    display: flex;
     gap: 10px;
 
     span {
@@ -130,17 +106,20 @@ mat-icon {
 }
 
 .channels-list {
-    
     margin-top: 15px;
-    margin-left: 25px;
     font-size: 18px;
     font-weight: 400;
+}
 
-    div {
-        display: flex;
+.hashtag {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.channels-name {
+    display: flex;
         gap: 20px;
         margin-bottom: 15px;
-        margin-left: -25px;
         padding: 10px 25px;
         border-radius: 35px;
         cursor: pointer;
@@ -152,17 +131,6 @@ mat-icon {
                 color: #535AF1;
             }
         }
-    }
-}
-
-.hashtag {
-    font-size: 25px;
-    font-weight: 500;
-}
-
-.channels-name {
-    border-radius: 35px;
-    margin-bottom: 25px;
 }
 
 .channels-add {
@@ -187,9 +155,8 @@ mat-icon {
 
 .contacts-list {
     margin-top: 15px;
-    padding-left: 0px;
     font-size: 18px;
-    font-weight: 400;;
+    font-weight: 400;
     
     div {
         display: flex;

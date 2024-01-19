@@ -13,13 +13,13 @@
 
   <div class="channels-container">
     <mat-accordion hideToggle>
-        <mat-expansion-panel [expanded]="true" (opened)="panel1OpenState = true"
-                             (closed)="panel1OpenState = false">
+        <mat-expansion-panel [expanded]="true" (opened)="panelOpenState1 = true"
+                             (closed)="panelOpenState1 = false">
           <mat-expansion-panel-header>
             <div class="channels-title-hover">
             <mat-panel-title class="channels-title">
-                <mat-icon *ngIf="!panel1OpenState">arrow_right</mat-icon>
-                <mat-icon *ngIf="panel1OpenState">arrow_drop_down</mat-icon>
+                <mat-icon *ngIf="!panelOpenState1">arrow_right</mat-icon>
+                <mat-icon *ngIf="panelOpenState1">arrow_drop_down</mat-icon>
                 <div></div>
                   <img class="normal-img" src="./assets/img/channels_icon.png">
                   <img class="hover-img" src="./assets/img/channels_icon_hover.png">
@@ -53,13 +53,13 @@
 
   <div class="direct-message-container">
     <mat-accordion hideToggle>
-      <mat-expansion-panel [expanded]="true" (opened)="panel2OpenState = true"
-                           (closed)="panel2OpenState = false">
+      <mat-expansion-panel [expanded]="true" (opened)="panelOpenState2 = true"
+                           (closed)="panelOpenState2 = false">
         <mat-expansion-panel-header>
           <div class="channels-title-hover">
           <mat-panel-title class="channels-title direct-message-title">
-              <mat-icon *ngIf="!panel2OpenState">arrow_right</mat-icon>
-              <mat-icon *ngIf="panel2OpenState">arrow_drop_down</mat-icon>
+              <mat-icon *ngIf="!panelOpenState2">arrow_right</mat-icon>
+              <mat-icon *ngIf="panelOpenState2">arrow_drop_down</mat-icon>
               <div></div>
               <img class="normal-img"  src="./assets/img/account_circle.png">
               <img class="hover-img" src="./assets/img/account_circle_hover.png">

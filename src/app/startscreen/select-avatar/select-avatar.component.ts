@@ -9,6 +9,7 @@ import { StartscreenComponent } from '../startscreen.component';
 export class SelectAvatarComponent {
     @Output() backToSignup = new EventEmitter<void>();
     @Output() openImprint = new EventEmitter<void>(); 
+    @Output() openPrivacy = new EventEmitter<void>(); 
     shouldWordBreak: boolean = window.innerWidth <= 577;
     hideElement: boolean = window.innerWidth <= 950;
     avatarSrc = './assets/img/profile.png';

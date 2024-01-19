@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-data-protection',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './data-protection.component.scss'
 })
 export class DataProtectionComponent {
-
+    @Output() goBack = new EventEmitter<void>();
 }

@@ -10,10 +10,12 @@ export class SignupComponent {
     @Output() openLogin = new EventEmitter<void>();
     @Output() openSelectAvatar = new EventEmitter<void>();
     @Output() openImprint = new EventEmitter<void>(); 
-  
+    @Output() openPrivacy = new EventEmitter<void>(); 
+
     constructor(public startscreen: StartscreenComponent) { }
 
     toggleSignup() {
         this.startscreen.toggleView('login'); 
     }
+
 }

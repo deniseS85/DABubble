@@ -20,16 +20,17 @@
         <p>Bitte geben Sie ein Passwort ein.</p>
     </div>
     <label>
-        <input id="checkbox" type="checkbox" name="myCheckbox">
-        Ich stimme der
-        <a>Datenschutzerklärung</a>
-        zu.
+        <input id="checkbox" type="checkbox" name="myCheckbox"> <!-- *ngIf="shouldWordBreak" -->
+        <span>Ich stimme der 
+            <a>Datenschutzerklärung</a>
+            zu.
+        </span>
     </label>
 
     <button (click)="openSelectAvatar.emit()" class="next-btn" type="button">Weiter</button>
     
     <div class="data-proteccion">
         <a (click)="openImprint.emit()">Impressum</a>
-        <a href="#">Datenschutz</a>
+        <a (click)="openPrivacy.emit()">Datenschutz</a>
     </div>
 </form>

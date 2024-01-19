@@ -9,7 +9,8 @@ import { StartscreenComponent } from '../startscreen.component';
 export class ResetPasswordComponent {
     @Output() backToLogin = new EventEmitter<void>();
     @Output() goBack = new EventEmitter<void>();
-    @Output() openImprint = new EventEmitter<void>(); 
+    @Output() openImprint = new EventEmitter<void>();
+    @Output() openPrivacy = new EventEmitter<void>(); 
     shouldWordBreak: boolean = window.innerWidth <= 577;
     
     constructor(public startscreen: StartscreenComponent) { }

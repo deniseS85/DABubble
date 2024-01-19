@@ -12,10 +12,11 @@ export class StartscreenComponent {
     isResetPassword = false;
     isSelectAvatar = false;
     isImprint = false;
-    viewsHistory: Array<'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint'> = [];
-    currentView: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' = 'login';
+    isPrivacy = false;
+    viewsHistory: Array<'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy'> = [];
+    currentView: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy' = 'login';
 
-    toggleView(view: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | undefined = 'login'): void {
+    toggleView(view: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy' | undefined = 'login'): void {
         this.viewsHistory.push(this.currentView);
         this.currentView = view;
         this.isLogin = view === 'login' ? !this.isLogin : false;
@@ -23,6 +24,7 @@ export class StartscreenComponent {
         this.isResetPassword = view === 'resetPassword' ? !this.isResetPassword : false;
         this.isSelectAvatar = view === 'selectAvatar' ? !this.isSelectAvatar : false;
         this.isImprint = view === 'imprint' ? !this.isImprint : false;
+        this.isPrivacy = view === 'privacy' ? !this.isPrivacy : false;
     }
 
     goBack(): void {

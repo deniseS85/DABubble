@@ -3,54 +3,66 @@
   <div class="server-container">
     <div class="server-logo-name">
       <img src="./assets/img/workspace_logo.png" />
-      <h4>Code learning</h4>
+      <span class="server-name">Code learning</span>
     </div>
     <img class="server-edit-icon" src="./assets/img/edit_square.png" />
   </div>
 
   <div class="channels-container">
     <mat-accordion hideToggle>
-        <mat-expansion-panel (opened)="panel1OpenState = true"
+        <mat-expansion-panel [expanded]="true" (opened)="panel1OpenState = true"
                              (closed)="panel1OpenState = false">
           <mat-expansion-panel-header>
-            <mat-panel-title>
-                <mat-icon *ngIf="!panel1OpenState"><img src="./assets/img/arrow_right.png" /></mat-icon>
-                <mat-icon *ngIf="panel1OpenState"><img src="./assets/img/arrow_down.png" /></mat-icon>
-            </mat-panel-title>
+            <div class="channels-title-hover">
             <mat-panel-title class="channels-title">
-                <img src="./assets/img/channels_icon.png">
+                <mat-icon *ngIf="!panel1OpenState">arrow_right</mat-icon>
+                <mat-icon *ngIf="panel1OpenState">arrow_drop_down</mat-icon>
+                <div></div>
+                  <img class="normal-img" src="./assets/img/channels_icon.png">
+                  <img class="hover-img" src="./assets/img/channels_icon_hover.png">
                 <span>Channels</span>
             </mat-panel-title>
+            </div>
         </mat-expansion-panel-header>
+
         <div class="channels-list">
-            <div>
+            <div class="channels-name">
                 <span class="hashtag">#</span>
                 <span>Entwicklerteam</span>
             </div>
-            <div class="channel-add">
-                <span><img src="./assets/img/add_circle.png" /></span>
+            <div class="channels-name">
+                <span class="hashtag">#</span>
+                <span>Office-team</span>
+            </div>
+        </div>
+        <div class="channels-add-hover">
+            <div class="channels-add">
+                <mat-icon>add_circle_outline</mat-icon>
                 <span>Channel hinzufügen</span>
             </div>
         </div>
-        </mat-expansion-panel>
+    </mat-expansion-panel>
     </mat-accordion>
-    <div class="channel-add-icon">+</div>
+    <div class="channels-add-icon">+</div>
   </div>
 
   <div class="direct-message-container">
     <mat-accordion hideToggle>
-        <mat-expansion-panel (opened)="panel2OpenState = true"
-                             (closed)="panel2OpenState = false">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-                <mat-icon *ngIf="!panel2OpenState"><img src="./assets/img/arrow_right.png" /></mat-icon>
-                <mat-icon *ngIf="panel2OpenState"><img src="./assets/img/arrow_down.png" /></mat-icon>
-            </mat-panel-title>
-            <mat-panel-title class="channels-title">
-                <img src="./assets/img/account_circle.png">
-                <span>Direktnachrichten</span>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
+      <mat-expansion-panel [expanded]="true" (opened)="panel2OpenState = true"
+                           (closed)="panel2OpenState = false">
+        <mat-expansion-panel-header>
+          <div class="channels-title-hover">
+          <mat-panel-title class="channels-title direct-message-title">
+              <mat-icon *ngIf="!panel2OpenState">arrow_right</mat-icon>
+              <mat-icon *ngIf="panel2OpenState">arrow_drop_down</mat-icon>
+              <div></div>
+              <img class="normal-img"  src="./assets/img/account_circle.png">
+              <img class="hover-img" src="./assets/img/account_circle_hover.png">
+              <span>Direktnachrichten</span>
+          </mat-panel-title>
+          </div>
+      </mat-expansion-panel-header>
+
           <div class="contacts-list">
             <div>
                 <span><img src="./assets/img/avatarFrederick.png"/></span>

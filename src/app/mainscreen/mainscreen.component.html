@@ -16,7 +16,7 @@
     <div class="mainContainerContent">
         <app-workspace></app-workspace>
         <app-channel-chat></app-channel-chat>
-        <app-thread></app-thread>        
+        <app-thread *ngIf="threadOpen"></app-thread>        
     </div>
 </div>
 

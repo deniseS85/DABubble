@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MainscreenComponent } from '../mainscreen.component';
 
 @Component({
   selector: 'app-thread',
@@ -6,15 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './thread.component.scss'
 })
 export class ThreadComponent {
-
-  threadOpen: boolean =  true;
   
-  constructor(){
-
+  constructor(private main: MainscreenComponent){
   }
 
   closeThread(){
-    this.threadOpen = false;
+    this.main.threadOpen = false;
   }
 
 

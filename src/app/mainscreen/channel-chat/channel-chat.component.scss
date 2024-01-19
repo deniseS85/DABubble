@@ -7,14 +7,22 @@
 .channel-chat-header {
     display: flex;
     justify-content: space-between;
+    padding: 25px 45px;
 }
 
 .header-left {
     display: flex;
     align-items: center;
+    gap: 10px;
 
     span {
         font-size: 24px;
         font-weight: 700;
     }
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }

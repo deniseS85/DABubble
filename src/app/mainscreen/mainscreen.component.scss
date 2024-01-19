@@ -56,11 +56,16 @@
         display: flex;
         justify-content: space-between;
         gap: 20px;
-        height: 100%;
+        flex: 1;
+        overflow: hidden;
 
         app-thread{
             width: 25.8%;
             height: 100%;
+        }
+
+        app-channel-chat{
+            flex: 1;
         }
     }
 }

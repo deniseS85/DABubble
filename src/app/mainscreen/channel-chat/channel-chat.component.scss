@@ -31,6 +31,11 @@
         font-weight: 700;
         padding: 6px 10px;
 
+        img {
+            margin-left: 10px;
+            margin-bottom: 5px;
+        }
+
         &:hover {
             cursor: pointer;
             color: #535AF1;
@@ -184,6 +189,11 @@
 
 .counter-answers {
     color: #535AF1;
+
+    &:hover {
+        font-weight: 600;
+        padding-right: -5px;
+    }
 }
 
 .message-avatar {

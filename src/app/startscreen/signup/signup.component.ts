@@ -9,10 +9,10 @@ import { StartscreenComponent } from '../startscreen.component';
 export class SignupComponent {
   @Output() openLogin = new EventEmitter<void>();
 
-    constructor( public startscreen: StartscreenComponent) { }
+    constructor(public startscreen: StartscreenComponent) { }
 
     toggleSignup() {
-        this.startscreen.toggleSignup();
+        this.startscreen.toggleView('login'); 
     }
 
 }

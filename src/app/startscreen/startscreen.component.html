@@ -1,8 +1,8 @@
 <app-login-animation></app-login-animation>
 
 <div class="fade-in-animation">
-  <app-login *ngIf="isLogin" (openSignup)="toggleSignup()"></app-login>
-  <app-signup *ngIf="isSignup" (openLogin)="toggleSignup()"></app-signup>
-
+  <app-login *ngIf="isLogin" (openResetPassword)="toggleView('resetPassword')" (openSignup)="toggleView('signup')"></app-login>
+<app-signup *ngIf="isSignup" (openLogin)="toggleView('login')"></app-signup>
+<app-reset-password *ngIf="isResetPassword" (backToLogin)="toggleView('login')"></app-reset-password>
  
 </div>

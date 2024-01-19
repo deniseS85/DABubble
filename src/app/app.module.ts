@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import { SignupComponent } from './startscreen/signup/signup.component';
+import { ResetPasswordComponent } from './startscreen/reset-password/reset-password.component';
 
 
 
@@ -32,7 +33,8 @@ import { SignupComponent } from './startscreen/signup/signup.component';
     ThreadComponent,
     WorkspaceComponent,
     ChannelChatComponent,
-    SignupComponent
+    SignupComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

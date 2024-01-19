@@ -9,10 +9,12 @@ import { Component } from '@angular/core';
 export class StartscreenComponent {
     isLogin = true;
     isSignup = false;
+    isResetPassword = false;
 
-    toggleSignup() {
-      this.isLogin = !this.isLogin;
-      this.isSignup = !this.isSignup;
+    toggleView(view: 'login' | 'signup' | 'resetPassword'): void {
+      this.isLogin = view === 'login' ? !this.isLogin : false;
+      this.isSignup = view === 'signup' ? !this.isSignup : false;
+      this.isResetPassword = view === 'resetPassword' ? !this.isResetPassword : false;
     }
 
 }

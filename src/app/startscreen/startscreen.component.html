@@ -1,5 +1,8 @@
 <app-login-animation></app-login-animation>
 
 <div class="fade-in-animation">
-   <app-login></app-login>
+  <app-login *ngIf="isLogin" (openSignup)="toggleSignup()"></app-login>
+  <app-signup *ngIf="isSignup" (openLogin)="toggleSignup()"></app-signup>
+
+ 
 </div>

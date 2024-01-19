@@ -4,130 +4,122 @@
     animation: backgroundAnimation 3000ms ease-in-out 800ms forwards;
     z-index: 2;
     position: relative;
-}
-
-.login-animation {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: logoContainerAnimation 1000ms ease-in-out 1500ms forwards;
-    z-index: 2;
-    img {
-        width: 100px;
-        animation: logoAnimation 2500ms ease-in-out 800ms forwards;
-    }
-    p {
-        color: white;
+    .login-animation {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: absolute;
-        font-size: 2.5rem;
-        opacity: 0;
-        white-space: nowrap;
-        animation: nameAnimation 2500ms ease-in-out 800ms forwards;
-    }
-}
-
-.fade-in-animation {
-    opacity: 0;
-    animation: fadeIn 2500ms ease-in-out 800ms forwards;
-}
-
-@keyframes backgroundAnimation {
-    0% {
-        background: linear-gradient(1deg, #313AE5 10%, #797EF3 90%);
-    }
-
-    100% {
-        background: #ECEEFE;
-    }
-}
-
-@keyframes logoAnimation {
-    0% {
-        transform: translateX(0);
-    }
-
-    40% {
-        transform: translateX(-70px);
-        width: 100px;
-    }
-
-    70% {
-        transform: translateX(-70px);
-        width: 50px;
-    }
-
-    100% {
-        width: 50px;
-        transform: translateX(-70px);
-    }
-}
-
-
-@keyframes logoContainerAnimation {
-    0% {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        animation: logoContainerAnimation 1000ms ease-in-out 1500ms forwards;
+        z-index: 2;
+        img {
+            width: 100px;
+            animation: logoAnimation 2500ms ease-in-out 800ms forwards;
+        }
+        p {
+            color: white;
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0;
+            white-space: nowrap;
+            animation: nameAnimation 2500ms ease-in-out 800ms forwards;
+        }
     }
-
-    100% {
-        top: 70px;
-        left: 160px;
-    }
-}
-
-@keyframes nameAnimation {
-    0% {
-        transform: translateX(0px);
-    }
-
-    40% {
-        transform: translateX(90px);
-        opacity: 0.3;
-        font-size: 2.5rem;
-    }
-
-    60% {
-        transform: translateX(25px);
-        opacity: 1;
-        color: white;
-        font-size: 1.5rem;
-    }
-
-    75% {
-        transform: translateX(25px);
-        opacity: 1;
-        font-size: 1.5rem;
-        color: black;
-    }
-
-    100% {
-        transform: translateX(25px);
-        opacity: 1;
-        font-size: 1.5rem;
-        color: black;
-    }
-}
-
-@keyframes fadeIn {
-    0% {
+    .fade-in-animation {
         opacity: 0;
+        animation: fadeIn 2500ms ease-in-out 800ms forwards;
     }
+    @keyframes backgroundAnimation {
+        0% {
+            background: linear-gradient(1deg, #313AE5 10%, #797EF3 90%);
+        }
 
-    40% {
-        opacity: 0;
+        100% {
+            background: #ECEEFE;
+        }
     }
+    @keyframes logoAnimation {
+        0% {
+            transform: translateX(0);
+        }
 
-    80% {
-        opacity: 0.3;
+        40% {
+            transform: translateX(-70px);
+            width: 100px;
+        }
+
+        70% {
+            transform: translateX(-70px);
+            width: 50px;
+        }
+
+        100% {
+            width: 50px;
+            transform: translateX(-70px);
+        }
     }
+    @keyframes logoContainerAnimation {
+        0% {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-    100% {
-        opacity: 1;
+        100% {
+            top: 70px;
+            left: 160px;
+        }
+    }
+    @keyframes nameAnimation {
+        0% {
+            transform: translateX(0px);
+        }
+
+        40% {
+            transform: translateX(90px);
+            opacity: 0.3;
+            font-size: 2.5rem;
+        }
+
+        60% {
+            transform: translateX(25px);
+            opacity: 1;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        75% {
+            transform: translateX(25px);
+            opacity: 1;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        100% {
+            transform: translateX(25px);
+            opacity: 1;
+            font-size: 1.5rem;
+            color: black;
+        }
+    }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        40% {
+            opacity: 0;
+        }
+
+        80% {
+            opacity: 0.3;
+        }
+
+        100% {
+            opacity: 1;
+        }
     }
 }

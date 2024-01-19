@@ -2,7 +2,7 @@
     border-radius: 30px;
     background:#FFFFFF;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-    height: fit-content;
+    height: clamp(31.25rem, 28.5714rem + 13.3929vw, 50rem);
     width: clamp(17.5rem, 12.8571rem + 23.2143vw, 50rem);
     position: absolute;
     top: 50%;
@@ -11,13 +11,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     gap: 25px;
-    padding: clamp(0.625rem, 0.4464rem + 0.8929vw, 1.875rem);
+    padding: clamp(0.625rem, 0.2679rem + 1.7857vw, 3.125rem);
     box-sizing: border-box;
     z-index: 3;
     h2 {
         color: #444DF2;
-        font-size: clamp(1.875rem, 1.6071rem + 1.3393vw, 3.75rem);
+        font-size: clamp(1.5625rem, 1.25rem + 1.5625vw, 3.75rem);        
         font-weight: 400;
         margin: 0;
     }
@@ -55,6 +56,9 @@
             top: 32.5%;
             color: gray;
             font-size: clamp(0.875rem, 0.7768rem + 0.4911vw, 1.5625rem);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         p {
             text-align: left;
@@ -69,12 +73,12 @@
         text-decoration: none;    
         font-size: clamp(0.875rem, 0.8214rem + 0.2679vw, 1.25rem); 
         transition: 225ms ease-in-out;
-        padding: 8px;
+        padding: 6px 10px;
         border-radius: 30px;
         margin-top: 10px;
         &:hover {
             background-color: #ECEEFE;
-            transform: scale(1.1);
+            color: #444DF2;
         }
     }
     .or-container {
@@ -107,15 +111,16 @@
         transition: 225ms ease-in-out;
         cursor: pointer;
         &:hover {
+            color: #444DF2;
             border: 1px solid #444DF2;
             transition: 225ms ease-in-out;
+            p {
+                color: #444DF2;
+            }
         }
         p {
-            color: #444DF2;
+            color: #797EF3;
             cursor: pointer;
-            &:hover {
-                color: #3996f2;
-            }
         }
         img {
             width: 20px;
@@ -137,20 +142,45 @@
             border: none;
             transition: 225ms ease-in-out;
             &:hover {
-                background-color: #3996f2;
+                background-color: #797EF3;
                 transition: 225ms ease-in-out;
             }
         }
         .guest-login-btn {
-            color: #797EF3;
+            color: #444DF2;
             background-color: transparent;
             border: 1px solid #444DF2;
             transition: 225ms ease-in-out;
             &:hover {
-                background-color: #3996f2;
+                background-color:  #444DF2;
                 transition: 225ms ease-in-out;
                 color: white;
-                border: 1px solid #3996f2;
+                border: 1px solid  #444DF2;
+            }
+        }
+    }
+    .data-proteccion {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        bottom: -100px;
+        width: clamp(17.5rem, 12.8571rem + 23.2143vw, 50rem);
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        z-index: 3;
+        a { 
+            color: #797EF3;
+            text-decoration: none;    
+            font-size: clamp(0.875rem, 0.8214rem + 0.2679vw, 1.25rem); 
+            transition: 225ms ease-in-out;
+            padding: 10px 30px;
+            border-radius: 30px;
+            border: 1px solid transparent;
+            &:hover {
+                border: 1px solid #444DF2;
+                transition: 225ms ease-in-out;
+                color: #444DF2;
             }
         }
     }
@@ -166,26 +196,31 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
+    font-size: clamp(0.9375rem, 0.8482rem + 0.4464vw, 1.5625rem);
     p {
-        font-size: clamp(0.9375rem, 0.8482rem + 0.4464vw, 1.5625rem);
         margin: 0;
         color: rgba(0, 0, 0, 0.7);
     }
     a {
         color: #797EF3;
         text-decoration: none;    
-        font-size: clamp(0.875rem, 0.8214rem + 0.2679vw, 1.25rem); 
         transition: 225ms ease-in-out;
         padding: 10px 30px;
         border-radius: 30px;
+        border: 1px solid transparent;
+        cursor: pointer;
         &:hover {
-            border: 1px solid #797EF3;
-            transform: scale(1.1);
+            border: 1px solid #444DF2;
+            transition: 225ms ease-in-out;
+            color: #444DF2;
         }
         @media only screen and (max-width: 711px) {
             border: 1px solid #797EF3;
             border-radius: 30px;
         } 
+        @media only screen and (max-width: 324px) {
+            padding: 10px;
+        }
     }
     @media only screen and (max-width: 711px) {
            bottom: 10px;

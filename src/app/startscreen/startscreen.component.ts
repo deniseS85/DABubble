@@ -7,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './startscreen.component.scss'
 })
 export class StartscreenComponent {
+    isLogin = true;
+    isSignup = false;
+
+    toggleSignup() {
+      this.isLogin = !this.isLogin;
+      this.isSignup = !this.isSignup;
+    }
 
 }

@@ -1,8 +1,9 @@
 <app-login-animation></app-login-animation>
 
 <div class="fade-in-animation">
-  <app-login *ngIf="isLogin" (openResetPassword)="toggleView('resetPassword')" (openSignup)="toggleView('signup')"></app-login>
-<app-signup *ngIf="isSignup" (openLogin)="toggleView('login')"></app-signup>
-<app-reset-password *ngIf="isResetPassword" (backToLogin)="toggleView('login')"></app-reset-password>
- 
+    <app-login *ngIf="isLogin" (openResetPassword)="toggleView('resetPassword')" (openSignup)="toggleView('signup')" (openImprint)="toggleView('imprint')"></app-login>
+    <app-signup *ngIf="isSignup" (openLogin)="toggleView('login')" (openSelectAvatar)="toggleView('selectAvatar')" (openImprint)="toggleView('imprint')"></app-signup>
+    <app-reset-password *ngIf="isResetPassword" (backToLogin)="toggleView('login')" (openImprint)="toggleView('imprint')"></app-reset-password>
+    <app-select-avatar *ngIf="isSelectAvatar" (backToSignup)="toggleView('selectAvatar')" (openImprint)="toggleView('imprint')"></app-select-avatar>
+    <app-imprint *ngIf="isImprint" (goBack)="goBack()"></app-imprint>
 </div>

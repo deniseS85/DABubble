@@ -26,11 +26,10 @@
         zu.
     </label>
 
-    <button class="next-btn" type="submit">Weiter</button>
+    <button (click)="openSelectAvatar.emit()" class="next-btn" type="button">Weiter</button>
     
     <div class="data-proteccion">
-        <a href="#">Impressum</a>
+        <a (click)="openImprint.emit()">Impressum</a>
         <a href="#">Datenschutz</a>
     </div>
 </form>
-

@@ -7,12 +7,13 @@ import { StartscreenComponent } from '../startscreen.component';
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent {
-  @Output() openLogin = new EventEmitter<void>();
-
+    @Output() openLogin = new EventEmitter<void>();
+    @Output() openSelectAvatar = new EventEmitter<void>();
+    @Output() openImprint = new EventEmitter<void>(); 
+  
     constructor(public startscreen: StartscreenComponent) { }
 
     toggleSignup() {
         this.startscreen.toggleView('login'); 
     }
-
 }

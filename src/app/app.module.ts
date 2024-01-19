@@ -19,6 +19,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import { SignupComponent } from './startscreen/signup/signup.component';
 import { ResetPasswordComponent } from './startscreen/reset-password/reset-password.component';
+import { SelectAvatarComponent } from './startscreen/select-avatar/select-avatar.component';
+import { ImprintComponent } from './startscreen/imprint/imprint.component';
+import { DataProtectionComponent } from './startscreen/data-protection/data-protection.component';
 
 
 
@@ -34,7 +37,10 @@ import { ResetPasswordComponent } from './startscreen/reset-password/reset-passw
     WorkspaceComponent,
     ChannelChatComponent,
     SignupComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    SelectAvatarComponent,
+    ImprintComponent,
+    DataProtectionComponent
   ],
   imports: [
     BrowserModule,

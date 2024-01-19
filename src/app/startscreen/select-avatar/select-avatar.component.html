@@ -1,0 +1,31 @@
+<form class="select-avatar">
+    <div class="reset-header">
+        <mat-icon (click)="toggleAvatar()">arrow_back</mat-icon>
+        <h2>Wähle deinen<br *ngIf="shouldWordBreak"> Avatar</h2>
+    </div>
+    <img id="showAvatarImg" src="{{ avatarSrc }}" alt="Avatar placeholder">
+    <h3>Frederik Beck</h3>
+    <p>Aus der Liste wählen</p>
+
+    <div id="avatarSelection">
+        <img (click)="selectAvatar(1)" class="avatar-pic" src="./assets/img/avatar1.png">
+        <img (click)="selectAvatar(2)" class="avatar-pic" src="./assets/img/avatar2.png">
+        <img (click)="selectAvatar(3)" class="avatar-pic" src="./assets/img/avatar3.png">
+        <img (click)="selectAvatar(4)" class="avatar-pic" src="./assets/img/avatar4.png">
+        <img (click)="selectAvatar(5)" class="avatar-pic" src="./assets/img/avatar5.png">
+        <img (click)="selectAvatar(6)" class="avatar-pic" src="./assets/img/avatar6.png">
+    </div>
+
+    <div class="upload-image">
+        <p *ngIf="!hideElement">eigenes Bild verwenden</p>
+        <input type="file" id="img" style="display:none;">
+        <label for="img" class="btn upload">Foto hochladen</label>
+    </div>
+    
+    <button class="next-btn" type="submit">Weiter</button>
+    
+    <div class="data-proteccion">
+        <a (click)="openImprint.emit()">Impressum</a>
+        <a href="#">Datenschutz</a>
+    </div>
+</form>

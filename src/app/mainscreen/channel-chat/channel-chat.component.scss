@@ -49,6 +49,10 @@
     }
 }
 
+.hashtag {
+    font-size: 30px !important;
+}
+
 
 .header-right {
     display: flex;
@@ -78,6 +82,7 @@
 }
 
 .counter-channel-members {
+    padding-left: 5px;
     font-size: 20px;
     font-weight: 600;
 }
@@ -150,6 +155,10 @@
     &:hover .message-somebody {
         background-color: #ffffff;
     }
+
+    &:hover .last-answer-time {
+        color: black;
+    }
 }
 
 .new-message-avatar-main-div {
@@ -196,6 +205,10 @@
     }
 }
 
+.last-answer-time {
+    color: #686868;
+}
+
 .message-avatar {
     color: white;
     background-color: #797EF3;
@@ -223,6 +236,7 @@
     border: 1px solid #ADB0D9;
     border-radius: 30px;
     padding: 5px 15px;
+    background-color: #ffffff;
 
     &:hover {
         border: 1px solid #535AF1;
@@ -230,6 +244,8 @@
 }
 
 .reaction-smiley {
+    padding: 5px;
+    border-radius: 100%;
     &:hover {
         filter: invert(41%) sepia(64%) saturate(6974%) hue-rotate(232deg) brightness(100%) contrast(90%);
     }

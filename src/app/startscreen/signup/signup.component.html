@@ -35,7 +35,7 @@
 
     <label>
         <input formControlName="agreement" id="checkbox" type="checkbox" name="myCheckbox">
-        <span>Ich stimme der<a (click)="openPrivacy.emit()">Datenschutzerklärung</a>zu.</span>
+        <span>Ich stimme der<a (click)="openPrivacy.emit()">Datenschutzerklärung</a><br *ngIf="shouldWordBreak">zu.</span>
     </label>
 
     <button [disabled]="signUpForm.invalid" [class.disabled-btn]="signUpForm.invalid" class="next-btn" type="submit">Weiter</button>
@@ -49,7 +49,6 @@
         <p class="confirm-text">Du bist bereits registriert. Hier geht es zur
             <a (click)="openLogin.emit()">Anmeldung</a>
         </p>
-        
     </div> 
 </form>
 

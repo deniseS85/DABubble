@@ -35,6 +35,11 @@ export class SelectAvatarComponent {
 
     selectAvatar(avatarNr: number) {
         this.avatarSrc = `./assets/img/avatar${avatarNr}.png`;
+        let profileImg = `avatar${avatarNr}.png`;
+        this.userData = {
+          ...this.userData,
+          profileImg: profileImg
+      };
     }
 
     async addNewUser() {
@@ -42,7 +47,6 @@ export class SelectAvatarComponent {
        
         let updatedUserData = {
             ...this.userData,
-            profileImg: this.avatarSrc,
             id: ''
         };
        
@@ -53,7 +57,7 @@ export class SelectAvatarComponent {
         setTimeout(() => {
             this.showConfirmation = false;
             this.startscreen.toggleView('login')
-        }, 3000);
+        }, 2000);
       
     }
 

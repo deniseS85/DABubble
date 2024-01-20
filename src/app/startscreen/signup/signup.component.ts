@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { StartscreenComponent } from '../startscreen.component';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
 
 
@@ -18,9 +17,15 @@ export class SignupComponent {
     @Output() openPrivacy = new EventEmitter<void>();
     signUpForm!: FormGroup;
     userAlreadyExists: boolean = false;
+    shouldWordBreak: boolean = window.innerWidth <= 511;
 
-    constructor(public startscreen: StartscreenComponent, private formBuilder: FormBuilder, private router: Router, private authService: AuthService) { 
+    constructor(public startscreen: StartscreenComponent, private formBuilder: FormBuilder, private authService: AuthService) { 
         this.setSignUpForm();
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event): void {
+        this.shouldWordBreak = window.innerWidth <= 511;
     }
 
     toggleSignup() {
@@ -29,16 +34,16 @@ export class SignupComponent {
 
     async signUpUser() {
         await createUserWithEmailAndPassword(this.authService.auth, this.signUpForm.value.email, this.signUpForm.value.password)
-          .then((userCredential) => {
+        .then((userCredential) => {
             let signUpFormData = this.signUpForm.value;
             delete signUpFormData.agreement;
             this.openSelectAvatar.emit({ ...signUpFormData });
-          })
-          .catch((error) => {
-              if (error.code === 'auth/email-already-in-use') {
-                  this.userAlreadyExists = true;
-              }
-          })
+        })
+        .catch((error) => {
+            if (error.code === 'auth/email-already-in-use') {
+                this.userAlreadyExists = true;
+            }
+        })
     }
 
     setSignUpForm() {

@@ -1,31 +1,48 @@
-import { Injectable, OnDestroy, inject } from '@angular/core';
-import { Auth, User, authState, idToken, user } from '@angular/fire/auth';
-import { Subscription } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnDestroy {
-  constructor() {
-      this.userSubscription = this.user$.subscribe((aUser: User | null) => {})
-      this.authStateSubscription = this.authState$.subscribe((aUser: User | null) => {})
-      this.idTokenSubscription = this.idToken$.subscribe((token: string | null) => {})
- }
+export class AuthService {
+  constructor() {}
 
   auth: Auth = inject(Auth);
-  user$ = user(this.auth);
-  userSubscription: Subscription;
-  authState$ = authState(this.auth);
-  authStateSubscription: Subscription;
-  idToken$ = idToken(this.auth);
-  idTokenSubscription: Subscription;
+  private userFirstName: string = '';
+  private userLastName: string = '';
+  private userImg: string = '';
  
+  setUserDetails(firstName: string, lastName: string, profileImg: string): void {
+      this.userFirstName = firstName;
+      this.userLastName = lastName;
+      this.userImg = profileImg;
+      this.saveUserData();
+  }
 
-  ngOnDestroy() {
-      this.userSubscription.unsubscribe();
-      this.authStateSubscription.unsubscribe();
-      this.idTokenSubscription.unsubscribe();
+  getUserFirstName(): string {
+      return this.userFirstName;
+  }
+
+  getUserLastName(): string {
+      return this.userLastName;
+  }
+
+  getUserImg(): string {
+      return this.userImg
+  }
+
+  private saveUserData(): void {
+      localStorage.setItem('userFirstName', this.userFirstName);
+      localStorage.setItem('userLastName', this.userLastName);
+      localStorage.setItem('userImg', this.userImg);
+  }
+
+  restoreUserData(): void {
+      this.userFirstName = localStorage.getItem('userFirstName') || '';
+      this.userLastName = localStorage.getItem('userLastName') || '';
+      this.userImg = localStorage.getItem('userImg') || '';
   }
 
 }

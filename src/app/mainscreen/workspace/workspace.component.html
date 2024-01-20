@@ -29,14 +29,15 @@
         </mat-expansion-panel-header>
 
         <div class="channels-list">
-            <div class="channels-name">
-                <span class="hashtag">#</span>
-                <span>Entwicklerteam</span>
-            </div>
-            <div class="channels-name">
-                <span class="hashtag">#</span>
-                <span>Office-team</span>
-            </div>
+          <div class="channels-name selectable" (click)="handleClick($event)">
+            <span class="hashtag">#</span>
+            <span>Entwicklerteam</span>
+          </div>
+          
+          <div class="channels-name selectable" (click)="handleClick($event)">
+            <span class="hashtag">#</span>
+            <span>Office-team</span>
+          </div>
         </div>
         <div class="channels-add-hover">
             <div class="channels-add">
@@ -69,11 +70,11 @@
       </mat-expansion-panel-header>
 
           <div class="contacts-list">
-            <div>
+            <div class="selectable" (click)="handleClick($event)">
                 <span><img src="./assets/img/avatarFrederick.png"/></span>
                 <span>Frederik Beck (Du)</span>
             </div>
-            <div>
+            <div class="selectable" (click)="handleClick($event)">
                 <span><img src="./assets/img/avatarSofia.png"/></span>
                 <span>Sofia Müller</span>
             </div>
@@ -83,4 +84,25 @@
       </mat-accordion>
   </div>
 
+</div>
+
+<div class="channel-create-window">
+  <div class="channel-create-container">
+    <div class="fnt-sz-24 fnt-wt-700">Channel erstellen</div>
+    <div>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein  #marketing zum Beispiel.</div>
+    <div class="fnt-wt-700">Channel-Name</div>
+    <div class="absolute">
+      <input placeholder="z.B. Kooperationsprojekte" type="text" class="channel-create-input pad-left">
+      <span class="channel-create-input-hashtag">#</span>
+    </div>
+    <div class="fnt-wt-700">Beschreibung 
+      <span class="fnt-wt-400 gray">
+        (optional)
+      </span>
+    </div>
+    <input placeholder="Dein Text hier" type="text" class="channel-create-input">
+    <div class="btn-container">
+      <button class="btn fnt-wt-700">Erstellen</button>
+    </div>
+  </div>
 </div>

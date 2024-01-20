@@ -1,15 +1,14 @@
 {
-    "projects": {
-      "default": "dabubble-69322",
-      "firebase use default": "dabubble-69322"
-    },
-    "targets": {
-      "dabubble-69322": {
-        "hosting": {
-          "dabubble": [
-            "dabubble-69322"
-          ]
-        }
+  "targets": {
+    "dabubble-69322": {
+      "hosting": {
+        "dabubble": [
+          "dabubble-69322"
+        ]
       }
     }
+  },
+  "projects": {
+    "default": "dabubble-69322"
   }
+}

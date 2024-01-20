@@ -1,36 +1,51 @@
-<form class="signup">
+<form class="signup" [formGroup]="signUpForm" (ngSubmit)="signUpUser()">
     <div class="signup-header">
         <mat-icon (click)="toggleSignup()">arrow_back</mat-icon>
         <h2>Konto erstellen</h2>
     </div>
     <p>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
+
     <div class="input-container">
-        <input placeholder="Name und Nachname">
+        <input formControlName="firstLastName" type="text" name="firstLastName" placeholder="Vor- und Nachname" pattern="[A-Za-zÄäÖöÜüß\s]+"
+        [class.red-border]="signUpForm.get('firstLastName')?.invalid && signUpForm.get('firstLastName')?.touched" required>
         <mat-icon>person_outline</mat-icon>
-        <p>Bitte schreiben Sie einen Namen.</p>
+        <p *ngIf="signUpForm.get('firstLastName')?.invalid && signUpForm.get('firstLastName')?.touched">Bitte schreiben Sie einen Namen.</p>
     </div>
+
     <div class="input-container">
-        <input placeholder="beispielname@email.com">
+        <input formControlName="email" type="email" name="email" placeholder="beispielname@email.com"
+        [class.red-border]="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" required>
         <mat-icon>mail_outline</mat-icon>
-        <p>Diese E-Mail-Adresse ist leider ungültig.</p>
+        <p *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">Diese E-Mail-Adresse ist leider ungültig.</p>
     </div>
+
     <div class="input-container">
-        <input placeholder="Passwort">
+        <input formControlName="password" type="password" name="password" placeholder="Passwort"
+        [class.red-border]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" required>
         <mat-icon>lock_outline</mat-icon>
-        <p>Bitte geben Sie ein Passwort ein.</p>
+        <p *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">Bitte geben Sie ein Passwort ein.</p>
     </div>
     <label>
-        <input id="checkbox" type="checkbox" name="myCheckbox"> <!-- *ngIf="shouldWordBreak" -->
+        <input formControlName="agreement" id="checkbox" type="checkbox" name="myCheckbox">
         <span>Ich stimme der 
-            <a>Datenschutzerklärung</a>
+            <a (click)="openPrivacy.emit()">Datenschutzerklärung</a>
             zu.
         </span>
     </label>
 
-    <button (click)="openSelectAvatar.emit()" class="next-btn" type="button">Weiter</button>
+    <button [disabled]="signUpForm.invalid" [class.disabled-btn]="signUpForm.invalid" class="next-btn" type="submit">Weiter</button>
     
     <div class="data-proteccion">
         <a (click)="openImprint.emit()">Impressum</a>
         <a (click)="openPrivacy.emit()">Datenschutz</a>
     </div>
+
+    <div *ngIf="userAlreadyExists" class="confirm-container">
+        <p class="confirm-text">Du bist bereits registriert. Hier geht es zur
+            <a (click)="openLogin.emit()">Anmeldung</a>
+        </p>
+        
+    </div> 
 </form>
+
+

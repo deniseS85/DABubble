@@ -1,22 +1,26 @@
 <form class="login">
     <h2>Anmeldung</h2>
     <p>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die die du bei der Arbeit verwendest.</p>
+
     <div class="input-container">
         <input placeholder="beispielname@email.com">
         <mat-icon>mail_outline</mat-icon>
         <p>Diese E-Mail-Adresse ist leider ungültig.</p>
     </div>
+
     <div class="input-container">
         <input placeholder="Passwort">
         <mat-icon>lock_outline</mat-icon>
         <p>Falsches Passwort. Bitte noch einmal versuchen.</p>
     </div>
+
     <a (click)="openResetPassword.emit()">Passwort vergessen?</a>
     <div class="or-container">
         <hr>
         <p>ODER</p>
         <hr>
     </div>
+    
     <button class="google-btn">
         <img src="./assets/img/google.png">
         <p>Anmelden mit Google</p>

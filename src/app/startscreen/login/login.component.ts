@@ -11,4 +11,5 @@ export class LoginComponent {
     @Output() openImprint = new EventEmitter<void>(); 
     @Output() openPrivacy = new EventEmitter<void>(); 
     @Output() goBack = new EventEmitter<void>();
+    
 }

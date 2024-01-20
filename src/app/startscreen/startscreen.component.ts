@@ -28,10 +28,12 @@ export class StartscreenComponent {
     }
 
     goBack(): void {
-      if (this.viewsHistory.length > 0) {
-        const lastView = this.viewsHistory.pop();
-        this.toggleView(lastView);
-      }
+        if (this.viewsHistory.length > 0) {
+            let lastView = this.viewsHistory.pop();
+            this.toggleView(lastView);
+        }
     }
+
+
 
 }

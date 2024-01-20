@@ -7,4 +7,5 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class DataProtectionComponent {
     @Output() goBack = new EventEmitter<void>();
+    
 }

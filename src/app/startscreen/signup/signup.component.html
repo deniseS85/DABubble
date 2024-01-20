@@ -6,10 +6,17 @@
     <p>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
 
     <div class="input-container">
-        <input formControlName="firstLastName" type="text" name="firstLastName" placeholder="Vor- und Nachname" pattern="[A-Za-zÄäÖöÜüß\s]+"
-        [class.red-border]="signUpForm.get('firstLastName')?.invalid && signUpForm.get('firstLastName')?.touched" required>
+        <input formControlName="firstname" type="text" name="firstname" placeholder="Vorname" pattern="[A-Za-zÄäÖöÜüß\s]+"
+        [class.red-border]="signUpForm.get('firstname')?.invalid && signUpForm.get('firstname')?.touched" required>
         <mat-icon>person_outline</mat-icon>
-        <p *ngIf="signUpForm.get('firstLastName')?.invalid && signUpForm.get('firstLastName')?.touched">Bitte schreiben Sie einen Namen.</p>
+        <p *ngIf="signUpForm.get('firstname')?.invalid && signUpForm.get('firstname')?.touched">Bitte schreiben Sie einen Namen.</p>
+    </div>
+
+    <div class="input-container">
+        <input formControlName="lastname" type="text" name="lastname" placeholder="Nachname" pattern="[A-Za-zÄäÖöÜüß\s]+"
+        [class.red-border]="signUpForm.get('lastname')?.invalid && signUpForm.get('lastname')?.touched" required>
+        <mat-icon>person_outline</mat-icon>
+        <p *ngIf="signUpForm.get('lastname')?.invalid && signUpForm.get('lastname')?.touched">Bitte schreiben Sie einen Namen.</p>
     </div>
 
     <div class="input-container">

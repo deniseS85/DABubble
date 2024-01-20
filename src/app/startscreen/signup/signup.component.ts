@@ -12,9 +12,9 @@ import { AuthService } from '../../auth.service';
 })
 export class SignupComponent {
     @Output() openLogin = new EventEmitter<void>();
-    @Output() openSelectAvatar = new EventEmitter<void>();
+    @Output() openSelectAvatar = new EventEmitter<{ firstName: string, lastName: string }>();
     @Output() openImprint = new EventEmitter<void>(); 
-    @Output() openPrivacy = new EventEmitter<void>(); 
+    @Output() openPrivacy = new EventEmitter<void>();
     signUpForm!: FormGroup;
     userAlreadyExists: boolean = false;
 
@@ -26,11 +26,12 @@ export class SignupComponent {
         this.startscreen.toggleView('login'); 
     }
 
-   
     async signUpUser() {
         await createUserWithEmailAndPassword(this.authService.auth, this.signUpForm.value.email, this.signUpForm.value.password)
           .then((userCredential) => {
-            this.openSelectAvatar.emit();
+              let { firstLastName } = this.signUpForm.value;
+              let [firstName, lastName] = firstLastName.split(' ');
+              this.openSelectAvatar.emit({ firstName, lastName });
           })
           .catch((error) => {
               if (error.code === 'auth/email-already-in-use') {

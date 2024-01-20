@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, EventEmitter, Output, HostListener, Input } from '@angular/core';
 import { StartscreenComponent } from '../startscreen.component';
 
 @Component({
@@ -10,12 +10,13 @@ export class SelectAvatarComponent {
     @Output() backToSignup = new EventEmitter<void>();
     @Output() openImprint = new EventEmitter<void>(); 
     @Output() openPrivacy = new EventEmitter<void>(); 
+    @Input() userData: { firstName: string, lastName: string } = { firstName: '', lastName: '' };
     shouldWordBreak: boolean = window.innerWidth <= 577;
     hideElement: boolean = window.innerWidth <= 950;
     avatarSrc = './assets/img/profile.png';
     showConfirmation: boolean = false;
-    
-    constructor(public startscreen: StartscreenComponent) { }
+
+    constructor(public startscreen: StartscreenComponent) {}
 
     toggleAvatar() {
         this.startscreen.toggleView('signup');

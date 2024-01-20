@@ -25,12 +25,10 @@
         <mat-icon>lock_outline</mat-icon>
         <p *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">Bitte geben Sie ein Passwort ein.</p>
     </div>
+
     <label>
         <input formControlName="agreement" id="checkbox" type="checkbox" name="myCheckbox">
-        <span>Ich stimme der 
-            <a (click)="openPrivacy.emit()">Datenschutzerklärung</a>
-            zu.
-        </span>
+        <span>Ich stimme der<a (click)="openPrivacy.emit()">Datenschutzerklärung</a>zu.</span>
     </label>
 
     <button [disabled]="signUpForm.invalid" [class.disabled-btn]="signUpForm.invalid" class="next-btn" type="submit">Weiter</button>

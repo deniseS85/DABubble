@@ -4,7 +4,7 @@
         <h2>Wähle deinen<br *ngIf="shouldWordBreak"> Avatar</h2>
     </div>
     <img id="showAvatarImg" src="{{ avatarSrc }}" alt="Avatar placeholder">
-    <h3>Frederik Beck</h3>
+    <h3>{{ userData.firstName }} {{ userData.lastName }}</h3>
     <p>Aus der Liste wählen</p>
 
     <div id="avatarSelection">

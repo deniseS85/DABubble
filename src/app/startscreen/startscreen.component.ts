@@ -15,8 +15,10 @@ export class StartscreenComponent {
     isPrivacy = false;
     viewsHistory: Array<'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy'> = [];
     currentView: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy' = 'login';
+    userData: { firstName: string, lastName: string } = { firstName: '', lastName: '' };
+    private formData: any = {};  
 
-    toggleView(view: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy' | undefined = 'login'): void {
+    toggleView(view: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy' | undefined = 'login', data?: { firstName: string, lastName: string }): void {
         this.viewsHistory.push(this.currentView);
         this.currentView = view;
         this.isLogin = view === 'login' ? !this.isLogin : false;
@@ -25,6 +27,16 @@ export class StartscreenComponent {
         this.isSelectAvatar = view === 'selectAvatar' ? !this.isSelectAvatar : false;
         this.isImprint = view === 'imprint' ? !this.isImprint : false;
         this.isPrivacy = view === 'privacy' ? !this.isPrivacy : false;
+        if (this.isSelectAvatar && data) {
+            this.userData = data;
+        }
+
+        if (view === 'signup') {
+            this.formData = {
+              currentView: this.currentView,
+              userData: this.userData,
+            };
+          }
     }
 
     goBack(): void {
@@ -33,6 +45,10 @@ export class StartscreenComponent {
             this.toggleView(lastView);
         }
     }
+
+    getFormData(): any {
+        return this.formData;
+      }
 
 
 

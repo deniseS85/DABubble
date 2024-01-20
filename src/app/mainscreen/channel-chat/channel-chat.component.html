@@ -58,8 +58,10 @@
                     </div>
                     <div class="message-avatar fs-18 fw-400">Ja, wirklich der Wahnsinn!</div>
                     <div class="reaction-icons-container">
-                        <div >
-                            <img class="reaction-smiley" src="../../../assets/img/add_reaction.svg" alt="">
+                        <div class="reaction-smiley hover-function">
+                            <!-- <img class="reaction-smiley" src="../../../assets/img/add_reaction.svg" alt=""> -->
+                            <img class="normal-img" src="../../../assets/img/add_reaction.png">
+                            <img class="hover-img" src="../../../assets/img/add_reaction_hover.png">
                         </div>
                         <div class="added-reaction-container">
                             <img src="../../../assets/img/emoji1.png" alt="">
@@ -81,13 +83,17 @@
         </div>
         <div class="footer-line-icons">
             <div class="footer-icons-left">
-                <img src="../../../assets/img/add.png" alt="add">
+                <!-- <img src="../../../assets/img/add.png" alt="add"> -->
+                <mat-icon>add</mat-icon>
                 <div class="seperator-vert"></div>
-                <img src="../../../assets/img/sentiment_satisfied.png" alt="emoji">
-                <img src="../../../assets/img/alternate_email.png" alt="sendmail">
+                <!-- <img src="../../../assets/img/sentiment_satisfied.png" alt="emoji"> -->
+                <mat-icon>mood</mat-icon>
+                <!-- <img src="../../../assets/img/alternate_email.png" alt="sendmail"> -->
+                <mat-icon>alternate_email</mat-icon>
             </div>
-            <div class="footer-icon-right">
-                <img src="../../../assets/img/send.png" alt="send">
+            <div class="footer-icons-right">
+                <!-- <img src="../../../assets/img/send.png" alt="send"> -->
+                <mat-icon>send_icon</mat-icon>
             </div>  
         </div>
     </div>

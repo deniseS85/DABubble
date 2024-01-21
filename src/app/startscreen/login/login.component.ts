@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { collection, getDocs, query, where } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 
+
 interface UserData {
   firstname: string;
   lastname: string;
@@ -27,31 +28,39 @@ export class LoginComponent {
     logInForm!: FormGroup;
     userAlreadyExists: boolean = true;
     firestore: Firestore = inject(Firestore);
-
+    isAnonymous: boolean = false;
+    isWrongPassword: boolean = false;
+    isSubmitted: boolean = false;
+    
     constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { 
         this.setLoginForm();
     }
 
     async logInUser() {
         let email = this.logInForm.value.email;
-        let userExistsResult = await this.isAlreadyUser(email);
-    
-        if (userExistsResult.exists) {
-            let userFirstName = userExistsResult.userData?.firstname;
-            let userLastName = userExistsResult.userData?.lastname;
-            let userImg = userExistsResult.userData?.profileImg;
+        this.isSubmitted = true;
 
-            if (userFirstName && userLastName && userImg) {
-                this.authService.setUserDetails(userFirstName, userLastName, userImg);
-        
-                console.log(`Eingeloggter Benutzer: ${userFirstName} ${userLastName}`);
-        
-                await signInWithEmailAndPassword(this.authService.auth, email, this.logInForm.value.password);
-                this.router.navigate(['/main']);
+        try {
+            let userExistsResult = await this.isAlreadyUser(email);
+    
+            if (userExistsResult.exists) {
+                let userFirstName = userExistsResult.userData?.firstname;
+                let userLastName = userExistsResult.userData?.lastname;
+                let userImg = userExistsResult.userData?.profileImg;
+    
+                if (userFirstName && userLastName && userImg) {
+                    this.authService.setUserDetails(userFirstName, userLastName, userImg);
+                    await signInWithEmailAndPassword(this.authService.auth, email, this.logInForm.value.password);
+                    this.router.navigate(['/main']);
+                }
+            } else {
+                this.userAlreadyExists = false;
             }
-          } else {
-              this.userAlreadyExists = false;
-          }
+        } catch (error:any) {
+            if (error.code === 'auth/invalid-credential') {
+                this.isWrongPassword = true;
+            }
+        }
     }
 
     async isAlreadyUser(email: string): Promise<{ exists: boolean, userData?: UserData }> {
@@ -68,11 +77,20 @@ export class LoginComponent {
             return { exists: false };
         }
     }
+    
 
     setLoginForm() {
         this.logInForm = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required],
         });
+    }
+
+    async signInAnonymously() {
+        await signInAnonymously(this.authService.auth);
+        this.authService.setAnonymousStatus(true);
+        this.authService.setUserDetails('Gast', '', 'guest-profile.png');
+        this.isAnonymous = true;
+        this.router.navigate(['/main']);
     }
 }

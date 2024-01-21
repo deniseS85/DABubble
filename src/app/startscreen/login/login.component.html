@@ -12,7 +12,7 @@
     <div class="input-container">
         <input formControlName="password" type="password" name="password" placeholder="Passwort">
         <mat-icon>lock_outline</mat-icon>
-        <p *ngIf="logInForm.get('password')?.invalid && logInForm.get('password')?.touched">Falsches Passwort. Bitte noch einmal versuchen.</p>
+        <p *ngIf="logInForm.get('password')?.invalid && logInForm.get('password')?.touched || isWrongPassword">Falsches Passwort. Bitte noch einmal versuchen.</p>
     </div>
 
     <a (click)="openResetPassword.emit()">Passwort vergessen?</a>
@@ -28,7 +28,7 @@
     </button>
     <div class="login-options">
         <button [disabled]="logInForm.invalid" [class.disabled-btn]="logInForm.invalid" type="submit" class="login-btn">Anmelden</button>
-        <button type="submit" class="guest-login-btn">Gäste-Login</button>
+        <button (click)="signInAnonymously()" type="submit" class="guest-login-btn">Gäste-Login</button>
     </div>
 
     <div class="data-proteccion">
@@ -36,7 +36,7 @@
         <a (click)="openPrivacy.emit()">Datenschutz</a>
     </div>
 
-    <div *ngIf="!userAlreadyExists" class="confirm-container">
+    <div *ngIf="!userAlreadyExists && !isAnonymous" class="confirm-container">
         <p class="confirm-text">Du bist noch nicht registriert. Hier geht es zur
             <a (click)="openSignup.emit()">Registrierung</a>
         </p>

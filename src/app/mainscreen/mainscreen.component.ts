@@ -16,6 +16,12 @@ export class MainscreenComponent implements OnInit {
 
   ngOnInit(): void {
       this.authService.restoreUserData();
+
+      if (this.authService.isUserAnonymous()) {
+        this.userFirstName = 'Gast';
+        this.userLastName = '';
+        this.userImg = 'guest-profile.png';
+      }
       this.userFirstName = this.authService.getUserFirstName();
       this.userLastName = this.authService.getUserLastName();
       this.userImg = this.authService.getUserImg();

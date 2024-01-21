@@ -7,42 +7,51 @@ import { Auth } from '@angular/fire/auth';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor() {}
+    constructor() {}
 
-  auth: Auth = inject(Auth);
-  private userFirstName: string = '';
-  private userLastName: string = '';
-  private userImg: string = '';
- 
-  setUserDetails(firstName: string, lastName: string, profileImg: string): void {
-      this.userFirstName = firstName;
-      this.userLastName = lastName;
-      this.userImg = profileImg;
-      this.saveUserData();
-  }
+    auth: Auth = inject(Auth);
+    private userFirstName: string = '';
+    private userLastName: string = '';
+    private userImg: string = '';
+    private isAnonymous: boolean = false;
+    
+    setUserDetails(firstName: string, lastName: string, profileImg: string): void {
+        this.userFirstName = firstName;
+        this.userLastName = lastName;
+        this.userImg = profileImg;
+        this.saveUserData();
+    }
 
-  getUserFirstName(): string {
-      return this.userFirstName;
-  }
+    getUserFirstName(): string {
+        return this.userFirstName;
+    }
 
-  getUserLastName(): string {
-      return this.userLastName;
-  }
+    getUserLastName(): string {
+        return this.userLastName;
+    }
 
-  getUserImg(): string {
-      return this.userImg
-  }
+    getUserImg(): string {
+        return this.userImg
+    }
 
-  private saveUserData(): void {
-      localStorage.setItem('userFirstName', this.userFirstName);
-      localStorage.setItem('userLastName', this.userLastName);
-      localStorage.setItem('userImg', this.userImg);
-  }
+    private saveUserData(): void {
+        localStorage.setItem('userFirstName', this.userFirstName);
+        localStorage.setItem('userLastName', this.userLastName);
+        localStorage.setItem('userImg', this.userImg);
+    }
 
-  restoreUserData(): void {
-      this.userFirstName = localStorage.getItem('userFirstName') || '';
-      this.userLastName = localStorage.getItem('userLastName') || '';
-      this.userImg = localStorage.getItem('userImg') || '';
-  }
+    restoreUserData(): void {
+        this.userFirstName = localStorage.getItem('userFirstName') || '';
+        this.userLastName = localStorage.getItem('userLastName') || '';
+        this.userImg = localStorage.getItem('userImg') || '';
+    }
+
+    setAnonymousStatus(isAnonymous: boolean): void {
+        this.isAnonymous = isAnonymous;
+    }
+
+    isUserAnonymous(): boolean {
+        return this.isAnonymous;
+    }
 
 }

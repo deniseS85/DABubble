@@ -22,7 +22,12 @@ import { ResetPasswordComponent } from './startscreen/reset-password/reset-passw
 import { SelectAvatarComponent } from './startscreen/select-avatar/select-avatar.component';
 import { ImprintComponent } from './startscreen/imprint/imprint.component';
 import { DataProtectionComponent } from './startscreen/data-protection/data-protection.component';
+import { TestQueryComponent } from './testQueryData/test-query/test-query.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+
 
 
 @NgModule({
@@ -39,7 +44,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ResetPasswordComponent,
     SelectAvatarComponent,
     ImprintComponent,
-    DataProtectionComponent
+    DataProtectionComponent,
+    TestQueryComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +54,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MatIconModule,
     MatMenuModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
     ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp({"projectId":"dabubble-69322","appId":"1:486842154610:web:0631e3885b73bc4e4acceb","storageBucket":"dabubble-69322.appspot.com","apiKey":"AIzaSyC2opRUMbcOUpjD2QPCifl1muUI_7Wf-cw","authDomain":"dabubble-69322.firebaseapp.com","messagingSenderId":"486842154610"})),
     provideAuth(() => getAuth()),

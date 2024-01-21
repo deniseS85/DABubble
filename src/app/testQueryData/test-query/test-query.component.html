@@ -1,0 +1,69 @@
+<div class="container">
+
+    <!-- left Container -->
+    <div class="chatList">
+
+        <!-- Search and Input -->
+        <div class="search-input">
+            <mat-form-field>
+                <input matInput placeholder="search for User" [matAutocomplete]="users" [formControl]="searchControl">
+            </mat-form-field>
+            <mat-autocomplete #users="matAutocomplete">
+                <mat-option *ngFor="let user of users$ | async">{{user.firstname}} {{user.lastname}}</mat-option>
+            </mat-autocomplete>
+        </div>
+
+
+        <!--Add User Form  -->
+        <form class="addUser" [formGroup]="userForm" (ngSubmit)="submitForm()">
+            <div>
+                <label for="firstname">Firstname </label>
+                <input 
+                id="name" 
+                type="text" 
+                formControlName="firstname"
+                matInput>
+            </div>
+            <div>
+                <label for="lastname">Lastname: </label>
+                <input id="lastname" 
+                type="text" 
+                formControlName="lastname"
+                matInput>
+            </div>
+            <div>
+                <label for="photoURL">PhotoURL: </label>
+                <input id="photoURL" 
+                type="text" 
+                formControlName="photoURL"
+                matInput>
+            </div>
+            <button mat-raised-button type="submit">Submit</button>
+        </form>
+
+
+        <!-- Display Users -->
+        <div class="userlist">
+            <div class="listContainer">
+                <u>list with Observable</u>
+                <div class="userInList" *ngFor="let user of users$ | async" (click)="openChat(user)"><img
+                        src="./assets/img/{{user.profileImg}}"> {{user.firstname}} {{user.lastname}}</div>
+            </div>
+            <br>
+            <!-- <div class="listContainer">
+                <u>list with onSnapshot</u>
+                <div class="userInList" *ngFor="let user of usersList"><img src="./assets/img/{{user.profileImg}}" alt="">
+                    {{user.firstname}} </div>
+            </div> -->
+        </div>
+    </div>
+
+
+    <!-- right Container -->
+    <div class="messages">
+
+    </div>
+
+
+
+</div>

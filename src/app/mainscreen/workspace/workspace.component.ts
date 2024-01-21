@@ -18,18 +18,12 @@ export class WorkspaceComponent {
 
   handleClick(event: MouseEvent) {
     this.resetSelection();
-    
     const target = event.target as HTMLElement;
-
-    // Überprüfe, ob das geklickte Element oder eines seiner Elternelemente die Klasse 'selectable' hat
     const selectableElement = this.findClosestSelectable(target);
-
     if (selectableElement) {
       this.renderer.addClass(selectableElement, 'selected');
     }
   }
-
-  // Hilfsmethode, um das nächste Elternelement mit der Klasse 'selectable' zu finden
   private findClosestSelectable(element: HTMLElement): HTMLElement | null {
     while (element) {
       if (element.classList.contains('selectable')) {
@@ -39,7 +33,30 @@ export class WorkspaceComponent {
     }
     return null;
   }
-  
+
+  hideChannelCreateWindow(event: MouseEvent): void {
+    const channelCreateWindow = document.querySelector('.channel-create-window') as HTMLElement | null;
+    const channelCreateContainer = document.querySelector('.channel-create-container') as HTMLElement | null;
+    if (channelCreateWindow && channelCreateContainer) {
+      if (!channelCreateContainer.contains(event.target as Node)) {
+        channelCreateWindow.style.display = 'none';
+      }
+    }
+  }
+
+  closeChannelCreateWindow(): void {
+    const channelCreateWindow = document.querySelector('.channel-create-window') as HTMLElement | null;
+    if (channelCreateWindow) {
+      channelCreateWindow.style.display = 'none';
+    }
+  }
+
+  showChannelCreateWindow(): void {
+    const channelCreateWindow = document.querySelector('.channel-create-window') as HTMLElement | null;
+    if (channelCreateWindow) {
+      channelCreateWindow.style.display = 'block';
+    }
+  }
 
   panelOpenState1 = false;
   panelOpenState2 = false;

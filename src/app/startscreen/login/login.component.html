@@ -22,7 +22,7 @@
         <hr>
     </div>
     
-    <button class="google-btn">
+    <button (click)="loginWithGoogle()" class="google-btn">
         <img src="./assets/img/google.png">
         <p>Anmelden mit Google</p>
     </button>
@@ -36,7 +36,7 @@
         <a (click)="openPrivacy.emit()">Datenschutz</a>
     </div>
 
-    <div *ngIf="!userAlreadyExists && !isAnonymous" class="confirm-container">
+    <div *ngIf="!userAlreadyExists && !isGoogleLogin" class="confirm-container">
         <p class="confirm-text">Du bist noch nicht registriert. Hier geht es zur
             <a (click)="openSignup.emit()">Registrierung</a>
         </p>

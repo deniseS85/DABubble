@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-
+import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 
 
 @Injectable({
@@ -52,6 +51,10 @@ export class AuthService {
 
     isUserAnonymous(): boolean {
         return this.isAnonymous;
+    }
+
+    signInWithGoogle() {
+        return signInWithPopup(this.auth, new GoogleAuthProvider());
     }
 
 }

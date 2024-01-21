@@ -29,6 +29,7 @@ export class LoginComponent {
     userAlreadyExists: boolean = true;
     firestore: Firestore = inject(Firestore);
     isAnonymous: boolean = false;
+    isGoogleLogin: boolean = false;
     isWrongPassword: boolean = false;
     isSubmitted: boolean = false;
     
@@ -92,5 +93,14 @@ export class LoginComponent {
         this.authService.setUserDetails('Gast', '', 'guest-profile.png');
         this.isAnonymous = true;
         this.router.navigate(['/main']);
+    }
+
+    loginWithGoogle() {
+        this.isGoogleLogin = true;
+        this.authService.signInWithGoogle().then((res: any) => {
+        this.router.navigateByUrl('/main');
+        }).catch((error: any) => {
+          console.error(error);
+        });
     }
 }

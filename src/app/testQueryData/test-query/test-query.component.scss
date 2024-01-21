@@ -18,6 +18,23 @@
     justify-content: flex-start;
     gap: 24px;
 
+    .account{
+
+        
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 600;
+            gap: 36px;
+
+            span{
+                display: flex;
+                align-items: center;
+                gap: 12px
+            }
+        
+    }
+
     .search-input{
         width: 80%;
         margin-top: 16px;
@@ -47,6 +64,30 @@
             display: flex;
             align-items: center;
             gap: 36px;
+            cursor: pointer;
+        }
+    }
+
+    .chats{
+        width: calc(100% - 32px);
+        overflow: auto;
+        border-top: 3px solid black;
+        padding: 8px 16px;
+        display: flex;
+        gap: 16px;
+        flex-direction: column;
+
+        .chatcontainer{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+
+            .date{
+                font-size: 14px;
+                color: rgba(92, 92, 92, 0.87);
+            }
         }
     }
 }
@@ -56,4 +97,48 @@
     height:90%;
     border: 1px solid black;
     border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+
+    .messageHeader{
+        width: calc( 100% - 32px);
+        padding: 16px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 32px;
+        gap: 32px;
+        box-shadow: 0 4px 0 0px rgba(7, 7, 7, 0.384);
+    }
+
+    .messageContent{
+        flex: 1;
+        overflow: auto;
+
+            .mesageContainer{
+                font-size: 16px;
+                background-color: gray;
+                margin: 16px;
+                padding: 16px;
+                border-radius: 12px;
+            }
+    }
+
+    .messageWrite{
+        display: flex;
+        flex-direction: column;
+        height: 60px;
+        padding-bottom: 30px;
+
+        .messageWriteUser{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            input{
+                height: 30px;
+                width: 80%;
+            }        
+        }
+    }
 }

@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { UsersService } from '../services/users.service';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Firestore, addDoc, collection, doc, limit, onSnapshot, query, setDoc } from '@angular/fire/firestore';
-import { Users } from '../models/users.model';
-import { User } from '@angular/fire/auth';
+import { FormControl } from '@angular/forms';
+import { Firestore, collection, doc, onSnapshot, query, setDoc} from '@angular/fire/firestore';
+import { User } from '../../models/user.class';
+import { ChatService } from '../services/chat.service';
+import { reload, user } from '@angular/fire/auth';
 
 
 
@@ -19,54 +20,109 @@ export class TestQueryComponent {
   
   searchControl = new FormControl('');
   usersList: User[] = [];
-
-  /**
-     * formControls Input
-     */
+  chats$: any = [];
+  messages: any = [];
+  selectedChat?: any;
+  chatSelected: boolean = false;
+  messageControl = new FormControl();
+  messageControlPartner = new FormControl();
   
-  userForm = new FormGroup({
-  firstname: new FormControl(''),
-  lastname: new FormControl(''),
-  photoURL: new FormControl(''),
-  })
+  // angelegt zum Testen des Chats
+  currentUser = this.chatService.user
+
+  constructor(private userService: UsersService, private chatService: ChatService){
 
 
+    /**
+     * hier die echtzeitdaten aller Chats holen und die in ein Array pushen, um alle abrufen zu können
+     */
+    const c = query(this.getChatRef());
+    const unsubscribe = onSnapshot(c, (doc) => {
+      this.chats$ = [];
+      doc.forEach((chat: any) => {
+        this.chats$.push(chat.data())
+      })
+    })
 
-  constructor(private userService: UsersService){
+
 
     /**
      * Userabfrage über onSnapshot --> return des Arrays funktioniert nicht im Service
      *                             --> deshalb in componente direkt abgerufen    
      */
-    const q = query(collection(this.firestore, 'users'), limit(50))
-    const unsub = onSnapshot(q, (doc) => {
-      this.usersList = [];
-      doc.forEach((element: any) => {
-        this.usersList.push({ ...element.data(), id: element.id }) //add id to JSON
-      });
-    });
+    // const q = query(this.getUsersRef(), limit(50))
+    // const unsub = onSnapshot(q, (doc) => {
+    //   this.usersList = [];
+    //   doc.forEach((element: any) => {
+    //     this.usersList.push(element.data()) //add id to JSON
+    //   });
+    // });
   }
 
-
-  async submitForm(){
-
-      const newProfil = new Users(this.userForm.value);
-      console.warn(newProfil)
-      
-      await setDoc(this.getUsersRef(), {...newProfil, id: this.getUsersRef().id})
-            
+  getChatRef(){
+    return collection(this.firestore, "chats")
   }
 
 
   getUsersRef(){
-    return doc(collection(this.firestore, 'users'))
+    return collection(this.firestore, 'users')
+  }
+
+  getMessageRef(chatID: string){
+    return collection(this.firestore, "chats", chatID, 'messages')
   }
 
 
-  openChat(otherUser: User){
-
+  createChat(otherUser: User){
+    this.chatService.createChat(otherUser);    
   }
- 
+
+
+  selectChat(chat:any){
+    this.selectedChat = chat;
+    this.chatSelected = true;
+    console.log(this.selectedChat)
+    this.activateMessageUpdates(chat.id)
+  }
+
+  sendMessage(chatID: string, userID: string){
+
+    const idChat = chatID;
+    const idUser = userID;
+    const message = this.messageControl.value;
+
+    this.messageControl.setValue('')
+
+    this.addToChat(idChat, idUser, message)
+  }
+
+  sendMessagePartner(chatID: string, userID: string){
+    const idChat = chatID;
+    const idUser = userID;
+    const message = this.messageControlPartner.value;
+
+    this.messageControlPartner.setValue('')
+  }
+
+
+  addToChat(chatID: string, userID: String, messageText: string){
+    const ref = doc(this.getMessageRef(chatID));
+
+    setDoc(ref, {
+      idSender: userID,
+      messageText: messageText
+    });
+  }
+
+  activateMessageUpdates(id: string){
+    const chat = query(this.getMessageRef(id));
+    const unsub = onSnapshot(chat, (doc) => {
+      this.messages = [];
+      doc.forEach((message: any) => {
+        this.messages.push(message.data())
+      })
+    })
+  }
 
 }
 

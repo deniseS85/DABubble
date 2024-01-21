@@ -3,6 +3,11 @@
     <!-- left Container -->
     <div class="chatList">
 
+        <div class="account">
+            <span>Account von </span>
+            <span><img src="{{currentUser.profileImg}}" alt=""> {{currentUser.firstname}} {{currentUser.lastname}}</span>
+        </div>
+
         <!-- Search and Input -->
         <div class="search-input">
             <mat-form-field>
@@ -14,56 +19,61 @@
         </div>
 
 
-        <!--Add User Form  -->
-        <form class="addUser" [formGroup]="userForm" (ngSubmit)="submitForm()">
-            <div>
-                <label for="firstname">Firstname </label>
-                <input 
-                id="name" 
-                type="text" 
-                formControlName="firstname"
-                matInput>
-            </div>
-            <div>
-                <label for="lastname">Lastname: </label>
-                <input id="lastname" 
-                type="text" 
-                formControlName="lastname"
-                matInput>
-            </div>
-            <div>
-                <label for="photoURL">PhotoURL: </label>
-                <input id="photoURL" 
-                type="text" 
-                formControlName="photoURL"
-                matInput>
-            </div>
-            <button mat-raised-button type="submit">Submit</button>
-        </form>
-
-
         <!-- Display Users -->
         <div class="userlist">
             <div class="listContainer">
-                <u>list with Observable</u>
-                <div class="userInList" *ngFor="let user of users$ | async" (click)="openChat(user)"><img
+                <u>Userlist with Observable (click to open a chat)</u>
+                <div class="userInList" *ngFor="let user of users$ | async" (click)="createChat(user)"><img
                         src="./assets/img/{{user.profileImg}}"> {{user.firstname}} {{user.lastname}}</div>
             </div>
             <br>
+
+            <!-- firstName kann nicht abgerufen werden -> user ist Typ User, aber im Firestore unter firstname gespeichert  -->
             <!-- <div class="listContainer">
-                <u>list with onSnapshot</u>
-                <div class="userInList" *ngFor="let user of usersList"><img src="./assets/img/{{user.profileImg}}" alt="">
-                    {{user.firstname}} </div>
+                <u>Userlist with onSnapshot</u>
+                <div class="userInList" *ngFor="let user of usersList">
+                    <img src="./assets/img/{{user.profileImg}}">{{user.firstName}}</div>
             </div> -->
+        </div>
+
+        <!-- chatList -->
+        <div class="chats">
+            <u>Open Chats</u>
+            <div class="chatcontainer" *ngFor="let chat of chats$" (click)='selectChat(chat)'>
+                <img src="./assets/img/{{chat.users[1].profileImg}}" alt="">
+                {{chat.lastMessage}}
+                <div class="date">{{chat.lastMessageDate}} </div>
+            </div>
         </div>
     </div>
 
 
     <!-- right Container -->
+
     <div class="messages">
+        <div class="messageHeader" *ngIf="chatSelected">
+            <img src="./assets/img/{{selectedChat.users[1].profileImg}}" alt="">
+            <span>Name of the Person</span>
+        </div>
 
+        <!-- hier werden Mesages reingeladen -->
+        <div class="messageContent">
+            <div class="mesageContainer" *ngFor="let message of messages">{{message.messageText}}</div>
+        </div>
+
+
+
+        <div class="messageWrite" *ngIf="chatSelected">
+            <div class="messageWriteUser">
+                <input [formControl]="messageControl" type="text" placeholder="Harrys message" (keydown.enter)="sendMessagePartner(selectedChat.id, selectedChat.userIDs[0])">
+                <button (click)="sendMessage(selectedChat.id, selectedChat.userIDs[0])">send</button>
+            </div>
+            <div class="messageWriteUser" >
+                <input [formControl]="messageControlPartner" type="text" placeholder="chatpartners message" (keydown.enter)="sendMessagePartner(selectedChat.id, selectedChat.userIDs[1])">
+                <button (click)="sendMessagePartner(selectedChat.id, selectedChat.userIDs[1])">send</button>
+            </div>
+        </div>
     </div>
-
 
 
 </div>

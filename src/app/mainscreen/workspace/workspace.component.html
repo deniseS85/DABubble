@@ -89,24 +89,26 @@
 <div class="channel-create-window" (click)="hideChannelCreateWindow($event)">
   <div class="channel-create-container">
     <div class="channel-create-title">
-      <div class="fnt-sz-24 fnt-wt-700">Channel erstellen</div>
+      <div class="fnt-sz-24 fnt-wt-700 first-screen">Channel erstellen</div>
+      <div class="fnt-sz-24 fnt-wt-700 second-screen">Leute hinzufügen</div>
       <mat-icon class="channels-create-close-hover" (click)="closeChannelCreateWindow()">close</mat-icon>
     </div>
-      <div>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein  #marketing zum Beispiel.</div>
-    <div class="fnt-wt-700">Channel-Name</div>
-    <form class="channel-create-form" action="">
-      <div class="absolute">
-        <input required placeholder="z.B. Kooperationsprojekte" type="text" class="channel-create-input channel-create-name-input">
+    <div class="first-screen">Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein  #marketing zum Beispiel.</div>
+    <div class="fnt-wt-700 first-screen">Channel-Name</div>
+    <form [formGroup]="channelCreateForm" class="channel-create-form" action="">
+      <div class="absolute first-screen">
+        <input formControlName="channelName" required placeholder="z.B. Kooperationsprojekte" type="text" class="channel-create-input channel-create-name-input">
         <span class="channel-create-input-hashtag">#</span>
       </div>
-      <div class="fnt-wt-700">Beschreibung 
+      <div class="fnt-wt-700 first-screen">Beschreibung 
         <span class="fnt-wt-400 gray">
           (optional)
         </span>
       </div>
-      <input placeholder="Dein Text hier" type="text" class="channel-create-input channel-create-description-input">
+      <input placeholder="Dein Text hier" type="text" class="channel-create-input channel-create-description-input first-screen">
       <div class="btn-container">
-        <button class="btn fnt-wt-700">Erstellen</button>
+        <button [disabled]="channelCreateForm.invalid" (click)="channelCreateSecondScreen()" class="btn fnt-wt-700 first-screen">Erstellen</button>
+        <button [disabled]="channelCreateForm.invalid" (click)="channelCreateSecondScreen()" class="btn fnt-wt-700 second-screen">Erstellen</button>
       </div>
     </form>
   </div>

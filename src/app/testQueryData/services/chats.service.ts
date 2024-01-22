@@ -7,7 +7,7 @@ import { UsersService } from './users.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ChatService {
+export class ChatsService {
 
   user: any = {
     firstname: "Harry",

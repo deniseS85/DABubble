@@ -3,7 +3,7 @@ import { UsersService } from '../services/users.service';
 import { FormControl } from '@angular/forms';
 import { Firestore, collection, doc, onSnapshot, query, setDoc} from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
-import { ChatService } from '../services/chat.service';
+import { ChatsService } from '../services/chats.service';
 import { reload, user } from '@angular/fire/auth';
 
 
@@ -19,7 +19,7 @@ export class TestQueryComponent {
   users$ = this.userService.allUsers$;
   
   searchControl = new FormControl('');
-  usersList: User[] = [];
+  usersList: any[] = [];
   chats$: any = [];
   messages: any = [];
   selectedChat?: any;
@@ -30,7 +30,7 @@ export class TestQueryComponent {
   // angelegt zum Testen des Chats
   currentUser = this.chatService.user
 
-  constructor(private userService: UsersService, private chatService: ChatService){
+  constructor(private userService: UsersService, private chatService: ChatsService){
 
 
     /**
@@ -50,13 +50,14 @@ export class TestQueryComponent {
      * Userabfrage über onSnapshot --> return des Arrays funktioniert nicht im Service
      *                             --> deshalb in componente direkt abgerufen    
      */
-    // const q = query(this.getUsersRef(), limit(50))
-    // const unsub = onSnapshot(q, (doc) => {
-    //   this.usersList = [];
-    //   doc.forEach((element: any) => {
-    //     this.usersList.push(element.data()) //add id to JSON
-    //   });
-    // });
+    const q = query(this.getUsersRef())
+    const unsub = onSnapshot(q, (doc) => {
+      this.usersList = [];
+      doc.forEach((element: any) => {
+        this.usersList.push(element.data()) //add id to JSON
+        console.warn(this.usersList)
+      });
+    });
   }
 
   getChatRef(){

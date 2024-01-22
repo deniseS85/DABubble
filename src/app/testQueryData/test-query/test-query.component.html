@@ -21,19 +21,19 @@
 
         <!-- Display Users -->
         <div class="userlist">
-            <div class="listContainer">
+            <!-- <div class="listContainer">
                 <u>Userlist with Observable (click to open a chat)</u>
                 <div class="userInList" *ngFor="let user of users$ | async" (click)="createChat(user)"><img
                         src="./assets/img/{{user.profileImg}}"> {{user.firstname}} {{user.lastname}}</div>
-            </div>
+            </div> -->
             <br>
 
             <!-- firstName kann nicht abgerufen werden -> user ist Typ User, aber im Firestore unter firstname gespeichert  -->
-            <!-- <div class="listContainer">
+            <div class="listContainer">
                 <u>Userlist with onSnapshot</u>
-                <div class="userInList" *ngFor="let user of usersList">
-                    <img src="./assets/img/{{user.profileImg}}">{{user.firstName}}</div>
-            </div> -->
+                <div class="userInList" *ngFor="let user of usersList" (click)="createChat(user)">
+                    <img src="./assets/img/{{user.profileImg}}">{{user.firstname}}</div>
+            </div>
         </div>
 
         <!-- chatList -->

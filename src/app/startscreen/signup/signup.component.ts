@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 import { StartscreenComponent } from '../startscreen.component';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -18,6 +18,8 @@ export class SignupComponent {
     signUpForm!: FormGroup;
     userAlreadyExists: boolean = false;
     shouldWordBreak: boolean = window.innerWidth <= 511;
+    isChecked: boolean = false;
+    @ViewChild('checkboxSelector') checkboxSelector!: ElementRef;
 
     constructor(public startscreen: StartscreenComponent, private formBuilder: FormBuilder, private authService: AuthService) { 
         this.setSignUpForm();
@@ -28,6 +30,10 @@ export class SignupComponent {
         this.shouldWordBreak = window.innerWidth <= 511;
     }
 
+    toggleChecked () {
+        this.isChecked = !this.isChecked;
+    }
+
     toggleSignup() {
         this.startscreen.toggleView('login'); 
     }
@@ -36,9 +42,9 @@ export class SignupComponent {
         await createUserWithEmailAndPassword(this.authService.auth, this.signUpForm.value.email, this.signUpForm.value.password)
         .then((userCredential) => {
             let signUpFormData = this.signUpForm.value;
-            delete signUpFormData.agreement;
             delete signUpFormData.password;
             this.openSelectAvatar.emit({ ...signUpFormData });
+            this.checkboxSelector.nativeElement.classList.remove('checkbox-selected');
         })
         .catch((error) => {
             if (error.code === 'auth/email-already-in-use') {
@@ -52,8 +58,7 @@ export class SignupComponent {
             firstname: ['', Validators.required],
             lastname: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)]],
-            agreement: [false, Validators.requiredTrue]
+            password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)]]
          });
     }
 }

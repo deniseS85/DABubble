@@ -76,7 +76,7 @@
         mat-icon {
             position: absolute;
             left: 20px;
-            top: 32.5%;
+            top: clamp(0.6875rem, 0.5804rem + 0.5357vw, 1.4375rem);
             color: gray;
             font-size: clamp(0.875rem, 0.7768rem + 0.4911vw, 1.5625rem);
             display: flex;
@@ -91,37 +91,58 @@
             font-size: clamp(0.75rem, 0.6964rem + 0.2679vw, 1.125rem);
         }
     }
-    label {
+    .checkbox-privacy-policy {
         display: flex;
         align-items: center;
         justify-content: flex-start;
         width: 100%;
         margin: 10px 20px 0 40px;
         font-size: clamp(0.875rem, 0.8214rem + 0.2679vw, 1.25rem); 
-        input {
-            margin-right: 15px;
-            @media only screen and (max-width: 711px) {
-                margin-right: 5px;
+        .checkbox-text {
+            display: flex;
+            align-items: flex-start;
+            .checkbox {
+                margin-right: 15px;
+                height: 15px;
+                width: 15px;
+                min-width: 15px;
+                background-color: transparent;
+                border: 2px solid #444DF2;
+                border-radius: 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                @media only screen and (max-width: 711px) {
+                    margin-right: 5px;
+                }  
+                .checkbox-selected {
+                    content: url(../../../assets/img/check.png);
+                    filter: invert(25%) sepia(40%) saturate(6068%) hue-rotate(235deg) brightness(98%) contrast(94%);
+                    width: 20px; 
+                    margin: -5px;    
+                    cursor: pointer;       
+                }
             }
-        }
-        span {
-            cursor: pointer;
-            white-space: nowrap;
-            a {
-                color: #797EF3;
-                text-decoration: none;    
-                transition: 225ms ease-in-out;
-                border-radius: 30px;
-                padding: 6px 10px;
-                &:hover {
-                    background-color: #ECEEFE;
-                    color: #444DF2;
+            .text-imprint {
+                cursor: pointer;
+                white-space: nowrap;
+                a {
+                    color: #797EF3;
+                    text-decoration: none;    
+                    transition: 225ms ease-in-out;
+                    border-radius: 30px;
+                    padding: 6px 10px;
+                    &:hover {
+                        background-color: #ECEEFE;
+                        color: #444DF2;
+                    }
+                    @media only screen and (max-width: 711px) {
+                        padding: 1px;
+                    } 
                 }
             }
         }
-        @media only screen and (max-width: 711px) {
-            margin: 0;
-        } 
     }
     .next-btn {
         border-radius: 30px;

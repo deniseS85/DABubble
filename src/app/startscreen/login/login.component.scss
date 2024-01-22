@@ -53,7 +53,7 @@
         mat-icon {
             position: absolute;
             left: 20px;
-            top: 32.5%;
+            top: clamp(0.6875rem, 0.5804rem + 0.5357vw, 1.4375rem);
             color: gray;
             font-size: clamp(0.875rem, 0.7768rem + 0.4911vw, 1.5625rem);
             display: flex;

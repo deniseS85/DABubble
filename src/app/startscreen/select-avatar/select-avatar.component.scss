@@ -153,7 +153,7 @@
     border-radius: 30px;
     background:rgba(0, 0, 0, 0.8);
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-    height: clamp(23.125rem, 19.2857rem + 19.1964vw, 50rem);
+    height: clamp(31.25rem, 28.5714rem + 13.3929vw, 50rem);
     width: clamp(17.5rem, 12.8571rem + 23.2143vw, 50rem);
     position: absolute;
     top: 50%;
@@ -165,12 +165,15 @@
     box-sizing: border-box;
     z-index: 3;
     display: flex;
+    cursor: default;
     .confirm-text {
+        font-size: clamp(0.9375rem, 0.8482rem + 0.4464vw, 1.5625rem);
         border-radius: 30px 30px 0 30px;
         padding: 10px;
         background-color: #444DF2;
-        height: 100px;
-        width: 230px;
+        height: clamp(7.1875rem, 6.6964rem + 2.4554vw, 10.625rem);
+        width: clamp(16.25rem, 14.1071rem + 10.7143vw, 31.25rem);
+        text-align: center;
         color: white;
         display: flex;
         align-items: center;

@@ -3,6 +3,7 @@ import { StartscreenComponent } from '../startscreen.component';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { collection, addDoc } from "firebase/firestore"; 
 import { User } from '../../models/user.class';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-select-avatar',
@@ -14,6 +15,7 @@ export class SelectAvatarComponent {
     @Output() openImprint = new EventEmitter<void>(); 
     @Output() openPrivacy = new EventEmitter<void>(); 
     @Input() userData: any = {};
+    @Input() isGoogleLogin!: boolean;
     shouldWordBreak: boolean = window.innerWidth <= 577;
     hideElement: boolean = window.innerWidth <= 950;
     avatarSrc = './assets/img/profile.png';
@@ -21,7 +23,7 @@ export class SelectAvatarComponent {
     firestore: Firestore = inject(Firestore);
     user = new User();
 
-    constructor(public startscreen: StartscreenComponent) {}
+    constructor(public startscreen: StartscreenComponent, private router: Router) {}
 
     toggleAvatar() {
         this.startscreen.toggleView('signup');
@@ -56,7 +58,11 @@ export class SelectAvatarComponent {
 
         setTimeout(() => {
             this.showConfirmation = false;
-            this.startscreen.toggleView('login')
+            if (this.isGoogleLogin) {
+                this.router.navigate(['/main']);
+            } else {
+                this.startscreen.toggleView('login')
+            }
         }, 2000);
       
     }

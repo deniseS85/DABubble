@@ -37,6 +37,7 @@ export class SignupComponent {
         .then((userCredential) => {
             let signUpFormData = this.signUpForm.value;
             delete signUpFormData.agreement;
+            delete signUpFormData.password;
             this.openSelectAvatar.emit({ ...signUpFormData });
         })
         .catch((error) => {

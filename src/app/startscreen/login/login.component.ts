@@ -25,6 +25,7 @@ export class LoginComponent {
     @Output() openImprint = new EventEmitter<void>(); 
     @Output() openPrivacy = new EventEmitter<void>(); 
     @Output() goBack = new EventEmitter<void>();
+    @Output() openSelectAvatar = new EventEmitter<any>();
     logInForm!: FormGroup;
     userAlreadyExists: boolean = true;
     firestore: Firestore = inject(Firestore);
@@ -95,12 +96,37 @@ export class LoginComponent {
         this.router.navigate(['/main']);
     }
 
-    loginWithGoogle() {
+
+    async loginWithGoogle() {
         this.isGoogleLogin = true;
-        this.authService.signInWithGoogle().then((res: any) => {
-        this.router.navigateByUrl('/main');
-        }).catch((error: any) => {
-          console.error(error);
-        });
+    
+        try {
+            let googleUser = await this.authService.signInWithGoogle();
+            let displayName = googleUser.user.displayName;
+            let email = googleUser.user.email;
+    
+            if (displayName && email) {
+                let [firstName, lastName] = displayName.split(' ');
+                
+                let querySnapshot = await getDocs(query(collection(this.firestore, 'users'), where('email', '==', email)));
+                if (querySnapshot.empty) {
+                    this.openSelectAvatar.emit({
+                        firstname: firstName,
+                        lastname: lastName,
+                        email: email,
+                        isGoogleLogin: this.isGoogleLogin
+                    });
+                } else {
+                    let userDocument = querySnapshot.docs[0].data() as UserData;
+                    this.authService.setUserDetails(userDocument.firstname, userDocument.lastname, userDocument.profileImg);
+                    this.router.navigateByUrl('/main');
+                }
+            }
+        } catch (error: any) {
+            console.error(error);
+        }
     }
+
+    
+    
 }

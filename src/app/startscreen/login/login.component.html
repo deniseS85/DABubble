@@ -15,7 +15,7 @@
         <p *ngIf="logInForm.get('password')?.invalid && logInForm.get('password')?.touched || isWrongPassword">Falsches Passwort. Bitte noch einmal versuchen.</p>
     </div>
 
-    <a (click)="openResetPassword.emit()">Passwort vergessen?</a>
+    <a class="reset-password" (click)="openResetPassword.emit()">Passwort vergessen?</a>
     <div class="or-container">
         <hr>
         <p>ODER</p>
@@ -36,7 +36,7 @@
         <a (click)="openPrivacy.emit()">Datenschutz</a>
     </div>
 
-    <div *ngIf="!userAlreadyExists && !isGoogleLogin" class="confirm-container">
+    <div *ngIf="!userAlreadyExists && !isGoogleLogin && !isAnonymous"  class="confirm-container">
         <p class="confirm-text">Du bist noch nicht registriert. Hier geht es zur
             <a (click)="openSignup.emit()">Registrierung</a>
         </p>

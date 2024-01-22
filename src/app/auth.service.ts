@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from '@angular/fire/auth';
 
 
 @Injectable({
@@ -57,4 +57,8 @@ export class AuthService {
         return signInWithPopup(this.auth, new GoogleAuthProvider());
     }
 
+    forgotPassword(email: string) {
+        sendPasswordResetEmail(this.auth, email).then(() => {
+        }).catch((err) => {})
+    } 
 }

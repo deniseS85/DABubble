@@ -3,7 +3,8 @@
     <div class="header-container">
         <header class="channel-chat-header">
             <div class="header-left">
-                <span> <span class="hashtag">#</span> Entwicklerteam <img src="../../../assets/img/keyboard_arrow_down.png" alt=""></span>
+                <span> <span class="hashtag">#</span> Entwicklerteam <img
+                        src="../../../assets/img/keyboard_arrow_down.png" alt=""></span>
             </div>
             <div class="header-right">
                 <div class="all-avatar-channel-members">
@@ -12,7 +13,7 @@
                     <img src="../../../assets/img/avatarSofia.png" alt="">
                     <div class="counter-channel-members">3</div>
                 </div>
-                
+
                 <div class="person-add-icon-container">
                     <img src="../../../assets/img/person_add.png" alt="">
                 </div>
@@ -25,17 +26,26 @@
         <div class="date-incoming-message">
             <span class="fs-18">Dienstag, 14.Januar</span>
         </div>
-        <div class="new-message-somebody-container">
+        <div class="new-message-somebody-container" (mouseenter)="toggleAnimationState('visible')"
+            (mouseleave)="toggleAnimationState('hidden')">
             <div>
                 <img src="../../../assets/img/avatarNoah.png" alt="">
             </div>
             <div>
                 <div class="name-and-time-container">
-                    <div class="reaction-menu-message right-0">
-                        <img src="../../../assets/img/emoji1.png" alt="">
-                        <img src="../../../assets/img/hands-up.png" alt="">
-                        <img src="../../../assets/img/add_reaction.png" alt="">
-                        <img src="../../../assets/img/answer.png" alt="">
+                    <div class="reaction-menu-message right-0" [@slideAndFade]="animationState">
+                        <div>
+                            <img src="../../../assets/img/emoji1.png" alt="">
+                        </div>
+                        <div>
+                            <img src="../../../assets/img/hands-up.png" alt="">
+                        </div>
+                        <div>
+                            <img src="../../../assets/img/add_reaction.png" alt="">
+                        </div>
+                        <div>
+                            <img src="../../../assets/img/answer.png" alt="">
+                        </div>
                     </div>
                     <span class="writing-name fs-18 fw-700">Noah Braun</span>
                     <div class="sending-time fs-14 fw-400">14.25 Uhr</div>
@@ -53,37 +63,66 @@
             <div class="date-incoming-message">
                 <span class="fs-18">Heute</span>
             </div>
-            <div class="new-message-avatar-container">
+            <div class="new-message-avatar-container" (mouseenter)="toggleAnimationState1('visible')"
+                (mouseleave)="toggleAnimationState1('hidden')">
                 <div>
                     <img src="../../../assets/img/avatarFrederick.png" alt="">
                 </div>
                 <div>
                     <div class="name-and-time-container">
-                        <div class="reaction-menu-message left-0 d-none">
-                            <img src="../../../assets/img/emoji1.png" alt="">
-                            <img src="../../../assets/img/hands-up.png" alt="">
-                            <img src="../../../assets/img/add_reaction.png" alt="">
-                            <img src="../../../assets/img/answer.png" alt="">
+                        <div class="reaction-menu-message left-0" [@slideAndFadeLeft]="animationState1">
+                            <div>
+                                <img src="../../../assets/img/emoji1.png" alt="">
+                            </div>
+                            <div>
+                                <img src="../../../assets/img/hands-up.png" alt="">
+                            </div>
+                            <div>
+                                <img src="../../../assets/img/add_reaction.png" alt="">
+                            </div>
+                            <div>
+                                <img src="../../../assets/img/answer.png" alt="">
+                            </div>
+                            <div>
+                                <mat-icon>more_vert</mat-icon>
+                            </div>
+
                         </div>
                         <div class="sending-time fs-14 fw-400">14.25 Uhr</div>
                         <span class="writing-name fs-18 fw-700">Frederick Beck</span>
                     </div>
-                
+
                     <div class="message-avatar fs-18 fw-400">Ja, wirklich der Wahnsinn!</div>
-                    <div class="reaction-icons-container">
-                      
+                    <div *ngFor="let reaction of reactions; let i = index" class="reaction-icons-container">
+
                         <div class="reaction-smiley hover-function">
                             <img class="normal-img" src="../../../assets/img/add_reaction.png">
                             <img class="hover-img" src="../../../assets/img/add_reaction_hover.png">
                         </div>
-                        <div class="added-reaction-container">
-                            <img src="../../../assets/img/emoji1.png" alt="">
-                            <div class="counter-single-reaction">1</div>    
+                        <div  class="reactions-to-message-maincontainer">
+                            <div class="who-reacted-to-message-container" *ngIf="showContainer[0]">
+                                <img src="../../../assets/img/emoji1.png" alt="">
+                                <span class="fs-18 fw-700">{{ reaction.user }}</span>
+                                <span>hat reagiert</span>
+                            </div>
+                            <div class="added-reaction-container" (mouseover)="showReaction(0)" (mouseout)="hideReaction(0)">
+                                <img src="../../../assets/img/emoji1.png" alt="">
+                                <div class="counter-single-reaction">{{ reaction.count }}</div>
+                            </div>
                         </div>
-                        <div class="added-reaction-container">
-                            <img src="../../../assets/img/emoji2.png" alt="">
-                            <div class="counter-single-reaction">1</div>
+
+                        <div class="reactions-to-message-maincontainer">
+                            <div class="who-reacted-to-message-container" *ngIf="showContainer[1]">
+                                <img src="../../../assets/img/emoji2.png" alt="">
+                                <span class="fs-18 fw-700">{{ reaction.user }}</span>
+                                <span>hat reagiert</span>
+                            </div>
+                            <div class="added-reaction-container" (mouseover)="showReaction(1)" (mouseout)="hideReaction(1)">
+                                <img src="../../../assets/img/emoji2.png" alt="">
+                                <div class="counter-single-reaction">{{ reaction.count }}</div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -103,7 +142,7 @@
             </div>
             <div class="footer-icons-right">
                 <mat-icon>send_icon</mat-icon>
-            </div>  
+            </div>
         </div>
     </div>
 </div>

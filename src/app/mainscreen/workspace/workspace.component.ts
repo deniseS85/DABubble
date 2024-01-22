@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class WorkspaceComponent {
   channelCreateForm: FormGroup;
+  
   constructor(private el: ElementRef, private renderer: Renderer2, private formBuilder: FormBuilder) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]]

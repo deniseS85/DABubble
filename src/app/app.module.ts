@@ -27,7 +27,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
-
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @NgModule({
@@ -58,6 +59,8 @@ import { MatInputModule } from '@angular/material/input';
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
+    FormsModule,
+    MatRadioModule,
     provideFirebaseApp(() => initializeApp({"projectId":"dabubble-69322","appId":"1:486842154610:web:0631e3885b73bc4e4acceb","storageBucket":"dabubble-69322.appspot.com","apiKey":"AIzaSyC2opRUMbcOUpjD2QPCifl1muUI_7Wf-cw","authDomain":"dabubble-69322.firebaseapp.com","messagingSenderId":"486842154610"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

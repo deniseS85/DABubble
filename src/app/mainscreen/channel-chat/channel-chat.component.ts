@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 
+
 @Component({
   selector: 'app-channel-chat',
   templateUrl: './channel-chat.component.html',
@@ -39,24 +40,28 @@ export class ChannelChatComponent {
   animationState = 'hidden';
   animationState1 = 'hidden';
 
+  addUSerOpen = false;
+  showMembersOpen = false;
+  editChannelOpen = false;
+
   reactions = [
     { user: 'Noah Braun', count: 1 },
   ];
 
   showContainer: boolean[] = [];
 
-    constructor() {
-      this.showContainer = new Array(this.reactions.length).fill(false);
+  constructor() {
+    this.showContainer = new Array(this.reactions.length).fill(false);
   }
-  
+
 
   showReaction(index: number) {
     debugger;
-      this.showContainer[index] = true;
+    this.showContainer[index] = true;
   }
 
   hideReaction(index: number) {
-      this.showContainer[index] = false;
+    this.showContainer[index] = false;
   }
 
 
@@ -66,5 +71,21 @@ export class ChannelChatComponent {
 
   toggleAnimationState1(state: 'visible' | 'hidden'): void {
     this.animationState1 = state;
+  }
+
+  openAddUser() {
+    this.addUSerOpen = true;
+  }
+
+  closeAddUser() {
+    this.addUSerOpen = false;
+  }
+
+  openShowMembers() {
+    this.showMembersOpen = true;
+  }
+
+  openEditChannel() {
+    this.editChannelOpen = true;
   }
 }

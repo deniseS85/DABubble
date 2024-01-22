@@ -2,19 +2,19 @@
 
     <div class="header-container">
         <header class="channel-chat-header">
-            <div class="header-left">
+            <div class="header-left" (click)="openEditChannel()">
                 <span> <span class="hashtag">#</span> Entwicklerteam <img
                         src="../../../assets/img/keyboard_arrow_down.png" alt=""></span>
             </div>
             <div class="header-right">
-                <div class="all-avatar-channel-members">
+                <div class="all-avatar-channel-members" (click)="openShowMembers()">
                     <img src="../../../assets/img/avatarFrederick.png" alt="">
                     <img src="../../../assets/img/avatarNoah.png" alt="">
                     <img src="../../../assets/img/avatarSofia.png" alt="">
                     <div class="counter-channel-members">3</div>
                 </div>
 
-                <div class="person-add-icon-container">
+                <div class="person-add-icon-container" (click)="openAddUser()">
                     <img src="../../../assets/img/person_add.png" alt="">
                 </div>
             </div>
@@ -146,3 +146,25 @@
         </div>
     </div>
 </div>
+
+<!---------------------------------------------- POPUPS ---------------------------------------------->
+
+
+<div class="popup-background" *ngIf="addUSerOpen" (click)="addUSerOpen = false">
+
+    <div class="popup-maincontainer addUserPopup">
+    </div>
+</div>
+
+
+<div class="popup-background" *ngIf="showMembersOpen">
+    <div class="popup-maincontainer">
+    </div>
+</div>
+
+
+<div class="popup-background" *ngIf="editChannelOpen">
+    <div class="popup-maincontainer">
+    </div>
+</div>
+

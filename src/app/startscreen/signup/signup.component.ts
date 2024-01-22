@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
 import { StartscreenComponent } from '../startscreen.component';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -24,6 +24,7 @@ export class SignupComponent {
     constructor(public startscreen: StartscreenComponent, private formBuilder: FormBuilder, private authService: AuthService) { 
         this.setSignUpForm();
     }
+
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {

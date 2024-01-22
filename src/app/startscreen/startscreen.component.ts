@@ -22,21 +22,36 @@ export class StartscreenComponent {
     toggleView(view: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy' | undefined = 'login', data?: User): void {
         this.viewsHistory.push(this.currentView);
         this.currentView = view;
-        this.isLogin = view === 'login' ? !this.isLogin : false;
-        this.isSignup = view === 'signup' ? !this.isSignup : false;
-        this.isResetPassword = view === 'resetPassword' ? !this.isResetPassword : false;
-        this.isSelectAvatar = view === 'selectAvatar' ? !this.isSelectAvatar : false;
-        this.isImprint = view === 'imprint' ? !this.isImprint : false;
-        this.isPrivacy = view === 'privacy' ? !this.isPrivacy : false;
+        if (view === 'privacy') {
+            this.isPrivacy = true;
+            this.isImprint = false;
+        } else if (view === 'imprint') {
+            this.isImprint = true;
+            this.isPrivacy = false;
+        } else {
+            this.isPrivacy = false;
+            this.isImprint = false;
+            this.isSignup = view === 'signup';
+            this.isLogin = view === 'login';
+            this.isResetPassword = view === 'resetPassword';
+            this.isSelectAvatar = view === 'selectAvatar';
+        
         if (this.isSelectAvatar && data) {
             this.userData = data;
         }
     }
+    }
 
     goBack(): void {
         if (this.viewsHistory.length > 0) {
+            // Pop all views until you reach a non-privacy, non-imprint view
             let lastView = this.viewsHistory.pop();
+            while (lastView === 'privacy' || lastView === 'imprint') {
+                lastView = this.viewsHistory.pop();
+            }
+            
             this.toggleView(lastView);
         }
     }
+
 }

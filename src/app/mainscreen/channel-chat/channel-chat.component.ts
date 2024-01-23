@@ -88,6 +88,14 @@ export class ChannelChatComponent {
   }
 
   checkUser() {
+
+  }
+
+  editChannelName() {
+
+  }
+
+  editChannelDescription() {
     
   }
 }

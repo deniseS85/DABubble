@@ -600,10 +600,15 @@ input {
     align-items: center;
 }
 
+.edit-maincontainer {
+
+}
+
 .border-container {
     border: 1px solid #ADB0D9;
     border-radius: 20px;
     padding: 20px;
+    gap: 20px;
 }
 
 .subline-edit-channel {
@@ -614,4 +619,8 @@ input {
     .edit-btn {
         color: #535AF1 ;
     }
+}
+
+.channel-name-container {
+    display: flex;
 }

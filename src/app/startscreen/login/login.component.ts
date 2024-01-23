@@ -99,7 +99,8 @@ export class LoginComponent {
 
     async loginWithGoogle() {
         this.isGoogleLogin = true;
-    
+        this.authService.setGoogleLoginStatus(true);
+
         try {
             let googleUser = await this.authService.signInWithGoogle();
             let displayName = googleUser.user.displayName;
@@ -114,7 +115,6 @@ export class LoginComponent {
                         firstname: firstName,
                         lastname: lastName,
                         email: email,
-                        isGoogleLogin: this.isGoogleLogin
                     });
                 } else {
                     let userDocument = querySnapshot.docs[0].data() as UserData;

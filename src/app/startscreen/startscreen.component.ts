@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../models/user.class';
+import { LoginComponent } from './login/login.component';
+import { SelectAvatarComponent } from './select-avatar/select-avatar.component';
 
 @Component({
   selector: 'app-startscreen',
@@ -36,15 +38,14 @@ export class StartscreenComponent {
             this.isResetPassword = view === 'resetPassword';
             this.isSelectAvatar = view === 'selectAvatar';
         
-        if (this.isSelectAvatar && data) {
-            this.userData = data;
+            if (this.isSelectAvatar && data) {
+                this.userData = data;
+            }
         }
-    }
     }
 
     goBack(): void {
         if (this.viewsHistory.length > 0) {
-            // Pop all views until you reach a non-privacy, non-imprint view
             let lastView = this.viewsHistory.pop();
             while (lastView === 'privacy' || lastView === 'imprint') {
                 lastView = this.viewsHistory.pop();

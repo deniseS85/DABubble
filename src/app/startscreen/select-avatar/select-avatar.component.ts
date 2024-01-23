@@ -1,29 +1,37 @@
-import { Component, EventEmitter, Output, HostListener, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Output, HostListener, Input, inject, OnInit } from '@angular/core';
 import { StartscreenComponent } from '../startscreen.component';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { collection, addDoc } from "firebase/firestore"; 
 import { User } from '../../models/user.class';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-select-avatar',
   templateUrl: './select-avatar.component.html',
   styleUrl: './select-avatar.component.scss'
 })
-export class SelectAvatarComponent {
+export class SelectAvatarComponent implements OnInit {
     @Output() backToSignup = new EventEmitter<void>();
     @Output() openImprint = new EventEmitter<void>(); 
     @Output() openPrivacy = new EventEmitter<void>(); 
     @Input() userData: any = {};
-    @Input() isGoogleLogin!: boolean;
     shouldWordBreak: boolean = window.innerWidth <= 577;
     hideElement: boolean = window.innerWidth <= 950;
     avatarSrc = './assets/img/profile.png';
     showConfirmation: boolean = false;
     firestore: Firestore = inject(Firestore);
     user = new User();
+    isGoogleLogin: boolean = false;
 
-    constructor(public startscreen: StartscreenComponent, private router: Router) {}
+    constructor(public startscreen: StartscreenComponent, private router: Router, private authService: AuthService) {}
+
+   
+    ngOnInit() {
+        this.authService.isGoogleLogin$.subscribe(status => {
+          this.isGoogleLogin = status;
+        });
+    }
 
     toggleAvatar() {
         this.startscreen.toggleView('signup');

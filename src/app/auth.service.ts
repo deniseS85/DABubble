@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from '@angular/fire/auth';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -13,6 +14,8 @@ export class AuthService {
     private userLastName: string = '';
     private userImg: string = '';
     private isAnonymous: boolean = false;
+    private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
+    isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
     
     setUserDetails(firstName: string, lastName: string, profileImg: string): void {
         this.userFirstName = firstName;
@@ -61,4 +64,10 @@ export class AuthService {
         sendPasswordResetEmail(this.auth, email).then(() => {
         }).catch((err) => {})
     } 
+
+    setGoogleLoginStatus(status: boolean) {
+        this.isGoogleLoginSource.next(status);
+      }
+
+    
 }

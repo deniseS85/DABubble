@@ -1,5 +1,7 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+
 
 @Component({
   selector: 'app-workspace',
@@ -9,11 +11,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class WorkspaceComponent {
   panelOpenState1 = false;
   panelOpenState2 = false;
-
   
   channelCreateForm: FormGroup;
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private formBuilder: FormBuilder) {
+  body = this.elRef.nativeElement.ownerDocument.body;
+  
+
+  constructor(private elRef: ElementRef, private renderer: Renderer2, private formBuilder: FormBuilder) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],
       selectedOption: ['specificMembers']
@@ -21,7 +25,7 @@ export class WorkspaceComponent {
   }
 
   resetSelection() {
-    const elements = this.el.nativeElement.querySelectorAll('.selectable');
+    const elements = this.elRef.nativeElement.querySelectorAll('.selectable');
     elements.forEach((element: HTMLElement) => {
       this.renderer.removeClass(element, 'selected');
     });
@@ -63,6 +67,7 @@ export class WorkspaceComponent {
     const channelCreateWindow = document.querySelector('.channel-create-window') as HTMLElement | null;
     if (channelCreateWindow) {
       channelCreateWindow.style.display = 'none';
+      this.renderer.setStyle(this.body, 'overflow', 'auto');
       const inputElements = channelCreateWindow.querySelectorAll('input') as NodeListOf<HTMLInputElement>;
       inputElements.forEach((inputElement) => {
         inputElement.value = '';
@@ -75,6 +80,7 @@ export class WorkspaceComponent {
     const channelCreateWindow = document.querySelector('.channel-create-window') as HTMLElement | null;
     if (channelCreateWindow) {
       channelCreateWindow.style.display = 'block';
+      this.renderer.setStyle(this.body, 'overflow', 'hidden');
     }
   }
 
@@ -85,21 +91,13 @@ export class WorkspaceComponent {
       const secondScreen = channelCreateWindow.querySelectorAll('.second-screen') as NodeListOf<HTMLInputElement>;
       firstScreen.forEach((firstScreen) => {
         firstScreen.style.display = 'none';
+        this.renderer.setStyle(this.body, 'overflow', 'auto');
       });
       secondScreen.forEach((secondScreen) => {
         secondScreen.style.display = 'block';
+        this.renderer.setStyle(this.body, 'overflow', 'hidden');
       });
     }
   }
-
-
-  
-onRadioChange() {
-  console.log('Selected Radio Button:', this.channelCreateForm.get('selectedUserGroup')?.value);
-}
-
-
-
-
 
 }

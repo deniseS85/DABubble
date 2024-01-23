@@ -14,8 +14,10 @@ export class AuthService {
     private userLastName: string = '';
     private userImg: string = '';
     private isAnonymous: boolean = false;
+    private shouldPlayAnimationSource = new BehaviorSubject<boolean>(true);
     private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
+    shouldPlayAnimation$ = this.shouldPlayAnimationSource.asObservable();
     
     setUserDetails(firstName: string, lastName: string, profileImg: string): void {
         this.userFirstName = firstName;
@@ -67,7 +69,23 @@ export class AuthService {
 
     setGoogleLoginStatus(status: boolean) {
         this.isGoogleLoginSource.next(status);
-      }
+    }
 
-    
+    async logout() {
+            this.setAnonymousStatus(false);
+            let user = this.auth.currentUser;
+            
+            if (user && user.isAnonymous) {
+                try {
+                    await user.delete();
+                } catch (error) {}
+            }
+            try {
+                await this.auth.signOut();
+                localStorage.removeItem('userFirstName');
+                localStorage.removeItem('userLastName');
+                localStorage.removeItem('userImg');
+                this.shouldPlayAnimationSource.next(false);
+            } catch (error) {}
+    }  
 }

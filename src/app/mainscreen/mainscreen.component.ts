@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mainscreen',
@@ -11,8 +12,9 @@ export class MainscreenComponent implements OnInit {
   userFirstName: String = '';
   userLastName: String = '';
   userImg: String = '';
+  isProfileMenuOpen: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
       this.authService.restoreUserData();
@@ -25,5 +27,14 @@ export class MainscreenComponent implements OnInit {
       this.userFirstName = this.authService.getUserFirstName();
       this.userLastName = this.authService.getUserLastName();
       this.userImg = this.authService.getUserImg();
+  }
+
+  logout() {
+      this.authService.logout();
+      this.router.navigate(['/']); 
+  }
+
+  toggleProfileMenu() {
+      this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 }

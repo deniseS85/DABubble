@@ -80,7 +80,6 @@ export class LoginComponent {
         }
     }
     
-
     setLoginForm() {
         this.logInForm = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],

@@ -10,7 +10,13 @@
         <div class="mainContainerHeaderProfil">
             <span class="mainContainerHeaderProfilName">{{ userFirstName }} {{ userLastName }}</span>
             <img src="./assets/img/{{ userImg }}" alt="">
-            <div class="mainContainerHeaderProfilArrow">A</div>
+            <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
+            <div class="profil-info-header" *ngIf="isProfileMenuOpen">
+                <div>Profil</div>
+                <div (click)="logout()" class="logout">Log out</div>
+            </div>
+            <div class="overlay" *ngIf="isProfileMenuOpen" (click)="toggleProfileMenu()"></div>
+            <!-- <div class="mainContainerHeaderProfilArrow">A</div> -->
         </div>
     </div>
     <div class="mainContainerContent">
@@ -19,6 +25,8 @@
         <app-thread *ngIf="threadOpen"></app-thread>        
     </div>
 </div>
+
+
 
 <!-- nur zur Orientierung
     noch umgestalten und Größen anpassen  -->

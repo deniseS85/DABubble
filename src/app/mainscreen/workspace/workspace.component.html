@@ -108,10 +108,10 @@
       <input placeholder="Dein Text hier" type="text" class="channel-create-input channel-create-description-input first-screen">
 
       <mat-radio-group class="example-radio-group second-screen">
-              <mat-radio-button class="example-radio-button second-screen" [value]="'allMembers'">Alle Mitglieder von OfficeTeam hinzufügen</mat-radio-button>
-              <mat-radio-button class="example-radio-button second-screen" [value]="'specificMembers'">Bestimmte Leute hinzufügen</mat-radio-button>
+              <mat-radio-button (click)="inputOpen = false"class="example-radio-button second-screen" [value]="'allMembers'">Alle Mitglieder von OfficeTeam hinzufügen</mat-radio-button>
+              <mat-radio-button (click)="inputOpen = true" class="example-radio-button second-screen" [value]="'specificMembers'">Bestimmte Leute hinzufügen</mat-radio-button>
+              <input  *ngIf="inputOpen" placeholder="Name eingeben" type="text" class="channel-create-input channel-create-description-input">
       </mat-radio-group>
-      <input placeholder="Name eingeben" type="text" class="channel-create-input channel-create-description-input second-screen">
 
       <div class="btn-container">
         <button [disabled]="channelCreateForm.invalid" (click)="channelCreateSecondScreen()" class="btn fnt-wt-700 first-screen">Erstellen</button>

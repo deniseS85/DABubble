@@ -1,6 +1,5 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { trigger, state, style, animate, transition } from '@angular/animations';
 
 
 @Component({
@@ -11,6 +10,8 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 export class WorkspaceComponent {
   panelOpenState1 = false;
   panelOpenState2 = false;
+  
+  inputOpen = false;
   
   channelCreateForm: FormGroup;
 

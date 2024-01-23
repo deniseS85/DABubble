@@ -14,7 +14,7 @@
                     <div class="counter-channel-members">3</div>
                 </div>
 
-                <div class="person-add-icon-container" >
+                <div class="person-add-icon-container">
                     <img src="../../../assets/img/person_add.png" alt="" (click)="addUSerOpen = true; openPopup()">
                 </div>
             </div>
@@ -99,13 +99,14 @@
                             <img class="normal-img" src="../../../assets/img/add_reaction.png">
                             <img class="hover-img" src="../../../assets/img/add_reaction_hover.png">
                         </div>
-                        <div  class="reactions-to-message-maincontainer">
+                        <div class="reactions-to-message-maincontainer">
                             <div class="who-reacted-to-message-container" *ngIf="showContainer[0]">
                                 <img src="../../../assets/img/emoji1.png" alt="">
                                 <span class="fs-18 fw-700">{{ reaction.user }}</span>
                                 <span>hat reagiert</span>
                             </div>
-                            <div class="added-reaction-container" (mouseover)="showReaction(0)" (mouseout)="hideReaction(0)">
+                            <div class="added-reaction-container" (mouseover)="showReaction(0)"
+                                (mouseout)="hideReaction(0)">
                                 <img src="../../../assets/img/emoji1.png" alt="">
                                 <div class="counter-single-reaction">{{ reaction.count }}</div>
                             </div>
@@ -117,7 +118,8 @@
                                 <span class="fs-18 fw-700">{{ reaction.user }}</span>
                                 <span>hat reagiert</span>
                             </div>
-                            <div class="added-reaction-container" (mouseover)="showReaction(1)" (mouseout)="hideReaction(1)">
+                            <div class="added-reaction-container" (mouseover)="showReaction(1)"
+                                (mouseout)="hideReaction(1)">
                                 <img src="../../../assets/img/emoji2.png" alt="">
                                 <div class="counter-single-reaction">{{ reaction.count }}</div>
                             </div>
@@ -151,21 +153,77 @@
 
 
 <div class="popup-background" *ngIf="addUSerOpen" (click)="addUSerOpen = false; closePopup()">
-
-    <div class="popup-maincontainer addUserPopup">
+    <div class="popup-maincontainer smallPopup addUserPopup" (click)="doNotClose($event)">
+        <div class="headline-container">
+            <span class="fw-700">Leute hinzufügen</span>
+            <div class="close-icon-container" (click)="addUSerOpen = false; closePopup()">
+                <mat-icon>close</mat-icon>
+            </div>
+        </div>
+        <div class="fw-400 fs-18 channel-container">
+            <div>#</div><span> Entwicklerteam</span>
+        </div>
+        <div>
+            <input type="text" autofocus [(ngModel)]="userInput" (keypress)="checkUser()">
+        </div>
+        <div class="btn-container">
+            <button class="btn fw-700 fs-18" [class.enabled]="enabled">Hinzufügen</button>
+        </div>
 
     </div>
 </div>
 
 
 <div class="popup-background" *ngIf="showMembersOpen" (click)="showMembersOpen = false; closePopup()">
-    <div class="popup-maincontainer">
+    <div class="popup-maincontainer smallPopup showMembersPopup" (click)="doNotClose($event)">
+        <div class="headline-container">
+            <span class="fw-700">Mitglieder</span>
+            <div class="close-icon-container" (click)="showMembersOpen = false; closePopup()">
+                <mat-icon>close</mat-icon>
+            </div>
+        </div>
+
+        <div class="current-channel-member-list">
+            <div class="member-list-div">
+                <img src="../../../assets/img/avatarFrederick.png" alt="">
+                <span>Frederick Beck (Du)</span>
+            </div>
+            <div class="member-list-div">
+                <img src="../../../assets/img/avatarNoah.png" alt="">
+                <span>Noah Braun</span>
+            </div>
+            <div class="member-list-div">
+                <img src="../../../assets/img/avatarSofia.png" alt="">
+                <span>Sofia Müller</span>
+            </div>
+            <div class="add-person-container fs-18">
+                <div class="add-person-img-container">
+                    <img src="../../../assets/img/person_add.png" alt="">
+                </div>
+                <span>Mitglieder hinzufügen</span>
+            </div>
+        </div>
     </div>
 </div>
 
 
 <div class="popup-background" *ngIf="editChannelOpen" (click)="editChannelOpen = false; closePopup()">
-    <div class="popup-maincontainer">
+    <div class="popup-maincontainer bigPopup editChannelPopup" (click)="doNotClose($event)">
+        <div class="headline-container">
+            <span class="fw-700"><span>#</span><span> Entwicklerteam</span></span>
+            <div class="close-icon-container" (click)="editChannelOpen = false; closePopup()">
+                <mat-icon>close</mat-icon>
+            </div>
+        </div>
+
+
+        <div class="edit-maincontainer">
+            <div class="edit-channel-name-container"></div>
+
+            <div class="edit-channel-description-container"></div>
+        </div>
+
+        <button class="btn">Channel verlassen</button>
+
     </div>
 </div>
-

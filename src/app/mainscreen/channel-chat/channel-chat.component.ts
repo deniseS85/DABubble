@@ -43,6 +43,8 @@ export class ChannelChatComponent {
   addUSerOpen = false;
   showMembersOpen = false;
   editChannelOpen = false;
+  userInput = '';
+  enabled = false;
 
   body = this.elRef.nativeElement.ownerDocument.body;
 
@@ -79,5 +81,13 @@ export class ChannelChatComponent {
 
   closePopup() {
     this.renderer.setStyle(this.body, 'overflow', 'auto');
+  }
+
+  doNotClose(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  checkUser() {
+    
   }
 }

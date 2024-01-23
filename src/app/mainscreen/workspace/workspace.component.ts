@@ -7,11 +7,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './workspace.component.scss'
 })
 export class WorkspaceComponent {
-  channelCreateForm: FormGroup;
+  panelOpenState1 = false;
+  panelOpenState2 = false;
+
   
+  channelCreateForm: FormGroup;
+
   constructor(private el: ElementRef, private renderer: Renderer2, private formBuilder: FormBuilder) {
     this.channelCreateForm = this.formBuilder.group({
-      channelName: ['', [Validators.required]]
+      channelName: ['', [Validators.required]],
+      selectedOption: ['specificMembers']
     });
   }
 
@@ -87,6 +92,14 @@ export class WorkspaceComponent {
     }
   }
 
-  panelOpenState1 = false;
-  panelOpenState2 = false;
+
+  
+onRadioChange() {
+  console.log('Selected Radio Button:', this.channelCreateForm.get('selectedUserGroup')?.value);
+}
+
+
+
+
+
 }

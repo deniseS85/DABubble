@@ -288,6 +288,10 @@
     margin-top: 180px;
 }
 
+.wh-300 {
+    width: 300px;
+}
+
 .reaction-icons-container {
     margin-top: 16px;
     display: flex;
@@ -436,11 +440,27 @@
     justify-content: space-between;
 }
 
+.bigPopup {
+    margin-top: 200px;
+    width: 50%;
+    padding: 40px;
+    border-radius: 0 30px 30px 30px;
+    gap: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .addUserPopup {
     margin-left: 30%;
 }
 
 .showMembersPopup {
+    margin-left: 25%;
+}
+
+.editChannelPopup {
     margin-left: 25%;
 }
 
@@ -488,8 +508,10 @@
 }
 
 .btn {
+    font-size: 18px;
+    font-weight: 600;
     background-color: #686868;
-    padding: 12px 25px;
+    padding: 15px 25px;
     border-radius: 25px;
     color: white;
     font-family: 'Nunito', sans-serif;
@@ -576,4 +598,20 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.border-container {
+    border: 1px solid #ADB0D9;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.subline-edit-channel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .edit-btn {
+        color: #535AF1 ;
+    }
 }

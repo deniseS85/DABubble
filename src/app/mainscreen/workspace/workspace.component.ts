@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
@@ -7,18 +7,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './workspace.component.html',
   styleUrl: './workspace.component.scss'
 })
+
 export class WorkspaceComponent {
   panelOpenState1 = false;
   panelOpenState2 = false;
   
-  inputOpen = false;
+  inputOpen: boolean = false;
   
   channelCreateForm: FormGroup;
 
   body = this.elRef.nativeElement.ownerDocument.body;
-  
 
-  constructor(private elRef: ElementRef, private renderer: Renderer2, private formBuilder: FormBuilder) {
+  constructor(private elRef: ElementRef, private renderer: Renderer2, private formBuilder: FormBuilder, private cdr: ChangeDetectorRef) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],
       selectedOption: ['specificMembers']
@@ -99,6 +99,18 @@ export class WorkspaceComponent {
         this.renderer.setStyle(this.body, 'overflow', 'hidden');
       });
     }
+  }
+
+  onShowClick() {
+    this.inputOpen = true;
+    // Du könntest dies hinzufügen, um sicherzustellen, dass die Ansicht aktualisiert wird
+    this.cdr.detectChanges();
+  }
+
+  onHideClick() {
+    this.inputOpen = false;
+    // Auch hier kannst du dies hinzufügen, um sicherzustellen, dass die Ansicht aktualisiert wird
+    this.cdr.detectChanges();
   }
 
 }

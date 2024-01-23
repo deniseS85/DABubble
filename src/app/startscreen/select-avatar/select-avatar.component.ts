@@ -67,6 +67,11 @@ export class SelectAvatarComponent implements OnInit {
         setTimeout(() => {
             this.showConfirmation = false;
             if (this.isGoogleLogin) {
+                this.authService.setUserDetails(
+                    this.userData.firstname,
+                    this.userData.lastname,
+                    this.userData.profileImg
+                );
                 this.router.navigate(['/main']);
             } else {
                 this.startscreen.toggleView('login')

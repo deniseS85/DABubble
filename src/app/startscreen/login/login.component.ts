@@ -113,7 +113,8 @@ export class LoginComponent {
                     this.openSelectAvatar.emit({
                         firstname: firstName,
                         lastname: lastName,
-                        email: email,
+                        email: email
+
                     });
                 } else {
                     let userDocument = querySnapshot.docs[0].data() as UserData;
@@ -121,9 +122,7 @@ export class LoginComponent {
                     this.router.navigateByUrl('/main');
                 }
             }
-        } catch (error: any) {
-            console.error(error);
-        }
+        } catch (error: any) {}
     }
 
     

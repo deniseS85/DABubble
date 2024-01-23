@@ -14,10 +14,10 @@ export class AuthService {
     private userLastName: string = '';
     private userImg: string = '';
     private isAnonymous: boolean = false;
-    private shouldPlayAnimationSource = new BehaviorSubject<boolean>(true);
+
     private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
-    shouldPlayAnimation$ = this.shouldPlayAnimationSource.asObservable();
+
     
     setUserDetails(firstName: string, lastName: string, profileImg: string): void {
         this.userFirstName = firstName;
@@ -85,7 +85,6 @@ export class AuthService {
                 localStorage.removeItem('userFirstName');
                 localStorage.removeItem('userLastName');
                 localStorage.removeItem('userImg');
-                this.shouldPlayAnimationSource.next(false);
             } catch (error) {}
     }  
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 
@@ -44,26 +44,26 @@ export class ChannelChatComponent {
   showMembersOpen = false;
   editChannelOpen = false;
 
+  body = this.elRef.nativeElement.ownerDocument.body;
+
   reactions = [
     { user: 'Noah Braun', count: 1 },
   ];
 
   showContainer: boolean[] = [];
 
-  constructor() {
+  constructor(private elRef: ElementRef, private renderer: Renderer2) {
     this.showContainer = new Array(this.reactions.length).fill(false);
   }
 
 
   showReaction(index: number) {
-    debugger;
     this.showContainer[index] = true;
   }
 
   hideReaction(index: number) {
     this.showContainer[index] = false;
   }
-
 
   toggleAnimationState(state: 'visible' | 'hidden'): void {
     this.animationState = state;
@@ -73,19 +73,11 @@ export class ChannelChatComponent {
     this.animationState1 = state;
   }
 
-  openAddUser() {
-    this.addUSerOpen = true;
+  openPopup() {
+    this.renderer.setStyle(this.body, 'overflow', 'hidden');
   }
 
-  closeAddUser() {
-    this.addUSerOpen = false;
-  }
-
-  openShowMembers() {
-    this.showMembersOpen = true;
-  }
-
-  openEditChannel() {
-    this.editChannelOpen = true;
+  closePopup() {
+    this.renderer.setStyle(this.body, 'overflow', 'auto');
   }
 }

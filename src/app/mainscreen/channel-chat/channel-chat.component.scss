@@ -666,7 +666,6 @@ input {
 }
 
 .profile-popup {
-    top: 0;
     bottom: 0;
     width: 500px;
     padding: 40px;
@@ -703,6 +702,8 @@ input {
 
 .activ-sign {
     display: flex;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .activ-txt {
@@ -710,12 +711,34 @@ input {
     font-size: 20px;
 }
 
+.profile-mail-container {
+    margin-top: 45px;
+}
+
 .mail-description {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
     font-size: 20px;
     font-weight: 700;
 }
 
 .mail-container {
+    margin-top: 20px;
+    margin-left: 45px;
     font-size: 18px;
     color: #1381FF;
 }
+
+.message-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.send-message-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 45px;
+    gap: 15px;
+}
+

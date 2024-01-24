@@ -21,14 +21,14 @@ export class ChannelService {
    * @param description description given when created
    * @param userIDs Array of all userID's which are invited to this channel
    * @param users array of JSON's  of the users which are invited to this channel
-   * @param creator first and lastname of the creator (curretnUser)
+   * @param creator first and lastname of the creator (currentUser)
    * *  user{
    *    firstname: user.firstname,
    *    lastname: user.lastname,
    *    profilImg: user.profilImg,   * 
    * }
    */
-  createChannel(channelname: string, description: string, userIDs: [], users:[], creator: string){
+  createChannel(channelname: string, description: string, userIDs: any[], users:any[], creator: string){
 
     const docRef = doc(this.collectionRef)
 
@@ -57,6 +57,21 @@ export class ChannelService {
 
   getMessageRef(channelID: string){
     return collection(this.firestore, "channel", channelID, "message");
+  }
+
+
+  
+  sendAnswer(channelID: string, messageID: string, answer: any){
+    
+    const ref = doc(this.getAnswerRef(channelID, messageID));
+
+    setDoc(ref, answer);
+    
+  }
+
+
+  getAnswerRef(channelID: string, messageID: string){
+    return collection(this.firestore, "channels", channelID, "messages", messageID, "answers")
   }
 
 }

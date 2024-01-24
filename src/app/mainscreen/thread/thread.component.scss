@@ -101,6 +101,7 @@
             width: 100%;   
             max-height: 100%;      
             overflow-y: hidden;
+            margin-bottom: 20px;
 
             &:hover{
                 overflow-y: auto;                
@@ -114,6 +115,7 @@
                 display: flex;
                 justify-content: flex-start;
                 gap: 20px;
+                overflow: hidden;
                 
     
                 &:hover{
@@ -178,7 +180,76 @@
                 flex: 1;
                 border-bottom: 1px solid #ADB0D9;
             }
-        }              
+        }
+
+
+        // write Answer
+        
+        .footer-write-new-message {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #ADB0D9;
+            border-radius: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-bottom: 45px;
+            min-height: 145px;
+            padding: 20px;
+        }
+        
+        .textarea {
+            min-width: 100%;
+            min-height: 100px;
+            border: none;
+            outline: none;
+            resize: none;
+        }
+        
+        .footer-line-icons {
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .footer-icons-left {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            color: #686868;
+        
+            &:hover {
+                color: black;
+            }
+        
+            mat-icon {
+                padding: 5px;
+        
+                &:hover {
+                    border-radius: 50%;
+                    transform: scale(1.1);
+                    color: #535AF1;
+                    background-color: #ECEEFE;
+                    font-weight: 600;
+                }
+            }
+        }
+        
+        .seperator-vert {
+            width: 1px;
+            background-color: #ADB0D9;
+        }
+        
+        .footer-icons-right {
+            padding: 10px;
+            color: #444DF2;
+        
+            &:hover {
+                color: #797EF3;
+            }
+        }
 }
 
 

@@ -6,7 +6,7 @@ import { TestQueryComponent } from './testQueryData/test-query/test-query.compon
 
 const routes: Routes = [
   { path: '', component: StartscreenComponent },
-  { path: 'main', component: MainscreenComponent},
+  { path: 'main/:id', component: MainscreenComponent},
   { path: 'test', component: TestQueryComponent},
 ];
 

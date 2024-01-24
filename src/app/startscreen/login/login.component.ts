@@ -2,9 +2,9 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { signInAnonymously, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
-import { Router } from '@angular/router';
-import { collection, getDocs, query, where } from '@angular/fire/firestore';
-import { Firestore } from '@angular/fire/firestore';
+import { ActivatedRoute, Router } from '@angular/router';
+import { collection, doc, getDocs, query, where, Firestore, onSnapshot } from '@angular/fire/firestore';
+import { User } from '../../models/user.class';
 
 
 interface UserData {
@@ -34,7 +34,7 @@ export class LoginComponent {
     isWrongPassword: boolean = false;
     isSubmitted: boolean = false;
     
-    constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { 
+    constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute) { 
         this.setLoginForm();
     }
 
@@ -53,7 +53,11 @@ export class LoginComponent {
                 if (userFirstName && userLastName && userImg) {
                     this.authService.setUserDetails(userFirstName, userLastName, userImg);
                     await signInWithEmailAndPassword(this.authService.auth, email, this.logInForm.value.password);
-                    this.router.navigate(['/main']);
+                    let userId = await this.getUserIDFromFirebase(email);
+
+                    if (userId) {
+                        this.router.navigate(['/main', userId]);
+                    } 
                 }
             } else {
                 this.userAlreadyExists = false;
@@ -88,11 +92,13 @@ export class LoginComponent {
     }
 
     async signInAnonymously() {
-        await signInAnonymously(this.authService.auth);
+        let result = await signInAnonymously(this.authService.auth);
+        let user = result.user;
+        let uid = user.uid;
         this.authService.setAnonymousStatus(true);
         this.authService.setUserDetails('Gast', '', 'guest-profile.png');
         this.isAnonymous = true;
-        this.router.navigate(['/main']);
+        this.router.navigate(['/main', uid]);
     }
 
 
@@ -119,11 +125,31 @@ export class LoginComponent {
                 } else {
                     let userDocument = querySnapshot.docs[0].data() as UserData;
                     this.authService.setUserDetails(userDocument.firstname, userDocument.lastname, userDocument.profileImg);
-                    this.router.navigateByUrl('/main');
+                    let userId = await this.getUserIDFromFirebase(email);
+
+                    if (userId) {
+                        this.router.navigate(['/main', userId]);
+                    } 
                 }
             }
         } catch (error: any) {}
     }
+
+    async getUserIDFromFirebase(email: string): Promise<string | null> {
+        try {
+            let querySnapshot = await getDocs(query(collection(this.firestore, 'users'), where('email', '==', email)));
+
+            if (!querySnapshot.empty) {
+                let userDocument = querySnapshot.docs[0].id;
+                return userDocument;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            return null;
+        }
+    }
+
 
     
     

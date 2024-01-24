@@ -8,7 +8,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
     constructor() {}
-
     auth: Auth = inject(Auth);
     private userFirstName: string = '';
     private userLastName: string = '';

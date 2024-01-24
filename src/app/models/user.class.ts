@@ -3,7 +3,6 @@ export class User {
     firstName: string;
     lastName: string;
     email: string;
-    /* password: string; */
     profileImg: string;
     
 
@@ -12,7 +11,6 @@ export class User {
         this.firstName = obj && obj.firstName ? obj.firstName : '';
         this.lastName = obj && obj.lastName ? obj.lastName : '';
         this.email = obj && obj.email ? obj.email : '';
-       /*  this.password = obj && obj.password ? obj.password : ''; */
         this.profileImg = obj && obj.profileImg ? obj.profileImg : ''
          
     }
@@ -23,7 +21,6 @@ export class User {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
-           /*  password: this.password, */
             profileImg: this.profileImg
         };
     }
@@ -34,7 +31,6 @@ export class User {
             firstName: obj.firstName || "",
             lastName: obj.lastName || "",
             email: obj.email || "",
-          /*   password: obj.password || "", */
             profileImg: obj.profileImg || ""
         });
     } 

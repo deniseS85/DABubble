@@ -205,9 +205,8 @@
 </div>
 
 
-
-<div class="popup-background" *ngIf="showProfil" (click)="showProfil = false; closePopup()">
-    <div class="popup-maincontainer smallPopup showMembersPopup" (click)="doNotClose($event)">
+<div class="popup-background profile-background" *ngIf="showProfil" (click)="showProfil = false; closePopup()">
+    <div class="profile-popup" (click)="doNotClose($event)">
         <div class="headline-container">
             <span class="fw-700">Profil</span>
             <div class="close-icon-container" (click)="showProfil = false; closePopup()">
@@ -217,26 +216,30 @@
 
         <div class="profil-detail-view">
             <div class="profile-img-big-container">
-                <img src="../../../assets/img/avatarNoah.png" alt="">
+                <img src="../../../assets/img/noah-big-avatar.png" alt="">
             </div>
             <div class="profile-info-container">
                 <span class="profile-name">Noah Braun</span>
-                <div class="aktiv-sign">
-                    <img src="" alt="">
-                    <span>Aktiv</span>
-                    <img src="" alt="">
-                    <span>Nicht aktiv</span>
+                <div class="activ-sign">
+                    <img src="../../../assets/img/online.png" alt="">
+                    <span class="activ-txt">Aktiv</span>
+                    <!-- <img src="" alt="">
+                    <span>Abwesend</span> -->
                 </div>
                 <div class="profile-mail-container">
                     <div class="mail-description">
-                        <mat-icon>mail</mat-icon>
-                        <span>E-Mail-Adresse</span>
+                        <img src="../../../assets/img/mail.png" alt="">
+                         <span>E-Mail-Adresse</span>
                     </div>
                     <div class="mail-container">
                         noah.braun&#64;topmail.com
-                    </div> 
+                    </div>
                 </div>
             </div>
+            <button class="btn enabled send-message-btn">
+                <img src="../../../assets/img/mode_comment.png" alt="">
+                <span>Nachricht</span>
+            </button>
         </div>
     </div>
 </div>

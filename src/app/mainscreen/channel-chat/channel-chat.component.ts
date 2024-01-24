@@ -1,5 +1,8 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2, inject } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { AuthService } from "../../auth.service";
+import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+import { User } from '../../models/user.class';
 
 
 
@@ -65,19 +68,36 @@ export class ChannelChatComponent {
   channelNameChange = false;
   channelDescriptionChange = false;
   showProfil = false;
+  user = new User;
+  allUsers: User[] = [];
 
   body = this.elRef.nativeElement.ownerDocument.body;
+  
 
   reactions = [
-    { user: 'Noah Braun', count: 1 },
+    { users: 'Noah Braun', count: 1 },
   ];
 
   showContainer: boolean[] = [];
 
-  constructor(private elRef: ElementRef, private renderer: Renderer2) {
+  firestore: Firestore = inject(Firestore);
+  unsubUser;
+
+  constructor(private elRef: ElementRef, private renderer: Renderer2, private authservice: AuthService) {
     this.showContainer = new Array(this.reactions.length).fill(false);
+    this.unsubUser = onSnapshot(this.getUsersRef(), (list) => {
+      this.allUsers = [];
+      list.forEach(singleUser => {
+        let user = new User(singleUser.data());
+        user.id = singleUser.id;
+        this.allUsers.push(user); 
+      });
+    });
   }
 
+  ngOndestroy() {
+    this.unsubUser;
+  }
 
   showReaction(index: number) {
     this.showContainer[index] = true;
@@ -95,19 +115,24 @@ export class ChannelChatComponent {
     this.animationState1 = state;
   }
 
-  openPopup() {
+  openPopup(): void {
     this.renderer.setStyle(this.body, 'overflow', 'hidden');
   }
 
-  closePopup() {
+  closePopup(): void {
     this.renderer.setStyle(this.body, 'overflow', 'auto');
   }
 
-  doNotClose(event: MouseEvent) {
+  doNotClose(event: MouseEvent) : void{
     event.stopPropagation();
   }
 
   checkUser() {
+    console.log(this.allUsers);
+    console.log(this.allUsers[0].profileImg)
+  }
 
+  getUsersRef() {
+    return collection(this.firestore, 'users');
   }
 }

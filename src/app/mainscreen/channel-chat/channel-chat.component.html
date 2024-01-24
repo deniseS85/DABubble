@@ -8,10 +8,10 @@
             </div>
             <div class="header-right">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
-                    <img src="../../../assets/img/avatarFrederick.png" alt="">
-                    <img src="../../../assets/img/avatarNoah.png" alt="">
-                    <img src="../../../assets/img/avatarSofia.png" alt="">
-                    <div class="counter-channel-members">3</div>
+                    <div *ngFor="let user of allUsers">
+                        <img [src]="'../../../assets/img/' + user.profileImg" alt="">
+                    </div>
+                    <div class="counter-channel-members">{{ allUsers.length }}</div>
                 </div>
 
                 <div class="person-add-icon-container">
@@ -102,7 +102,7 @@
                         <div class="reactions-to-message-maincontainer">
                             <div class="who-reacted-to-message-container" *ngIf="showContainer[0]">
                                 <img src="../../../assets/img/emoji1.png" alt="">
-                                <span class="fs-18 fw-700">{{ reaction.user }}</span>
+                                <span class="fs-18 fw-700">{{ reaction.users }}</span>
                                 <span>hat reagiert</span>
                             </div>
                             <div class="added-reaction-container" (mouseover)="showReaction(0)"
@@ -115,7 +115,7 @@
                         <div class="reactions-to-message-maincontainer">
                             <div class="who-reacted-to-message-container" *ngIf="showContainer[1]">
                                 <img src="../../../assets/img/emoji2.png" alt="">
-                                <span class="fs-18 fw-700">{{ reaction.user }}</span>
+                                <span class="fs-18 fw-700">{{ reaction.users }}</span>
                                 <span>hat reagiert</span>
                             </div>
                             <div class="added-reaction-container" (mouseover)="showReaction(1)"
@@ -209,7 +209,7 @@
     <div class="profile-popup" (click)="doNotClose($event)">
         <div class="headline-container">
             <span class="fw-700">Profil</span>
-            <div class="close-icon-container" (click)="showProfil = false; closePopup()">
+            <div class="close-icon-container" (click)="showProfil = false;">
                 <mat-icon>close</mat-icon>
             </div>
         </div>

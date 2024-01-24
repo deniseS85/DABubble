@@ -702,8 +702,14 @@ input {
 
 .activ-sign {
     display: flex;
+    align-items: center;
     gap: 15px;
     margin-top: 20px;
+
+    img {
+        height: 20px;
+        width: 20px;
+    }
 }
 
 .activ-txt {

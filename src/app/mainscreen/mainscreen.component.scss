@@ -201,6 +201,8 @@
         app-thread{
             width: 25.8%;
             height: 100%;
+
+            //hier noch in-height 100% wenn overflow: hidden aktiv
         }
         app-channel-chat{
             flex: 1;

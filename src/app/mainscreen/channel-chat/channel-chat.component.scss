@@ -426,7 +426,7 @@
 .popup-maincontainer {
     background-color: white;
     z-index: 110;
-    
+
     max-height: 80vh;
 }
 
@@ -626,9 +626,10 @@ input {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .edit-btn {
         color: #535AF1;
-    
+
         &:hover {
             cursor: pointer;
             font-weight: 600;
@@ -656,3 +657,94 @@ input {
 .input-change-channel-name {
     margin-top: 20px;
 }
+
+// Profil
+
+.profile-background {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-popup {
+    bottom: 0;
+    width: 500px;
+    padding: 40px;
+    border-radius: 30px 30px 30px 30px;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    z-index: 110;
+}
+
+.profile-img-big-container {
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+    }
+}
+
+.profile-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 45px;
+}
+
+.profile-name {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.activ-sign {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+
+    img {
+        height: 20px;
+        width: 20px;
+    }
+}
+
+.activ-txt {
+    color: #92C83E;
+    font-size: 20px;
+}
+
+.profile-mail-container {
+    margin-top: 45px;
+}
+
+.mail-description {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.mail-container {
+    margin-top: 20px;
+    margin-left: 45px;
+    font-size: 18px;
+    color: #1381FF;
+}
+
+.message-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.send-message-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 45px;
+    gap: 15px;
+}
+

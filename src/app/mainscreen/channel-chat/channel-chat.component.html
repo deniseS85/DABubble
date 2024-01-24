@@ -8,10 +8,10 @@
             </div>
             <div class="header-right">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
-                    <img src="../../../assets/img/avatarFrederick.png" alt="">
-                    <img src="../../../assets/img/avatarNoah.png" alt="">
-                    <img src="../../../assets/img/avatarSofia.png" alt="">
-                    <div class="counter-channel-members">3</div>
+                    <div *ngFor="let user of allUsers">
+                        <img [src]="'../../../assets/img/' + user.profileImg" alt="">
+                    </div>
+                    <div class="counter-channel-members">{{ allUsers.length }}</div>
                 </div>
 
                 <div class="person-add-icon-container">
@@ -102,7 +102,7 @@
                         <div class="reactions-to-message-maincontainer">
                             <div class="who-reacted-to-message-container" *ngIf="showContainer[0]">
                                 <img src="../../../assets/img/emoji1.png" alt="">
-                                <span class="fs-18 fw-700">{{ reaction.user }}</span>
+                                <span class="fs-18 fw-700">{{ reaction.users }}</span>
                                 <span>hat reagiert</span>
                             </div>
                             <div class="added-reaction-container" (mouseover)="showReaction(0)"
@@ -115,7 +115,7 @@
                         <div class="reactions-to-message-maincontainer">
                             <div class="who-reacted-to-message-container" *ngIf="showContainer[1]">
                                 <img src="../../../assets/img/emoji2.png" alt="">
-                                <span class="fs-18 fw-700">{{ reaction.user }}</span>
+                                <span class="fs-18 fw-700">{{ reaction.users }}</span>
                                 <span>hat reagiert</span>
                             </div>
                             <div class="added-reaction-container" (mouseover)="showReaction(1)"
@@ -183,23 +183,66 @@
 
         <div class="current-channel-member-list">
             <div class="member-list-div">
-                <img src="../../../assets/img/avatarFrederick.png" alt="">
+                <img src="../../../assets/img/avatarFrederick.png" alt="" (click)="showProfil = true; openPopup()">
                 <span>Frederick Beck (Du)</span>
             </div>
-            <div class="member-list-div">
+            <div class="member-list-div" (click)="showProfil = true; openPopup()">
                 <img src="../../../assets/img/avatarNoah.png" alt="">
                 <span>Noah Braun</span>
             </div>
-            <div class="member-list-div">
+            <div class="member-list-div" (click)="showProfil = true; openPopup()">
                 <img src="../../../assets/img/avatarSofia.png" alt="">
                 <span>Sofia Müller</span>
             </div>
-            <div class="add-person-container fs-18">
+            <div class="add-person-container fs-18" (click)="addUSerOpen = true; showMembersOpen = false; openPopup()">
                 <div class="add-person-img-container">
                     <img src="../../../assets/img/person_add.png" alt="">
                 </div>
                 <span>Mitglieder hinzufügen</span>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="popup-background profile-background" *ngIf="showProfil" (click)="showProfil = false; closePopup()">
+    <div class="profile-popup" (click)="doNotClose($event)">
+        <div class="headline-container">
+            <span class="fw-700">Profil</span>
+            <div class="close-icon-container" (click)="showProfil = false;">
+                <mat-icon>close</mat-icon>
+            </div>
+        </div>
+
+        <div class="profil-detail-view">
+            <div class="profile-img-big-container">
+                <img src="../../../assets/img/noah-big-avatar.png" alt="">
+            </div>
+            <div class="profile-info-container">
+                <span class="profile-name">Noah Braun</span>
+                <div class="activ-sign">
+                    <img src="../../../assets/img/online.png" alt="">
+                    <span class="activ-txt">Aktiv</span>
+                    <!-- <img src="" alt="">
+                    <span>Abwesend</span> -->
+                </div>
+                <div class="profile-mail-container">
+                    <div class="mail-description">
+                        <img src="../../../assets/img/mail.png" alt="">
+                        <span>E-Mail-Adresse</span>
+                    </div>
+                    <div class="mail-container">
+                        noah.braun&#64;topmail.com
+                    </div>
+                </div>
+            </div>
+            <div class="message-btn-container">
+                <button class="btn enabled send-message-btn">
+                    <img src="../../../assets/img/mode_comment.png" alt="">
+                    <span>Nachricht</span>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -231,8 +274,8 @@
                     <input type="text" autofocus placeholder="# Entwicklerteam" *ngIf="channelNameChange"
                         class="input-change-channel-name">
                 </div>
-
             </div>
+
 
             <div class="edit-channel-description-container" [@removeBorder]="channelDescriptionChange">
                 <div class="subline-edit-channel">
@@ -246,7 +289,7 @@
                     <span class="channel-description-text" *ngIf="!channelDescriptionChange">Dieser Channel ist der
                         Channel aller Channel und dient zum channeln und Teilen von Informationen. Viel Spaß
                         damit!</span>
-                        <input type="text" autofocus  *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
+                    <input type="text" autofocus *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
                     <div class="seperator"></div>
                     <span class="fw-700">Erstellt von</span>
                     <div class="edited-by-name">Noah Braun</div>

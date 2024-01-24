@@ -28,25 +28,25 @@
             </div>
 
             <div class="threadContainerQuestionInfo">
-                <div class="threadContainerInfoPerson">Noah Braun</div>
-                <div class="threadContainerInfoTime">14:25 Uhr</div>
+                <div class="threadContainerInfoPerson">{{loadedMessage.senderNamen}}</div>
+                <div class="threadContainerInfoTime">{{loadedMessage.timestamp}} Uhr</div>
             </div>
             <div class="threadContainerTextLeft">
-                Welche ist die aktuelle Angular Version?
+                {{loadedMessage.messageText}}
             </div>
         </div>
     </div>
 
 <!-- Stroke between -->
     <div class="threadContainerAnswersStroke">
-        <div class="threadContainerAnswers">2 Anworten</div>
+        <div class="threadContainerAnswers">{{allAnswers.length}} Anworten</div>
         <div class="threadContainerAnswersStrokeContainer"></div>
     </div>
 
 <!-- Thread Answers -->
     <div class="answersContainer">
-        <div class="threadContainerAnswer">
-            <img class="profilPic" src="./assets/img/avatarSofia.png" alt="">
+        <div class="threadContainerAnswer" *ngFor="let answer of allAnswers">
+            <img class="profilPic" src="./assets/img/{{answer.userProfileImg}}" alt="">
             <div class="threadContainerAnswerContainer">
     
                 <div class="reactionContainer">
@@ -61,11 +61,11 @@
                 </div>
     
                 <div class="threadContainerAnswerInfo">
-                    <div class="threadContainerInfoPerson">Sofia Müller</div>
-                    <div class="threadContainerInfoTime">14:30 Uhr</div>
+                    <div class="threadContainerInfoPerson">{{answer.answerUserName}}</div>
+                    <div class="threadContainerInfoTime">{{answer.timestamp}} Uhr</div>
                 </div>
                 <div class="threadContainerTextLeft">
-                    Gute Frage. Ich glaube die aktuelle version ist Angular 17. Vielleicht weiß Frederik mehr?
+                    {{answer.answertext}}
                 </div>
                 <div class="threadContainerTextReactions">
                     <div class="threadContainerTextReactionsEmojis">
@@ -82,7 +82,7 @@
             </div>
         </div>
     
-        <div class="threadContainerAnswer threadContainerAnswerReverse">
+        <!-- <div class="threadContainerAnswer threadContainerAnswerReverse">
             <img class="profilPic" src="./assets/img/avatarFrederick.png" alt="">    
             <div class="threadContainerAnswerContainer flex-end">    
                 <div class="reactionContainer absoluteLeft">
@@ -122,7 +122,25 @@
                     </svg>
                 </div>
             </div>
+        </div> -->
+    </div>
+
+    <div class="footer-write-new-message">
+        <div>
+            <textarea class="textarea" [(ngModel)]="answertext" id="answertext" placeholder="Antworten..."></textarea>
         </div>
-    </div>    
+        <div class="footer-line-icons">
+            <div class="footer-icons-left">
+                <mat-icon>add</mat-icon>
+                <div class="seperator-vert"></div>
+                <mat-icon>mood</mat-icon>
+                <mat-icon>alternate_email</mat-icon>
+            </div>
+            <div class="footer-icons-right">
+                <mat-icon title="channel" (click)="sendAnswer()">send_icon</mat-icon>
+            </div>
+           
+        </div>
+    </div>
 
 </div>

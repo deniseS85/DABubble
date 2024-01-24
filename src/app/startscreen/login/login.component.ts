@@ -3,8 +3,7 @@ import { signInAnonymously, signInWithEmailAndPassword } from '@angular/fire/aut
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { collection, doc, getDocs, query, where, Firestore, onSnapshot } from '@angular/fire/firestore';
-import { User } from '../../models/user.class';
+import { collection, getDocs, query, where, Firestore } from '@angular/fire/firestore';
 
 
 interface UserData {
@@ -46,12 +45,10 @@ export class LoginComponent {
             let userExistsResult = await this.isAlreadyUser(email);
     
             if (userExistsResult.exists) {
-                let userFirstName = userExistsResult.userData?.firstname;
-                let userLastName = userExistsResult.userData?.lastname;
-                let userImg = userExistsResult.userData?.profileImg;
+                const { firstname, lastname, profileImg } = userExistsResult.userData!;
     
-                if (userFirstName && userLastName && userImg) {
-                    this.authService.setUserDetails(userFirstName, userLastName, userImg);
+                if (firstname && lastname && profileImg) {
+                    this.authService.setUserDetails(firstname, lastname, profileImg);
                     await signInWithEmailAndPassword(this.authService.auth, email, this.logInForm.value.password);
                     let userId = await this.getUserIDFromFirebase(email);
 
@@ -92,15 +89,20 @@ export class LoginComponent {
     }
 
     async signInAnonymously() {
-        let result = await signInAnonymously(this.authService.auth);
-        let user = result.user;
-        let uid = user.uid;
-        this.authService.setAnonymousStatus(true);
-        this.authService.setUserDetails('Gast', '', 'guest-profile.png');
-        this.isAnonymous = true;
-        this.router.navigate(['/main', uid]);
+        try {
+            let result = await signInAnonymously(this.authService.auth);
+            let user = result.user;
+            let uid = user?.uid;
+            if (uid) {
+                this.authService.setAnonymousStatus(true);
+                this.authService.setUserDetails('Gast', '', 'guest-profile.png');
+                this.isAnonymous = true;
+                this.router.navigate(['/main', uid]);
+            }
+        } catch (error: any) {
+            this.handleAuthError(error);
+        }
     }
-
 
     async loginWithGoogle() {
         this.isGoogleLogin = true;
@@ -132,7 +134,9 @@ export class LoginComponent {
                     } 
                 }
             }
-        } catch (error: any) {}
+        } catch (error: any) {
+            this.handleAuthError(error);
+        }
     }
 
     async getUserIDFromFirebase(email: string): Promise<string | null> {
@@ -150,7 +154,9 @@ export class LoginComponent {
         }
     }
 
-
-    
-    
+    private handleAuthError(error: any) {
+        if (error.code === 'auth/invalid-credential') {
+          this.isWrongPassword = true;
+        }
+    }
 }

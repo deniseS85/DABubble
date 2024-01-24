@@ -62,7 +62,7 @@ export class SelectAvatarComponent implements OnInit {
        
         let docRef = await addDoc(this.getUserRef(), updatedUserData);
         await updateDoc(doc(this.getUserRef(), docRef.id), { id: docRef.id });
-        this.showConfirmation = true;
+        this.router.navigate(['/main', docRef.id]);
 
         setTimeout(() => {
             this.showConfirmation = false;
@@ -72,7 +72,7 @@ export class SelectAvatarComponent implements OnInit {
                     this.userData.lastname,
                     this.userData.profileImg
                 );
-                this.router.navigate(['/main']);
+                
             } else {
                 this.startscreen.toggleView('login')
             }

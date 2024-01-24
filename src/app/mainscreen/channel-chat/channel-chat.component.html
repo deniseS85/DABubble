@@ -168,7 +168,6 @@
         <div class="btn-container">
             <button class="btn fw-700 fs-18" [class.enabled]="enabled">Hinzufügen</button>
         </div>
-
     </div>
 </div>
 
@@ -217,27 +216,40 @@
 
 
         <div class="edit-maincontainer">
-            <div class="edit-channel-name-container border-container">
+            <div class="edit-channel-name-container" [@removeBorder]="channelNameChange">
                 <div class="subline-edit-channel">
-                    <span>Channel-Name</span>
-                    <span class="edit-btn" (click)="editChannelName()">Bearbeiten</span>
+                    <span class="fw-700">Channel-Name</span>
+                    <span class="edit-btn" *ngIf="!channelNameChange"
+                        (click)="channelNameChange = true">Bearbeiten</span>
+                    <span class="edit-btn" *ngIf="channelNameChange"
+                        (click)="channelNameChange = false">Speichern</span>
                 </div>
-                <div class="channel-name-container">
-                    <div>#</div> <span class="channel-name">Entwicklerteam</span>
+                <div class="channel-name-container" *ngIf="!channelNameChange">
+                    <div class="fw-700">#</div> <span class="channel-name">Entwicklerteam</span>
+                </div>
+                <div>
+                    <input type="text" autofocus placeholder="# Entwicklerteam" *ngIf="channelNameChange"
+                        class="input-change-channel-name">
                 </div>
 
             </div>
 
-            <div class="edit-channel-description-container border-container">
+            <div class="edit-channel-description-container" [@removeBorder]="channelDescriptionChange">
                 <div class="subline-edit-channel">
-                    <span>Beschreibung</span>
-                    <span class="edit-btn" (click)="editChannelDescription()">Bearbeiten</span>
+                    <span class="fw-700">Beschreibung</span>
+                    <span class="edit-btn" *ngIf="!channelDescriptionChange"
+                        (click)="channelDescriptionChange = true">Bearbeiten</span>
+                    <span class="edit-btn" *ngIf="channelDescriptionChange"
+                        (click)="channelDescriptionChange = false">Speichern</span>
                 </div>
                 <div class="channel-description">
-                    <span class="channel-description-text">Dieser Channel ist der Channel aller Channel und dient zum channeln Teilen von Informationen. Viel Spaß damit!</span>
+                    <span class="channel-description-text" *ngIf="!channelDescriptionChange">Dieser Channel ist der
+                        Channel aller Channel und dient zum channeln und Teilen von Informationen. Viel Spaß
+                        damit!</span>
+                        <input type="text" autofocus  *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
                     <div class="seperator"></div>
-                    <span>Erstellt von</span>
-                    <div>Noah Braun</div>
+                    <span class="fw-700">Erstellt von</span>
+                    <div class="edited-by-name">Noah Braun</div>
                 </div>
             </div>
         </div>

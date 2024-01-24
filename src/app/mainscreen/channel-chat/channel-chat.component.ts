@@ -34,6 +34,23 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
       transition('hidden => visible', animate('100ms ease-out')),
       transition('visible => hidden', animate('100ms ease-in')),
     ]),
+    trigger('removeBorder', [
+      state('false', style({
+        border: '1px solid #ADB0D9',
+        borderRadius: '20px',
+        padding: '20px',
+        gap: '20px',
+        marginTop: '20px',
+      })),
+      state('true', style({
+        border: 'none',
+        borderRadius: 'initial',
+        padding: '10px',
+        gap: '20px',
+        marginTop: '10px',
+      })),
+      transition('true <=> false', animate('100ms ease')),
+    ]),
   ],
 })
 export class ChannelChatComponent {
@@ -45,6 +62,8 @@ export class ChannelChatComponent {
   editChannelOpen = false;
   userInput = '';
   enabled = false;
+  channelNameChange = false;
+  channelDescriptionChange = false;
 
   body = this.elRef.nativeElement.ownerDocument.body;
 
@@ -89,13 +108,5 @@ export class ChannelChatComponent {
 
   checkUser() {
 
-  }
-
-  editChannelName() {
-
-  }
-
-  editChannelDescription() {
-    
   }
 }

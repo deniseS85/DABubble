@@ -64,6 +64,7 @@ export class ChannelChatComponent {
   enabled = false;
   channelNameChange = false;
   channelDescriptionChange = false;
+  showProfil = false;
 
   body = this.elRef.nativeElement.ownerDocument.body;
 

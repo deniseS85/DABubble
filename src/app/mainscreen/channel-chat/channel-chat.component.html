@@ -183,22 +183,59 @@
 
         <div class="current-channel-member-list">
             <div class="member-list-div">
-                <img src="../../../assets/img/avatarFrederick.png" alt="">
+                <img src="../../../assets/img/avatarFrederick.png" alt="" (click)="showProfil = true; openPopup()">
                 <span>Frederick Beck (Du)</span>
             </div>
-            <div class="member-list-div">
+            <div class="member-list-div" (click)="showProfil = true; openPopup()">
                 <img src="../../../assets/img/avatarNoah.png" alt="">
                 <span>Noah Braun</span>
             </div>
-            <div class="member-list-div">
+            <div class="member-list-div" (click)="showProfil = true; openPopup()">
                 <img src="../../../assets/img/avatarSofia.png" alt="">
                 <span>Sofia Müller</span>
             </div>
-            <div class="add-person-container fs-18">
+            <div class="add-person-container fs-18" (click)="addUSerOpen = true; showMembersOpen = false; openPopup()">
                 <div class="add-person-img-container">
                     <img src="../../../assets/img/person_add.png" alt="">
                 </div>
                 <span>Mitglieder hinzufügen</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="popup-background" *ngIf="showProfil" (click)="showProfil = false; closePopup()">
+    <div class="popup-maincontainer smallPopup showMembersPopup" (click)="doNotClose($event)">
+        <div class="headline-container">
+            <span class="fw-700">Profil</span>
+            <div class="close-icon-container" (click)="showProfil = false; closePopup()">
+                <mat-icon>close</mat-icon>
+            </div>
+        </div>
+
+        <div class="profil-detail-view">
+            <div class="profile-img-big-container">
+                <img src="../../../assets/img/avatarNoah.png" alt="">
+            </div>
+            <div class="profile-info-container">
+                <span class="profile-name">Noah Braun</span>
+                <div class="aktiv-sign">
+                    <img src="" alt="">
+                    <span>Aktiv</span>
+                    <img src="" alt="">
+                    <span>Nicht aktiv</span>
+                </div>
+                <div class="profile-mail-container">
+                    <div class="mail-description">
+                        <mat-icon>mail</mat-icon>
+                        <span>E-Mail-Adresse</span>
+                    </div>
+                    <div class="mail-container">
+                        noah.braun&#64;topmail.com
+                    </div> 
+                </div>
             </div>
         </div>
     </div>
@@ -231,8 +268,8 @@
                     <input type="text" autofocus placeholder="# Entwicklerteam" *ngIf="channelNameChange"
                         class="input-change-channel-name">
                 </div>
-
             </div>
+
 
             <div class="edit-channel-description-container" [@removeBorder]="channelDescriptionChange">
                 <div class="subline-edit-channel">
@@ -246,7 +283,7 @@
                     <span class="channel-description-text" *ngIf="!channelDescriptionChange">Dieser Channel ist der
                         Channel aller Channel und dient zum channeln und Teilen von Informationen. Viel Spaß
                         damit!</span>
-                        <input type="text" autofocus  *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
+                    <input type="text" autofocus *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
                     <div class="seperator"></div>
                     <span class="fw-700">Erstellt von</span>
                     <div class="edited-by-name">Noah Braun</div>

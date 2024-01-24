@@ -2,7 +2,10 @@ import { Component, inject } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
 import { Firestore, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { ChannelService } from '../../services/channel.service';
-import { FormControl } from '@angular/forms';
+import { AuthService } from '../../auth.service';
+import { DatePipe } from '@angular/common';
+
+
 
 
 @Component({
@@ -10,14 +13,11 @@ import { FormControl } from '@angular/forms';
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
-export class ThreadComponent {
-
-
-  loadedMessage: any  = '';  
+export class ThreadComponent {    
 
   /**
    * müssen dann beim Öffnen vom Chat mit übergeben werden
-   * hier nehme ich die angelegten Beispielchannel die Message
+   * hier nehme ich die angelegten Beispielchannel und die Message
    */
   channelID: string = "T1xuWGwkbJf7zzPx2R9X";
   messageID: string = 'eAvmGIZse6lghoOs3U8A';
@@ -30,17 +30,38 @@ export class ThreadComponent {
   answer: any;
   answertext: string = '';
   answerUserName: string = 'Frederick Beck';
-  allAnswers: any[] = [];
+  allAnswers: any[] = [];  
+  
+  loadedMessage: any  = '';
 
-  firestore: Firestore = inject(Firestore);
+  userFirstName: string = '';
+  userLastName: string = '';
+  userImg: string = '';
 
-  constructor(private main: MainscreenComponent, private channelService: ChannelService) {
+  firestore: Firestore = inject(Firestore);  
+
+  constructor(
+    private main: MainscreenComponent, 
+    private channelService: ChannelService, 
+    private authService: AuthService,
+    private datePipe: DatePipe) {
     this.loadMessage();
     this.loadAnswers();
+    this.loadCurrentUser();
   }
+  
 
-  closeThread() {
-    this.main.threadOpen = false;
+  async loadCurrentUser(){    
+    this.authService.restoreUserData();
+
+      if (this.authService.isUserAnonymous()) {
+        this.userFirstName = 'Gast';
+        this.userLastName = '';
+        this.userImg = 'guest-profile.png';
+      }
+      this.userFirstName = this.authService.getUserFirstName();
+      this.userLastName = this.authService.getUserLastName();
+      this.userImg = this.authService.getUserImg();
   }
 
 
@@ -52,7 +73,6 @@ export class ThreadComponent {
 
 
   async loadAnswers(){
-
     const queryAllAnswers = await query(this.getAllAnswersRef(this.channelID, this.messageID));
 
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
@@ -60,30 +80,31 @@ export class ThreadComponent {
       querySnapshot.forEach((doc: any) => {
         this.allAnswers.push(doc.data())
       })
-      console.log(this.allAnswers)
-    })
       
-
+    })
   }
 
 
   sendAnswer() {       
     this.answer = {
       answertext: this.answertext,
-      answerUserName: this.answerUserName
+      answerUserName: this.userFirstName + this.userLastName,
+      userProfileImg: this.userImg,
+      timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
+      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd') // zum Vergkleiche für anzeige "Heute" oder z.B. "21.Januar"
     }
 
     this.answertext = '';
-    
     this.channelService.sendAnswer(this.channelID, this.messageID, this.answer)
   }
+
 
   /**
    * 
    * @param channelId  wird beim erstellen der Componente mit übergeben
    */
   getChannelName(channelId: string){
-
+    //hier dann channel des Threads auslesen
   }
 
   getChannelRef(){
@@ -102,6 +123,9 @@ export class ThreadComponent {
     return collection(this.firestore, "channels", channelId, "messages", messageId, 'answers');
   }
 
+  closeThread() {
+    this.main.threadOpen = false;
+  }
 
 
 

@@ -29,7 +29,7 @@
 
             <div class="threadContainerQuestionInfo">
                 <div class="threadContainerInfoPerson">{{loadedMessage.senderNamen}}</div>
-                <div class="threadContainerInfoTime">14:25 Uhr</div>
+                <div class="threadContainerInfoTime">{{loadedMessage.timestamp}} Uhr</div>
             </div>
             <div class="threadContainerTextLeft">
                 {{loadedMessage.messageText}}
@@ -46,7 +46,7 @@
 <!-- Thread Answers -->
     <div class="answersContainer">
         <div class="threadContainerAnswer" *ngFor="let answer of allAnswers">
-            <img class="profilPic" src="./assets/img/avatarSofia.png" alt="">
+            <img class="profilPic" src="./assets/img/{{answer.userProfileImg}}" alt="">
             <div class="threadContainerAnswerContainer">
     
                 <div class="reactionContainer">
@@ -62,7 +62,7 @@
     
                 <div class="threadContainerAnswerInfo">
                     <div class="threadContainerInfoPerson">{{answer.answerUserName}}</div>
-                    <div class="threadContainerInfoTime">14:30 Uhr</div>
+                    <div class="threadContainerInfoTime">{{answer.timestamp}} Uhr</div>
                 </div>
                 <div class="threadContainerTextLeft">
                     {{answer.answertext}}

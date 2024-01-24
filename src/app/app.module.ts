@@ -29,6 +29,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -66,7 +67,7 @@ import { MatRadioModule } from '@angular/material/radio';
     provideFirestore(() => getFirestore()),
     provideDatabase(() => getDatabase())
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

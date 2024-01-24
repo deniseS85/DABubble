@@ -13,7 +13,9 @@ export class AuthService {
     private userImg: string = '';
     private isAnonymous: boolean = false;
     private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
+    private userDataSubject = new BehaviorSubject<any>({});
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
+    userData$ = this.userDataSubject.asObservable();
 
     
     setUserDetails(firstName: string, lastName: string, profileImg: string): void {
@@ -40,7 +42,7 @@ export class AuthService {
         return user ? user.email || '' : '';
     }
 
-    private saveUserData(): void {
+    saveUserData(): void {
         localStorage.setItem('userFirstName', this.userFirstName);
         localStorage.setItem('userLastName', this.userLastName);
         localStorage.setItem('userImg', this.userImg);
@@ -89,4 +91,10 @@ export class AuthService {
                 localStorage.removeItem('userImg');
             } catch (error) {}
     }  
+
+    setUserData(updatedData: any): void {
+        const currentData = this.userDataSubject.value;
+        const newData = { ...currentData, ...updatedData };
+        this.userDataSubject.next(newData);
+    }
 }

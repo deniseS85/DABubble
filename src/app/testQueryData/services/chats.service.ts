@@ -35,7 +35,7 @@ export class ChatsService {
                 profileImg: this.user.profileImg
               },
               {
-                displayName: otherUser?.firstName || '',
+                displayName: otherUser?.firstname || '',
                 profileImg: otherUser?.profileImg
               }
             ],

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { User } from '../models/user.class';
-import { LoginComponent } from './login/login.component';
-import { SelectAvatarComponent } from './select-avatar/select-avatar.component';
+
 
 @Component({
   selector: 'app-startscreen',

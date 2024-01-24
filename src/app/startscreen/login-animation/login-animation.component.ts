@@ -6,6 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './login-animation.component.scss'
 })
 export class LoginAnimationComponent {
-
   
 }

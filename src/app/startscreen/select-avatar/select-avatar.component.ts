@@ -62,8 +62,7 @@ export class SelectAvatarComponent implements OnInit {
        
         let docRef = await addDoc(this.getUserRef(), updatedUserData);
         await updateDoc(doc(this.getUserRef(), docRef.id), { id: docRef.id });
-        this.router.navigate(['/main', docRef.id]);
-
+       
         setTimeout(() => {
             this.showConfirmation = false;
             if (this.isGoogleLogin) {
@@ -72,6 +71,7 @@ export class SelectAvatarComponent implements OnInit {
                     this.userData.lastname,
                     this.userData.profileImg
                 );
+                this.router.navigate(['/main', docRef.id]);
                 
             } else {
                 this.startscreen.toggleView('login')

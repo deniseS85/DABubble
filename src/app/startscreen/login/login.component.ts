@@ -110,6 +110,7 @@ export class LoginComponent {
 
         try {
             let googleUser = await this.authService.signInWithGoogle();
+            
             let displayName = googleUser.user.displayName;
             let email = googleUser.user.email;
     

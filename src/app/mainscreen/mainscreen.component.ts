@@ -12,7 +12,10 @@ export class MainscreenComponent implements OnInit {
   userFirstName: String = '';
   userLastName: String = '';
   userImg: String = '';
+  userEmail: String = '';
   isProfileMenuOpen: boolean = false;
+  isProfileInfoOpen: boolean = false;
+  isEditMode: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -26,7 +29,7 @@ export class MainscreenComponent implements OnInit {
       }
       this.userFirstName = this.authService.getUserFirstName();
       this.userLastName = this.authService.getUserLastName();
-      this.userImg = this.authService.getUserImg();
+      this.userImg = this.authService.getUserImg();     
   }
 
   logout() {
@@ -36,5 +39,31 @@ export class MainscreenComponent implements OnInit {
 
   toggleProfileMenu() {
       this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  openUserInfo() {
+      this.isProfileInfoOpen = true;
+      this.isEditMode = false;
+      this.userEmail = this.getUserEmail();
+  }
+
+  closeUserInfo() {
+      this.isProfileInfoOpen = false;
+      this.isProfileInfoOpen = false;
+  }
+
+  openEditUser() {
+      this.isEditMode = true;
+      this.isProfileInfoOpen = false;
+  }
+
+  closeEditUser() {
+      this.isEditMode = false;
+      this.isProfileInfoOpen = false;
+  }
+
+  getUserEmail() {
+      let currentUser = this.authService.auth.currentUser;
+      return currentUser?.email || 'E-Mail nicht vorhanden';
   }
 }

@@ -7,13 +7,11 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-    constructor() {}
     auth: Auth = inject(Auth);
     private userFirstName: string = '';
     private userLastName: string = '';
     private userImg: string = '';
     private isAnonymous: boolean = false;
-
     private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
 
@@ -35,6 +33,11 @@ export class AuthService {
 
     getUserImg(): string {
         return this.userImg
+    }
+
+    getUserEmail(): string {
+        let user = this.auth.currentUser;
+        return user ? user.email || '' : '';
     }
 
     private saveUserData(): void {

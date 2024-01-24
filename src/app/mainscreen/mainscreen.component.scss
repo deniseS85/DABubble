@@ -5,40 +5,38 @@
     // height: calc(100vh - 50px);
     padding: 25px 20px;
     background-color:  #ECEEFE;
-
-    
-
-    .mainContainerHeader{
+    .mainContainerHeader {
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 70px;
-
-        .mainContainerHeaderLogo{
-
+        .mainContainerHeaderLogo {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 16px;
             font-weight: 600;
             font-size: 24px;
-
-            img{
+            img {
                 height: 70px;
             }            
         }
-
-        .mainContainerHeaderSearch{
-            display: flex;
-            align-items: center;
-            
-            input{
-                height: 70px;
-                width: 400px;
+        #headerInput {
+            width: 50%;
+            height: 40px;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 0 12px 25px;
+            background-image: url('../../assets/img/search.png');
+            background-repeat: no-repeat;
+            background-position-x: 97%;
+            background-position-y: center;
+            background-size: 22px;
+            font-size: 18px;
+            &::placeholder {
+                font-size: 18px;
             }
-            
         }
-
         .mainContainerHeaderProfil{
             display: flex;
             justify-content: center;
@@ -46,31 +44,35 @@
             gap: 20px;
             height: 70px;
             font-size: 32px;
-            font-weight: 700;
+            font-weight: bold;
             position: relative;
+            cursor: default;
             .logout-icon {
                 cursor: pointer;
                 font-size: clamp(1.875rem, 1.7857rem + 0.4464vw, 2.5rem);
                 width: clamp(1.875rem, 1.7857rem + 0.4464vw, 2.5rem);
                 height: clamp(1.875rem, 1.7857rem + 0.4464vw, 2.5rem);
             }
+            .profile-img {
+                width: 70px;
+            }
             .profil-info-header {
-                width: 102px;
-                height: 22px;
+                width: 150px;
+                height: 80px;
                 border-radius: 20px 0 20px 20px;
-                padding: 30px;
+                padding: 10px 30px;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: space-between;
                 align-items: center;
                 background-color: white;
                 position: absolute;
                 top: 70px;
                 right: 0;
                 z-index: 2;
-                div {
-                    font-size: 16px;
-                    font-weight: 600;
+                .profile, .logout {
+                    font-size: 18px;
+                    font-weight: normal;
                     cursor: pointer;
                     padding: 8px 10px;
                     width: 100%;
@@ -83,6 +85,100 @@
                         color: #444DF2;
                     }
                 }
+                .user-info-details {
+                    width: 350px;
+                    border-radius: 20px 0 20px 20px;
+                    padding: 25px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background-color: white;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    z-index: 2;
+                    cursor: default;
+                    font-size: 18px;
+                    font-weight: normal;
+                    gap: 20px;
+                    .title {
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                    p {
+                        margin: 10px 0;
+                    }
+                    img {
+                        width: 150px;
+                    }
+                    .user-info-header, .user-info-name, .user-email {
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        .close-icon, .edit-link {
+                            cursor: pointer;
+                        }
+                        .username {
+                            font-weight: bold;
+                        }
+                        .edit-link {
+                            color: #535AF1;
+                            transition: color 225ms ease-in-out;
+                           
+                            &:hover {
+                                transition: color 225ms ease-in-out;
+                                text-shadow: 0 0 .01px #535AF1;
+                            }
+                        }
+                    }
+                    .user-info {
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        gap: 29px;
+                        .active-point {
+                            width: 15px;
+                            height: 15px;
+                            border-radius: 100%;
+                            background-color:#92C83E;
+                        }
+                    }
+                    .user-email {
+                        gap: 15px;
+                        display: flex;
+                        justify-content: flex-start;
+                        mat-icon {
+                            width: 28px;
+                            height: 54px;
+                        }
+                        .email-address {
+                            color: #1381FF;
+                        }
+                    }
+                }
+                form {
+                    width: 100%;
+                    .title-input {
+                        display: flex;
+                        gap: 15px;
+                        align-items: center;
+                        img {
+                            width: 24px;
+                            height: 24px;
+                        }
+                    }
+                    input {
+                        width: 91%;
+                        height: 15px;
+                        border: 1px solid #ADB0D9;
+                        border-radius: 30px;
+                        padding: 15px 20px;
+                        font-size: 18px;
+                    } 
+                }
+
             }
             .overlay {
                 position: fixed;
@@ -102,12 +198,10 @@
         gap: 20px;
         flex: 1;
         // overflow: hidden;
-
         app-thread{
             width: 25.8%;
             height: 100%;
         }
-
         app-channel-chat{
             flex: 1;
         }

@@ -4,19 +4,74 @@
             <img src="./assets/img/logo.png" alt="">
             <span>DABubble</span>
         </div>
-        <div class="mainContainerHeaderSearch">
-            <input type="text">
-        </div>
+     
+        <input type="text" placeholder="Code learning durchsuchen" id="headerInput">
+     
         <div class="mainContainerHeaderProfil">
             <span class="mainContainerHeaderProfilName">{{ userFirstName }} {{ userLastName }}</span>
-            <img src="./assets/img/{{ userImg }}" alt="">
+            <img class="profile-img" src="./assets/img/{{ userImg }}" alt="">
             <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
             <div class="profil-info-header" *ngIf="isProfileMenuOpen">
-                <div>Profil</div>
+                <div (click)="openUserInfo()" class="profile">Profil</div>
                 <div (click)="logout()" class="logout">Log out</div>
+
+                <div class="user-info-details" *ngIf="isProfileInfoOpen">
+                    <div class="user-info-header">
+                        <p class="title">Profil</p>
+                        <mat-icon (click)="closeUserInfo()" class="close-icon">close</mat-icon>
+                    </div>
+                    <img src="./assets/img/{{ userImg }}" alt="">
+                    <div class="user-info-name">
+                        <p class="username">{{ userFirstName }} {{ userLastName }}</p>
+                        <p (click)="openEditUser()" class="edit-link">Bearbeiten</p>
+                    </div>
+                    <div class="user-info">
+                        <p class="active-point"></p>
+                        <p>Aktive</p>
+                    </div>
+                    <div class="user-email">
+                        <mat-icon>mail_outline</mat-icon>
+                        <div class="user-email-address">
+                            <p>E-Mail-Adresse</p>
+                            <p class="email-address">{{ userEmail }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="user-info-details" *ngIf="isEditMode">
+                    <div class="user-info-header">
+                        <p class="title">Dein Profil bearbeiten</p>
+                        <mat-icon (click)="closeEditUser()" class="close-icon">close</mat-icon>
+                    </div>
+                    <img src="./assets/img/{{ userImg }}" alt="">
+
+                    <form>
+                        <div class="input-fields">
+                            <div class="title-input">
+                                <img src="./assets/img/account_circle.png">
+                                <p>Vollständiger Name</p>
+                            </div>
+                            <input>
+                        </div>
+                       
+                        <div class="input-fields">
+                            <div class="title-input">
+                                <mat-icon>mail_outline</mat-icon>
+                                <p>E-Mail-Adresse</p>
+                            </div>
+                            <input>
+                        </div>
+
+                        <div class="button-container">
+                            <button></button>
+                            <button></button>
+                        </div>
+                    </form>
+                   
+                </div>
             </div>
+
             <div class="overlay" *ngIf="isProfileMenuOpen" (click)="toggleProfileMenu()"></div>
-            <!-- <div class="mainContainerHeaderProfilArrow">A</div> -->
         </div>
     </div>
     <div class="mainContainerContent">

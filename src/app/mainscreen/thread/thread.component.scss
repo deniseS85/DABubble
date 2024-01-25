@@ -1,3 +1,5 @@
+
+
 .threadContainer{
     height: 100%;
     width: 100%;
@@ -343,11 +345,13 @@
         align-items: center;
         justify-content: center;
         gap: 5px;
+        cursor: pointer;
 
         .editMessage{
             position: relative;
 
             .editMessageBtn{
+                
                 position: absolute;
                 right: 0;
                 top: 0;

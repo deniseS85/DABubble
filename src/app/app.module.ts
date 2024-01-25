@@ -27,9 +27,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import {MatDialogModule} from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { DatePipe } from '@angular/common';
+import { EditAnswerComponent } from './mainscreen/thread/edit-answer/edit-answer.component';
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { DatePipe } from '@angular/common';
     SelectAvatarComponent,
     ImprintComponent,
     DataProtectionComponent,
-    TestQueryComponent
+    TestQueryComponent,
+    EditAnswerComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import { DatePipe } from '@angular/common';
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatDialogModule,
     ReactiveFormsModule,
     FormsModule,
     MatRadioModule,

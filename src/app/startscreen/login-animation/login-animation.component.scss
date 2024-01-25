@@ -5,7 +5,6 @@
     z-index: 2;
     position: relative;
     .login-animation {
-        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -16,7 +15,7 @@
         animation: logoContainerAnimation 1000ms ease-in-out 1500ms forwards;
         z-index: 2;
         img {
-            width: 100px;
+            width: 150px;
             animation: logoAnimation 2500ms ease-in-out 800ms forwards;
         }
         p {
@@ -26,6 +25,7 @@
             opacity: 0;
             white-space: nowrap;
             animation: nameAnimation 2500ms ease-in-out 800ms forwards;
+            margin-left: 50px;
         }
     }
     .fade-in-animation {
@@ -48,16 +48,16 @@
 
         40% {
             transform: translateX(-70px);
-            width: 100px;
+            width: 150px;
         }
 
         70% {
             transform: translateX(-70px);
-            width: 50px;
+            width: 100px;
         }
 
         100% {
-            width: 50px;
+            width: 100px;
             transform: translateX(-70px);
         }
     }
@@ -85,21 +85,21 @@
         }
 
         60% {
-            transform: translateX(25px);
+            transform: translateX(30px);
             opacity: 1;
             color: white;
             font-size: 1.5rem;
         }
 
         75% {
-            transform: translateX(25px);
+            transform: translateX(30px);
             opacity: 1;
             font-size: 1.5rem;
             color: black;
         }
 
         100% {
-            transform: translateX(25px);
+            transform: translateX(30px);
             opacity: 1;
             font-size: 1.5rem;
             color: black;

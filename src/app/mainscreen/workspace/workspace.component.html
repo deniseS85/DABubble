@@ -72,10 +72,10 @@
           <div class="contacts-list">
             <div class="selectable" (click)="handleClick($event)">
                 <span><img src="./assets/img/avatarFrederick.png"/></span>
-                <span>Frederik Beck (Du)</span>
+                <span>{{ userFullName }} (Du)</span>
             </div>
             <div class="selectable" (click)="handleClick($event)">
-                <span><img src="./assets/img/avatarSofia.png"/></span>
+                <span><img src="./assets/img/{{ user.profileImg }}"/></span>
                 <span>Sofia Müller</span>
             </div>
             

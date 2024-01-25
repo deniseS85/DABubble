@@ -1,6 +1,8 @@
-import { Component, ElementRef, Renderer2, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, ChangeDetectorRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
+import { ActivatedRoute } from '@angular/router';
+import { User } from '../../models/user.class';
 
 @Component({
   selector: 'app-workspace',
@@ -9,6 +11,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 
 export class WorkspaceComponent {
+  firestore: Firestore = inject(Firestore);
+  user = new User();
   @ViewChild('channelCreateWindow') channelCreateWindow!: ElementRef<HTMLElement>;
   @ViewChild('channelCreateContainer') channelCreateContainer!: ElementRef<HTMLElement>;
 
@@ -18,18 +22,55 @@ export class WorkspaceComponent {
   
   channelCreateForm: FormGroup;
   body = this.elRef.nativeElement.ownerDocument.body;
+  userID: any;
+  userList;
+  userFullName: String = '';
+  private unsubscribeSnapshot: Unsubscribe | undefined;
 
   constructor(
     private elRef: ElementRef, 
     private renderer: Renderer2, 
     private formBuilder: FormBuilder, 
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute
     ) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],
       selectedOption: ['specificMembers']
     });
+
+    this.userID = this.route.snapshot.paramMap.get('id');
+    this.userList = this.getUserfromFirebase();
   }
+
+  ngOnDestroy(){
+      if (this.unsubscribeSnapshot) {
+          this.unsubscribeSnapshot();
+      }
+  }
+
+  getUserID() {
+      return doc(collection(this.firestore, 'users'), this.userID);
+  }
+
+  getUserfromFirebase(): void {
+    this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
+        this.user = new User(element.data());
+        this.user.id = this.userID;
+        this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+    });
+  }
+
+  checkIsGuestLogin(): void {
+      getDoc(this.getUserID()).then((docSnapshot) => {
+          if (docSnapshot.exists()) {
+              this.getUserfromFirebase();
+          } else {
+              this.userFullName = 'Gast';
+              this.user.profileImg = 'guest-profile.png';
+          }
+      });
+}
 
   /**
   * Handles the click event on selectable elements. Removes the class "selected" from all other elements and sets this class to clicked elements

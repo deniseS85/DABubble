@@ -132,7 +132,7 @@
 
     <div class="footer-write-new-message">
         <div>
-            <Textarea class="textarea" placeholder="Nachricht an #Entwicklerteam"></Textarea>
+            <Textarea class="textarea" placeholder="Nachricht an # {{ channelName }}"></Textarea>
         </div>
         <div class="footer-line-icons">
             <div class="footer-icons-left">
@@ -160,7 +160,7 @@
             </div>
         </div>
         <div class="fw-400 fs-18 channel-container">
-            <div>#</div><span> Entwicklerteam</span>
+            <div>#</div><span> {{ channelName }}</span>
         </div>
         <div>
             <input type="text" autofocus [(ngModel)]="userInput" (keypress)="checkUser()">
@@ -186,14 +186,11 @@
                 <img src="../../../assets/img/avatarFrederick.png" alt="" (click)="showProfil = true; openPopup()">
                 <span>Frederick Beck (Du)</span>
             </div>
-            <div class="member-list-div" (click)="showProfil = true; openPopup()">
-                <img src="../../../assets/img/avatarNoah.png" alt="">
-                <span>Noah Braun</span>
+            <div class="member-list-div" (click)="showProfil = true; openPopup()" *ngFor="let channelUser of channelUsers">
+                <img [src]="'../../../assets/img/' + channelUser.profilImg" alt="">
+                <span>{{ channelUser.firstname }} {{ channelUser.lastname }}</span>
             </div>
-            <div class="member-list-div" (click)="showProfil = true; openPopup()">
-                <img src="../../../assets/img/avatarSofia.png" alt="">
-                <span>Sofia Müller</span>
-            </div>
+            
             <div class="add-person-container fs-18" (click)="addUSerOpen = true; showMembersOpen = false; openPopup()">
                 <div class="add-person-img-container">
                     <img src="../../../assets/img/person_add.png" alt="">

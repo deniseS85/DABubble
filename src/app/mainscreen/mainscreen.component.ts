@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
-import { Firestore, Unsubscribe, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { collection, onSnapshot } from 'firebase/firestore';
 
 @Component({
@@ -17,11 +17,10 @@ export class MainscreenComponent implements OnInit {
     userFirstName: String = '';
     userLastName: String = '';
     userFullName: String = '';
-    userImg: String = '';
-    userEmail: String = '';
     isProfileMenuOpen: boolean = false;
     isProfileInfoOpen: boolean = false;
     isEditMode: boolean = false;
+    editedUserFullName: String = '';
     userID: any;
     userList;
     private unsubscribeSnapshot: Unsubscribe | undefined;
@@ -32,16 +31,9 @@ export class MainscreenComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.authService.restoreUserData();
-
-        if (this.authService.isUserAnonymous()) {
-            this.userFirstName = 'Gast';
-            this.userLastName = '';
-            this.userImg = 'guest-profile.png';
+        if (this.userID) {
+            this.checkIsGuestLogin();
         }
-        this.userFirstName = this.authService.getUserFirstName();
-        this.userLastName = this.authService.getUserLastName();
-        this.userImg = this.authService.getUserImg();
     }
 
     ngOnDestroy(){
@@ -55,13 +47,24 @@ export class MainscreenComponent implements OnInit {
     }
 
     getUserfromFirebase(): void {
-        if (this.userID) {
-            this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
+        this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
             this.user = new User(element.data());
             this.user.id = this.userID;
             this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-          });
-        }
+        });
+    
+    }
+
+    checkIsGuestLogin(): void {
+        getDoc(this.getUserID()).then((docSnapshot) => {
+            if (docSnapshot.exists()) {
+                this.getUserfromFirebase();
+            } else {
+                this.userFullName = 'Gast';
+                this.user.profileImg = 'guest-profile.png';
+                this.user.email = 'E-Mail-Adresse nicht vorhanden.'
+            }
+        });
     }
 
     logout() {
@@ -76,7 +79,6 @@ export class MainscreenComponent implements OnInit {
     openUserInfo() {
         this.isProfileInfoOpen = true;
         this.isEditMode = false;
-        this.userEmail = this.getUserEmail();
     }
 
     closeUserInfo() {
@@ -85,6 +87,7 @@ export class MainscreenComponent implements OnInit {
     }
 
     openEditUser() {
+        this.editedUserFullName = this.userFullName;
         this.isEditMode = true;
         this.isProfileInfoOpen = false;
     }
@@ -94,18 +97,17 @@ export class MainscreenComponent implements OnInit {
         this.isProfileInfoOpen = false;
     }
 
-    getUserEmail() {
-        let currentUser = this.authService.auth.currentUser;
-        return currentUser?.email || 'E-Mail nicht vorhanden';
-    }
-
     async saveUserChange() {
+        let [firstName, lastName] = this.userFullName.split(' ');
+        this.user.firstname = firstName;
+        this.user.lastname = lastName;
         let updatedData = this.user.toJson();
         await updateDoc(this.getUserID(), updatedData);
         this.authService.setUserData(updatedData);
         this.updateUserNameInLocalStorage();
         this.closeEditUser();
         this.closeUserInfo();
+        this.isProfileMenuOpen = false;
     } 
 
     updateUserNameInLocalStorage() {

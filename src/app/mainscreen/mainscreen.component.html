@@ -8,8 +8,8 @@
         <input type="text" placeholder="Code learning durchsuchen" id="headerInput">
      
         <div class="mainContainerHeaderProfil">
-            <span class="mainContainerHeaderProfilName">{{ userFirstName }} {{ userLastName }}</span>
-            <img class="profile-img" src="./assets/img/{{ userImg }}" alt="">
+            <span class="mainContainerHeaderProfilName">{{  isEditMode ? editedUserFullName : userFullName  }}</span>
+            <img class="profile-img" src="./assets/img/{{ user.profileImg }}" alt="">
             <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
             <div class="profil-info-header" *ngIf="isProfileMenuOpen">
                 <div (click)="openUserInfo()" class="profile">Profil</div>
@@ -20,9 +20,9 @@
                         <p class="title">Profil</p>
                         <mat-icon (click)="closeUserInfo()" class="close-icon">close</mat-icon>
                     </div>
-                    <img src="./assets/img/{{ userImg }}" alt="">
+                    <img src="./assets/img/{{ user.profileImg }}" alt="">
                     <div class="user-info-name">
-                        <p class="username">{{ userFirstName }} {{ userLastName }}</p>
+                        <p class="username">{{ userFullName }}</p>
                         <p *ngIf="!authService.isUserAnonymous()" (click)="openEditUser()" class="edit-link">Bearbeiten</p>
                     </div>
                     <div class="user-info">
@@ -33,7 +33,7 @@
                         <mat-icon>mail_outline</mat-icon>
                         <div class="user-email-address">
                             <p>E-Mail-Adresse</p>
-                            <p class="email-address">{{ userEmail }}</p>
+                            <p class="email-address">{{ user.email }}</p>
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                         <p class="title">Dein Profil bearbeiten</p>
                         <mat-icon (click)="closeEditUser()" class="close-icon">close</mat-icon>
                     </div>
-                    <img src="./assets/img/{{ userImg }}" alt="">
+                    <img src="./assets/img/{{ user.profileImg }}" alt="">
                     <div class="edit-container">
                         <div class="input-fields">
                             <div class="title-input">

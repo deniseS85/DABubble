@@ -4,6 +4,7 @@ import { AuthService } from "../../auth.service";
 import { Firestore, Unsubscribe, collection, doc, onSnapshot } from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
+import { Channel } from "../../models/channel.interface";
 
 
 
@@ -98,6 +99,15 @@ export class ChannelChatComponent {
         let user = new User(singleUser.data());
         user.id = singleUser.id;
         this.allUsers.push(user);
+      });
+    });
+
+    this.unsubChannelUser = onSnapshot(this.channelService.getChannelRef(), (list) => {
+      this.channelUsers = [];
+      list.forEach(channel => {
+        // let channelInfo = new Channel(channel.data());
+        // console.log(channelInfo.);
+        this.channelUsers.push();
       });
     });
   }

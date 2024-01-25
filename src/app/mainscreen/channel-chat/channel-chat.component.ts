@@ -65,17 +65,24 @@ export class ChannelChatComponent {
   addUSerOpen = false;
   showMembersOpen = false;
   editChannelOpen = false;
-  userInput = '';
+  
   enabled = false;
   channelNameChange = false;
   channelDescriptionChange = false;
   showProfil = false;
+
   user = new User;
   channel = new Channel;
   allUsers: User[] = [];
   channelInfo: Channel[] = [];
   channelName: string = '';
+  channelCreator: string = '';
+  channelDescription: string = '';
   channelUsers: any[] = [];
+
+  newChannelName: string = '';
+  newChannelDescription: string = '';
+  newChannelMember: string = '';
 
   body = this.elRef.nativeElement.ownerDocument.body;
 
@@ -111,6 +118,8 @@ export class ChannelChatComponent {
         let channelInfo = new Channel(channel.data());
         this.channelName = channelInfo.channelname;
         this.channelUsers = channelInfo.channelUsers; 
+        this.channelCreator = channelInfo.channelCreator;
+        this.channelDescription = channelInfo.description;
         console.log(channelInfo);
     
         this.channelInfo.push(channelInfo);

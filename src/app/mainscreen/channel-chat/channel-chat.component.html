@@ -163,7 +163,7 @@
             <div>#</div><span> {{ channelName }}</span>
         </div>
         <div>
-            <input type="text" autofocus [(ngModel)]="userInput" (keypress)="checkUser()">
+            <input type="text" autofocus [(ngModel)]="newChannelMember" (keypress)="checkUser()">
         </div>
         <div class="btn-container">
             <button class="btn fw-700 fs-18" [class.enabled]="enabled">Hinzufügen</button>
@@ -248,7 +248,7 @@
 <div class="popup-background" *ngIf="editChannelOpen" (click)="editChannelOpen = false; closePopup()">
     <div class="popup-maincontainer bigPopup editChannelPopup" (click)="doNotClose($event)">
         <div class="headline-container">
-            <span class="fw-700"><span>#</span><span> Entwicklerteam</span></span>
+            <span class="fw-700"><span>#</span><span> {{ channelName }}</span></span>
             <div class="close-icon-container" (click)="editChannelOpen = false; closePopup()">
                 <mat-icon>close</mat-icon>
             </div>
@@ -265,10 +265,10 @@
                         (click)="channelNameChange = false">Speichern</span>
                 </div>
                 <div class="channel-name-container" *ngIf="!channelNameChange">
-                    <div class="fw-700">#</div> <span class="channel-name">Entwicklerteam</span>
+                    <div class="fw-700">#</div> <span class="channel-name"> {{ channelName }}</span>
                 </div>
                 <div>
-                    <input type="text" autofocus placeholder="# Entwicklerteam" *ngIf="channelNameChange"
+                    <input type="text"  [(ngModel)]="newChannelName"  autofocus placeholder="{{ channelName }}" *ngIf="channelNameChange"
                         class="input-change-channel-name">
                 </div>
             </div>
@@ -283,13 +283,11 @@
                         (click)="channelDescriptionChange = false">Speichern</span>
                 </div>
                 <div class="channel-description">
-                    <span class="channel-description-text" *ngIf="!channelDescriptionChange">Dieser Channel ist der
-                        Channel aller Channel und dient zum channeln und Teilen von Informationen. Viel Spaß
-                        damit!</span>
-                    <input type="text" autofocus *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
+                    <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{ channelDescription }}</span>
+                    <input type="text"  [(ngModel)]="newChannelDescription"  autofocus *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
                     <div class="seperator"></div>
                     <span class="fw-700">Erstellt von</span>
-                    <div class="edited-by-name">Noah Braun</div>
+                    <div class="edited-by-name">{{ channelCreator }}</div>
                 </div>
             </div>
         </div>

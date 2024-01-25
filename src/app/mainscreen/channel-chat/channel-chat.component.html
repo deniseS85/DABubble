@@ -3,15 +3,15 @@
     <div class="header-container">
         <header class="channel-chat-header">
             <div class="header-left" (click)="editChannelOpen = true; openPopup()">
-                <span> <span class="hashtag">#</span> Entwicklerteam <img
+                <span> <span class="hashtag">#</span> {{ channelName }} <img
                         src="../../../assets/img/keyboard_arrow_down.png" alt=""></span>
             </div>
             <div class="header-right">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
-                    <div *ngFor="let user of allUsers">
-                        <img [src]="'../../../assets/img/' + user.profileImg" alt="">
+                    <div *ngFor="let channelUser of channelUsers ">
+                        <img [src]="'../../../assets/img/' + channelUser.profilImg" alt="">
                     </div>
-                    <div class="counter-channel-members">{{ allUsers.length }}</div>
+                    <div class="counter-channel-members">{{ channelUsers.length }}</div>
                 </div>
 
                 <div class="person-add-icon-container">

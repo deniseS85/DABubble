@@ -74,4 +74,28 @@ export class ChannelService {
     return collection(this.firestore, "channels", channelID, "messages", messageID, "answers")
   }
 
+  getUsersRef() {
+    return collection(this.firestore, 'users');
+  }
+
+  getChannelRef() {
+    return collection(this.firestore, 'channels');
+  }
+
+  getChannelName(channelname: string) {
+    return doc(collection(this.firestore, 'channels'), channelname);
+  }
+  
+  getChannelDescription(channelDescription: string) {
+    return doc(collection(this.firestore, 'channels'), channelDescription);
+  }
+
+  getChannelCreator(channelCreator: string) {
+    return doc(collection(this.firestore, 'channels'), channelCreator);
+  }
+
+  getChannelUsers(channelUsers: string) {
+    return doc(collection(this.firestore, 'channels'), channelUsers);
+  }
+
 }

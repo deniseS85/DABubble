@@ -1,8 +1,9 @@
 import { Component, ElementRef, Renderer2, inject } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../auth.service";
-import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, doc, onSnapshot } from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
+import { ChannelService } from '../../services/channel.service';
 
 
 
@@ -70,9 +71,10 @@ export class ChannelChatComponent {
   showProfil = false;
   user = new User;
   allUsers: User[] = [];
+  channelUsers: User[] = [];
 
   body = this.elRef.nativeElement.ownerDocument.body;
-  
+
 
   reactions = [
     { users: 'Noah Braun', count: 1 },
@@ -81,22 +83,28 @@ export class ChannelChatComponent {
   showContainer: boolean[] = [];
 
   firestore: Firestore = inject(Firestore);
-  unsubUser;
+  unsubUser: Unsubscribe | undefined;
+  unsubChannelUser: Unsubscribe | undefined;
 
-  constructor(private elRef: ElementRef, private renderer: Renderer2, private authservice: AuthService) {
+  constructor(private elRef: ElementRef, private renderer: Renderer2, private authservice: AuthService, public channelService: ChannelService) {
     this.showContainer = new Array(this.reactions.length).fill(false);
-    this.unsubUser = onSnapshot(this.getUsersRef(), (list) => {
+
+  }
+
+  ngOnInit() {
+    this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
       this.allUsers = [];
       list.forEach(singleUser => {
         let user = new User(singleUser.data());
         user.id = singleUser.id;
-        this.allUsers.push(user); 
+        this.allUsers.push(user);
       });
     });
   }
 
   ngOndestroy() {
     this.unsubUser;
+    this.unsubChannelUser;
   }
 
   showReaction(index: number) {
@@ -123,16 +131,11 @@ export class ChannelChatComponent {
     this.renderer.setStyle(this.body, 'overflow', 'auto');
   }
 
-  doNotClose(event: MouseEvent) : void{
+  doNotClose(event: MouseEvent): void {
     event.stopPropagation();
   }
 
   checkUser() {
-    console.log(this.allUsers);
-    console.log(this.allUsers[0].profileImg)
-  }
 
-  getUsersRef() {
-    return collection(this.firestore, 'users');
   }
 }

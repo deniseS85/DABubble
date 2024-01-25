@@ -111,8 +111,18 @@
               <mat-radio-button (click)="onHideClick()" class="example-radio-button second-screen" [value]="'allMembers'">Alle Mitglieder von OfficeTeam hinzufügen</mat-radio-button>
               <mat-radio-button (click)="onShowClick()" class="example-radio-button second-screen" [value]="'specificMembers'">Bestimmte Leute hinzufügen</mat-radio-button>
       </mat-radio-group>
-      <input  *ngIf="showInputNames" placeholder="Name eingeben" type="text" class="channel-create-input channel-create-description-input">
-            
+      <div>
+        <input  *ngIf="showInputNames" placeholder="Name eingeben" type="text" class="channel-create-input channel-create-description-input">
+        <div class="contacts-list-pop-up">
+          <div class="contacts-list">
+            <!-- <div *ngFor="let user of allUsers">
+              <img [src]="'../../../assets/img/' + user.profileImg" alt="">
+              <span>{{ user.firstname }} {{ user.lastname }}</span>
+            </div> -->
+          </div>
+       </div>
+      </div>
+
       <div class="btn-container">
         <button [disabled]="channelCreateForm.invalid" (click)="channelCreateSecondScreen()" class="btn fnt-wt-700 first-screen">Erstellen</button>
         <button [disabled]="channelCreateForm.invalid" class="btn fnt-wt-700 second-screen">Erstellen</button>

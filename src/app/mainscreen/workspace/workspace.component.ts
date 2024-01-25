@@ -43,6 +43,12 @@ export class WorkspaceComponent {
     this.userList = this.getUserfromFirebase();
   }
 
+  ngOnInit(): void {
+      if (this.userID) {
+          this.checkIsGuestLogin();
+      }
+  }
+
   ngOnDestroy(){
       if (this.unsubscribeSnapshot) {
           this.unsubscribeSnapshot();

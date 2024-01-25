@@ -101,18 +101,32 @@ export class MainscreenComponent implements OnInit {
         let [firstName, lastName] = this.userFullName.split(' ');
         this.user.firstname = firstName;
         this.user.lastname = lastName;
-        let updatedData = this.user.toJson();
-        await updateDoc(this.getUserID(), updatedData);
-        this.authService.setUserData(updatedData);
-        this.updateUserNameInLocalStorage();
-        this.closeEditUser();
-        this.closeUserInfo();
-        this.isProfileMenuOpen = false;
-    } 
+    
+        try {
+            
+            let updatedData = this.user.toJson();
+            await updateDoc(this.getUserID(), updatedData);
+            await this.changeEmailInAuth(this.user.email);
+
+            this.authService.setUserData(updatedData);
+            this.updateUserNameInLocalStorage();
+            this.closeEditUser();
+            this.closeUserInfo();
+            this.isProfileMenuOpen = false;
+        } catch (error) {
+            console.error('Fehler beim Speichern der Benutzeränderungen:', error);
+        }
+    }
 
     updateUserNameInLocalStorage() {
           localStorage.setItem('userFirstName', this.user.firstname);
           localStorage.setItem('userLastName', this.user.lastname);
     }
+
+    async changeEmailInAuth(newEmail: any) {
+        try {
+          this.authService.updateAndVerifyEmail(newEmail);
+        } catch (error) {}
+      }
 
 }

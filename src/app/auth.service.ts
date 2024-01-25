@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 
 
@@ -97,4 +97,12 @@ export class AuthService {
         const newData = { ...currentData, ...updatedData };
         this.userDataSubject.next(newData);
     }
+
+    updateAndVerifyEmail(newEmail: any) {
+        const user = this.auth.currentUser;
+        if (user) {
+          verifyBeforeUpdateEmail(user, newEmail).then(() => {
+          }).catch((error) => {});
+        }
+      }
 }

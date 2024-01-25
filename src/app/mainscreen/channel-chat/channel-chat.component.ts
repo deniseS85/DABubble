@@ -1,7 +1,7 @@
 import { Component, ElementRef, Renderer2, inject } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../auth.service";
-import { Firestore, Unsubscribe, collection, doc, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from "../../models/channel.class";
@@ -83,6 +83,7 @@ export class ChannelChatComponent {
   newChannelName: string = '';
   newChannelDescription: string = '';
   newChannelMember: string = '';
+  channelID: string = '';
 
   body = this.elRef.nativeElement.ownerDocument.body;
 
@@ -119,10 +120,9 @@ export class ChannelChatComponent {
         this.channelName = channelInfo.channelname;
         this.channelUsers = channelInfo.channelUsers; 
         this.channelCreator = channelInfo.channelCreator;
-        this.channelDescription = channelInfo.description;
+        this.channelDescription = channelInfo.ChannelDescription;
+        this.channelID = channelInfo.channelID;
         console.log(channelInfo);
-    
-        this.channelInfo.push(channelInfo);
       });
     });
   }
@@ -162,5 +162,13 @@ export class ChannelChatComponent {
 
   checkUser() {
 
+  }
+
+  async updateChannel(colId: string, channelID: string, item: {}) {
+    await updateDoc(this.getSingelChannelRef(colId, this.channelID), {});
+  }
+  
+  getSingelChannelRef(colId: string, docId: string) {
+    return doc(collection(this.firestore, 'channels'), colId, docId);
   }
 }

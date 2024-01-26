@@ -49,17 +49,6 @@ export class WorkspaceComponent {
   }
 
   ngOnInit(): void {
-<<<<<<< HEAD
-    if (this.userID) {
-        this.checkIsGuestLogin();
-    }
-  }
-
-  ngOnDestroy(){
-    if (this.unsubscribeSnapshot) {
-        this.unsubscribeSnapshot();
-    }
-=======
       if (this.userID) {
           this.checkIsGuestLogin();
       }
@@ -80,7 +69,6 @@ export class WorkspaceComponent {
           this.unsubscribeSnapshot();
       }
       this.unsubUser;
->>>>>>> 178bbda9826c0ee7b997422d77e4016e6f7c913b
   }
 
   getUserID() {

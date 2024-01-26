@@ -161,4 +161,21 @@ export class WorkspaceComponent {
     this.cdr.detectChanges();
   }
 
+  searchQuery: string = '';
+
+  onSearchInputChange(event: any): void {
+    this.searchQuery = event.target.value;
+  }
+
+  filterUsers(): User[] {
+    const trimmedQuery = this.searchQuery.trim().toLowerCase();
+    if (!trimmedQuery) {
+      return this.allUsers;
+    }
+
+    return this.allUsers.filter(user =>
+      user.firstname.toLowerCase().includes(trimmedQuery) ||
+      user.lastname.toLowerCase().includes(trimmedQuery)
+    );
+  }
 }

@@ -64,9 +64,9 @@ export class ChannelService {
   sendAnswer(channelID: string, messageID: string, answer: any){
     
     const ref = doc(this.getAnswerRef(channelID, messageID));
-
-    setDoc(ref, answer);
+    const newAnswer = ({...answer, answerID: ref.id});
     
+    setDoc(ref, newAnswer);    
   }
 
 

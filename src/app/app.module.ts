@@ -27,10 +27,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import {MatDialogModule} from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { DatePipe } from '@angular/common';
+<<<<<<< HEAD
 import { PickerComponent }  from  '@ctrl/ngx-emoji-mart' ;
+=======
+import { EditAnswerComponent } from './mainscreen/thread/edit-answer/edit-answer.component';
+>>>>>>> 178bbda9826c0ee7b997422d77e4016e6f7c913b
 
 
 @NgModule({
@@ -48,7 +53,8 @@ import { PickerComponent }  from  '@ctrl/ngx-emoji-mart' ;
     SelectAvatarComponent,
     ImprintComponent,
     DataProtectionComponent,
-    TestQueryComponent
+    TestQueryComponent,
+    EditAnswerComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +66,7 @@ import { PickerComponent }  from  '@ctrl/ngx-emoji-mart' ;
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatDialogModule,
     ReactiveFormsModule,
     FormsModule,
     MatRadioModule,

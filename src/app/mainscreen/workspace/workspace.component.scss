@@ -345,3 +345,14 @@ mat-expansion-panel-header {
     --mat-radio-checked-ripple-color: #444DF2;
     --mdc-form-field-label-text-size: 18px;
 }
+
+.contacts-list-pop-up {
+    background-color: white;
+    border: 1px solid #68686820;
+    border-radius: 0 30px 30px 30px;
+    box-shadow: 0px 6px 10px #00000020;
+    padding: 5px 15px;
+    width: 300px;
+    margin-top: -30px;
+    margin-left: 20px;
+}

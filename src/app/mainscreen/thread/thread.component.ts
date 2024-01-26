@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
-import { Firestore, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { ChannelService } from '../../services/channel.service';
 import { AuthService } from '../../auth.service';
 import { DatePipe } from '@angular/common';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { EditAnswerComponent } from './edit-answer/edit-answer.component';
 
 
 
@@ -37,6 +39,9 @@ export class ThreadComponent {
   userFirstName: string = '';
   userLastName: string = '';
   userImg: string = '';
+  userNameComplete: string = '';
+  // activeUserAnswer: boolean = true;
+
 
   firestore: Firestore = inject(Firestore);  
 
@@ -44,7 +49,9 @@ export class ThreadComponent {
     private main: MainscreenComponent, 
     private channelService: ChannelService, 
     private authService: AuthService,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe,
+    private dialog: MatDialog,
+    ) {
     this.loadMessage();
     this.loadAnswers();
     this.loadCurrentUser();
@@ -62,6 +69,7 @@ export class ThreadComponent {
       this.userFirstName = this.authService.getUserFirstName();
       this.userLastName = this.authService.getUserLastName();
       this.userImg = this.authService.getUserImg();
+      this.userNameComplete = this.userFirstName + this.userLastName;
   }
 
 
@@ -72,15 +80,28 @@ export class ThreadComponent {
   }
 
 
+  /**
+   * Funktion kürzen aufteilen
+   */
   async loadAnswers(){
     const queryAllAnswers = await query(this.getAllAnswersRef(this.channelID, this.messageID));
 
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allAnswers = [];
-      querySnapshot.forEach((doc: any) => {
-        this.allAnswers.push(doc.data())
-      })
-      
+      querySnapshot.forEach((doc: any) => {      
+
+        if(doc.data().answerUserName === this.userNameComplete){
+          const newData = doc.data();
+          const nd = ({...newData, activeUserAnswers: true,})
+          this.allAnswers.push(nd);
+
+        } else {
+          const newData = doc.data();
+          const nd = ({...newData, activeUserAnswers: false,})
+          this.allAnswers.push(nd);
+        }
+        
+      })      
     })
   }
 
@@ -90,6 +111,8 @@ export class ThreadComponent {
       answertext: this.answertext,
       answerUserName: this.userFirstName + this.userLastName,
       userProfileImg: this.userImg,
+      answerID: '',
+      activeUserAnswers: false,
       timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd') // zum Vergkleiche für anzeige "Heute" oder z.B. "21.Januar"
     }
@@ -128,14 +151,25 @@ export class ThreadComponent {
   }
 
 
+  async editAnswer(id: string){
+    const docRef = doc(this.getAllAnswersRef(this.channelID, this.messageID), id)
+    const docSnap = await getDoc(docRef);
+    this.answer = docSnap.data();
+    this.openEditAnswerDialog(id);
+  }
 
-
-
-
-
-
-
-
+  openEditAnswerDialog(id: string){
+    this.dialog.open(EditAnswerComponent, {data:{
+      channelid: this.channelID,
+      messageid: this.messageID,
+      answerid: id
+    },
+    position: {
+      top: '50%',
+      right: '20px'
+    },    
+    });
+  }
 
 
 

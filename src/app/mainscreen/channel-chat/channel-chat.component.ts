@@ -6,26 +6,7 @@ import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from "../../models/channel.class";
 import { ActivatedRoute } from '@angular/router';
-
-interface Chat {
-  avatar: string;
-  reactionMenu: {
-    emoji: string;
-    handsUp: string;
-    addReaction: string;
-    answer: string;
-    isEmojiOpen: boolean;
-    selectedEmojis: string[];
-  };
-  userName: string;
-  sendingTime: string;
-  messageContent: string;
-  answerInfo: {
-    counter: number;
-    lastAnswerTime: string;
-  };
-  date: string; 
-}
+import { Chat } from '../../models/channel.interface';
 
 @Component({
   selector: 'app-channel-chat',
@@ -238,12 +219,18 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   }
   
   emojiSelected(selectedEmoji: any, chatIndex: number) {
-    let emojiToAdd = selectedEmoji.emoji.native;
-  
     if (!this.chats[chatIndex].reactionMenu.selectedEmojis) {
       this.chats[chatIndex].reactionMenu.selectedEmojis = [];
     }
-    this.chats[chatIndex].reactionMenu.selectedEmojis.push(emojiToAdd);
+  
+    let userSelectedEmojis = this.chats[chatIndex].reactionMenu.selectedEmojis;
+    let emojiIndex = userSelectedEmojis.indexOf(selectedEmoji.emoji.native);
+  
+    if (emojiIndex !== -1) {
+      userSelectedEmojis.splice(emojiIndex, 1);
+    } else {
+      userSelectedEmojis.push(selectedEmoji.emoji.native);
+    }
   }
 
   getUniqueEmojis(selectedEmojis: string[]): string[] {
@@ -252,6 +239,16 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   
   getEmojiCount(selectedEmojis: string[], emoji: string): number {
     return selectedEmojis.filter(e => e === emoji).length;
+  }
+
+  getEmojiPath(chat: Chat, index: number): string {
+    const selectedEmojis = chat.reactionMenu.selectedEmojis;
+  
+    if (selectedEmojis && selectedEmojis.length > index) {
+      return selectedEmojis[selectedEmojis.length - 1 - index];
+    }
+  
+    return '';
   }
 
   openPopup(): void {

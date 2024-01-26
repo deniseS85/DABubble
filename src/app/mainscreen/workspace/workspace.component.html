@@ -150,15 +150,8 @@
           >Bestimmte Leute hinzufügen</mat-radio-button
         >
       </mat-radio-group>
-      <div class="relative">
-        <input
-          *ngIf="showInputNames"
-          placeholder="Name eingeben"
-          type="text"
-          class="channel-create-input channel-create-description-input"
-          (input)="onSearchInputChange($event)"
-        />
-
+      <div class="user-selection-container" *ngIf="showInputNames">
+        
         <div class="selected-users-container" *ngIf="selectedUsers.length > 0 && showInputNames">
           <div class="selected-users" *ngFor="let user of selectedUsers">
             <img [src]="'../../../assets/img/' + user.profileImg"/>
@@ -166,15 +159,27 @@
             <span (click)="removeUser(user)"><mat-icon>close</mat-icon></span>
           </div>
         </div>
-
-        <div class="contacts-list-pop-up" *ngIf="showInputNames && searchQuery.trim()">
-          <div class="contacts-list">
-            <div *ngFor="let user of filterUsers()"  (click)="selectUser(user)">
-              <img [src]="'../../../assets/img/' + user.profileImg"/>
-              <span>{{ user.firstname }} {{ user.lastname }}</span>
+        
+        <div  class="relative">
+          <input
+          
+          placeholder="Name eingeben"
+          type="text"
+          class="channel-create-input channel-create-description-input"
+          (input)="onSearchInputChange($event)"
+          />
+          
+          <div class="contacts-list-pop-up" *ngIf="showInputNames && searchQuery.trim()">
+            <div class="contacts-list">
+              <div *ngFor="let user of filterUsers()"  (click)="selectUser(user)">
+                <img [src]="'../../../assets/img/' + user.profileImg"/>
+                <span>{{ user.firstname }} {{ user.lastname }}</span>
+              </div>
             </div>
           </div>
         </div>
+
+        
       </div>
 
       <div class="btn-container">

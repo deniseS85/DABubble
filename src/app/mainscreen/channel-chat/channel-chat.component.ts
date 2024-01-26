@@ -70,6 +70,7 @@ export class ChannelChatComponent {
   channelNameChange = false;
   channelDescriptionChange = false;
   showProfil = false;
+  isOpened: boolean = false;
 
   user = new User;
   channel = new Channel;
@@ -86,7 +87,7 @@ export class ChannelChatComponent {
   channelID: string = '';
 
   body = this.elRef.nativeElement.ownerDocument.body;
-
+  emojiWindowPosition = { top: 0, left: 0 };
 
   reactions = [
     { users: 'Noah Braun', count: 1 },
@@ -146,6 +147,15 @@ export class ChannelChatComponent {
 
   toggleAnimationState1(state: 'visible' | 'hidden'): void {
     this.animationState1 = state;
+  }
+
+  toggleEmoji(event: Event) {
+    event.stopPropagation();
+    this.isOpened = !this.isOpened;
+  }
+
+  emojiSelected(selectedEmoji: any) {
+    console.log('Selected Emoji:', selectedEmoji);
   }
 
   openPopup(): void {

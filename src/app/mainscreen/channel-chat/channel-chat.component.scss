@@ -216,6 +216,14 @@
             padding: 3px;
         }
     }
+    .emoji-container {
+        position: relative;
+        .emoji-selection {
+            position: absolute;
+            top: 184px;
+            right: 43px;
+        }
+    }  
 }
 
 .reactions-to-message-maincontainer {
@@ -748,4 +756,6 @@ input {
     margin-top: 45px;
     gap: 15px;
 }
+
+
 

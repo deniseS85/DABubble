@@ -183,8 +183,8 @@
 
         <div class="current-channel-member-list">
             <div class="member-list-div">
-                <img src="../../../assets/img/avatarFrederick.png" alt="" (click)="showProfil = true; openPopup()">
-                <span>Frederick Beck (Du)</span>
+                <img src="./assets/img/{{ user.profileImg }}" (click)="showProfil = true; openPopup()">
+                <span>{{ userFullName }} (Du)</span>
             </div>
             <div class="member-list-div" (click)="showProfil = true; openPopup()" *ngFor="let channelUser of channelUsers">
                 <img [src]="'../../../assets/img/' + channelUser.profilImg" alt="">
@@ -262,7 +262,7 @@
                     <span class="edit-btn" *ngIf="!channelNameChange"
                         (click)="channelNameChange = true">Bearbeiten</span>
                     <span class="edit-btn" *ngIf="channelNameChange"
-                        (click)="channelNameChange = false">Speichern</span>
+                        (click)="channelNameChange = false; saveNewChannelName()">Speichern</span>
                 </div>
                 <div class="channel-name-container" *ngIf="!channelNameChange">
                     <div class="fw-700">#</div> <span class="channel-name"> {{ channelName }}</span>
@@ -280,7 +280,7 @@
                     <span class="edit-btn" *ngIf="!channelDescriptionChange"
                         (click)="channelDescriptionChange = true">Bearbeiten</span>
                     <span class="edit-btn" *ngIf="channelDescriptionChange"
-                        (click)="channelDescriptionChange = false">Speichern</span>
+                        (click)="channelDescriptionChange = false; saveNewDescription()" >Speichern</span>
                 </div>
                 <div class="channel-description">
                     <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{ channelDescription }}</span>

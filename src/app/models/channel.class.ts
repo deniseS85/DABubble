@@ -1,6 +1,6 @@
 export class Channel {
     channelID: string;
-    ChannelDescription: string;
+    description: string;
     channelname: string;
     channelUsersID: string[];           
     channelUsers: any[];               //     user{
@@ -13,7 +13,7 @@ export class Channel {
 
     constructor(obj?: any) {
         this.channelID = obj && obj.channelID ? obj.channelID : '';
-        this.ChannelDescription = obj && obj.ChannelDescription ? obj.ChannelDescription : '';
+        this.description = obj && obj.description ? obj.description : '';
         this.channelname = obj && obj.channelname ? obj.channelname : '';
         this.channelUsersID = obj && obj.channelUsersID ? obj.channelUsersID : '';
         this.channelUsers = obj && obj.channelUsers ? obj.channelUsers : '';
@@ -24,7 +24,7 @@ export class Channel {
     public toJson() {
         return {
             channelID: this.channelID,
-            ChannelDescription: this.ChannelDescription,
+            description: this.description,
             channelname: this.channelname,
             channelUsersID: this.channelUsersID,
             channelUsers: this.channelUsers,
@@ -35,7 +35,7 @@ export class Channel {
     setUserObject(obj:any, id:string) {
         return new Channel({
             channelID: obj.channelID || "",
-            ChannelDescription: obj.ChannelDescription || "",
+            description: obj.description || "",
             channelname: obj.channelname || "",
             channelUsersID: obj.channelUsersID || "",
             channelUsers: obj.channelUsers || "",

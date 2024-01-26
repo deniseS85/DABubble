@@ -40,13 +40,26 @@
                         <div>
                             <img src="../../../assets/img/hands-up.png" alt="">
                         </div>
-                        <div>
-                            <img src="../../../assets/img/add_reaction.png" alt="">
+                        <div class="emoji-container">
+                            <img (click)="toggleEmoji($event)" src="../../../assets/img/add_reaction.png" alt="">
+                            <div *ngIf="isOpened" class="emoji-selection">
+                                <emoji-mart 
+                                class="emoji-mart"
+                                [style]="{ width: '238px' }"
+                                (emojiSelect)="emojiSelected($event)"
+                                color = #535AF1
+                                set = "apple"
+                                [enableSearch] = "false"
+                                [showPreview] = "false"
+                                title="Choose your emoji">
+                                </emoji-mart>
+                            </div>
                         </div>
                         <div>
-                            <img src="../../../assets/img/answer.png" alt="">
+                            <img src="../../../assets/img/Answer.png" alt="">
                         </div>
                     </div>
+
                     <span class="writing-name fs-18 fw-700">Noah Braun</span>
                     <div class="sending-time fs-14 fw-400">14.25 Uhr</div>
                 </div>
@@ -77,11 +90,23 @@
                             <div>
                                 <img src="../../../assets/img/hands-up.png" alt="">
                             </div>
-                            <div>
-                                <img src="../../../assets/img/add_reaction.png" alt="">
+                            <div class="emoji-container">
+                                <img (click)="toggleEmoji($event)" src="../../../assets/img/add_reaction.png" alt="">
+                                <div *ngIf="isOpened" class="emoji-selection">
+                                    <emoji-mart 
+                                    class="emoji-mart"
+                                    [style]="{ width: '238px' }"
+                                    (emojiSelect)="emojiSelected($event)"
+                                    color = #535AF1
+                                    set = "apple"
+                                    [enableSearch] = "false"
+                                    [showPreview] = "false"
+                                    title="Choose your emoji">
+                                    </emoji-mart>
+                                </div>
                             </div>
                             <div>
-                                <img src="../../../assets/img/answer.png" alt="">
+                                <img src="../../../assets/img/Answer.png" alt="">
                             </div>
                             <div>
                                 <mat-icon>more_vert</mat-icon>
@@ -298,3 +323,4 @@
 
     </div>
 </div>
+

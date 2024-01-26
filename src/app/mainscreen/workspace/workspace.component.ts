@@ -44,19 +44,19 @@ export class WorkspaceComponent {
   }
 
   ngOnInit(): void {
-      if (this.userID) {
-          this.checkIsGuestLogin();
-      }
+    if (this.userID) {
+        this.checkIsGuestLogin();
+    }
   }
 
   ngOnDestroy(){
-      if (this.unsubscribeSnapshot) {
-          this.unsubscribeSnapshot();
-      }
+    if (this.unsubscribeSnapshot) {
+        this.unsubscribeSnapshot();
+    }
   }
 
   getUserID() {
-      return doc(collection(this.firestore, 'users'), this.userID);
+    return doc(collection(this.firestore, 'users'), this.userID);
   }
 
   getUserfromFirebase(): void {
@@ -68,15 +68,15 @@ export class WorkspaceComponent {
   }
 
   checkIsGuestLogin(): void {
-      getDoc(this.getUserID()).then((docSnapshot) => {
-          if (docSnapshot.exists()) {
-              this.getUserfromFirebase();
-          } else {
-              this.userFullName = 'Gast';
-              this.user.profileImg = 'guest-profile.png';
-          }
-      });
-}
+    getDoc(this.getUserID()).then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+            this.getUserfromFirebase();
+        } else {
+            this.userFullName = 'Gast';
+            this.user.profileImg = 'guest-profile.png';
+        }
+    });
+  }
 
   /**
   * Handles the click event on selectable elements. Removes the class "selected" from all other elements and sets this class to clicked elements

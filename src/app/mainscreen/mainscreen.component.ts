@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -25,11 +25,17 @@ export class MainscreenComponent implements OnInit {
     userList;
     private unsubscribeSnapshot: Unsubscribe | undefined;
 
+   /*  @Output() emojiSelectedEvent = new EventEmitter<string>(); */
+
     constructor(public authService: AuthService, private router: Router, private route: ActivatedRoute) {
             this.userID = this.route.snapshot.paramMap.get('id');
             this.userList = this.getUserfromFirebase();
     }
 
+   /*  emojiSelected(event: any) {
+        this.emojiSelectedEvent.emit(event.emoji.native);
+      }
+ */
     ngOnInit(): void {
         if (this.userID) {
             this.checkIsGuestLogin();
@@ -113,9 +119,7 @@ export class MainscreenComponent implements OnInit {
             this.closeEditUser();
             this.closeUserInfo();
             this.isProfileMenuOpen = false;
-        } catch (error) {
-            console.error('Fehler beim Speichern der Benutzeränderungen:', error);
-        }
+        } catch (error) {}
     }
 
     updateUserNameInLocalStorage() {

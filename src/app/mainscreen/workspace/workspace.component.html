@@ -159,10 +159,11 @@
           (input)="onSearchInputChange($event)"
         />
 
-        <div  *ngIf="selectedUsers.length > 0">
-          <div *ngFor="let user of selectedUsers">
+        <div class="selected-users-container" *ngIf="selectedUsers.length > 0 && showInputNames">
+          <div class="selected-users" *ngFor="let user of selectedUsers">
+            <img [src]="'../../../assets/img/' + user.profileImg"/>
             {{ user.firstname + ' ' + user.lastname }}
-            <span (click)="removeUser(user)">x</span>
+            <span (click)="removeUser(user)"><mat-icon>close</mat-icon></span>
           </div>
         </div>
 

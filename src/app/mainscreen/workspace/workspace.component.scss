@@ -357,3 +357,28 @@ mat-expansion-panel-header {
     margin-top: -12px;
     margin-left: 20px;
 }
+
+.selected-users-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+.selected-users {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ECEEFE;
+    border-radius: 30px;
+    padding: 5px 15px;
+    margin: -58px 10px 0px 10px;
+    gap: 10px;
+
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+
+    img {
+        height: 30px;
+    }
+}

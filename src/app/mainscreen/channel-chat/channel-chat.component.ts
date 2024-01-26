@@ -1,10 +1,11 @@
 import { Component, ElementRef, Renderer2, inject } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../auth.service";
-import { Firestore, Unsubscribe, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from "../../models/channel.class";
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -65,7 +66,7 @@ export class ChannelChatComponent {
   addUSerOpen = false;
   showMembersOpen = false;
   editChannelOpen = false;
-  
+
   enabled = false;
   channelNameChange = false;
   channelDescriptionChange = false;
@@ -75,6 +76,7 @@ export class ChannelChatComponent {
     { isEmojiOpen: false },
   ];
   user = new User;
+  userID: any;
   channel = new Channel;
   allUsers: User[] = [];
   channelInfo: Channel[] = [];
@@ -87,6 +89,8 @@ export class ChannelChatComponent {
   newChannelDescription: string = '';
   newChannelMember: string = '';
   channelID: string = '';
+  userFullName: string = '';
+  private unsubscribeSnapshot: Unsubscribe | undefined;
 
   body = this.elRef.nativeElement.ownerDocument.body;
 
@@ -100,12 +104,23 @@ export class ChannelChatComponent {
   unsubUser: Unsubscribe | undefined;
   unsubChannelUser: Unsubscribe | undefined;
 
-  constructor(private elRef: ElementRef, private renderer: Renderer2, private authservice: AuthService, public channelService: ChannelService) {
+  constructor(
+    private elRef: ElementRef,
+    private renderer: Renderer2,
+    private authservice: AuthService,
+    public channelService: ChannelService,
+    private route: ActivatedRoute
+  ) {
     this.showContainer = new Array(this.reactions.length).fill(false);
+    this.userID = this.route.snapshot.paramMap.get('id');
 
   }
 
   ngOnInit() {
+    if (this.userID) {
+      this.checkIsGuestLogin();
+    }
+
     this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
       this.allUsers = [];
       list.forEach(singleUser => {
@@ -120,11 +135,11 @@ export class ChannelChatComponent {
       list.forEach(channel => {
         let channelInfo = new Channel(channel.data());
         this.channelName = channelInfo.channelname;
-        this.channelUsers = channelInfo.channelUsers; 
+        this.channelUsers = channelInfo.channelUsers;
         this.channelCreator = channelInfo.channelCreator;
-        this.channelDescription = channelInfo.ChannelDescription;
+        this.channelDescription = channelInfo.description;
         this.channelID = channelInfo.channelID;
-        console.log(channelInfo);
+        console.log();
       });
     });
   }
@@ -182,11 +197,47 @@ export class ChannelChatComponent {
 
   }
 
-  async updateChannel(colId: string, channelID: string, item: {}) {
-    await updateDoc(this.getSingelChannelRef(colId, this.channelID), {});
+  saveNewDescription() {
+    this.updateChannel(this.channelID,{
+      description: this.newChannelDescription
+      });
   }
-  
-  getSingelChannelRef(colId: string, docId: string) {
-    return doc(collection(this.firestore, 'channels'), colId, docId);
+
+  saveNewChannelName() {
+    this.updateChannel(this.channelID,{
+      channelname: this.newChannelName
+      });
+  }
+
+  async updateChannel(channelID: string, item: {}) {
+    await updateDoc(this.getSingelChannelRef(this.channelID), item);
+    console.log(item);
+  }
+
+  getSingelChannelRef(docId: string) {
+    return doc(collection(this.firestore, 'channels'), docId);
+  }
+
+  checkIsGuestLogin(): void {
+    getDoc(this.getUserID()).then((docSnapshot) => {
+      if (docSnapshot.exists()) {
+        this.getUserfromFirebase();
+      } else {
+        this.userFullName = 'Gast';
+        this.user.profileImg = 'guest-profile.png';
+      }
+    });
+  }
+
+  getUserID() {
+    return doc(collection(this.firestore, 'users'), this.userID);
+  }
+
+  getUserfromFirebase(): void {
+    this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
+      this.user = new User(element.data());
+      this.user.id = this.userID;
+      this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+    });
   }
 }

@@ -116,7 +116,7 @@
     </div>
     <div class="fnt-wt-700 first-screen">Channel-Name</div>
     <form [formGroup]="channelCreateForm" class="channel-create-form" action="">
-      <div class="absolute first-screen">
+      <div class="relative first-screen">
         <input
           formControlName="channelName"
           required
@@ -150,17 +150,18 @@
           >Bestimmte Leute hinzufügen</mat-radio-button
         >
       </mat-radio-group>
-      <div>
+      <div class="relative">
         <input
           *ngIf="showInputNames"
           placeholder="Name eingeben"
           type="text"
           class="channel-create-input channel-create-description-input"
+          (input)="onSearchInputChange($event)"
         />
-        <div class="contacts-list-pop-up">
+        <div class="contacts-list-pop-up" *ngIf="showInputNames && searchQuery.trim()">
           <div class="contacts-list">
-            <div *ngFor="let user of allUsers">
-              <img [src]="'../../../assets/img/' + user.profileImg" alt="" />
+            <div *ngFor="let user of filterUsers()">
+              <img [src]="'../../../assets/img/' + user.profileImg"/>
               <span>{{ user.firstname }} {{ user.lastname }}</span>
             </div>
           </div>

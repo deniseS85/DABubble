@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
+import { ChannelChatComponent } from "../mainscreen/channel-chat/channel-chat.component";
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,11 @@ import { Message } from '../models/message.interface';
 export class ChannelService {
   
   firestore: Firestore = inject(Firestore);
+  channelName: string = '';
 
-  constructor() { }
+  constructor(private channelChat: ChannelChatComponent) { 
+     
+  }
 
   collectionRef = collection(this.firestore, "channels");
   chatObservable$ = collectionData(this.collectionRef)
@@ -97,5 +101,4 @@ export class ChannelService {
   getChannelUsers(channelUsers: string) {
     return doc(collection(this.firestore, 'channels'), channelUsers);
   }
-
 }

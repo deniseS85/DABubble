@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
+import { ChannelService } from '../../services/channel.service';
 
 @Component({
   selector: 'app-workspace',
@@ -27,12 +28,16 @@ export class WorkspaceComponent {
   userFullName: String = '';
   private unsubscribeSnapshot: Unsubscribe | undefined;
 
+  allUsers: User[] = [];
+  unsubUser: Unsubscribe | undefined;
+
   constructor(
     private elRef: ElementRef, 
     private renderer: Renderer2, 
     private formBuilder: FormBuilder, 
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public channelService: ChannelService
     ) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],
@@ -47,12 +52,23 @@ export class WorkspaceComponent {
       if (this.userID) {
           this.checkIsGuestLogin();
       }
+
+      this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
+        this.allUsers = [];
+        list.forEach(singleUser => {
+          let user = new User(singleUser.data());
+          user.id = singleUser.id;
+          this.allUsers.push(user);
+        });
+      });
+
   }
 
   ngOnDestroy(){
       if (this.unsubscribeSnapshot) {
           this.unsubscribeSnapshot();
       }
+      this.unsubUser;
   }
 
   getUserID() {

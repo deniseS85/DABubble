@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
+import { ChannelService } from '../../services/channel.service';
 
 @Component({
   selector: 'app-workspace',
@@ -27,12 +28,16 @@ export class WorkspaceComponent {
   userFullName: String = '';
   private unsubscribeSnapshot: Unsubscribe | undefined;
 
+  allUsers: User[] = [];
+  unsubUser: Unsubscribe | undefined;
+
   constructor(
     private elRef: ElementRef, 
     private renderer: Renderer2, 
     private formBuilder: FormBuilder, 
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public channelService: ChannelService
     ) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],
@@ -47,16 +52,27 @@ export class WorkspaceComponent {
       if (this.userID) {
           this.checkIsGuestLogin();
       }
+
+      this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
+        this.allUsers = [];
+        list.forEach(singleUser => {
+          let user = new User(singleUser.data());
+          user.id = singleUser.id;
+          this.allUsers.push(user);
+        });
+      });
+
   }
 
   ngOnDestroy(){
       if (this.unsubscribeSnapshot) {
           this.unsubscribeSnapshot();
       }
+      this.unsubUser;
   }
 
   getUserID() {
-      return doc(collection(this.firestore, 'users'), this.userID);
+    return doc(collection(this.firestore, 'users'), this.userID);
   }
 
   getUserfromFirebase(): void {
@@ -68,15 +84,15 @@ export class WorkspaceComponent {
   }
 
   checkIsGuestLogin(): void {
-      getDoc(this.getUserID()).then((docSnapshot) => {
-          if (docSnapshot.exists()) {
-              this.getUserfromFirebase();
-          } else {
-              this.userFullName = 'Gast';
-              this.user.profileImg = 'guest-profile.png';
-          }
-      });
-}
+    getDoc(this.getUserID()).then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+            this.getUserfromFirebase();
+        } else {
+            this.userFullName = 'Gast';
+            this.user.profileImg = 'guest-profile.png';
+        }
+    });
+  }
 
   /**
   * Handles the click event on selectable elements. Removes the class "selected" from all other elements and sets this class to clicked elements
@@ -145,4 +161,21 @@ export class WorkspaceComponent {
     this.cdr.detectChanges();
   }
 
+  searchQuery: string = '';
+
+  onSearchInputChange(event: any): void {
+    this.searchQuery = event.target.value;
+  }
+
+  filterUsers(): User[] {
+    const trimmedQuery = this.searchQuery.trim().toLowerCase();
+    if (!trimmedQuery) {
+      return this.allUsers;
+    }
+
+    return this.allUsers.filter(user =>
+      user.firstname.toLowerCase().includes(trimmedQuery) ||
+      user.lastname.toLowerCase().includes(trimmedQuery)
+    );
+  }
 }

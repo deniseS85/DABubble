@@ -31,6 +31,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { DatePipe } from '@angular/common';
+import { PickerComponent }  from  '@ctrl/ngx-emoji-mart';
 import { EditAnswerComponent } from './mainscreen/thread/edit-answer/edit-answer.component';
 
 
@@ -66,6 +67,7 @@ import { EditAnswerComponent } from './mainscreen/thread/edit-answer/edit-answer
     ReactiveFormsModule,
     FormsModule,
     MatRadioModule,
+    PickerComponent,
     provideFirebaseApp(() => initializeApp({"projectId":"dabubble-69322","appId":"1:486842154610:web:0631e3885b73bc4e4acceb","storageBucket":"dabubble-69322.appspot.com","apiKey":"AIzaSyC2opRUMbcOUpjD2QPCifl1muUI_7Wf-cw","authDomain":"dabubble-69322.firebaseapp.com","messagingSenderId":"486842154610"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

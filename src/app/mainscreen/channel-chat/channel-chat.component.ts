@@ -7,7 +7,25 @@ import { ChannelService } from '../../services/channel.service';
 import { Channel } from "../../models/channel.class";
 import { ActivatedRoute } from '@angular/router';
 
-
+interface Chat {
+  avatar: string;
+  reactionMenu: {
+    emoji: string;
+    handsUp: string;
+    addReaction: string;
+    answer: string;
+    isEmojiOpen: boolean;
+    selectedEmojis: string[];
+  };
+  userName: string;
+  sendingTime: string;
+  messageContent: string;
+  answerInfo: {
+    counter: number;
+    lastAnswerTime: string;
+  };
+  date: string; 
+}
 
 @Component({
   selector: 'app-channel-chat',
@@ -71,10 +89,7 @@ export class ChannelChatComponent {
   channelNameChange = false;
   channelDescriptionChange = false;
   showProfil = false;
-  /* isEmojiOpen: boolean = false; */
-  chats = [
-    { isEmojiOpen: false },
-  ];
+
   user = new User;
   userID: any;
   channel = new Channel;
@@ -103,6 +118,50 @@ export class ChannelChatComponent {
   firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
   unsubChannelUser: Unsubscribe | undefined;
+
+  /* //////////////////////////////////////// */
+  chats: Chat[] = [ 
+    {
+    avatar: "../../../assets/img/avatarNoah.png",
+    reactionMenu: {
+      emoji: "../../../assets/img/emoji1.png",
+      handsUp: "../../../assets/img/hands-up.png",
+      addReaction: "../../../assets/img/add_reaction.png",
+      answer: "../../../assets/img/Answer.png",
+      isEmojiOpen: false,
+      selectedEmojis: []
+    },
+    userName: "Noah Braun",
+    sendingTime: "14.25 Uhr",
+    messageContent: "Super neuer Chat, Klasse!",
+    answerInfo: {
+      counter: 2,
+      lastAnswerTime: "Letzte Antwort 14:56 Uhr"
+    },
+    date: "Dienstag, 14.Januar",
+  },
+  {
+    avatar: "../../../assets/img/avatarSofia.png",
+    reactionMenu: {
+      emoji: "../../../assets/img/emoji1.png",
+      handsUp: "../../../assets/img/hands-up.png",
+      addReaction: "../../../assets/img/add_reaction.png",
+      answer: "../../../assets/img/Answer.png",
+      isEmojiOpen: false,
+      selectedEmojis: []
+    },
+    userName: "Sofia Müller",
+    sendingTime: "14.25 Uhr",
+    messageContent: "Ja, wirklich der Wahnsinn!",
+    answerInfo: {
+      counter: 0,
+      lastAnswerTime: ""
+    },
+    date: "Heute",
+  },
+];
+  chatUserID: string = '';
+  /* //////////////////////////////////////// */
 
   constructor(
     private elRef: ElementRef,
@@ -167,18 +226,31 @@ export class ChannelChatComponent {
 
   toggleEmoji(event: Event, chatIndex: number) {
     event.stopPropagation();
+  
     this.chats.forEach((chat, index) => {
       if (index === chatIndex) {
-        chat.isEmojiOpen = !chat.isEmojiOpen;
-        console.log(`Chat ${index}: isEmojiOpen - ${chat.isEmojiOpen}`);
+        chat.reactionMenu.isEmojiOpen = !chat.reactionMenu.isEmojiOpen;
       } else {
-        chat.isEmojiOpen = false;
+        chat.reactionMenu.isEmojiOpen = false;
       }
     });
   }
+  
+  emojiSelected(selectedEmoji: any, chatIndex: number) {
+    let emojiToAdd = selectedEmoji.emoji.native;
+  
+    if (!this.chats[chatIndex].reactionMenu.selectedEmojis) {
+      this.chats[chatIndex].reactionMenu.selectedEmojis = [];
+    }
+    this.chats[chatIndex].reactionMenu.selectedEmojis.push(emojiToAdd);
+  }
 
-  emojiSelected(selectedEmoji: any) {
-    console.log('Selected Emoji:', selectedEmoji);
+  getUniqueEmojis(selectedEmojis: string[]): string[] {
+    return Array.from(new Set(selectedEmojis));
+  }
+  
+  getEmojiCount(selectedEmojis: string[], emoji: string): number {
+    return selectedEmojis.filter(e => e === emoji).length;
   }
 
   openPopup(): void {
@@ -237,7 +309,12 @@ export class ChannelChatComponent {
     this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
       this.user = new User(element.data());
       this.user.id = this.userID;
+      this.chatUserID = this.userID;
       this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
     });
+  }
+
+  isCurrentUser(chatUserID: string): boolean {
+    return this.chatUserID === this.userID;
   }
 }

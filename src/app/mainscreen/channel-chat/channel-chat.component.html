@@ -24,29 +24,29 @@
     <div class="messages-main-container mt-180" *ngFor="let chat of chats; let chatIndex = index">
         <div class="seperator"></div>
         <div class="date-incoming-message">
-            <span class="fs-18">Dienstag, 14.Januar</span>
+            <span class="fs-18">{{ chat.date }}</span>
         </div>
         <div class="new-message-somebody-container" (mouseenter)="toggleAnimationState('visible')"
             (mouseleave)="toggleAnimationState('hidden')">
             <div>
-                <img src="../../../assets/img/avatarNoah.png" alt="">
+                <img [src]="chat.avatar" alt="">
             </div>
             <div>
                 <div class="name-and-time-container">
                     <div class="reaction-menu-message right-0" [@slideAndFade]="animationState">
                         <div>
-                            <img src="../../../assets/img/emoji1.png" alt="">
+                            <img [src]="chat.reactionMenu.emoji" alt="">
                         </div>
                         <div>
-                            <img src="../../../assets/img/hands-up.png" alt="">
+                            <img [src]="chat.reactionMenu.handsUp" alt="">
                         </div>
                         <div class="emoji-container">
-                            <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">
-                            <div *ngIf="chat.isEmojiOpen" class="emoji-selection">
+                            <img (click)="toggleEmoji($event, chatIndex)" [src]="chat.reactionMenu.addReaction" alt="">
+                            <div *ngIf="chat.reactionMenu.isEmojiOpen" class="emoji-selection">
                                 <emoji-mart 
                                 class="emoji-mart"
-                                [style]="{ width: '240px' }"
-                                (emojiSelect)="emojiSelected($event)"
+                                [style]="{ width: '240px', cursor: 'default' }"
+                                (emojiSelect)="emojiSelected($event, chatIndex)"
                                 color = #535AF1
                                 set = "apple"
                                 [enableSearch] = "false"
@@ -56,22 +56,31 @@
                             </div>
                         </div>
                         <div>
-                            <img src="../../../assets/img/Answer.png" alt="">
+                            <img [src]="chat.reactionMenu.answer" alt="">
                         </div>
                     </div>
 
-                    <span class="writing-name fs-18 fw-700">Noah Braun</span>
-                    <div class="sending-time fs-14 fw-400">14.25 Uhr</div>
+                    <span class="writing-name fs-18 fw-700">{{ chat.userName }}</span>
+                    <div class="sending-time fs-14 fw-400">{{ chat.sendingTime }}</div>
                 </div>
-                <div class="message-somebody fs-18 fw-400">Super neuer Chat, Klasse!</div>
+                <div class="message-somebody fs-18 fw-400">{{ chat.messageContent }}</div>
                 <div class="answer-container">
-                    <div class="counter-answers fs-18 fw-400">2 Antworten</div>
-                    <div class="last-answer-time fs-14 fw-400">Letzte Antwort 14:56 Uhr</div>
+                    <div *ngIf='chat.answerInfo.counter > 0' class="counter-answers fs-18 fw-400">{{ chat.answerInfo.counter }} Antworten</div>
+                    <div class="last-answer-time fs-14 fw-400">{{ chat.answerInfo.lastAnswerTime }}</div>
+                    <div class="reactions" *ngIf="chat.answerInfo.counter == 0">
+                        <img (click)="toggleEmoji($event, chatIndex)" [src]="chat.reactionMenu.addReaction" alt="">
+                        <ng-container *ngIf="chat.reactionMenu.selectedEmojis && chat.reactionMenu.selectedEmojis.length > 0">
+                            <div class="single-emoji" *ngFor="let selectedEmoji of getUniqueEmojis(chat.reactionMenu.selectedEmojis)">
+                                {{ selectedEmoji }}{{ getEmojiCount(chat.reactionMenu.selectedEmojis, selectedEmoji) > 1 ? ' ' + getEmojiCount(chat.reactionMenu.selectedEmojis, selectedEmoji) : '' }}
+                              </div>
+                          </ng-container>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="new-message-avatar-main-div">
+        <!-- currentUser -->
+        <!-- <div class="new-message-avatar-main-div" *ngIf="isCurrentUser(userID)">
             <div class="seperator"></div>
             <div class="date-incoming-message">
                 <span class="fs-18">Heute</span>
@@ -79,7 +88,7 @@
             <div class="new-message-avatar-container" (mouseenter)="toggleAnimationState1('visible')"
                 (mouseleave)="toggleAnimationState1('hidden')">
                 <div>
-                    <img src="../../../assets/img/avatarFrederick.png" alt="">
+                    <img class='current-user-image'src="../../../assets/img/{{ user.profileImg }}" alt="">
                 </div>
                 <div>
                     <div class="name-and-time-container">
@@ -92,7 +101,7 @@
                             </div>
                             <div class="emoji-container">
                                 <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">
-                                <div *ngIf="chat.isEmojiOpen" class="emoji-selection">
+                                <div *ngIf="chat.reactionMenu.isEmojiOpen" class="emoji-selection">
                                     <emoji-mart 
                                     class="emoji-mart"
                                     [style]="{ width: '240px' }"
@@ -114,7 +123,7 @@
 
                         </div>
                         <div class="sending-time fs-14 fw-400">14.25 Uhr</div>
-                        <span class="writing-name fs-18 fw-700">Frederick Beck</span>
+                        <span class="writing-name fs-18 fw-700">{{user.firstname}} {{user.lastname}}</span>
                     </div>
 
                     <div class="message-avatar fs-18 fw-400">Ja, wirklich der Wahnsinn!</div>
@@ -152,7 +161,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class="footer-write-new-message">

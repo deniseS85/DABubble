@@ -180,4 +180,26 @@ export class WorkspaceComponent {
       user.lastname.toLowerCase().includes(trimmedQuery)
     );
   }
+
+
+  selectedUsers: User[] = [];
+
+selectUser(user: User): void {
+  if (!this.selectedUsers.includes(user)) {
+    this.selectedUsers.push(user);
+    this.updateSelectedUsersInput();
+  }
+}
+
+removeUser(user: User): void {
+  this.selectedUsers = this.selectedUsers.filter(u => u !== user);
+  this.updateSelectedUsersInput();
+}
+
+updateSelectedUsersInput(): void {
+  const selectedUsersNames = this.selectedUsers.map(u => `${u.firstname} ${u.lastname}`).join(', ');
+  this.channelCreateForm.get('selectedUsersInput')?.setValue(selectedUsersNames);
+}
+
+
 }

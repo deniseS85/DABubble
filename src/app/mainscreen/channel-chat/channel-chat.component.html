@@ -21,7 +21,7 @@
         </header>
     </div>
 
-    <div class="messages-main-container mt-180">
+    <div class="messages-main-container mt-180" *ngFor="let chat of chats; let chatIndex = index">
         <div class="seperator"></div>
         <div class="date-incoming-message">
             <span class="fs-18">Dienstag, 14.Januar</span>
@@ -41,11 +41,11 @@
                             <img src="../../../assets/img/hands-up.png" alt="">
                         </div>
                         <div class="emoji-container">
-                            <img (click)="toggleEmoji($event)" src="../../../assets/img/add_reaction.png" alt="">
-                            <div *ngIf="isOpened" class="emoji-selection">
+                            <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">
+                            <div *ngIf="chat.isEmojiOpen" class="emoji-selection">
                                 <emoji-mart 
                                 class="emoji-mart"
-                                [style]="{ width: '238px' }"
+                                [style]="{ width: '240px' }"
                                 (emojiSelect)="emojiSelected($event)"
                                 color = #535AF1
                                 set = "apple"
@@ -91,11 +91,11 @@
                                 <img src="../../../assets/img/hands-up.png" alt="">
                             </div>
                             <div class="emoji-container">
-                                <img (click)="toggleEmoji($event)" src="../../../assets/img/add_reaction.png" alt="">
-                                <div *ngIf="isOpened" class="emoji-selection">
+                                <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">
+                                <div *ngIf="chat.isEmojiOpen" class="emoji-selection">
                                     <emoji-mart 
                                     class="emoji-mart"
-                                    [style]="{ width: '238px' }"
+                                    [style]="{ width: '240px' }"
                                     (emojiSelect)="emojiSelected($event)"
                                     color = #535AF1
                                     set = "apple"

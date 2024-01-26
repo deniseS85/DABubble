@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, inject } from '@angular/core';
+import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../auth.service";
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
@@ -77,7 +77,7 @@ interface Chat {
     ]),
   ],
 })
-export class ChannelChatComponent {
+export class ChannelChatComponent implements OnInit, OnDestroy{
   animationState = 'hidden';
   animationState1 = 'hidden';
 
@@ -203,9 +203,10 @@ export class ChannelChatComponent {
     });
   }
 
-  ngOndestroy() {
+  ngOnDestroy() {
     this.unsubUser;
     this.unsubChannelUser;
+    this.unsubscribeSnapshot;
   }
 
   showReaction(index: number) {

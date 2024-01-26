@@ -12,23 +12,24 @@ import { ChannelService } from '../../services/channel.service';
 })
 
 export class WorkspaceComponent {
-  firestore: Firestore = inject(Firestore);
-  user = new User();
   @ViewChild('channelCreateWindow') channelCreateWindow!: ElementRef<HTMLElement>;
   @ViewChild('channelCreateContainer') channelCreateContainer!: ElementRef<HTMLElement>;
-
   panelOpenState1 = false;
   panelOpenState2 = false;
+  
+  user = new User();
+  userID: any;
+  allUsers: User[] = [];
+  userFullName: String = '';
+  
   showInputNames: boolean = false;
   
   channelCreateForm: FormGroup;
   body = this.elRef.nativeElement.ownerDocument.body;
-  userID: any;
   userList;
-  userFullName: String = '';
   private unsubscribeSnapshot: Unsubscribe | undefined;
-
-  allUsers: User[] = [];
+  
+  firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
 
   constructor(
@@ -52,6 +53,14 @@ export class WorkspaceComponent {
     if (this.userID) {
         this.checkIsGuestLogin();
     }
+    this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
+      this.allUsers = [];
+      list.forEach(singleUser => {
+        let user = new User(singleUser.data());
+        user.id = singleUser.id;
+        this.allUsers.push(user);
+      });
+    });
   }
 
   ngOnDestroy(){
@@ -180,4 +189,26 @@ export class WorkspaceComponent {
       user.lastname.toLowerCase().includes(trimmedQuery)
     );
   }
+
+
+  selectedUsers: User[] = [];
+
+selectUser(user: User): void {
+  if (!this.selectedUsers.includes(user)) {
+    this.selectedUsers.push(user);
+    this.updateSelectedUsersInput();
+  }
+}
+
+removeUser(user: User): void {
+  this.selectedUsers = this.selectedUsers.filter(u => u !== user);
+  this.updateSelectedUsersInput();
+}
+
+updateSelectedUsersInput(): void {
+  const selectedUsersNames = this.selectedUsers.map(u => `${u.firstname} ${u.lastname}`).join(', ');
+  this.channelCreateForm.get('selectedUsersInput')?.setValue(selectedUsersNames);
+}
+
+
 }

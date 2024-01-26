@@ -158,9 +158,17 @@
           class="channel-create-input channel-create-description-input"
           (input)="onSearchInputChange($event)"
         />
+
+        <div  *ngIf="selectedUsers.length > 0">
+          <div *ngFor="let user of selectedUsers">
+            {{ user.firstname + ' ' + user.lastname }}
+            <span (click)="removeUser(user)">x</span>
+          </div>
+        </div>
+
         <div class="contacts-list-pop-up" *ngIf="showInputNames && searchQuery.trim()">
           <div class="contacts-list">
-            <div *ngFor="let user of filterUsers()">
+            <div *ngFor="let user of filterUsers()"  (click)="selectUser(user)">
               <img [src]="'../../../assets/img/' + user.profileImg"/>
               <span>{{ user.firstname }} {{ user.lastname }}</span>
             </div>

@@ -33,15 +33,6 @@ $DABubble-theme: mat.define-light-theme((color: (primary: $DABubble-primary,
   font-family: 'Nunito', sans-serif;
 }
 
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-}
-
 
 
 html,
@@ -51,8 +42,8 @@ body {
 }
 
 body {
-  
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  /* font-family: Roboto, "Helvetica Neue", sans-serif; */
 }
 
 .fs-18 {

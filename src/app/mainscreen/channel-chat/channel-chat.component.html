@@ -35,15 +35,13 @@
                 <div class="name-and-time-container">
                     <div class="reaction-menu-message right-0" [@slideAndFade]="animationState">
                        
+                        <div *ngIf="chat.reactionMenu.selectedEmojis && chat.reactionMenu.selectedEmojis.length > 0">
+                            <div class="last-emoji">{{getEmojiPath(chat, 0)}}</div>
+                        </div>
+                        <div *ngIf="chat.reactionMenu.selectedEmojis.length > 1">
+                            <div class="last-emoji">{{getEmojiPath(chat, 1)}}</div>
+                        </div>
                        
-                            <div *ngIf="chat.reactionMenu.selectedEmojis && chat.reactionMenu.selectedEmojis.length > 0">
-                                <div class="last-emoji">{{getEmojiPath(chat, 0)}}</div>
-                            </div>
-                            <div *ngIf="chat.reactionMenu.selectedEmojis.length > 1">
-                                <div class="last-emoji">{{getEmojiPath(chat, 1)}}</div>
-                            </div>
-                       
-
                         <div class="emoji-container">
                             <img (click)="toggleEmoji($event, chatIndex)" [src]="chat.reactionMenu.addReaction" alt="">
                             <div *ngIf="chat.reactionMenu.isEmojiOpen" class="emoji-selection">

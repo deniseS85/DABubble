@@ -28,10 +28,10 @@
             margin-left: 50px;
         }
     }
-    .fade-in-animation {
+   /*  .fade-in-animation {
         opacity: 0;
         animation: fadeIn 2500ms ease-in-out 800ms forwards;
-    }
+    } */
     @keyframes backgroundAnimation {
         0% {
             background: linear-gradient(1deg, #313AE5 10%, #797EF3 90%);
@@ -105,7 +105,7 @@
             color: black;
         }
     }
-    @keyframes fadeIn {
+   /*  @keyframes fadeIn {
         0% {
             opacity: 0;
         }
@@ -121,9 +121,5 @@
         100% {
             opacity: 1;
         }
-    }
+    } */
 }
-
-.login-container.initial-load {
-    animation: none;
-  }

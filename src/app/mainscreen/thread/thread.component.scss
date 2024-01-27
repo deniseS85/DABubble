@@ -117,7 +117,7 @@
                 display: flex;
                 justify-content: flex-start;
                 gap: 20px;
-                overflow: hidden;
+                position: relative;
                 
     
                 &:hover{
@@ -280,6 +280,24 @@
     justify-content: center;
     align-items: center;
     gap: 12px;
+    position: relative;
+    
+
+    .emoji-container{     
+            
+            position: relative;
+
+            .emoji-selection {
+                
+                position: absolute;
+                top:20px;
+                transform: translateX(-50%);
+                z-index: 1000;
+            }
+        
+
+        
+    }
 
     .threadContainerTextReactionsEmojis{
         padding: 5px 10px;

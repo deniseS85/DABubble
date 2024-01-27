@@ -5,7 +5,8 @@ import { collection, addDoc } from "firebase/firestore";
 import { User } from '../../models/user.class';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
-import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
+import { Storage, ref, uploadBytes, getDownloadURL, getMetadata } from '@angular/fire/storage';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -25,9 +26,8 @@ export class SelectAvatarComponent implements OnInit {
     firestore: Firestore = inject(Firestore);
     user = new User();
     isGoogleLogin: boolean = false;
-    
 
-    constructor(public startscreen: StartscreenComponent, private router: Router, private authService: AuthService, private storage: Storage) {}
+    constructor(public startscreen: StartscreenComponent, private router: Router, private authService: AuthService, private storage: Storage, private snackBar: MatSnackBar) {}
 
    
     ngOnInit() {
@@ -87,51 +87,72 @@ export class SelectAvatarComponent implements OnInit {
         return collection(this.firestore, 'users');
     }
 
-    uploadFiles(event: any) {
-        const file = event.target.files[0];
-        const imgRef = ref(this.storage, `images/${file.name}`);
+    async uploadFiles(event: any) {
+        let files = event.target.files;
       
-        uploadBytes(imgRef, file).then(() => {
-          getDownloadURL(imgRef).then((url) => {
-            console.log(url);
-            
+        if (!files || files.length === 0) {
+          return;
+        }
+      
+        let file = files[0];
+      
+        if (!(await this.isValidFile(file))) {
+          return;
+        }
+      
+        let timestamp = new Date().getTime();
+        let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
+      
+        uploadBytes(imgRef, file).then(async () => {
+            let url = await getDownloadURL(imgRef);
             this.avatarSrc = url;
             this.userData = {
-              ...this.userData,
-              profileImg: this.avatarSrc
+                ...this.userData,
+                profileImg: this.avatarSrc
             };
-      
-            // Hier kannst du weitere Aktionen durchführen, nachdem die URL erhalten wurde
-          }).catch(error => console.log(error));
-        }).catch(error => console.log(error));
-      }
+        });
+    }
 
-   
-/* const filePath = `uploads/${new Date().getTime()}_${fileUpload.file?.name}`;
-        const fileRef = this.storage.ref(filePath);
-        const uploadTask = this.storage.upload(filePath, fileUpload.file);
-        const snapshot = await lastValueFrom(uploadTask.snapshotChanges());
-
-        if (snapshot?.state === 'success') {
-            fileUpload.name = fileUpload.file.name;
-            fileUpload.path = filePath;
-            const updatedFileUpload = await this.getDownloadURL(fileRef, fileUpload);
-            return updatedFileUpload;
-        } else {
-            throw new Error('File upload failed');
+    async isValidFile(file: File): Promise<boolean> {
+        if (file.size > 500000) {
+          this.showSnackbar('Error: Sorry, your file is too large.');
+          return false;
         }
-      } catch (error) {
-          throw error;
-      }
       
+        let allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+        if (!allowedFormats.includes(file.type)) {
+          this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG.');
+          return false;
+        }
       
-      deleteFile(filePath: string) {
-      const fileRef = this.storage.ref(filePath);
-      try {
-          fileRef.delete();
-      } catch (error) {
-          throw error;
-      }
-  }*/
+        let exists = await this.fileAlreadyExists(file.name);
+        if (exists) {
+          this.showSnackbar('Error: This file already exists.');
+          return false;
+        }
+      
+        return true;
+    }
+
+    async fileAlreadyExists(fileName: string): Promise<boolean> {
+        let imgRef = ref(this.storage, `images/${fileName}`);
+      
+        try {
+          await getMetadata(imgRef);
+          return true;
+        } catch (error: any) {
+          if (error.code === 'storage/object-not-found') {
+            return false;
+          } else {
+            throw error;
+          }
+        }
+    }
+
+    showSnackbar(message: string): void {
+        this.snackBar.open(message, 'Close', {
+          duration: 3000,
+        });
+    }
     
 }

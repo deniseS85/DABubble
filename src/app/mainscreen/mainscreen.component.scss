@@ -113,6 +113,9 @@
                     }
                     img {
                         width: 150px;
+                        height: 150px;
+                        object-fit: cover;
+                        border-radius: 100%;
                     }
                     .user-info-header, .user-info-name, .user-email {
                         width: 100%;

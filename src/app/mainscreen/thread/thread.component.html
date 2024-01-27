@@ -7,11 +7,14 @@
             <div class="threadContainerHeaderHeadlineChanal">Entwicklerteam</div>
         </div>
         <div class="threadContainerHeaderCloseBtn" title="closeThreads" (click)="closeThread()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                <path
+                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
         </div>
     </div>
 
-<!-- ThreadQuestion -->
+    <!-- ThreadQuestion -->
     <div class="threadContainerQuestion">
         <img class="profilPic" src="./assets/img/avatarNoah.png" alt="">
         <div class="threadContainerQuestionContainer">
@@ -37,18 +40,19 @@
         </div>
     </div>
 
-<!-- Stroke between -->
+    <!-- Stroke between -->
     <div class="threadContainerAnswersStroke">
         <div class="threadContainerAnswers">{{allAnswers.length}} Anworten</div>
         <div class="threadContainerAnswersStrokeContainer"></div>
     </div>
 
-<!-- Thread Answers -->
+    <!-- Thread Answers -->
     <div class="answersContainer">
-        <div class="threadContainerAnswer" *ngFor="let answer of allAnswers" [ngClass]="{'threadContainerAnswerReverse' : answer.activeUserAnswers}">
+        <div class="threadContainerAnswer" *ngFor="let answer of allAnswers"
+            [ngClass]="{'threadContainerAnswerReverse' : answer.activeUserAnswers}">
             <img class="profilPic" src="./assets/img/{{answer.userProfileImg}}" alt="">
             <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : answer.activeUserAnswers}">
-    
+
                 <div class="reactionContainer" [ngClass]="{'absoluteLeft' : answer.activeUserAnswers}">
                     <div class="reactionMenu">
                         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
@@ -62,11 +66,12 @@
                             <div class="editMessageBtn">
                                 <span (click)="editAnswer(answer.answerID)">Nachricht bearbeiten</span>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
-    
-                <div class="threadContainerAnswerInfo" [ngClass]="{'threadContainerAnswerReverse' : answer.activeUserAnswers}">
+
+                <div class="threadContainerAnswerInfo"
+                    [ngClass]="{'threadContainerAnswerReverse' : answer.activeUserAnswers}">
                     <div class="threadContainerInfoPerson">{{answer.answerUserName}}</div>
                     <div class="threadContainerInfoTime">{{answer.timestamp}} Uhr</div>
                 </div>
@@ -75,15 +80,29 @@
                 </div>
                 <div class="threadContainerTextReactions">
                     <div class="threadContainerTextReactionsEmojis">
-                        <img src="./assets/img/EmojiExample.png" alt="">
+                        <div *ngFor="let reactionContainer of allReactions">{{reactionContainer.emoji}}</div>
                         <div class="threadContainerTextReactionsAmount">1</div>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
-                            viewBox="0 0 24 24" width="24px" fill="#000000">
-                            <rect fill="none" height="24" width="24" />
-                            <path
-                                d="M7,9.5C7,8.67,7.67,8,8.5,8S10,8.67,10,9.5c0,0.83-0.67,1.5-1.5,1.5S7,10.33,7,9.5z M12,17.5c2.33,0,4.31-1.46,5.11-3.5 H6.89C7.69,16.04,9.67,17.5,12,17.5z M15.5,11c0.83,0,1.5-0.67,1.5-1.5C17,8.67,16.33,8,15.5,8S14,8.67,14,9.5 C14,10.33,14.67,11,15.5,11z M22,1h-2v2h-2v2h2v2h2V5h2V3h-2V1z M20,12c0,4.42-3.58,8-8,8s-8-3.58-8-8c0-4.42,3.58-8,8-8 c1.46,0,2.82,0.4,4,1.08V2.84C14.77,2.3,13.42,2,11.99,2C6.47,2,2,6.48,2,12c0,5.52,4.47,10,9.99,10C17.52,22,22,17.52,22,12 c0-1.05-0.17-2.05-0.47-3h-2.13C19.78,9.93,20,10.94,20,12z" />
-                    </svg>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
+                        viewBox="0 0 24 24" width="24px" fill="#000000">
+                        <rect fill="none" height="24" width="24" />
+                        <path
+                            d="M7,9.5C7,8.67,7.67,8,8.5,8S10,8.67,10,9.5c0,0.83-0.67,1.5-1.5,1.5S7,10.33,7,9.5z M12,17.5c2.33,0,4.31-1.46,5.11-3.5 H6.89C7.69,16.04,9.67,17.5,12,17.5z M15.5,11c0.83,0,1.5-0.67,1.5-1.5C17,8.67,16.33,8,15.5,8S14,8.67,14,9.5 C14,10.33,14.67,11,15.5,11z M22,1h-2v2h-2v2h2v2h2V5h2V3h-2V1z M20,12c0,4.42-3.58,8-8,8s-8-3.58-8-8c0-4.42,3.58-8,8-8 c1.46,0,2.82,0.4,4,1.08V2.84C14.77,2.3,13.42,2,11.99,2C6.47,2,2,6.48,2,12c0,5.52,4.47,10,9.99,10C17.52,22,22,17.52,22,12 c0-1.05-0.17-2.05-0.47-3h-2.13C19.78,9.93,20,10.94,20,12z" />
+                    </svg> -->
+                    <div class="emoji-container">
+                        <img (click)="toggleEmoji(answer.answerID)" src="../../../assets/img/add_reaction.png" alt="">
+                            <div *ngIf="answer.isEmojiOpen" class="emoji-selection">
+                                <emoji-mart class="emoji-mart" 
+                                [style]="{ width: '240px', cursor: 'default' }"
+                                (emojiSelect)="addEmojitoReaction($event, answer)" 
+                                color=#535AF1 
+                                set="apple"
+                                [enableSearch]="false" 
+                                [showPreview]="false" 
+                                title="Choose your emoji">
+                                </emoji-mart>
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,13 +117,21 @@
             <div class="footer-icons-left">
                 <mat-icon>add</mat-icon>
                 <div class="seperator-vert"></div>
-                <mat-icon>mood</mat-icon>
+                <!-- <div class="emoji-container">
+                    <img (click)="toggleEmoji($event, chatIndex)" [src]="chat.reactionMenu.addReaction" alt="">
+                    <div *ngIf="chat.reactionMenu.isEmojiOpen" class="emoji-selection">
+                        <emoji-mart class="emoji-mart" [style]="{ width: '240px', cursor: 'default' }"
+                            (emojiSelect)="emojiSelected($event, chatIndex)" color=#535AF1 set="apple"
+                            [enableSearch]="false" [showPreview]="false" title="Choose your emoji">
+                        </emoji-mart>
+                    </div>
+                </div> -->
                 <mat-icon>alternate_email</mat-icon>
             </div>
             <div class="footer-icons-right">
                 <mat-icon title="channel" (click)="sendAnswer()">send_icon</mat-icon>
             </div>
-           
+
         </div>
     </div>
 

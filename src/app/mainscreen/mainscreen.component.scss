@@ -55,6 +55,9 @@
             }
             .profile-img {
                 width: 70px;
+                height: 70px;
+                object-fit: cover;
+                border-radius: 100%;
             }
             .profil-info-header {
                 width: 150px;

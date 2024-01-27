@@ -9,7 +9,7 @@
      
         <div class="mainContainerHeaderProfil">
             <span class="mainContainerHeaderProfilName">{{  isEditMode ? editedUserFullName : userFullName  }}</span>
-            <img class="profile-img" src="./assets/img/{{ user.profileImg }}" alt="">
+            <img class="profile-img" [src]="getProfileImagePath()" alt="">
             <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
             <div class="profil-info-header" *ngIf="isProfileMenuOpen">
                 <div (click)="openUserInfo()" class="profile">Profil</div>

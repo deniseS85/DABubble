@@ -47,7 +47,10 @@
         }
     }
     img {
-        width: clamp(4.6875rem, 3.8393rem + 4.2411vw, 10.625rem);;
+        width: clamp(4.6875rem, 3.8393rem + 4.2411vw, 10.625rem);
+        height: clamp(4.6875rem, 3.8393rem + 4.2411vw, 10.625rem);
+        border-radius: 100%;
+        object-fit: cover;
     }
     h3, p {
         margin: 0;

@@ -5,6 +5,8 @@ import { collection, addDoc } from "firebase/firestore";
 import { User } from '../../models/user.class';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
+import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
+
 
 @Component({
   selector: 'app-select-avatar',
@@ -23,8 +25,9 @@ export class SelectAvatarComponent implements OnInit {
     firestore: Firestore = inject(Firestore);
     user = new User();
     isGoogleLogin: boolean = false;
+    
 
-    constructor(public startscreen: StartscreenComponent, private router: Router, private authService: AuthService) {}
+    constructor(public startscreen: StartscreenComponent, private router: Router, private authService: AuthService, private storage: Storage) {}
 
    
     ngOnInit() {
@@ -62,7 +65,7 @@ export class SelectAvatarComponent implements OnInit {
        
         let docRef = await addDoc(this.getUserRef(), updatedUserData);
         await updateDoc(doc(this.getUserRef(), docRef.id), { id: docRef.id });
-       
+
         setTimeout(() => {
             this.showConfirmation = false;
             if (this.isGoogleLogin) {
@@ -83,4 +86,52 @@ export class SelectAvatarComponent implements OnInit {
     getUserRef() {
         return collection(this.firestore, 'users');
     }
+
+    uploadFiles(event: any) {
+        const file = event.target.files[0];
+        const imgRef = ref(this.storage, `images/${file.name}`);
+      
+        uploadBytes(imgRef, file).then(() => {
+          getDownloadURL(imgRef).then((url) => {
+            console.log(url);
+            
+            this.avatarSrc = url;
+            this.userData = {
+              ...this.userData,
+              profileImg: this.avatarSrc
+            };
+      
+            // Hier kannst du weitere Aktionen durchführen, nachdem die URL erhalten wurde
+          }).catch(error => console.log(error));
+        }).catch(error => console.log(error));
+      }
+
+   
+/* const filePath = `uploads/${new Date().getTime()}_${fileUpload.file?.name}`;
+        const fileRef = this.storage.ref(filePath);
+        const uploadTask = this.storage.upload(filePath, fileUpload.file);
+        const snapshot = await lastValueFrom(uploadTask.snapshotChanges());
+
+        if (snapshot?.state === 'success') {
+            fileUpload.name = fileUpload.file.name;
+            fileUpload.path = filePath;
+            const updatedFileUpload = await this.getDownloadURL(fileRef, fileUpload);
+            return updatedFileUpload;
+        } else {
+            throw new Error('File upload failed');
+        }
+      } catch (error) {
+          throw error;
+      }
+      
+      
+      deleteFile(filePath: string) {
+      const fileRef = this.storage.ref(filePath);
+      try {
+          fileRef.delete();
+      } catch (error) {
+          throw error;
+      }
+  }*/
+    
 }

@@ -80,6 +80,14 @@ export class WorkspaceComponent {
     });
   }
 
+  getProfileImagePath(): string {
+    if (this.user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+      return this.user.profileImg;
+    } else {
+      return `./assets/img/${this.user.profileImg}`;
+    }
+}
+
   ngOnDestroy() {
     if (this.unsubscribeSnapshot) {
       this.unsubscribeSnapshot();

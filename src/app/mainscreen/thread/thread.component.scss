@@ -237,6 +237,11 @@
                     font-weight: 600;
                 }
             }
+
+            .emoji-container{
+                display: flex;
+                align-items: center;
+            }
         }
         
         .seperator-vert {

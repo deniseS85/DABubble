@@ -14,6 +14,7 @@ export class EditAnswerComponent {
     answertext: ""
   };
   firestore: Firestore = inject(Firestore);
+  isAnswertextEmojiOpen = false;
   
 
   constructor(
@@ -52,6 +53,20 @@ export class EditAnswerComponent {
 
     this.answer = answer.data();
     this.answertex = this.answer.answertext
+  }
+
+
+  toggleEmojiAnswer(){
+    this.isAnswertextEmojiOpen = !this.isAnswertextEmojiOpen
+  }
+
+
+  addEmojitoText(event: any){
+    
+   const emoji = event.emoji.native
+
+    this.answertex = this.answertex+emoji;
+    this.toggleEmojiAnswer()
   }
   
   

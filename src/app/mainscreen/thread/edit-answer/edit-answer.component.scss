@@ -3,6 +3,10 @@
 }
 
 .editAnswerContainer {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -19,6 +23,11 @@
         resize: none;
         font-size: 16px;
         line-height: 24.5px;
+    }
+
+    .emoji-container{
+        display: flex;
+        align-items: center;
     }
 }
 

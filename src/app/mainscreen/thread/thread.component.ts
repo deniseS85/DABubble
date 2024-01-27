@@ -31,6 +31,7 @@ export class ThreadComponent {
 
   answer: any;
   answertext: string = '';
+  isAnswertextEmojiOpen = false;
   answerUserName: string = 'Frederick Beck';
   allAnswers: any[] = [];  
   
@@ -178,13 +179,9 @@ export class ThreadComponent {
   }
 
 
-
-
-
   // Emojis
 
-  toggleEmoji(id: string) {    
-  
+  toggleEmoji(id: string) {      
     this.allAnswers.forEach((answer) => {
       if (answer.answerID === id) {
         answer.isEmojiOpen = !answer.isEmojiOpen;
@@ -194,6 +191,23 @@ export class ThreadComponent {
     });
   }
 
+  toggleEmojiAnswer(){
+    this.isAnswertextEmojiOpen = !this.isAnswertextEmojiOpen
+  }
+
+  addEmojitoText(event: any){
+    const emoji = event.emoji.native;
+
+    this.answertext = this.answertext + emoji;
+    this.toggleEmojiAnswer()
+  }
+
+
+  /**
+   * function noch splitten in einzelne functions und kelinen bug beheben beim löschen 
+   * @param event 
+   * @param answer 
+   */
   async addEmojitoReaction(event: any, answer: any) {
     
     //save selected Emoji
@@ -216,6 +230,8 @@ export class ThreadComponent {
         setDoc(reactRef, {...react, reactionID: reactRef.id});   
         
         answer.isEmojiOpen = false;
+
+      console.log('empty')
     }
 
 

@@ -27,11 +27,11 @@ export class directMessagesService {
             userIDs: [currentUser.id, otherUser.id],
             users: [
               {
-                displayName: currentUser.firstName + currentUser.lastName,
+                displayName: currentUser.firstname + currentUser.lastname,
                 profileImg: currentUser.profileImg
               },
               {
-                displayName: otherUser?.firstName + currentUser.lastName,
+                displayName: otherUser?.firstname + currentUser.lastname,
                 profileImg: otherUser?.profileImg
               }
             ],

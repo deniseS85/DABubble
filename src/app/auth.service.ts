@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail, signInAnonymously, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
+import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
 
 
 @Injectable({
@@ -8,51 +9,17 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
     auth: Auth = inject(Auth);
+    firestore: Firestore = inject(Firestore);
     private userFirstName: string = '';
     private userLastName: string = '';
     private userImg: string = '';
     private isAnonymous: boolean = false;
     private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
     private userDataSubject = new BehaviorSubject<any>({});
+    private isUserOnlineSource = new BehaviorSubject<boolean>(false);
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
     userData$ = this.userDataSubject.asObservable();
-
-    
-    setUserDetails(firstName: string, lastName: string, profileImg: string): void {
-        this.userFirstName = firstName;
-        this.userLastName = lastName;
-        this.userImg = profileImg;
-        this.saveUserData();
-    }
-
-    getUserFirstName(): string {
-        return this.userFirstName;
-    }
-
-    getUserLastName(): string {
-        return this.userLastName;
-    }
-
-    getUserImg(): string {
-        return this.userImg
-    }
-
-    getUserEmail(): string {
-        let user = this.auth.currentUser;
-        return user ? user.email || '' : '';
-    }
-
-    saveUserData(): void {
-        localStorage.setItem('userFirstName', this.userFirstName);
-        localStorage.setItem('userLastName', this.userLastName);
-        localStorage.setItem('userImg', this.userImg);
-    }
-
-    restoreUserData(): void {
-        this.userFirstName = localStorage.getItem('userFirstName') || '';
-        this.userLastName = localStorage.getItem('userLastName') || '';
-        this.userImg = localStorage.getItem('userImg') || '';
-    }
+    isUserOnline$ = this.isUserOnlineSource.asObservable();
 
     setAnonymousStatus(isAnonymous: boolean): void {
         this.isAnonymous = isAnonymous;
@@ -92,11 +59,7 @@ export class AuthService {
             } catch (error) {}
     }  
 
-    setUserData(updatedData: any): void {
-        const currentData = this.userDataSubject.value;
-        const newData = { ...currentData, ...updatedData };
-        this.userDataSubject.next(newData);
-    }
+   
 
     updateAndVerifyEmail(newEmail: any) {
         const user = this.auth.currentUser;
@@ -105,4 +68,57 @@ export class AuthService {
           }).catch((error) => {});
         }
       }
+
+
+
+
+
+
+
+
+
+       /* auslagern */
+
+       setUserData(updatedData: any): void {
+        const currentData = this.userDataSubject.value;
+        const newData = { ...currentData, ...updatedData };
+        this.userDataSubject.next(newData);
+    }
+
+    setUserDetails(firstName: string, lastName: string, profileImg: string): void {
+        this.userFirstName = firstName;
+        this.userLastName = lastName;
+        this.userImg = profileImg;
+        this.saveUserData();
+    }
+
+    getUserFirstName(): string {
+        return this.userFirstName;
+    }
+
+    getUserLastName(): string {
+        return this.userLastName;
+    }
+
+    getUserImg(): string {
+        return this.userImg
+    }
+
+    getUserEmail(): string {
+        let user = this.auth.currentUser;
+        return user ? user.email || '' : '';
+    }
+
+    saveUserData(): void {
+        localStorage.setItem('userFirstName', this.userFirstName);
+        localStorage.setItem('userLastName', this.userLastName);
+        localStorage.setItem('userImg', this.userImg);
+    }
+
+    restoreUserData(): void {
+        this.userFirstName = localStorage.getItem('userFirstName') || '';
+        this.userLastName = localStorage.getItem('userLastName') || '';
+        this.userImg = localStorage.getItem('userImg') || '';
+    }
+
 }

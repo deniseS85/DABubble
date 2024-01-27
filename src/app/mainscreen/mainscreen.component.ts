@@ -48,7 +48,7 @@ export class MainscreenComponent implements OnInit {
         } else {
           return `./assets/img/${this.user.profileImg}`;
         }
-    }
+      }
 
     ngOnDestroy(){
         if (this.unsubscribeSnapshot) {

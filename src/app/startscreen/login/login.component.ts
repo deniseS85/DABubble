@@ -37,6 +37,7 @@ export class LoginComponent {
         this.setLoginForm();
     }
 
+
     async logInUser() {
         let email = this.logInForm.value.email;
         this.isSubmitted = true;

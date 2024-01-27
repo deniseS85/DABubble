@@ -4,6 +4,7 @@ export class User {
     lastname: string;
     email: string;
     profileImg: string;
+    isOnline: boolean;
     
 
     constructor(obj?: any) {
@@ -11,7 +12,8 @@ export class User {
         this.firstname = obj && obj.firstname ? obj.firstname : '';
         this.lastname = obj && obj.lastname ? obj.lastname : '';
         this.email = obj && obj.email ? obj.email : '';
-        this.profileImg = obj && obj.profileImg ? obj.profileImg : ''
+        this.profileImg = obj && obj.profileImg ? obj.profileImg : '';
+        this.isOnline = obj ? obj.isOnline : false;
          
     }
 
@@ -21,7 +23,8 @@ export class User {
             firstname: this.firstname,
             lastname: this.lastname,
             email: this.email,
-            profileImg: this.profileImg
+            profileImg: this.profileImg,
+            isOnline: this.isOnline
         };
     }
 
@@ -31,7 +34,8 @@ export class User {
             firstname: obj.firstname || "",
             lastname: obj.lastname || "",
             email: obj.email || "",
-            profileImg: obj.profileImg || ""
+            profileImg: obj.profileImg || "",
+            isOnline: obj.isOnline || false
         });
     } 
 }

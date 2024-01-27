@@ -18,8 +18,7 @@ export class StartscreenComponent {
     viewsHistory: Array<'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy'> = [];
     currentView: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint'| 'privacy' = 'login';
     userData: User = new User();
-
-
+   
     toggleView(view: 'login' | 'signup' | 'resetPassword' | 'selectAvatar' | 'imprint' | 'privacy' | undefined = 'login', data?: User): void {
         this.viewsHistory.push(this.currentView);
         this.currentView = view;
@@ -49,7 +48,6 @@ export class StartscreenComponent {
             while (lastView === 'privacy' || lastView === 'imprint') {
                 lastView = this.viewsHistory.pop();
             }
-            
             this.toggleView(lastView);
         }
     }

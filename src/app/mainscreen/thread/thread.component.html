@@ -83,7 +83,7 @@
                     <div class="threadContainerInfoPerson">{{answer.answerUserName}}</div>
                     <div class="threadContainerInfoTime">{{answer.timestamp}} Uhr</div>
                 </div>
-                <div class="threadContainerTextLeft" [ngClass]="{'answer' : answer.activeUserAnswers}">
+                <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : answer.activeUserAnswers}">
                     {{answer.answertext}}
                 </div>
                 <div class="threadContainerTextReactions">

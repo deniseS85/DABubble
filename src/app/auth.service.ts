@@ -1,9 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
-import { User } from './models/user.class';
-
+import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +15,9 @@ export class AuthService {
     private isAnonymous: boolean = false;
     private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
     private userDataSubject = new BehaviorSubject<any>({});
-    private isUserOnlineSource = new BehaviorSubject<boolean>(false);
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
     userData$ = this.userDataSubject.asObservable();
-    isUserOnline$ = this.isUserOnlineSource.asObservable();
+ 
 
     setAnonymousStatus(isAnonymous: boolean): void {
         this.isAnonymous = isAnonymous;
@@ -81,12 +78,27 @@ export class AuthService {
         try {
           const userDocRef = doc(this.firestore, 'users', userId);
           await updateDoc(userDocRef, { isOnline: isOnline });
-        } catch (error) {
-          console.error('Fehler beim Aktualisieren des Online-Status:', error);
-        }
-      }
-    
+        } catch (error) {}
+    }
 
+    async getOnlineStatus(userId: string): Promise<boolean> {
+        try {
+          const userDocRef = doc(this.firestore, 'users', userId);
+          const userDocSnap = await getDoc(userDocRef);
+    
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            return userData?.['isOnline'] || false;
+          } else {
+            console.log(`Benutzerdokument mit ID ${userId} existiert nicht.`);
+            return false;
+          }
+        } catch (error) {
+          console.error('Fehler beim Abrufen des Online-Status:', error);
+          return false;
+        }
+    }
+    
     setUserData(updatedData: any): void {
         const currentData = this.userDataSubject.value;
         const newData = { ...currentData, ...updatedData };
@@ -99,6 +111,7 @@ export class AuthService {
         this.userImg = profileImg;
         this.saveUserData();
     }
+
 
     getUserFirstName(): string {
         return this.userFirstName;

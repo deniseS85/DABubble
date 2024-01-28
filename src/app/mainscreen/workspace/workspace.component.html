@@ -82,7 +82,11 @@
 
         <div class="contacts-list">
           <div class="selectable" (click)="handleClick($event)">
-            <span><img [src]="getProfileImagePath()" /></span>
+            <span class="profile">
+              <img [src]="getProfileImagePath()"/>
+              <p class="active-point" [ngClass]="{'online': userIsOnline, 'offline': !userIsOnline}"></p>
+            </span>
+
             <span>{{ userFullName }} (Du)</span>
           </div>
           <div class="selectable" (click)="handleClick($event)">

@@ -143,6 +143,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   },
 ];
   chatUserID: string = '';
+  userIsOnline: boolean = false;
   /* //////////////////////////////////////// */
 
   constructor(
@@ -307,13 +308,18 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     return doc(collection(this.firestore, 'users'), this.userID);
   }
 
-  getUserfromFirebase(): void {
-    this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
-      this.user = new User(element.data());
-      this.user.id = this.userID;
-      this.chatUserID = this.userID;
-      this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-    });
+  async getUserfromFirebase(): Promise<void> {
+    try {
+      const userDocRef = doc(this.firestore, 'users', this.userID);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        this.user = new User(userDocSnap.data());
+        this.user.id = this.userID;
+        this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+        this.userIsOnline = await this.authservice.getOnlineStatus(this.userID);
+      }
+    } catch (error) {}
   }
 
   isCurrentUser(chatUserID: string): boolean {

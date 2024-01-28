@@ -19,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
 import { ChannelDataService } from '../../services/channel-data.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-workspace',
@@ -49,6 +50,7 @@ export class WorkspaceComponent {
 
   firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
+  userIsOnline: boolean = false;
 
   constructor(
     private elRef: ElementRef,
@@ -57,7 +59,8 @@ export class WorkspaceComponent {
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     public channelService: ChannelService,
-    public channelDataService: ChannelDataService 
+    public channelDataService: ChannelDataService ,
+    private authService: AuthService
   ) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],
@@ -112,13 +115,20 @@ export class WorkspaceComponent {
     return doc(collection(this.firestore, 'users'), this.userID);
   }
 
-  getUserfromFirebase(): void {
-    this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
-      this.user = new User(element.data());
-      this.user.id = this.userID;
-      this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-    });
+  async getUserfromFirebase(): Promise<void> {
+    try {
+      const userDocRef = doc(this.firestore, 'users', this.userID);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        this.user = new User(userDocSnap.data());
+        this.user.id = this.userID;
+        this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+        this.userIsOnline = await this.authService.getOnlineStatus(this.userID);
+      }
+    } catch (error) {}
   }
+
 
   checkIsGuestLogin(): void {
     getDoc(this.getUserID()).then((docSnapshot) => {

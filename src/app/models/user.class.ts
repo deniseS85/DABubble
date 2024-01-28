@@ -17,7 +17,7 @@ export class User {
          
     }
 
-    public toJson() {
+    public toUserJson() {
         return {
             id: this.id,
             firstname: this.firstname,

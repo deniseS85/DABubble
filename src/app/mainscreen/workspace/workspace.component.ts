@@ -13,6 +13,7 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
 } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
@@ -50,6 +51,7 @@ export class WorkspaceComponent {
 
   firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
+  channels: any[] = [];
 
   constructor(
     private elRef: ElementRef,
@@ -58,8 +60,7 @@ export class WorkspaceComponent {
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     public channelService: ChannelService,
-    public channelDataService: ChannelDataService ,
-    private authService: AuthService
+    public channelDataService: ChannelDataService
   ) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],
@@ -74,6 +75,11 @@ export class WorkspaceComponent {
     if (this.userID) {
       this.checkIsGuestLogin();
     }
+    this.getUserList();
+    this.getAllChannel();
+  }
+
+  private getUserList(): void {
     this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
       this.allUsers = [];
       list.forEach((singleUser) => {
@@ -84,13 +90,18 @@ export class WorkspaceComponent {
     });
   }
 
-   getProfileImagePath(user: User): string {
-        if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
-          return user.profileImg;
-        } else {
-          return `./assets/img/${user.profileImg}`;
-        }
-    }
+  private async getAllChannel(): Promise<void> {
+    await this.getChannelList();
+  }
+  
+
+  getProfileImagePath(user: User): string {
+      if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+        return user.profileImg;
+      } else {
+        return `./assets/img/${user.profileImg}`;
+      }
+  }
 
   ngOnDestroy() {
     if (this.unsubscribeSnapshot) {
@@ -125,6 +136,12 @@ export class WorkspaceComponent {
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
       }
     } catch (error) {}
+  }
+
+  async getChannelList(): Promise<void> {
+    this.channels = await this.channelService.getAllChannels();
+    console.log('Channels:', this.channels);
+    // Hier kannst du weitere Aktionen mit den Kanälen durchführen
   }
 
   checkIsGuestLogin(): void {

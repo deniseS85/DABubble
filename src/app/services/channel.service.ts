@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ChannelService {
   constructor() { }
 
   collectionRef = collection(this.firestore, "channels");
-  chatObservable$ = collectionData(this.collectionRef)
+  chatObservable$ = collectionData(this.collectionRef);
   
 
   /**
@@ -76,6 +77,19 @@ export class ChannelService {
 
   getUsersRef() {
     return collection(this.firestore, 'users');
+  }
+
+  getChannels(): Observable<any[]> {
+    return this.chatObservable$;
+  }
+
+  async getAllChannels(): Promise<any[]> {
+    const querySnapshot = await getDocs(this.collectionRef);
+    const channels: any[] = [];
+    querySnapshot.forEach((doc) => {
+      channels.push(doc.data());
+    });
+    return channels;
   }
 
   getChannelRef() {

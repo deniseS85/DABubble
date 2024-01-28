@@ -1,3 +1,5 @@
+import { User } from "./user.class";
+
 export class Channel {
     channelID: string;
     description: string;
@@ -9,6 +11,7 @@ export class Channel {
                                        //       profilImg: user.profilImg,   * 
                                        //      }
     channelCreator: string;
+    users: User[] = [];
     
 
     constructor(obj?: any) {
@@ -18,6 +21,7 @@ export class Channel {
         this.channelUsersID = obj && obj.channelUsersID ? obj.channelUsersID : '';
         this.channelUsers = obj && obj.channelUsers ? obj.channelUsers : '';
         this.channelCreator = obj && obj.channelCreator ? obj.channelCreator : '';
+        this.users = obj && obj.users && Array.isArray(obj.users) ? obj.users.map((user: any) => new User(user)) : [];    
          
     }
 
@@ -28,7 +32,8 @@ export class Channel {
             channelname: this.channelname,
             channelUsersID: this.channelUsersID,
             channelUsers: this.channelUsers,
-            channelCreator: this.channelCreator
+            channelCreator: this.channelCreator,
+            users: this.users.map(user => user.toUserJson())
         };
     }
 
@@ -39,7 +44,8 @@ export class Channel {
             channelname: obj.channelname || "",
             channelUsersID: obj.channelUsersID || "",
             channelUsers: obj.channelUsers || "",
-            channelCreator: obj.channelCreator || ""
+            channelCreator: obj.channelCreator || "",
+            users: obj.users && Array.isArray(obj.users) ? obj.users.map((user: any) => new User(user)) : []
         });
     } 
 }

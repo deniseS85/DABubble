@@ -126,7 +126,7 @@ export class MainscreenComponent implements OnInit {
     
         try {
             
-            let updatedData = this.user.toJson();
+            let updatedData = this.user.toUserJson();
             await updateDoc(this.getUserID(), updatedData);
             await this.changeEmailInAuth(this.user.email);
 

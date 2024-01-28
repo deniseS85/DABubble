@@ -175,6 +175,7 @@ mat-expansion-panel-header {
             background-color: #ECEEFE !important;
         }
     }
+}
     
     .profile {
         border-radius: 100%;
@@ -194,7 +195,6 @@ mat-expansion-panel-header {
             border: 2px solid white;
         }
     }
-}
 
 .direct-message-title {
 
@@ -406,6 +406,7 @@ mat-expansion-panel-header {
 
     img {
         height: 30px;
+        width: 30px;
     }
 
     mat-icon {

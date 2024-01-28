@@ -234,9 +234,9 @@ export class ThreadComponent {
 
 
   /**
-   * function noch splitten in einzelne functions und kelinen bug beheben beim löschen 
-   * @param event 
-   * @param answer 
+   * 
+   * @param event choosen Emoji event
+   * @param answer JSON with data of this specific
    */
   async addEmojitoReaction(event: any, answer: any) {
 
@@ -251,63 +251,54 @@ export class ThreadComponent {
       allReactions.push(reac)
     });
 
-    //if therecis no existing reactions --> add new emoji
-    if (!this.areThereExistingReactions) {
-      console.warn('test')
-      this.addNewEmojiReaction(answer, reactCollectionRef);
-      answer.isEmojiOpen = false;
+    if (this.reactionAllreadyThere(allEmojis)) {
       
-    } else {
-      console.warn('test2')
-      //if there are already reactions check if the emoji is in      
+      // finde index des Emojis im Array
+      const emojiIndex = allEmojis.indexOf(this.reaction);
+      const existingEmoji = allReactions[emojiIndex];
 
+      // Wenn activeUser schon bestehendes Emoji geklickt hat
+      if (existingEmoji.user.includes(this.userNameComplete)) {
+        // lösche den activen User, da er den Emoji löscht
+        existingEmoji.user = this.deleteUserFromReaction(existingEmoji);
+        // aktualisiere die User dieses Emojis
+        answer.react[emojiIndex].user = existingEmoji.user
 
-      //wenn Emoji schon im array
-      if (allEmojis.includes(this.reaction)) {
-
-        //finde index des Emojis im Array
-        const emojiIndex = allEmojis.indexOf(this.reaction);
-        const existingEmoji = allReactions[emojiIndex];
-
-        //Wenn activeUser schon bestehendes Emoji geklickt hat
-        if (existingEmoji.user.includes(this.userNameComplete)) {
-          //lösche den activen User, da er den Emoji löscht
-          existingEmoji.user = existingEmoji.user.filter((e: any) => e !== this.userNameComplete)
-
-          answer.react[emojiIndex].user = existingEmoji.user
+        this.updateReactions(answer, reactCollectionRef)
+        //wenn Menge der User die den Emoji geklickt haben null ist, lösche den Emoji aus DB
+        if (existingEmoji.user.length == 0) {
+          const index = answer.react.indexOf(existingEmoji);
+          answer.react.splice(index, 1);
 
           this.updateReactions(answer, reactCollectionRef)
-          //wenn Menge der User die den Emoji geklickt haben null ist, lösche den Emoji aus DB
-          if (existingEmoji.user.length == 0) {
-            const index = answer.react.indexOf(existingEmoji);
-            answer.react.splice(index, 1);
-
-            this.updateReactions(answer, reactCollectionRef)
-            console.warn('sliceUser')
-          }
-
-        } else if (!existingEmoji.user.includes(this.userNameComplete)) {
-          existingEmoji.user.push(this.userNameComplete);
-
-          answer.react[emojiIndex].user = existingEmoji.user
-
-          await updateDoc(reactCollectionRef, {
-            react: answer.react
-          });
-
-          console.warn(existingEmoji.user, 'addUser')
+          console.warn('sliceUser')
         }
 
-      } else {
-        this.addNewEmojiReaction(answer, reactCollectionRef)
+      } else if (!existingEmoji.user.includes(this.userNameComplete)) {
+        existingEmoji.user.push(this.userNameComplete);
 
+        answer.react[emojiIndex].user = existingEmoji.user
+
+        await updateDoc(reactCollectionRef, {
+          react: answer.react
+        });
+
+        console.warn(existingEmoji.user, 'addUser')
       }
+
+    } else {
+      this.addNewEmojiReaction(answer, reactCollectionRef)
     }
   }
 
 
-  areThereExistingReactions(answer: any){
-    return answer.react.length != 0
+  reactionAllreadyThere(allEmojis: any) {
+    return allEmojis.includes(this.reaction)
+  }
+
+
+  deleteUserFromReaction(existingEmoji: any){
+    return existingEmoji.user.filter((e: any) => e !== this.userNameComplete)
   }
 
 
@@ -337,7 +328,6 @@ export class ThreadComponent {
     await updateDoc(reactCollectionRef, {
       react: answer.react
     });
-
     console.warn('new Reaction update')
   }
 

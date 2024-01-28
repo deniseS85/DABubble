@@ -50,10 +50,12 @@ export class LoginComponent {
     
                 if (firstname && lastname && profileImg) {
                     this.authService.setUserDetails(firstname, lastname, profileImg);
+                    
                     await signInWithEmailAndPassword(this.authService.auth, email, this.logInForm.value.password);
                     let userId = await this.getUserIDFromFirebase(email);
 
                     if (userId) {
+                        this.authService.setOnlineStatus(userId, true);
                         this.router.navigate(['/main', userId]);
                     } 
                 }
@@ -98,6 +100,7 @@ export class LoginComponent {
                 this.authService.setAnonymousStatus(true);
                 this.authService.setUserDetails('Gast', '', 'guest-profile.png');
                 this.isAnonymous = true;
+                await this.authService.setOnlineStatus(uid, true);
                 this.router.navigate(['/main', uid]);
             }
         } catch (error: any) {
@@ -132,6 +135,7 @@ export class LoginComponent {
                     let userId = await this.getUserIDFromFirebase(email);
 
                     if (userId) {
+                        await this.authService.setOnlineStatus(userId, true);
                         this.router.navigate(['/main', userId]);
                     } 
                 }

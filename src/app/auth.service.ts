@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail, signInAnonymously, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+import { User } from './models/user.class';
 
 
 @Injectable({
@@ -42,24 +43,31 @@ export class AuthService {
         this.isGoogleLoginSource.next(status);
     }
 
-    async logout() {
-            this.setAnonymousStatus(false);
-            let user = this.auth.currentUser;
-            
-            if (user && user.isAnonymous) {
-                try {
-                    await user.delete();
-                } catch (error) {}
+    async logout(userId: string) {
+        this.setAnonymousStatus(false);
+    
+        try {
+            const user = this.auth.currentUser;
+    
+            if (user) {
+                await this.setOnlineStatus(userId, false);
+    
+                if (user.isAnonymous) {
+                    try {
+                        await user.delete();
+                    } catch (error) {
+                        console.error('Fehler beim Löschen des anonymen Benutzers:', error);
+                    }
+                }
             }
-            try {
-                await this.auth.signOut();
-                localStorage.removeItem('userFirstName');
-                localStorage.removeItem('userLastName');
-                localStorage.removeItem('userImg');
-            } catch (error) {}
-    }  
-
-   
+            await this.auth.signOut();
+            localStorage.removeItem('userFirstName');
+            localStorage.removeItem('userLastName');
+            localStorage.removeItem('userImg');
+        } catch (error) {
+            console.error('Fehler beim Ausloggen:', error);
+        }
+    }
 
     updateAndVerifyEmail(newEmail: any) {
         const user = this.auth.currentUser;
@@ -67,19 +75,19 @@ export class AuthService {
           verifyBeforeUpdateEmail(user, newEmail).then(() => {
           }).catch((error) => {});
         }
+    }
+
+    async setOnlineStatus(userId: string, isOnline: boolean): Promise<void> {
+        try {
+          const userDocRef = doc(this.firestore, 'users', userId);
+          await updateDoc(userDocRef, { isOnline: isOnline });
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren des Online-Status:', error);
+        }
       }
+    
 
-
-
-
-
-
-
-
-
-       /* auslagern */
-
-       setUserData(updatedData: any): void {
+    setUserData(updatedData: any): void {
         const currentData = this.userDataSubject.value;
         const newData = { ...currentData, ...updatedData };
         this.userDataSubject.next(newData);

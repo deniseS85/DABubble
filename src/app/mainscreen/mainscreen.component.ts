@@ -81,8 +81,8 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
-    logout() {
-        this.authService.logout();
+    logout(userId: string) {
+        this.authService.logout(userId);
         this.router.navigate(['/']); 
     }
 

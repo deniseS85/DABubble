@@ -198,8 +198,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     this.showContainer[index] = false;
   }
 
-  toggleAnimationState(state: 'visible' | 'hidden'): void {
-    this.animationState = state;
+  toggleAnimationState(state: 'visible' | 'hidden', index: number): void {
+    this.chats.forEach((chat, i) => {
+      chat.animationState = i === index ? state : 'hidden';
+    });
   }
 
   toggleAnimationState1(state: 'visible' | 'hidden'): void {

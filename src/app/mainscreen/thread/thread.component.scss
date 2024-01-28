@@ -227,7 +227,11 @@
             }
         
             mat-icon {
-                padding: 5px;
+                padding: 8px;
+                width: 24px;
+                height: 24px;
+
+                
         
                 &:hover {
                     border-radius: 50%;
@@ -241,6 +245,13 @@
             .emoji-container{
                 display: flex;
                 align-items: center;
+                height: 40px;
+                
+                img{
+                    width: 24px;
+                    height: 24px;
+                    padding: 8px;
+                }
             }
         }
         
@@ -291,6 +302,14 @@
     .emoji-container{     
             
             position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+
+            img{
+                width: 24px;
+                height: 24px;
+            }
 
             .emoji-selection {
                 

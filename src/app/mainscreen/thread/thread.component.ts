@@ -16,7 +16,7 @@ import { ChannelDataService } from '../../services/channel-data.service';
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
-export class ThreadComponent {    
+export class ThreadComponent {
 
   /**
    * müssen dann beim Öffnen vom Chat mit übergeben werden
@@ -34,9 +34,9 @@ export class ThreadComponent {
   answertext: string = '';
   isAnswertextEmojiOpen = false;
   answerUserName: string = 'Frederick Beck';
-  allAnswers: any[] = [];  
-  
-  loadedMessage: any  = '';
+  allAnswers: any[] = [];
+
+  loadedMessage: any = '';
 
   userFirstName: string = '';
   userLastName: string = '';
@@ -47,34 +47,34 @@ export class ThreadComponent {
   reaction: string = "";
   allReactions: any[] = [];
 
-  firestore: Firestore = inject(Firestore);  
+  firestore: Firestore = inject(Firestore);
 
   constructor(
-    private main: MainscreenComponent, 
-    private channelService: ChannelService, 
+    private main: MainscreenComponent,
+    private channelService: ChannelService,
     private authService: AuthService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
     public channelDataService: ChannelDataService,
-    ) {
+  ) {
     this.loadMessage();
     this.loadAnswers();
     this.loadCurrentUser();
   }
-  
 
-  async loadCurrentUser(){    
+
+  async loadCurrentUser() {
     this.authService.restoreUserData();
 
-      if (this.authService.isUserAnonymous()) {
-        this.userFirstName = 'Gast';
-        this.userLastName = '';
-        this.userImg = 'guest-profile.png';
-      }
-      this.userFirstName = this.authService.getUserFirstName();
-      this.userLastName = this.authService.getUserLastName();
-      this.userImg = this.authService.getUserImg();
-      this.userNameComplete = this.userFirstName + this.userLastName;
+    if (this.authService.isUserAnonymous()) {
+      this.userFirstName = 'Gast';
+      this.userLastName = '';
+      this.userImg = 'guest-profile.png';
+    }
+    this.userFirstName = this.authService.getUserFirstName();
+    this.userLastName = this.authService.getUserLastName();
+    this.userImg = this.authService.getUserImg();
+    this.userNameComplete = this.userFirstName + this.userLastName;
   }
 
 
@@ -88,41 +88,41 @@ export class ThreadComponent {
   /**
    * Funktion kürzen aufteilen
    */
-  async loadAnswers(){
+  async loadAnswers() {
     const queryAllAnswers = await query(this.getAllAnswersRef(this.channelID, this.messageID));
 
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allAnswers = [];
-      querySnapshot.forEach((doc: any) => {    
+      querySnapshot.forEach((doc: any) => {
         this.allReactions = [];
 
-        if(doc.data().answerUserName === this.userNameComplete){
-          const newData = doc.data();          
-          const nd = ({...newData, activeUserAnswers: true})
+        if (doc.data().answerUserName === this.userNameComplete) {
+          const newData = doc.data();
+          const nd = ({ ...newData, activeUserAnswers: true })
           this.allAnswers.push(nd);
           // this.getReactions(newData.answerID);
 
         } else {
           const newData = doc.data();
-          const nd = ({...newData, activeUserAnswers: false })
+          const nd = ({ ...newData, activeUserAnswers: false })
           this.allAnswers.push(nd);
           // console.log(newData.answerID)
           // this.getReactions(newData.answerID);  
-              
-        } 
-        
-        
-      })      
+
+        }
+
+
+      })
     })
   }
 
 
-  async getReactions(id: string){    
+  async getReactions(id: string) {
     this.allReactions = [];
-    const ref =  await query(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id, "reactions"));
-    const unsub = onSnapshot(ref, (qSnap) =>     {
-      
-      qSnap.forEach((d:any) => {
+    const ref = await query(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id, "reactions"));
+    const unsub = onSnapshot(ref, (qSnap) => {
+
+      qSnap.forEach((d: any) => {
         const reactionData = d.data();
 
         const answer = this.allAnswers.find((ans) => ans.answerID === id);
@@ -130,17 +130,17 @@ export class ThreadComponent {
           answer.react.push(reactionData);
         }
         // updateDoc(doc(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id,),)
-        
-        
+
+
       })
-      
+
     })
-    
+
 
   }
 
 
-  sendAnswer() {       
+  sendAnswer() {
     this.answer = {
       answertext: this.answertext,
       answerUserName: this.userFirstName + this.userLastName,
@@ -162,23 +162,23 @@ export class ThreadComponent {
    * 
    * @param channelId  wird beim erstellen der Componente mit übergeben
    */
-  getChannelName(channelId: string){
+  getChannelName(channelId: string) {
     //hier dann channel des Threads auslesen
   }
 
-  getChannelRef(){
-    return(this.firestore, "channels")
+  getChannelRef() {
+    return (this.firestore, "channels")
   }
 
   getMessageRef(channelId: string) {
     return collection(this.firestore, "channels", channelId, "messages");
   }
 
-  getAnswerRef(channelId: string, messageId: string){
+  getAnswerRef(channelId: string, messageId: string) {
     return doc(this.firestore, "channels", channelId, "messages", messageId);
   }
 
-  getAllAnswersRef(channelId: string, messageId: string){
+  getAllAnswersRef(channelId: string, messageId: string) {
     return collection(this.firestore, "channels", channelId, "messages", messageId, 'answers');
   }
 
@@ -187,30 +187,31 @@ export class ThreadComponent {
   }
 
 
-  async editAnswer(id: string){
+  async editAnswer(id: string) {
     const docRef = doc(this.getAllAnswersRef(this.channelID, this.messageID), id)
     const docSnap = await getDoc(docRef);
     this.answer = docSnap.data();
     this.openEditAnswerDialog(id);
   }
 
-  openEditAnswerDialog(id: string){
-    this.dialog.open(EditAnswerComponent, {data:{
-      channelid: this.channelID,
-      messageid: this.messageID,
-      answerid: id
-    },
-    position: {
-      top: '50%',
-      right: '20px'
-    },    
+  openEditAnswerDialog(id: string) {
+    this.dialog.open(EditAnswerComponent, {
+      data: {
+        channelid: this.channelID,
+        messageid: this.messageID,
+        answerid: id
+      },
+      position: {
+        top: '50%',
+        right: '20px'
+      },
     });
   }
 
 
   // Emojis
 
-  toggleEmoji(id: string) {      
+  toggleEmoji(id: string) {
     this.allAnswers.forEach((answer) => {
       if (answer.answerID === id) {
         answer.isEmojiOpen = !answer.isEmojiOpen;
@@ -220,11 +221,11 @@ export class ThreadComponent {
     });
   }
 
-  toggleEmojiAnswer(){
+  toggleEmojiAnswer() {
     this.isAnswertextEmojiOpen = !this.isAnswertextEmojiOpen
   }
 
-  addEmojitoText(event: any){
+  addEmojitoText(event: any) {
     const emoji = event.emoji.native;
 
     this.answertext = this.answertext + emoji;
@@ -238,145 +239,112 @@ export class ThreadComponent {
    * @param answer 
    */
   async addEmojitoReaction(event: any, answer: any) {
-    
-    
-    //save selected Emoji
-    this.reaction = event.emoji.native
-    
-    //serach for same emoji in allEmojis
-    
-    // get answer
+
+    this.reaction = event.emoji.native;
     const reactCollectionRef = doc(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', answer.answerID);
-    
-    
-    //if there still no reactions add emoji
-    if(answer.react.length == 0){
-      console.log('länge 0')
-      const react = {
-        emoji: this.reaction,
-        user: [answer.answerUserName]
-      }
 
-      const reactArray = [];
-      reactArray.push(react)
-      
-      await updateDoc(reactCollectionRef, {
-        react: reactArray
-      });     
-        
+    let allEmojis: any[] = [];
+    let allReactions: any[] = [];
+
+    answer.react.forEach((reac: any) => {
+      allEmojis.push(reac.emoji);
+      allReactions.push(reac)
+    });
+
+    //if therecis no existing reactions --> add new emoji
+    if (!this.areThereExistingReactions) {
+      console.warn('test')
+      this.addNewEmojiReaction(answer, reactCollectionRef);
       answer.isEmojiOpen = false;
-    }
-
-    else{
-    //if there are already reactions check if the emoji is in
-    answer.react.forEach(async (r:any) => {
-      console.log(r)
-      if(r.user.includes(answer.answerUserName) && r.emoji == this.reaction){
-        r.user = r.user.filter((e:any) => e !== answer.answerUserName)
-
-        if(r.user.length == 0){          
-          const index = answer.react.indexOf(answer.react.user);
-          
-            await updateDoc(reactCollectionRef, {
-              react: r.user
-            });
-          console.error('löschen')          
-        } 
-      }
-    })    
-    
-
-    //adde noch Fälle, falls Emoji noch nicht besteht oder answer.User noch kein User
-    // --> neuer Emoji mit User bzw. nur User adden und update
-  
-        
-  //     } else {
-
-  //       const react = {
-  //         emoji: this.reaction,
-  //         user: [answer.answerUserName]
-  //       } 
-  //       const reactRef = doc(reactCollectionRef)
       
-  //         setDoc(reactRef, {...react, reactionID: reactRef.id});   
-          
-  //         answer.isEmojiOpen = false;
-        
-  //     }    
-               
-        
-        
-  //   })   
-    
+    } else {
+      console.warn('test2')
+      //if there are already reactions check if the emoji is in      
+
+
+      //wenn Emoji schon im array
+      if (allEmojis.includes(this.reaction)) {
+
+        //finde index des Emojis im Array
+        const emojiIndex = allEmojis.indexOf(this.reaction);
+        const existingEmoji = allReactions[emojiIndex];
+
+        //Wenn activeUser schon bestehendes Emoji geklickt hat
+        if (existingEmoji.user.includes(this.userNameComplete)) {
+          //lösche den activen User, da er den Emoji löscht
+          existingEmoji.user = existingEmoji.user.filter((e: any) => e !== this.userNameComplete)
+
+          answer.react[emojiIndex].user = existingEmoji.user
+
+          this.updateReactions(answer, reactCollectionRef)
+          //wenn Menge der User die den Emoji geklickt haben null ist, lösche den Emoji aus DB
+          if (existingEmoji.user.length == 0) {
+            const index = answer.react.indexOf(existingEmoji);
+            answer.react.splice(index, 1);
+
+            this.updateReactions(answer, reactCollectionRef)
+            console.warn('sliceUser')
+          }
+
+        } else if (!existingEmoji.user.includes(this.userNameComplete)) {
+          existingEmoji.user.push(this.userNameComplete);
+
+          answer.react[emojiIndex].user = existingEmoji.user
+
+          await updateDoc(reactCollectionRef, {
+            react: answer.react
+          });
+
+          console.warn(existingEmoji.user, 'addUser')
+        }
+
+      } else {
+        this.addNewEmojiReaction(answer, reactCollectionRef)
+
+      }
     }
   }
 
 
-
-  // async addEmojitoReaction(event: any, answer: any) {
-
-  //   //save selected Emoji
-  //   this.reaction = event.emoji.native
-    
-  //   //serach for same emoji in allEmojis
-    
-  //   // get all reactions of this message
-  //   const reactCollectionRef = collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', answer.answerID, "reactions")
-  //   const snap = await(getDocs(reactCollectionRef));
-    
-  //   //if there still no reactions add emoji
-  //   if(snap.empty){
-  //     const react = {
-  //       emoji: this.reaction,
-  //       user: [answer.answerUserName]
-  //     } 
-  //     const reactRef = doc(reactCollectionRef)
-    
-  //       setDoc(reactRef, {...react, reactionID: reactRef.id});   
-
-  //       answer.isEmojiOpen = false;
-
-  //     console.log('empty')
-  //   }
+  areThereExistingReactions(answer: any){
+    return answer.react.length != 0
+  }
 
 
-  //   //if there are already reactions check if the emoji is in
-  //   snap.forEach(async (docu) => {
-  //     const data = docu.data();
-      
-  //     //if user allready got this emoji, splice from array
-  //     if(this.reaction == data['emoji']){
-  //       data['user'] = data['user'].filter((e:any) => e !== answer.answerUserName)
-  //       //if array is empty, delete this reaction
-  //       if(data['user'].length == 0){
-  //         await deleteDoc(doc(reactCollectionRef, data['reactionID']))          
-  //       }        
-      
-  //     answer.isEmojiOpen = false;
-        
-  //     } else {
-  //       const react = {
-  //         emoji: this.reaction,
-  //         user: [answer.answerUserName]
-  //       } 
-  //       const reactRef = doc(reactCollectionRef)
-      
-  //         setDoc(reactRef, {...react, reactionID: reactRef.id});   
-          
-  //         answer.isEmojiOpen = false;
-        
-  //     }
-      
-               
-        
-        
-  //   })   
-    
-    
-  // }
+  /**
+   * 
+   * @param answer 
+   * @param reactCollectionRef 
+   */
+  async addNewEmojiReaction(answer: any, reactCollectionRef: any) {
+
+    const react = {
+      emoji: this.reaction,
+      user: [this.userNameComplete]
+    }
+
+    answer.react.push(react);
+    this.updateReactions(answer, reactCollectionRef)
+  }
 
 
-  
+  /**
+   * 
+   * @param answer 
+   * @param reactCollectionRef 
+   */
+  async updateReactions(answer: any, reactCollectionRef: any) {
+    await updateDoc(reactCollectionRef, {
+      react: answer.react
+    });
+
+    console.warn('new Reaction update')
+  }
+
+
+
+
+
 
 
 

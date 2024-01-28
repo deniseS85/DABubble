@@ -50,7 +50,6 @@ export class WorkspaceComponent {
 
   firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
-  userIsOnline: boolean = false;
 
   constructor(
     private elRef: ElementRef,
@@ -85,11 +84,11 @@ export class WorkspaceComponent {
     });
   }
 
-   getProfileImagePath(): string {
-        if (this.user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
-          return this.user.profileImg;
+   getProfileImagePath(user: User): string {
+        if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+          return user.profileImg;
         } else {
-          return `./assets/img/${this.user.profileImg}`;
+          return `./assets/img/${user.profileImg}`;
         }
     }
 
@@ -124,11 +123,9 @@ export class WorkspaceComponent {
         this.user = new User(userDocSnap.data());
         this.user.id = this.userID;
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-        this.userIsOnline = await this.authService.getOnlineStatus(this.userID);
       }
     } catch (error) {}
   }
-
 
   checkIsGuestLogin(): void {
     getDoc(this.getUserID()).then((docSnapshot) => {

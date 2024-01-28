@@ -88,7 +88,7 @@ export class AuthService {
     
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
-            return userData?.['isOnline'] || false;
+            return userData['isOnline'] || false;
           } else {
             console.log(`Benutzerdokument mit ID ${userId} existiert nicht.`);
             return false;

@@ -81,17 +81,13 @@
         </mat-expansion-panel-header>
 
         <div class="contacts-list">
-          <div class="selectable" (click)="handleClick($event)">
-            <span class="profile">
-              <img [src]="getProfileImagePath()"/>
-              <p class="active-point" [ngClass]="{'online': userIsOnline, 'offline': !userIsOnline}"></p>
-            </span>
-
-            <span>{{ userFullName }} (Du)</span>
-          </div>
+      
           <div class="selectable" (click)="handleClick($event)" *ngFor="let user of allUsers"  (click)="selectUser(user)">
-              <img [src]="'../../../assets/img/' + user.profileImg"/>
-              <span>{{ user.firstname }} {{ user.lastname }}</span>
+            <span class="profile">
+              <img [src]="getProfileImagePath(user)">
+              <p class="active-point" *ngIf="user.isOnline == true"></p> 
+            </span>
+            <span>{{ user.firstname }} {{ user.lastname }}</span>
           </div>
         </div>
       </mat-expansion-panel>

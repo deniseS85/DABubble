@@ -18,6 +18,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
+import { ChannelDataService } from '../../services/channel-data.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-workspace',
@@ -55,7 +57,9 @@ export class WorkspaceComponent {
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    public channelService: ChannelService
+    public channelService: ChannelService,
+    public channelDataService: ChannelDataService ,
+    private authService: AuthService
   ) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],
@@ -80,11 +84,11 @@ export class WorkspaceComponent {
     });
   }
 
-   getProfileImagePath(): string {
-        if (this.user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
-          return this.user.profileImg;
+   getProfileImagePath(user: User): string {
+        if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+          return user.profileImg;
         } else {
-          return `./assets/img/${this.user.profileImg}`;
+          return `./assets/img/${user.profileImg}`;
         }
     }
 
@@ -110,12 +114,17 @@ export class WorkspaceComponent {
     return doc(collection(this.firestore, 'users'), this.userID);
   }
 
-  getUserfromFirebase(): void {
-    this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
-      this.user = new User(element.data());
-      this.user.id = this.userID;
-      this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-    });
+  async getUserfromFirebase(): Promise<void> {
+    try {
+      const userDocRef = doc(this.firestore, 'users', this.userID);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        this.user = new User(userDocSnap.data());
+        this.user.id = this.userID;
+        this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+      }
+    } catch (error) {}
   }
 
   checkIsGuestLogin(): void {
@@ -251,4 +260,6 @@ export class WorkspaceComponent {
       .get('selectedUsersInput')
       ?.setValue(selectedUsersNames);
   }
+
+  
 }

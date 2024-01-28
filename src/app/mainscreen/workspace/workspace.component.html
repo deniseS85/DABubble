@@ -17,7 +17,7 @@
         (opened)="panelOpenState1 = true"
         (closed)="panelOpenState1 = false"
       >
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'">
           <div class="channels-title-hover">
             <mat-panel-title class="channels-title">
               <mat-icon *ngIf="!panelOpenState1">arrow_right</mat-icon>
@@ -36,7 +36,7 @@
         <div class="channels-list">
           <div class="channels-name selectable" (click)="handleClick($event)">
             <span class="hashtag">#</span>
-            <span>Entwicklerteam</span>
+            <span>{{ this.channelDataService.channelName }}</span>
           </div>
 
           <div class="channels-name selectable" (click)="handleClick($event)">
@@ -64,7 +64,7 @@
         (opened)="panelOpenState2 = true"
         (closed)="panelOpenState2 = false"
       >
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'">
           <div class="channels-title-hover">
             <mat-panel-title class="channels-title direct-message-title">
               <mat-icon *ngIf="!panelOpenState2">arrow_right</mat-icon>
@@ -81,13 +81,13 @@
         </mat-expansion-panel-header>
 
         <div class="contacts-list">
-          <div class="selectable" (click)="handleClick($event)">
-            <span><img [src]="getProfileImagePath()" /></span>
-            <span>{{ userFullName }} (Du)</span>
-          </div>
-          <div class="selectable" (click)="handleClick($event)">
-            <span><img src="./assets/img/avatarSofia.png" /></span>
-            <span>Sofia Müller</span>
+      
+          <div class="selectable" (click)="handleClick($event)" *ngFor="let user of allUsers"  (click)="selectUser(user)">
+            <span class="profile">
+              <img [src]="getProfileImagePath(user)">
+              <p class="active-point" *ngIf="user.isOnline == true"></p> 
+            </span>
+            <span>{{ user.firstname }} {{ user.lastname }}</span>
           </div>
         </div>
       </mat-expansion-panel>
@@ -152,33 +152,32 @@
       </mat-radio-group>
       <div class="user-selection-container" *ngIf="showInputNames">
         
-        <div class="selected-users-container" *ngIf="selectedUsers.length > 0 && showInputNames">
+        <div class="selected-users-container" >
           <div class="selected-users" *ngFor="let user of selectedUsers">
             <img [src]="'../../../assets/img/' + user.profileImg"/>
             {{ user.firstname + ' ' + user.lastname }}
             <span (click)="removeUser(user)"><mat-icon>close</mat-icon></span>
           </div>
-        </div>
-        
-        <div  class="relative">
-          <input
           
-          placeholder="Name eingeben"
-          type="text"
-          class="channel-create-input channel-create-description-input"
-          (input)="onSearchInputChange($event)"
-          />
-          
-          <div class="contacts-list-pop-up" *ngIf="showInputNames && searchQuery.trim()">
-            <div class="contacts-list">
-              <div *ngFor="let user of filterUsers()"  (click)="selectUser(user)">
-                <img [src]="'../../../assets/img/' + user.profileImg"/>
-                <span>{{ user.firstname }} {{ user.lastname }}</span>
+          <div  class="relative">
+            <input
+            placeholder="Name eingeben"
+            type="text"
+            class="channel-create-input channel-create-description-input"
+            (input)="onSearchInputChange($event)"
+            />
+            
+            <div class="contacts-list-pop-up" *ngIf="showInputNames && searchQuery.trim()">
+              <div class="contacts-list">
+                <div *ngFor="let user of filterUsers()"  (click)="selectUser(user)">
+                  <img [src]="'../../../assets/img/' + user.profileImg"/>
+                  <span>{{ user.firstname }} {{ user.lastname }}</span>
+                </div>
               </div>
             </div>
           </div>
+          
         </div>
-
         
       </div>
 

@@ -1,5 +1,5 @@
 .fade-in-animation {
-    animation: showLoginContainer 1500ms ease-in-out 1000ms;
+    animation: showLoginContainer 1500ms ease-in-out 1000ms forwards;
 }
 
 @keyframes showLoginContainer {

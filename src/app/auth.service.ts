@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail, signInAnonymously, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
-
+import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +15,9 @@ export class AuthService {
     private isAnonymous: boolean = false;
     private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
     private userDataSubject = new BehaviorSubject<any>({});
-    private isUserOnlineSource = new BehaviorSubject<boolean>(false);
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
     userData$ = this.userDataSubject.asObservable();
-    isUserOnline$ = this.isUserOnlineSource.asObservable();
+ 
 
     setAnonymousStatus(isAnonymous: boolean): void {
         this.isAnonymous = isAnonymous;
@@ -42,24 +40,31 @@ export class AuthService {
         this.isGoogleLoginSource.next(status);
     }
 
-    async logout() {
-            this.setAnonymousStatus(false);
-            let user = this.auth.currentUser;
-            
-            if (user && user.isAnonymous) {
-                try {
-                    await user.delete();
-                } catch (error) {}
+    async logout(userId: string) {
+        this.setAnonymousStatus(false);
+    
+        try {
+            const user = this.auth.currentUser;
+    
+            if (user) {
+                await this.setOnlineStatus(userId, false);
+    
+                if (user.isAnonymous) {
+                    try {
+                        await user.delete();
+                    } catch (error) {
+                        console.error('Fehler beim Löschen des anonymen Benutzers:', error);
+                    }
+                }
             }
-            try {
-                await this.auth.signOut();
-                localStorage.removeItem('userFirstName');
-                localStorage.removeItem('userLastName');
-                localStorage.removeItem('userImg');
-            } catch (error) {}
-    }  
-
-   
+            await this.auth.signOut();
+            localStorage.removeItem('userFirstName');
+            localStorage.removeItem('userLastName');
+            localStorage.removeItem('userImg');
+        } catch (error) {
+            console.error('Fehler beim Ausloggen:', error);
+        }
+    }
 
     updateAndVerifyEmail(newEmail: any) {
         const user = this.auth.currentUser;
@@ -67,19 +72,34 @@ export class AuthService {
           verifyBeforeUpdateEmail(user, newEmail).then(() => {
           }).catch((error) => {});
         }
-      }
+    }
 
+    async setOnlineStatus(userId: string, isOnline: boolean): Promise<void> {
+        try {
+          const userDocRef = doc(this.firestore, 'users', userId);
+          await updateDoc(userDocRef, { isOnline: isOnline });
+        } catch (error) {}
+    }
 
-
-
-
-
-
-
-
-       /* auslagern */
-
-       setUserData(updatedData: any): void {
+    async getOnlineStatus(userId: string): Promise<boolean> {
+        try {
+          const userDocRef = doc(this.firestore, 'users', userId);
+          const userDocSnap = await getDoc(userDocRef);
+    
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            return userData['isOnline'] || false;
+          } else {
+            console.log(`Benutzerdokument mit ID ${userId} existiert nicht.`);
+            return false;
+          }
+        } catch (error) {
+          console.error('Fehler beim Abrufen des Online-Status:', error);
+          return false;
+        }
+    }
+    
+    setUserData(updatedData: any): void {
         const currentData = this.userDataSubject.value;
         const newData = { ...currentData, ...updatedData };
         this.userDataSubject.next(newData);
@@ -91,6 +111,7 @@ export class AuthService {
         this.userImg = profileImg;
         this.saveUserData();
     }
+
 
     getUserFirstName(): string {
         return this.userFirstName;

@@ -3,7 +3,7 @@
     <div class="header-container">
         <header class="channel-chat-header">
             <div class="header-left" (click)="editChannelOpen = true; openPopup()">
-                <span> <span class="hashtag">#</span> {{ channelName }} <img
+                <span> <span class="hashtag">#</span> {{ this.channelDataService.channelName }} <img
                         src="../../../assets/img/keyboard_arrow_down.png" alt=""></span>
             </div>
             <div class="header-right">
@@ -21,19 +21,19 @@
         </header>
     </div>
 
-    <div class="messages-main-container mt-180" *ngFor="let chat of chats; let chatIndex = index">
+    <div class="messages-main-container" *ngFor="let chat of chats; let chatIndex = index">
         <div class="seperator"></div>
         <div class="date-incoming-message">
             <span class="fs-18">{{ chat.date }}</span>
         </div>
-        <div class="new-message-somebody-container" (mouseenter)="toggleAnimationState('visible')"
-            (mouseleave)="toggleAnimationState('hidden')">
+        <div class="new-message-somebody-container" (mouseenter)="toggleAnimationState('visible', chatIndex)"
+            (mouseleave)="toggleAnimationState('hidden', chatIndex)">
             <div>
                 <img [src]="chat.avatar" alt="">
             </div>
             <div>
                 <div class="name-and-time-container">
-                    <div class="reaction-menu-message right-0" [@slideAndFade]="animationState">
+                    <div class="reaction-menu-message right-0" [@slideAndFade]="chat.animationState">
                        
                         <div *ngIf="chat.reactionMenu.selectedEmojis && chat.reactionMenu.selectedEmojis.length > 0">
                             <div class="last-emoji">{{getEmojiPath(chat, 0)}}</div>

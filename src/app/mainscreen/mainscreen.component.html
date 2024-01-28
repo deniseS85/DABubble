@@ -9,11 +9,14 @@
      
         <div class="mainContainerHeaderProfil">
             <span class="mainContainerHeaderProfilName">{{  isEditMode ? editedUserFullName : userFullName  }}</span>
-            <img class="profile-img" [src]="getProfileImagePath()" alt="">
+            <div class="profile">
+                <img class="profile-img" [src]="getProfileImagePath()" alt="">
+                <p class="active-point" [ngClass]="{'online': userIsOnline, 'offline': !userIsOnline}"></p>
+            </div>
             <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
             <div class="profil-info-header" *ngIf="isProfileMenuOpen">
                 <div (click)="openUserInfo()" class="profile">Profil</div>
-                <div (click)="logout()" class="logout">Log out</div>
+                <div (click)="logout(user.id)" class="logout">Log out</div>
 
                 <div class="user-info-details" *ngIf="isProfileInfoOpen">
                     <div class="user-info-header">

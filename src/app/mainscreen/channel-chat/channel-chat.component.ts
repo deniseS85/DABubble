@@ -7,6 +7,7 @@ import { ChannelService } from '../../services/channel.service';
 import { Channel } from "../../models/channel.class";
 import { ActivatedRoute } from '@angular/router';
 import { Chat } from '../../models/channel.interface';
+import { ChannelDataService } from '../../services/channel-data.service';
 
 @Component({
   selector: 'app-channel-chat',
@@ -142,6 +143,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   },
 ];
   chatUserID: string = '';
+  userIsOnline: boolean = false;
   /* //////////////////////////////////////// */
 
   constructor(
@@ -149,7 +151,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     private renderer: Renderer2,
     private authservice: AuthService,
     public channelService: ChannelService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public channelDataService: ChannelDataService 
   ) {
     this.showContainer = new Array(this.reactions.length).fill(false);
     this.userID = this.route.snapshot.paramMap.get('id');
@@ -198,8 +201,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     this.showContainer[index] = false;
   }
 
-  toggleAnimationState(state: 'visible' | 'hidden'): void {
-    this.animationState = state;
+  toggleAnimationState(state: 'visible' | 'hidden', index: number): void {
+    this.chats.forEach((chat, i) => {
+      chat.animationState = i === index ? state : 'hidden';
+    });
   }
 
   toggleAnimationState1(state: 'visible' | 'hidden'): void {
@@ -303,13 +308,18 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     return doc(collection(this.firestore, 'users'), this.userID);
   }
 
-  getUserfromFirebase(): void {
-    this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
-      this.user = new User(element.data());
-      this.user.id = this.userID;
-      this.chatUserID = this.userID;
-      this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-    });
+  async getUserfromFirebase(): Promise<void> {
+    try {
+      const userDocRef = doc(this.firestore, 'users', this.userID);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        this.user = new User(userDocSnap.data());
+        this.user.id = this.userID;
+        this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+        this.userIsOnline = await this.authservice.getOnlineStatus(this.userID);
+      }
+    } catch (error) {}
   }
 
   isCurrentUser(chatUserID: string): boolean {

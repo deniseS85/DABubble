@@ -28,10 +28,6 @@
             margin-left: 50px;
         }
     }
-   /*  .fade-in-animation {
-        opacity: 0;
-        animation: fadeIn 2500ms ease-in-out 800ms forwards;
-    } */
     @keyframes backgroundAnimation {
         0% {
             background: linear-gradient(1deg, #313AE5 10%, #797EF3 90%);
@@ -39,6 +35,7 @@
 
         100% {
             background: #ECEEFE;
+            z-index: 0;
         }
     }
     @keyframes logoAnimation {
@@ -105,21 +102,4 @@
             color: black;
         }
     }
-   /*  @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        40% {
-            opacity: 0;
-        }
-
-        80% {
-            opacity: 0.3;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    } */
 }

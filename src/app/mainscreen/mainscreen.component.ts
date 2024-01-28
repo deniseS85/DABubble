@@ -24,6 +24,8 @@ export class MainscreenComponent implements OnInit {
     userID: any;
     userList;
     private unsubscribeSnapshot: Unsubscribe | undefined;
+    userIsOnline: boolean = false;
+
 
    /*  @Output() emojiSelectedEvent = new EventEmitter<string>(); */
 
@@ -60,14 +62,20 @@ export class MainscreenComponent implements OnInit {
         return doc(collection(this.firestore, 'users'), this.userID);
     }
 
-    getUserfromFirebase(): void {
-        this.unsubscribeSnapshot = onSnapshot(this.getUserID(), (element) => {
-            this.user = new User(element.data());
+    async getUserfromFirebase(): Promise<void> {
+        try {
+          const userDocRef = doc(this.firestore, 'users', this.userID);
+          const userDocSnap = await getDoc(userDocRef);
+    
+          if (userDocSnap.exists()) {
+            this.user = new User(userDocSnap.data());
             this.user.id = this.userID;
             this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-        });
+            this.userIsOnline = await this.authService.getOnlineStatus(this.userID);
+          }
+        } catch (error) {}
+      }
     
-    }
 
     checkIsGuestLogin(): void {
         getDoc(this.getUserID()).then((docSnapshot) => {
@@ -81,8 +89,8 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
-    logout() {
-        this.authService.logout();
+    logout(userId: string) {
+        this.authService.logout(userId);
         this.router.navigate(['/']); 
     }
 

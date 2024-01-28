@@ -28,5 +28,6 @@ export interface Chat {
       counter: number;
       lastAnswerTime: string;
     };
-    date: string; 
+    date: string;
+    animationState?: 'visible' | 'hidden';
 }

@@ -36,8 +36,14 @@
         <div class="channels-list" >
           <div *ngFor="let channel of channels"  class="channels-name selectable" (click)="handleClick($event)">
             <span class="hashtag">#</span>
+<<<<<<< HEAD
             <span>{{ channel.channelname }}</span>
           </div>
+=======
+            <span>{{ this.channelDataService.channelName }}</span>
+          </div>
+
+>>>>>>> 0d805e83b1c69c6d50cffdd510a418f5561aaf04
         </div>
         <div class="channels-add-hover">
           <div class="channels-add" (click)="showChannelCreateWindow()">
@@ -76,8 +82,7 @@
         </mat-expansion-panel-header>
 
         <div class="contacts-list">
-      
-          <div class="selectable" (click)="handleClick($event)" *ngFor="let user of allUsers"  (click)="selectUser(user)">
+          <div class="selectable" (click)="handleClick($event)" *ngFor="let user of allUsers">
             <span class="profile">
               <img [src]="getProfileImagePath(user)">
               <p class="active-point" *ngIf="user.isOnline == true"></p> 
@@ -149,7 +154,9 @@
         
         <div class="selected-users-container" >
           <div class="selected-users" *ngFor="let user of selectedUsers">
-            <img [src]="'../../../assets/img/' + user.profileImg"/>
+            <span class="profile">
+              <img [src]="getProfileImagePath(user)">
+            </span>
             {{ user.firstname + ' ' + user.lastname }}
             <span (click)="removeUser(user)"><mat-icon>close</mat-icon></span>
           </div>
@@ -165,7 +172,10 @@
             <div class="contacts-list-pop-up" *ngIf="showInputNames && searchQuery.trim()">
               <div class="contacts-list">
                 <div *ngFor="let user of filterUsers()"  (click)="selectUser(user)">
-                  <img [src]="'../../../assets/img/' + user.profileImg"/>
+                  <span class="profile">
+                    <img [src]="getProfileImagePath(user)">
+                    <p class="active-point" *ngIf="user.isOnline == true"></p> 
+                  </span> 
                   <span>{{ user.firstname }} {{ user.lastname }}</span>
                 </div>
               </div>

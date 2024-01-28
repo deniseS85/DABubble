@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
-import { Firestore, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, arrayRemove, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { ChannelService } from '../../services/channel.service';
 import { AuthService } from '../../auth.service';
 import { DatePipe } from '@angular/common';
@@ -93,23 +93,50 @@ export class ThreadComponent {
 
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allAnswers = [];
-      querySnapshot.forEach((doc: any) => {   
-        
-        this.getReactions(doc.data().answerID);
+      querySnapshot.forEach((doc: any) => {    
+        this.allReactions = [];
 
         if(doc.data().answerUserName === this.userNameComplete){
-          const newData = doc.data();
+          const newData = doc.data();          
           const nd = ({...newData, activeUserAnswers: true})
           this.allAnswers.push(nd);
+          // this.getReactions(newData.answerID);
 
         } else {
           const newData = doc.data();
           const nd = ({...newData, activeUserAnswers: false })
           this.allAnswers.push(nd);
+          // console.log(newData.answerID)
+          // this.getReactions(newData.answerID);  
+              
         } 
+        
         
       })      
     })
+  }
+
+
+  async getReactions(id: string){    
+    this.allReactions = [];
+    const ref =  await query(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id, "reactions"));
+    const unsub = onSnapshot(ref, (qSnap) =>     {
+      
+      qSnap.forEach((d:any) => {
+        const reactionData = d.data();
+
+        const answer = this.allAnswers.find((ans) => ans.answerID === id);
+        if (answer) {
+          answer.react.push(reactionData);
+        }
+        // updateDoc(doc(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id,),)
+        
+        
+      })
+      
+    })
+    
+
   }
 
 
@@ -212,84 +239,144 @@ export class ThreadComponent {
    */
   async addEmojitoReaction(event: any, answer: any) {
     
+    
     //save selected Emoji
     this.reaction = event.emoji.native
     
     //serach for same emoji in allEmojis
     
-    // get all reactions of this message
-    const reactCollectionRef = collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', answer.answerID, "reactions")
-    const snap = await(getDocs(reactCollectionRef));
+    // get answer
+    const reactCollectionRef = doc(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', answer.answerID);
+    
     
     //if there still no reactions add emoji
-    if(snap.empty){
+    if(answer.react.length == 0){
+      console.log('länge 0')
       const react = {
         emoji: this.reaction,
         user: [answer.answerUserName]
-      } 
-      const reactRef = doc(reactCollectionRef)
-    
-        setDoc(reactRef, {...react, reactionID: reactRef.id});   
-        
-        answer.isEmojiOpen = false;
-
-      console.log('empty')
-    }
-
-
-    //if there are already reactions check if the emoji is in
-    snap.forEach(async (docu) => {
-      const data = docu.data();
-      
-      //if user allready got this emoji, splice from array
-      if(this.reaction == data['emoji']){
-        data['user'] = data['user'].filter((e:any) => e !== answer.answerUserName)
-
-        //if array is empty, delete this reaction
-        if(data['user'].length == 0){
-          await deleteDoc(doc(reactCollectionRef, data['reactionID']))          
-        }        
-      
-      answer.isEmojiOpen = false;
-        
-      } else {
-
-        const react = {
-          emoji: this.reaction,
-          user: [answer.answerUserName]
-        } 
-        const reactRef = doc(reactCollectionRef)
-      
-          setDoc(reactRef, {...react, reactionID: reactRef.id});   
-          
-          answer.isEmojiOpen = false;
-        
       }
 
+      const reactArray = [];
+      reactArray.push(react)
+      
+      await updateDoc(reactCollectionRef, {
+        react: reactArray
+      });     
+        
+      answer.isEmojiOpen = false;
+    }
+
+    else{
+    //if there are already reactions check if the emoji is in
+    answer.react.forEach(async (r:any) => {
+      console.log(r)
+      if(r.user.includes(answer.answerUserName) && r.emoji == this.reaction){
+        r.user = r.user.filter((e:any) => e !== answer.answerUserName)
+
+        if(r.user.length == 0){          
+          const index = answer.react.indexOf(answer.react.user);
+          
+            await updateDoc(reactCollectionRef, {
+              react: r.user
+            });
+          console.error('löschen')          
+        } 
+      }
+    })    
+    
+
+    //adde noch Fälle, falls Emoji noch nicht besteht oder answer.User noch kein User
+    // --> neuer Emoji mit User bzw. nur User adden und update
+  
+        
+  //     } else {
+
+  //       const react = {
+  //         emoji: this.reaction,
+  //         user: [answer.answerUserName]
+  //       } 
+  //       const reactRef = doc(reactCollectionRef)
+      
+  //         setDoc(reactRef, {...react, reactionID: reactRef.id});   
+          
+  //         answer.isEmojiOpen = false;
+        
+  //     }    
+               
+        
+        
+  //   })   
+    
+    }
+  }
+
+
+
+  // async addEmojitoReaction(event: any, answer: any) {
+
+  //   //save selected Emoji
+  //   this.reaction = event.emoji.native
+    
+  //   //serach for same emoji in allEmojis
+    
+  //   // get all reactions of this message
+  //   const reactCollectionRef = collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', answer.answerID, "reactions")
+  //   const snap = await(getDocs(reactCollectionRef));
+    
+  //   //if there still no reactions add emoji
+  //   if(snap.empty){
+  //     const react = {
+  //       emoji: this.reaction,
+  //       user: [answer.answerUserName]
+  //     } 
+  //     const reactRef = doc(reactCollectionRef)
+    
+  //       setDoc(reactRef, {...react, reactionID: reactRef.id});   
+
+  //       answer.isEmojiOpen = false;
+
+  //     console.log('empty')
+  //   }
+
+
+  //   //if there are already reactions check if the emoji is in
+  //   snap.forEach(async (docu) => {
+  //     const data = docu.data();
+      
+  //     //if user allready got this emoji, splice from array
+  //     if(this.reaction == data['emoji']){
+  //       data['user'] = data['user'].filter((e:any) => e !== answer.answerUserName)
+  //       //if array is empty, delete this reaction
+  //       if(data['user'].length == 0){
+  //         await deleteDoc(doc(reactCollectionRef, data['reactionID']))          
+  //       }        
+      
+  //     answer.isEmojiOpen = false;
+        
+  //     } else {
+  //       const react = {
+  //         emoji: this.reaction,
+  //         user: [answer.answerUserName]
+  //       } 
+  //       const reactRef = doc(reactCollectionRef)
+      
+  //         setDoc(reactRef, {...react, reactionID: reactRef.id});   
+          
+  //         answer.isEmojiOpen = false;
+        
+  //     }
       
                
         
         
-    })   
+  //   })   
     
     
-  }
+  // }
 
 
-  getReactions(id: string){
-    const ref =  collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id, "reactions");
-
-    const unsub = onSnapshot(ref, (qSnap) => 
-    {
-      this.allReactions = [];
-      qSnap.forEach((d:any) => {
-        const reactionData = d.data();
-        this.allReactions.push(reactionData);
-        console.log(this.allReactions)
-      })
-    })
-
-    }
+  
 
 
 

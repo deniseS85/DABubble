@@ -36,7 +36,7 @@
         <div class="channels-list">
           <div class="channels-name selectable" (click)="handleClick($event)">
             <span class="hashtag">#</span>
-            <span>Entwicklerteam</span>
+            <span>{{ this.channelDataService.channelName }}</span>
           </div>
 
           <div class="channels-name selectable" (click)="handleClick($event)">

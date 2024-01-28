@@ -3,7 +3,7 @@
     <div class="header-container">
         <header class="channel-chat-header">
             <div class="header-left" (click)="editChannelOpen = true; openPopup()">
-                <span> <span class="hashtag">#</span> {{ channelName }} <img
+                <span> <span class="hashtag">#</span> {{ this.channelDataService.channelName }} <img
                         src="../../../assets/img/keyboard_arrow_down.png" alt=""></span>
             </div>
             <div class="header-right">

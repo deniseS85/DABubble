@@ -18,6 +18,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
+import { ChannelDataService } from '../../services/channel-data.service';
 
 @Component({
   selector: 'app-workspace',
@@ -55,7 +56,8 @@ export class WorkspaceComponent {
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    public channelService: ChannelService
+    public channelService: ChannelService,
+    public channelDataService: ChannelDataService 
   ) {
     this.channelCreateForm = this.formBuilder.group({
       channelName: ['', [Validators.required]],

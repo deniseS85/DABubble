@@ -89,9 +89,9 @@
 
             <span>{{ userFullName }} (Du)</span>
           </div>
-          <div class="selectable" (click)="handleClick($event)">
-            <span><img src="./assets/img/avatarSofia.png" /></span>
-            <span>Sofia Müller</span>
+          <div class="selectable" (click)="handleClick($event)" *ngFor="let user of allUsers"  (click)="selectUser(user)">
+              <img [src]="'../../../assets/img/' + user.profileImg"/>
+              <span>{{ user.firstname }} {{ user.lastname }}</span>
           </div>
         </div>
       </mat-expansion-panel>

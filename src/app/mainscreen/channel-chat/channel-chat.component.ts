@@ -7,6 +7,7 @@ import { ChannelService } from '../../services/channel.service';
 import { Channel } from "../../models/channel.class";
 import { ActivatedRoute } from '@angular/router';
 import { Chat } from '../../models/channel.interface';
+import { ChannelDataService } from '../../services/channel-data.service';
 
 @Component({
   selector: 'app-channel-chat',
@@ -149,7 +150,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     private renderer: Renderer2,
     private authservice: AuthService,
     public channelService: ChannelService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public channelDataService: ChannelDataService 
   ) {
     this.showContainer = new Array(this.reactions.length).fill(false);
     this.userID = this.route.snapshot.paramMap.get('id');

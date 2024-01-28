@@ -6,6 +6,7 @@ import { AuthService } from '../../auth.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditAnswerComponent } from './edit-answer/edit-answer.component';
+import { ChannelDataService } from '../../services/channel-data.service';
 
 
 
@@ -54,6 +55,7 @@ export class ThreadComponent {
     private authService: AuthService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
+    public channelDataService: ChannelDataService,
     ) {
     this.loadMessage();
     this.loadAnswers();

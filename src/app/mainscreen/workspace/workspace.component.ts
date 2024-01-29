@@ -303,5 +303,13 @@ export class WorkspaceComponent {
   createNewChannel(newChannelItems: {}) {
     this.channelService.addNewChannel(newChannelItems);
   }
+
+  sortUsers(users: User[], currentUserId: string): User[] {
+    return users.slice().sort((a, b) => {
+      if (a.id === currentUserId) return -1;
+      if (b.id === currentUserId) return 1;
+      return (a.firstname + ' ' + a.lastname).localeCompare(b.firstname + ' ' + b.lastname);
+    });
+  }
 }
 

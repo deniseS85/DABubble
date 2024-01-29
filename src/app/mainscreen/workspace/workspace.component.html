@@ -87,7 +87,7 @@
           <div
             class="selectable"
             (click)="handleClick($event)"
-            *ngFor="let user of allUsers"
+            *ngFor="let user of sortUsers(allUsers, userID)"
           >
             <span class="profile">
               <img [src]="getProfileImagePath(user)" />

@@ -84,9 +84,8 @@ export class MainscreenComponent implements OnInit {
             this.userIsOnline = await this.authService.getOnlineStatus(this.userID);
           }
         } catch (error) {}
-      }
+    }
     
-
     checkIsGuestLogin(): void {
         getDoc(this.getUserID()).then((docSnapshot) => {
             if (docSnapshot.exists()) {
@@ -145,7 +144,7 @@ export class MainscreenComponent implements OnInit {
         try {
             let updatedData = { ...this.user.toUserJson()};
             await updateDoc(this.getUserID(), updatedData);
-           /*  await this.changeEmailInAuth(this.user.email); */
+            await this.changeEmailInAuth(this.user.email);
             this.authService.setUserData(updatedData);
             this.updateUserNameInLocalStorage();
             this.closeEditUser();

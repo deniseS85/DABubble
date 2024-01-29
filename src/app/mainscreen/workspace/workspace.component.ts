@@ -12,8 +12,6 @@ import { ChannelDataService } from '../../services/channel-data.service';
   styleUrl: './workspace.component.scss',
 })
 export class WorkspaceComponent {
-  // @ViewChild('channelCreateWindow')channelCreateWindow!: ElementRef<HTMLElement>;
-  // @ViewChild('channelCreateContainer')channelCreateContainer!: ElementRef<HTMLElement>;
   panelOpenState1 = false;
   panelOpenState2 = false;
 
@@ -29,9 +27,6 @@ export class WorkspaceComponent {
   isFirstScreen: boolean = true;
   isSecondScreen: boolean = false;
   isShowInputNames: boolean = false;
-
-  createdChannelName: string = '';
-  createdChannelDescription: string = '';
 
   channelCreateForm: FormGroup;
   body = this.elRef.nativeElement.ownerDocument.body;
@@ -281,22 +276,4 @@ export class WorkspaceComponent {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
   }
 
-  /**
-   * Update the input value with the names of selected users.
-   */
-  updateSelectedUsersInput(): void {
-    const selectedUsersNames = this.selectedUsers
-      .map((u) => `${u.firstname} ${u.lastname}`)
-      .join(', ');
-    this.channelCreateForm
-      .get('selectedUsersInput')
-      ?.setValue(selectedUsersNames);
-  }
-
-  // addChannel() {
-  //   this.channelService.addNewChannel({
-  //     channelname: this.createdChannelName,
-  //     description: this.createdChannelDescription
-  //    });
-  // }
 }

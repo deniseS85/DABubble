@@ -30,6 +30,9 @@ export class WorkspaceComponent {
   isSecondScreen: boolean = false;
   showInputNames: boolean = false;
 
+  createdChannelName: string = '';
+  createdChannelDescription: string = '';
+
   channelCreateForm: FormGroup;
   body = this.elRef.nativeElement.ownerDocument.body;
   userList;
@@ -303,5 +306,12 @@ export class WorkspaceComponent {
     this.channelCreateForm
       .get('selectedUsersInput')
       ?.setValue(selectedUsersNames);
+  }
+
+  addChannel() {
+    this.channelService.addNewChannel({
+      channelname: this.createdChannelName,
+      description: this.createdChannelDescription
+     });
   }
 }

@@ -85,6 +85,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   newChannelName: string = '';
   newChannelDescription: string = '';
   newChannelMember: string = '';
+
   channelID: string = '';
   userFullName: string = '';
   private unsubscribeSnapshot: Unsubscribe | undefined;
@@ -286,7 +287,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
 
   async updateChannel(channelID: string, item: {}) {
     await updateDoc(this.getSingelChannelRef(this.channelID), item);
-    console.log(item);
   }
 
   getSingelChannelRef(docId: string) {

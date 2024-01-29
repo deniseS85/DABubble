@@ -9,14 +9,14 @@ import { Channel } from '../models/channel.class';
   providedIn: 'root'
 })
 export class ChannelService {
-  
+
   firestore: Firestore = inject(Firestore);
 
   constructor() { }
 
   collectionRef = collection(this.firestore, "channels");
   chatObservable$ = collectionData(this.collectionRef);
-  
+
 
   /**
    * create Arrays and JSON's in component where channel is 
@@ -31,7 +31,7 @@ export class ChannelService {
    *    profilImg: user.profilImg,   * 
    * }
    */
-  createChannel(channelname: string, description: string, userIDs: any[], users:any[], creator: string){
+  createChannel(channelname: string, description: string, userIDs: any[], users: any[], creator: string) {
 
     const docRef = doc(this.collectionRef)
 
@@ -41,7 +41,7 @@ export class ChannelService {
       channelDescription: description,
       channelUsersID: userIDs,
       channelUsers: users,
-      channelCreator: creator 
+      channelCreator: creator
     })
 
   }
@@ -51,29 +51,29 @@ export class ChannelService {
    * @param dmID id of the channel where the message is send
    * @param message JSON of MessageData combined in component where message is written
    */
-  sendChannelMessage(channelID: string, message: Message){
+  sendChannelMessage(channelID: string, message: Message) {
     const ref = doc(this.getMessageRef(channelID));
 
     setDoc(ref, message)
   }
 
 
-  getMessageRef(channelID: string){
+  getMessageRef(channelID: string) {
     return collection(this.firestore, "channel", channelID, "message");
   }
 
 
-  
-  sendAnswer(channelID: string, messageID: string, answer: any){
-    
+
+  sendAnswer(channelID: string, messageID: string, answer: any) {
+
     const ref = doc(this.getAnswerRef(channelID, messageID));
-    const newAnswer = ({...answer, answerID: ref.id});
-    
-    setDoc(ref, newAnswer);    
+    const newAnswer = ({ ...answer, answerID: ref.id });
+
+    setDoc(ref, newAnswer);
   }
 
 
-  getAnswerRef(channelID: string, messageID: string){
+  getAnswerRef(channelID: string, messageID: string) {
     return collection(this.firestore, "channels", channelID, "messages", messageID, "answers")
   }
 
@@ -94,8 +94,8 @@ export class ChannelService {
     return channels;
   }
 
- async addNewChannel(newChannel: Channel) {
-    await addDoc(this.getChannelRef(), newChannel).catch(
+  async addNewChannel(newChannel: {}) {
+    await addDoc(this.getChannelRef(), newChannel ).catch(
       (err) => { console.error(err) });
   }
 
@@ -106,7 +106,7 @@ export class ChannelService {
   getChannelName(channelname: string) {
     return doc(collection(this.firestore, 'channels'), channelname);
   }
-  
+
   getChannelDescription(channelDescription: string) {
     return doc(collection(this.firestore, 'channels'), channelDescription);
   }

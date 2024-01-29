@@ -230,6 +230,7 @@ mat-expansion-panel-header {
     border-radius: 30px;
     padding: 40px;
     font-size: 18px;
+    min-width: 600px;
 }
 
 .channel-create-title {
@@ -336,19 +337,14 @@ mat-expansion-panel-header {
     color: white;
 }
 
-.example-radio-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.user-group-radio-button {
+    transform: scale(1.5);
+    margin: 0 25px 25px 0;
+    accent-color: #444DF2;
 }
 
-.mat-mdc-radio-button.mat-accent {
-    --mdc-radio-selected-focus-icon-color: #444DF2;
-    --mdc-radio-selected-hover-icon-color: #444DF2;
-    --mdc-radio-selected-icon-color: #444DF2;
-    --mdc-radio-selected-pressed-icon-color: #444DF2;
-    --mat-radio-checked-ripple-color: #444DF2;
-    --mdc-form-field-label-text-size: 18px;
+.user-group-radio-button-label {
+    cursor: pointer;
 }
 
 .contacts-list-pop-up {
@@ -368,7 +364,7 @@ mat-expansion-panel-header {
     border-radius: 40px;
     border: 1px solid #ADB0D9;
     font-size: 18px;
-    padding: 5px 10px;
+    padding: 0px 10px;
 
     input {
         border: #00000000;

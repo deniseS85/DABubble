@@ -1,5 +1,4 @@
 import { Component, ElementRef, Renderer2, ChangeDetectorRef, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -27,8 +26,8 @@ export class WorkspaceComponent {
   isFirstScreen: boolean = true;
   isSecondScreen: boolean = false;
   isShowInputNames: boolean = false;
+  isButtonDisabled: boolean = true;
 
-  channelCreateForm: FormGroup;
   body = this.elRef.nativeElement.ownerDocument.body;
   userList;
   private unsubscribeSnapshot: Unsubscribe | undefined;
@@ -40,16 +39,10 @@ export class WorkspaceComponent {
   constructor(
     private elRef: ElementRef,
     private renderer: Renderer2,
-    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     public channelService: ChannelService,
     public channelDataService: ChannelDataService
   ) {
-    this.channelCreateForm = this.formBuilder.group({
-      channelName: ['', [Validators.required]],
-      selectedOption: ['specificMembers'],
-    });
-
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
   }
@@ -123,8 +116,6 @@ export class WorkspaceComponent {
 
   /**
    * Get the document reference for the user.
-   *
-   * @returns {any} The document reference.
    */
   getUserID() {
     return doc(collection(this.firestore, 'users'), this.userID);
@@ -212,6 +203,19 @@ export class WorkspaceComponent {
     } else {
       this.renderer.setStyle(this.body, 'overflow', 'auto');
     }
+  }
+
+/**
+ * Handles the input change event for the channel creation input field.
+ *
+ * This function updates the status of the "Erstellen" button based on whether
+ * the input field is empty or not. If the input is empty, the button is disabled.
+ *
+ * @param {any} event - The input change event.
+ * @returns {void}
+ */
+  onInputChange(event: any): void {
+    this.isButtonDisabled = event.target.value.trim() === '';
   }
   
   /**

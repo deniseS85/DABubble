@@ -97,7 +97,9 @@ export class ChannelService {
   }
 
   getChannelName(channelname: string) {
+    
     return doc(collection(this.firestore, 'channels'), channelname);
+    
   }
   
   getChannelDescription(channelDescription: string) {

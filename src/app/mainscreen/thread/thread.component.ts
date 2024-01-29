@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditAnswerComponent } from './edit-answer/edit-answer.component';
 import { ChannelDataService } from '../../services/channel-data.service';
+import { ReactionsService } from '../../services/reactions.service';
 
 
 
@@ -22,13 +23,15 @@ export class ThreadComponent {
    * müssen dann beim Öffnen vom Chat mit übergeben werden
    * hier nehme ich die angelegten Beispielchannel und die Message
    */
-  channelID: string = "T1xuWGwkbJf7zzPx2R9X";
-  messageID: string = 'eAvmGIZse6lghoOs3U8A';
-
+  channelID: string = "DE4cTsdDLnNeJIVHWd8e";
+  messageID: string = 'ZiUntAZxxJhnldQAhBlN';
+  
   /**
    * hier alle Variablen, die aus der Antwort gezogen werden(User, Zeit, Message)
    * Name normalerweise currentUser
    */
+
+  activeChannelName: any = '';
 
   answer: any;
   answertext: string = '';
@@ -51,15 +54,26 @@ export class ThreadComponent {
 
   constructor(
     private main: MainscreenComponent,
-    private channelService: ChannelService,
+    public channelService: ChannelService,
     private authService: AuthService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
     public channelDataService: ChannelDataService,
+    private reactionService: ReactionsService,
   ) {
     this.loadMessage();
     this.loadAnswers();
     this.loadCurrentUser();
+    this.getChannelName();
+  }
+
+
+  async getChannelName(){
+    const chat = this.channelService.getChannelName(this.channelID);
+    const channelData = (await getDoc(chat));
+    this.activeChannelName = channelData.data()?.['channelname'];
+    console.warn(this.activeChannelName)
+    // this.activeChannelName = chan.channelname
   }
 
 
@@ -162,9 +176,9 @@ export class ThreadComponent {
    * 
    * @param channelId  wird beim erstellen der Componente mit übergeben
    */
-  getChannelName(channelId: string) {
-    //hier dann channel des Threads auslesen
-  }
+  // getChannelName(channelId: string) {
+  //   //hier dann channel des Threads auslesen
+  // }
 
   getChannelRef() {
     return (this.firestore, "channels")
@@ -233,102 +247,8 @@ export class ThreadComponent {
   }
 
 
-  /**
-   * 
-   * @param event choosen Emoji event
-   * @param answer JSON with data of this specific
-   */
-  async addEmojitoReaction(event: any, answer: any) {
-
-    this.reaction = event.emoji.native;
-    const reactCollectionRef = doc(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', answer.answerID);
-
-    let allEmojis: any[] = [];
-    let allReactions: any[] = [];
-
-    answer.react.forEach((reac: any) => {
-      allEmojis.push(reac.emoji);
-      allReactions.push(reac)
-    });
-
-    if (this.reactionAllreadyThere(allEmojis)) {
-      
-      // finde index des Emojis im Array
-      const emojiIndex = allEmojis.indexOf(this.reaction);
-      const existingEmoji = allReactions[emojiIndex];
-
-      // Wenn activeUser schon bestehendes Emoji geklickt hat
-      if (existingEmoji.user.includes(this.userNameComplete)) {
-        // lösche den activen User, da er den Emoji löscht
-        existingEmoji.user = this.deleteUserFromReaction(existingEmoji);
-        // aktualisiere die User dieses Emojis
-        answer.react[emojiIndex].user = existingEmoji.user
-
-        this.updateReactions(answer, reactCollectionRef)
-        //wenn Menge der User die den Emoji geklickt haben null ist, lösche den Emoji aus DB
-        if (existingEmoji.user.length == 0) {
-          const index = answer.react.indexOf(existingEmoji);
-          answer.react.splice(index, 1);
-
-          this.updateReactions(answer, reactCollectionRef)
-          console.warn('sliceUser')
-        }
-
-      } else if (!existingEmoji.user.includes(this.userNameComplete)) {
-        existingEmoji.user.push(this.userNameComplete);
-
-        answer.react[emojiIndex].user = existingEmoji.user
-
-        await updateDoc(reactCollectionRef, {
-          react: answer.react
-        });
-
-        console.warn(existingEmoji.user, 'addUser')
-      }
-
-    } else {
-      this.addNewEmojiReaction(answer, reactCollectionRef)
-    }
-  }
-
-
-  reactionAllreadyThere(allEmojis: any) {
-    return allEmojis.includes(this.reaction)
-  }
-
-
-  deleteUserFromReaction(existingEmoji: any){
-    return existingEmoji.user.filter((e: any) => e !== this.userNameComplete)
-  }
-
-
-  /**
-   * 
-   * @param answer 
-   * @param reactCollectionRef 
-   */
-  async addNewEmojiReaction(answer: any, reactCollectionRef: any) {
-
-    const react = {
-      emoji: this.reaction,
-      user: [this.userNameComplete]
-    }
-
-    answer.react.push(react);
-    this.updateReactions(answer, reactCollectionRef)
-  }
-
-
-  /**
-   * 
-   * @param answer 
-   * @param reactCollectionRef 
-   */
-  async updateReactions(answer: any, reactCollectionRef: any) {
-    await updateDoc(reactCollectionRef, {
-      react: answer.react
-    });
-    console.warn('new Reaction update')
+  handleReaction(event: any, answer: any){
+    this.reactionService.handleReaction(this.channelID, this.messageID, answer.answerID, '', '', event, answer, this.userNameComplete)
   }
 
 
@@ -338,9 +258,10 @@ export class ThreadComponent {
 
 
 
-  /**
-   *  Variablen für BeispielChannel
-   */
+
+  // /**
+  //  *  Variablen für BeispielChannel
+  //  */
 
   // channelname: string = 'Entwicklerteam';
   // channelDescription: string = 'Entwicklerteam Chat zum Austauschen von Zeug';
@@ -348,11 +269,11 @@ export class ThreadComponent {
   // channelUsers: any[] = [];
   // channelCreator: string = 'Lord Voldemort';
 
-  /**
-   * Variablen zum Erstellen einer Message im Channel (simuliert hier Message im Channel auf die geantwortet wird)
-   */
+  // /**
+  //  * Variablen zum Erstellen einer Message im Channel (simuliert hier Message im Channel auf die geantwortet wird)
+  //  */
 
-  // channelID: string = "T1xuWGwkbJf7zzPx2R9X";
+  // // channelID: string = "DE4cTsdDLnNeJIVHWd8e";
   // senderID: string = 'W23nHK0hmT5yVTETSPL2';
   // senderNamen: string = 'Klemens Naue';
   // // sendTime: Date = ;

@@ -118,7 +118,7 @@
                 justify-content: flex-start;
                 gap: 20px;
                 position: relative;
-                
+                overflow: hidden;
                 
     
                 &:hover{
@@ -222,7 +222,7 @@
             gap: 10px;
             padding: 10px;
             color: #686868;
-        
+                    
             &:hover {
                 color: black;
             }
@@ -247,11 +247,18 @@
                 display: flex;
                 align-items: center;
                 height: 40px;
+                position: relative;
                 
                 img{
                     width: 24px;
                     height: 24px;
                     padding: 8px;
+                }
+
+                .emoji-selection{
+                    position: absolute;
+                    top: 0px;
+                    transform: translateY(-100%);
                 }
             }
         }
@@ -298,9 +305,8 @@
     align-items: center;
     gap: 12px;
     position: relative;
-    
 
-    .emoji-container{     
+    .emoji-con{     
             
             position: relative;
             display: flex;
@@ -411,11 +417,11 @@
         justify-content: center;
         gap: 5px;
         cursor: pointer;
+        
 
         .emoji-container{     
             display: flex !important;
             position: relative;
-            display: flex;
             align-items: center;
             height: 40px;
 
@@ -429,9 +435,7 @@
                 top:20px;
                 z-index: 1000;
 
-                emoji-mart{
-                    background-color: white;
-                }
+                
             }        
     }
 

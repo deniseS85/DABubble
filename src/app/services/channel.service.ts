@@ -92,6 +92,10 @@ export class ChannelService {
     return channels;
   }
 
+  addNewChannel() {
+    
+  }
+
   getChannelRef() {
     return collection(this.firestore, 'channels');
   }

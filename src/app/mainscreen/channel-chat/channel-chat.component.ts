@@ -183,7 +183,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
         this.channelCreator = channelInfo.channelCreator;
         this.channelDescription = channelInfo.description;
         this.channelID = channelInfo.channelID;
-        console.log();
+        console.log(channelInfo.channelUsers);
       });
     });
   }

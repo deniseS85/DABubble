@@ -139,7 +139,7 @@ export class WorkspaceComponent {
         this.user.id = this.userID;
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   /**
@@ -208,25 +208,25 @@ export class WorkspaceComponent {
     }
   }
 
-/**
- * Handles the input change event for the channel creation input field.
- *
- * This function updates the status of the "Erstellen" button based on whether
- * the input field is empty or not. If the input is empty, the button is disabled.
- *
- * @param {any} event - The input change event.
- * @returns {void}
- */
+  /**
+   * Handles the input change event for the channel creation input field.
+   *
+   * This function updates the status of the "Erstellen" button based on whether
+   * the input field is empty or not. If the input is empty, the button is disabled.
+   *
+   * @param {any} event - The input change event.
+   * @returns {void}
+   */
   onInputChange(event: any): void {
     this.isButtonDisabled = event.target.value.trim() === '';
   }
-  
+
   /**
    * Navigate to the second screen of channel creation.
    */
   toggleChannelCreateContainer() {
     this.isFirstScreen = !this.isFirstScreen;
-    this.isSecondScreen= !this.isSecondScreen;
+    this.isSecondScreen = !this.isSecondScreen;
   }
 
   /**
@@ -287,14 +287,21 @@ export class WorkspaceComponent {
     let newChannel = {
       channelname: this.createdChannelName,
       description: this.createdChannelDescription,
-      channelUsers: this.allUsers,
+      channelUsers: this.selectedUsers.map(user => {
+        return {
+          firstname: user.firstname,
+          lastname: user.lastname,
+          profileImg: user.profileImg
+        };
+      })
     };
     this.createNewChannel(newChannel);
     console.log('setChannel:', newChannel);
-    
+
   }
 
   createNewChannel(newChannelItems: {}) {
     this.channelService.addNewChannel(newChannelItems);
   }
 }
+

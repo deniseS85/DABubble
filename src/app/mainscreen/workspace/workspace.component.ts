@@ -28,6 +28,9 @@ export class WorkspaceComponent {
   isShowInputNames: boolean = false;
   isButtonDisabled: boolean = true;
 
+  createdChannelName: string = '';
+  createdChannelDescription: string = '';
+
   body = this.elRef.nativeElement.ownerDocument.body;
   userList;
   private unsubscribeSnapshot: Unsubscribe | undefined;
@@ -280,4 +283,18 @@ export class WorkspaceComponent {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
   }
 
+  setNewChannelItems() {
+    let newChannel = {
+      channelname: this.createdChannelName,
+      description: this.createdChannelDescription,
+      channelUsers: this.selectedUsers,
+    };
+    this.createNewChannel(newChannel);
+    console.log('setChannel:', this.selectedUsers);
+    
+  }
+
+  createNewChannel(newChannelItems: {}) {
+    this.channelService.addNewChannel(newChannelItems);
+  }
 }

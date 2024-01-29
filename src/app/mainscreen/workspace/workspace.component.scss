@@ -14,33 +14,32 @@
     display: flex;
     align-items: center;
     gap: 15px;
-}
-
-.server-name {
     font-size: 24px;
     font-weight: 700;
 }
 
-.server-edit-icon {
+.direct-message-icon {
     cursor: pointer;
-    height: 24px;
-    width: 24px;
     padding: 8px;
     margin-right: -10px;
     border-radius: 50%;
     
     &:hover {
         background-color: #ECEEFE;
-
+        
         .normal-img {
             display: none;
         }
-
+        
         .hover-img {
             display: block;
-            padding-bottom: 5px;
+            padding-bottom: 3px;
         }
     }
+}
+
+.hover-img {
+    display: none;
 }
 
 .channels-container {
@@ -63,16 +62,8 @@ mat-expansion-panel-header {
 
 .channels-title {
     gap: 10px;
-
-    span {
-       font-size: 20px;
-       font-weight: 700;
-    }
-
-}
-
-.hover-img {
-    display: none;
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .channels-title-hover {
@@ -87,6 +78,54 @@ mat-expansion-panel-header {
         .hover-img {
             display: block;
         }
+    }
+}
+
+.channels-list {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.hashtag {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.channels-name {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    padding: 10px 25px;
+    border-radius: 35px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: #ECEEFE !important;
+        
+        .hashtag {
+            color: #535AF1;
+        }
+    }
+}
+
+.channels-add {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 18px;
+    margin: 30px 0 15px 20px;
+    cursor: pointer;
+    
+    span {
+        margin-left: -5px;
+    }
+}
+
+.channels-add-hover {
+    
+    :hover {
+        color: #535AF1;
     }
 }
 
@@ -105,54 +144,6 @@ mat-expansion-panel-header {
 
     &:hover {
         background-color: #ECEEFE;
-        color: #535AF1;
-    }
-}
-
-.channels-list {
-    margin-top: 15px;
-    font-size: 18px;
-    font-weight: 400;
-}
-
-.hashtag {
-    font-size: 23px;
-    font-weight: 600;
-}
-
-.channels-name {
-    display: flex;
-        gap: 20px;
-        margin-bottom: 15px;
-        padding: 10px 25px;
-        border-radius: 35px;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #ECEEFE !important;
-
-            .hashtag {
-                color: #535AF1;
-            }
-        }
-}
-
-.channels-add {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    font-size: 18px;
-    margin: 30px 0 15px 20px;
-    cursor: pointer;
-
-    span {
-        margin-left: -5px;
-    }
-}
-
-.channels-add-hover {
-    
-    :hover {
         color: #535AF1;
     }
 }
@@ -230,6 +221,7 @@ mat-expansion-panel-header {
     border-radius: 30px;
     padding: 40px;
     font-size: 18px;
+    min-width: 600px;
 }
 
 .channel-create-title {
@@ -336,19 +328,14 @@ mat-expansion-panel-header {
     color: white;
 }
 
-.example-radio-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.user-group-radio-button {
+    transform: scale(1.5);
+    margin: 0 25px 25px 0;
+    accent-color: #444DF2;
 }
 
-.mat-mdc-radio-button.mat-accent {
-    --mdc-radio-selected-focus-icon-color: #444DF2;
-    --mdc-radio-selected-hover-icon-color: #444DF2;
-    --mdc-radio-selected-icon-color: #444DF2;
-    --mdc-radio-selected-pressed-icon-color: #444DF2;
-    --mat-radio-checked-ripple-color: #444DF2;
-    --mdc-form-field-label-text-size: 18px;
+.user-group-radio-button-label {
+    cursor: pointer;
 }
 
 .contacts-list-pop-up {
@@ -368,7 +355,7 @@ mat-expansion-panel-header {
     border-radius: 40px;
     border: 1px solid #ADB0D9;
     font-size: 18px;
-    padding: 5px 10px;
+    padding: 0px 10px;
 
     input {
         border: #00000000;

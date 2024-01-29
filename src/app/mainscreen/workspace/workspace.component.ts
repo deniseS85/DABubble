@@ -1,5 +1,4 @@
 import { Component, ElementRef, Renderer2, ChangeDetectorRef, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -12,8 +11,6 @@ import { ChannelDataService } from '../../services/channel-data.service';
   styleUrl: './workspace.component.scss',
 })
 export class WorkspaceComponent {
-  @ViewChild('channelCreateWindow')channelCreateWindow!: ElementRef<HTMLElement>;
-  @ViewChild('channelCreateContainer')channelCreateContainer!: ElementRef<HTMLElement>;
   panelOpenState1 = false;
   panelOpenState2 = false;
 
@@ -28,9 +25,12 @@ export class WorkspaceComponent {
   isChannelCreateWindow: boolean = false;
   isFirstScreen: boolean = true;
   isSecondScreen: boolean = false;
-  showInputNames: boolean = false;
+  isShowInputNames: boolean = false;
+  isButtonDisabled: boolean = true;
 
-  channelCreateForm: FormGroup;
+  createdChannelName: string = '';
+  createdChannelDescription: string = '';
+
   body = this.elRef.nativeElement.ownerDocument.body;
   userList;
   private unsubscribeSnapshot: Unsubscribe | undefined;
@@ -42,17 +42,10 @@ export class WorkspaceComponent {
   constructor(
     private elRef: ElementRef,
     private renderer: Renderer2,
-    private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     public channelService: ChannelService,
     public channelDataService: ChannelDataService
   ) {
-    this.channelCreateForm = this.formBuilder.group({
-      channelName: ['', [Validators.required]],
-      selectedOption: ['specificMembers'],
-    });
-
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
   }
@@ -126,8 +119,6 @@ export class WorkspaceComponent {
 
   /**
    * Get the document reference for the user.
-   *
-   * @returns {any} The document reference.
    */
   getUserID() {
     return doc(collection(this.firestore, 'users'), this.userID);
@@ -148,7 +139,7 @@ export class WorkspaceComponent {
         this.user.id = this.userID;
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   /**
@@ -216,29 +207,36 @@ export class WorkspaceComponent {
       this.renderer.setStyle(this.body, 'overflow', 'auto');
     }
   }
-  
+
+  /**
+   * Handles the input change event for the channel creation input field.
+   *
+   * This function updates the status of the "Erstellen" button based on whether
+   * the input field is empty or not. If the input is empty, the button is disabled.
+   *
+   * @param {any} event - The input change event.
+   * @returns {void}
+   */
+  onInputChange(event: any): void {
+    this.isButtonDisabled = event.target.value.trim() === '';
+  }
+
   /**
    * Navigate to the second screen of channel creation.
    */
   toggleChannelCreateContainer() {
     this.isFirstScreen = !this.isFirstScreen;
-    this.isSecondScreen= !this.isSecondScreen;
+    this.isSecondScreen = !this.isSecondScreen;
   }
 
   /**
-   * Show input names on button click.
+   * Show / Hide input names on button click.
    */
   onShowClick() {
-    this.showInputNames = true;
-    this.cdr.detectChanges();
+    this.isShowInputNames = true;
   }
-
-  /**
-   * Hide input names on button click.
-   */
   onHideClick() {
-    this.showInputNames = false;
-    this.cdr.detectChanges();
+    this.isShowInputNames = false;
   }
 
   /**
@@ -271,37 +269,47 @@ export class WorkspaceComponent {
   }
 
   /**
-   * Select a user and update the selected users input.
+   * Select / Remove a user and show the selected user in the input.
    *
    * @param {User} user - The user to be selected.
    */
   selectUser(user: User): void {
     if (!this.selectedUsers.includes(user)) {
       this.selectedUsers.push(user);
-      this.updateSelectedUsersInput();
       this.searchQuery = '';
     }
   }
-
-  /**
-   * Remove a user and update the selected users input.
-   *
-   * @param {User} user - The user to be removed.
-   */
   removeUser(user: User): void {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
-    this.updateSelectedUsersInput();
   }
 
-  /**
-   * Update the input value with the names of selected users.
-   */
-  updateSelectedUsersInput(): void {
-    const selectedUsersNames = this.selectedUsers
-      .map((u) => `${u.firstname} ${u.lastname}`)
-      .join(', ');
-    this.channelCreateForm
-      .get('selectedUsersInput')
-      ?.setValue(selectedUsersNames);
+  setNewChannelItems() {
+    let newChannel = {
+      channelname: this.createdChannelName,
+      description: this.createdChannelDescription,
+      channelUsers: this.selectedUsers.map(user => {
+        return {
+          firstname: user.firstname,
+          lastname: user.lastname,
+          profileImg: user.profileImg
+        };
+      })
+    };
+    this.createNewChannel(newChannel);
+    console.log('setChannel:', newChannel);
+
+  }
+
+  createNewChannel(newChannelItems: {}) {
+    this.channelService.addNewChannel(newChannelItems);
+  }
+
+  sortUsers(users: User[], currentUserId: string): User[] {
+    return users.slice().sort((a, b) => {
+      if (a.id === currentUserId) return -1;
+      if (b.id === currentUserId) return 1;
+      return (a.firstname + ' ' + a.lastname).localeCompare(b.firstname + ' ' + b.lastname);
+    });
   }
 }
+

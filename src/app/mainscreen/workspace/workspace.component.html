@@ -2,9 +2,9 @@
   <div class="server-container">
     <div class="server-logo-name">
       <img src="./assets/img/workspace_logo.png" />
-      <span class="server-name">Code learning</span>
+      <span>Code learning</span>
     </div>
-    <div class="server-edit-icon">
+    <div class="direct-message-icon">
       <img class="normal-img" src="./assets/img/edit_square.png" />
       <img class="hover-img" src="./assets/img/edit_square_hover.png" />
     </div>
@@ -26,11 +26,7 @@
               <mat-icon *ngIf="!panelOpenState1">arrow_right</mat-icon>
               <mat-icon *ngIf="panelOpenState1">arrow_drop_down</mat-icon>
               <div></div>
-              <img class="normal-img" src="./assets/img/channels_icon.png" />
-              <img
-                class="hover-img"
-                src="./assets/img/channels_icon_hover.png"
-              />
+              <mat-icon>workspaces_outlined</mat-icon>
               <span>Channels</span>
             </mat-panel-title>
           </div>
@@ -43,7 +39,7 @@
             (click)="handleClick($event)"
           >
             <span class="hashtag">#</span>
-            <span>{{ this.channelDataService.channelName }}</span>
+            <span>{{ channel.channelname }}</span>
           </div>
         </div>
         <div class="channels-add-hover">
@@ -91,13 +87,13 @@
           <div
             class="selectable"
             (click)="handleClick($event)"
-            *ngFor="let user of allUsers"
+            *ngFor="let user of sortUsers(allUsers, userID)"
           >
             <span class="profile">
               <img [src]="getProfileImagePath(user)" />
               <p class="active-point" *ngIf="user.isOnline == true"></p>
             </span>
-            <span>{{ user.firstname }} {{ user.lastname }}</span>
+            <span>{{ user.firstname }} {{ user.lastname }} {{ user.id === userID ? '(Du)' : '' }}</span>
           </div>
         </div>
       </mat-expansion-panel>
@@ -125,15 +121,15 @@
     </div>
     <div class="fnt-wt-700 mrgn-bt-25">Channel-Name</div>
   </div>
-  <form [formGroup]="channelCreateForm" class="channel-create-form" action="">
+  <div class="channel-create-form">
     <div *ngIf="isFirstScreen">
       <div class="relative">
         <input
-          formControlName="channelName"
-          required
           placeholder="z.B. Kooperationsprojekte"
           type="text"
           class="channel-create-input channel-create-name-input mrgn-bt-25"
+          (input)="onInputChange($event)"
+          [(ngModel)]="createdChannelName"
         />
         <span class="channel-create-input-hashtag">#</span>
       </div>
@@ -145,12 +141,13 @@
         placeholder="Dein Text hier"
         type="text"
         class="channel-create-input channel-create-description-input mrgn-bt-25"
+        [(ngModel)]="createdChannelDescription"
       />
       <div class="btn-container">
-        <button
-          [disabled]="channelCreateForm.invalid"
-          (click)="toggleChannelCreateContainer()"
+        <button 
+          (click)="toggleChannelCreateContainer()" 
           class="btn fnt-wt-700"
+          [disabled]="isButtonDisabled"
         >
           Erstellen
         </button>
@@ -163,24 +160,32 @@
         <mat-icon
           class="channels-create-close"
           (click)="toggleChannelCreateWindow()"
-          >close</mat-icon
         >
+          close
+        </mat-icon>
       </div>
-      <mat-radio-group class="example-radio-group mrgn-bt-25">
-        <mat-radio-button
+      <div>
+        <input
+          type="radio"
+          name="channel-user-selection"
+          id="allUsers"
           (click)="onHideClick()"
-          class="example-radio-button"
-          [value]="'allMembers'"
-          >Alle Mitglieder von OfficeTeam hinzufügen</mat-radio-button
-        >
-        <mat-radio-button
+          class="user-group-radio-button"
+          checked
+        />
+        <label class="user-group-radio-button-label" for="allUsers">Alle Mitglieder von OfficeTeam hinzufügen</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          name="channel-user-selection"
+          id="selectedUsers"
           (click)="onShowClick()"
-          class="example-radio-button"
-          [value]="'specificMembers'"
-          >Bestimmte Leute hinzufügen</mat-radio-button
-        >
-      </mat-radio-group>
-      <div class="user-selection-container mrgn-bt-25" *ngIf="showInputNames">
+          class="user-group-radio-button"
+        />
+        <label class="user-group-radio-button-label" for="selectedUsers">Bestimmte Leute hinzufügen</label>
+      </div>
+      <div class="user-selection-container mrgn-bt-25" *ngIf="isShowInputNames">
         <div class="selected-users-container">
           <div class="selected-users" *ngFor="let user of selectedUsers">
             <span class="profile">
@@ -198,7 +203,7 @@
             />
             <div
               class="contacts-list-pop-up"
-              *ngIf="showInputNames && searchQuery.trim()"
+              *ngIf="isShowInputNames && searchQuery.trim()"
             >
               <div class="contacts-list">
                 <div
@@ -217,12 +222,10 @@
         </div>
       </div>
       <div class="btn-container">
-        <button [disabled]="channelCreateForm.invalid" class="btn fnt-wt-700">
-          Erstellen
-        </button>
+        <button class="btn fnt-wt-700" (click)="setNewChannelItems()">Erstellen</button>
       </div>
     </div>
-  </form>
+  </div>
 </div>
 <div
   class="channel-create-window"

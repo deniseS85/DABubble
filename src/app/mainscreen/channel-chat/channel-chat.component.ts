@@ -85,6 +85,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   newChannelName: string = '';
   newChannelDescription: string = '';
   newChannelMember: string = '';
+
   channelID: string = '';
   userFullName: string = '';
   private unsubscribeSnapshot: Unsubscribe | undefined;
@@ -156,7 +157,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   ) {
     this.showContainer = new Array(this.reactions.length).fill(false);
     this.userID = this.route.snapshot.paramMap.get('id');
-
+    this.userList = this.getUserfromFirebase();
   }
 
   ngOnInit() {
@@ -182,7 +183,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
         this.channelCreator = channelInfo.channelCreator;
         this.channelDescription = channelInfo.description;
         this.channelID = channelInfo.channelID;
-        console.log();
+        console.log(channelInfo.channelUsers);
       });
     });
   }
@@ -286,7 +287,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
 
   async updateChannel(channelID: string, item: {}) {
     await updateDoc(this.getSingelChannelRef(this.channelID), item);
-    console.log(item);
   }
 
   getSingelChannelRef(docId: string) {
@@ -325,4 +325,81 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   isCurrentUser(chatUserID: string): boolean {
     return this.chatUserID === this.userID;
   }
+  
+  
+
+  // User filter function
+  
+  selectedUsers: User[] = [];
+  searchQuery: string = '';
+
+  isButtonDisabled: boolean = true;
+
+  userList;
+  
+  /**
+   * Search input change event handler.
+   *
+   * @param {any} event - The input change event.
+   */
+  onSearchInputChange(event: any): void {
+    this.searchQuery = event.target.value;
+    if (this.searchQuery.trim() !== '') {
+      this.filterUsers();
+    }
+  }
+
+  /**
+   * Filter users based on the search query.
+   *
+   * @returns {User[]} The filtered user array.
+   */
+  filterUsers(): User[] {
+    const trimmedQuery = this.searchQuery.trim().toLowerCase();
+    if (!trimmedQuery) {
+      return this.allUsers;
+    }
+    return this.allUsers.filter(
+      (user) =>
+        user.firstname.toLowerCase().includes(trimmedQuery) ||
+        user.lastname.toLowerCase().includes(trimmedQuery)
+    );
+  }
+
+  /**
+   * Select / Remove a user and show the selected user in the input.
+   *
+   * @param {User} user - The user to be selected.
+   */
+  selectUser(user: User): void {
+    if (!this.selectedUsers.includes(user)) {
+      this.selectedUsers.push(user);
+      this.searchQuery = '';
+    }
+  }
+  removeUser(user: User): void {
+    this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
+  }
+
+
+
+
+  /**
+   * Get the profile image path for a user.
+   *
+   * @param {User} user - The user object.
+   * @returns {string} The profile image path.
+   */
+  // getProfileImagePath(user: User): string {
+  //   if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+  //     return user.profileImg;
+  //   } else {
+  //     return `./assets/img/${user.profileImg}`;
+  //   }
+  // }
+
+
+
+
+
 }

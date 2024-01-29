@@ -217,13 +217,16 @@
                         cursor: pointer;
                         color: #686868;
                         padding: 10px;
-                        width: 87%;
+                        width: 88%;
                         text-align: center;
                         &:hover {
                             background-color: #ECEEFE;
                             color: #1381FF;
                             border-radius: 30px;
                         }
+                    }
+                    label {
+                        cursor: pointer;
                     }
                 }
                

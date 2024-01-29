@@ -125,16 +125,16 @@ export class SelectAvatarComponent implements OnInit {
           return false;
         }
       
-        let exists = await this.fileAlreadyExists(file.name);
+       /*  let exists = await this.fileAlreadyExists(file.name);
         if (exists) {
           this.showSnackbar('Error: This file already exists.');
           return false;
-        }
+        } */
       
         return true;
     }
 
-    async fileAlreadyExists(fileName: string): Promise<boolean> {
+   /*  async fileAlreadyExists(fileName: string): Promise<boolean> {
         let imgRef = ref(this.storage, `images/${fileName}`);
       
         try {
@@ -147,7 +147,7 @@ export class SelectAvatarComponent implements OnInit {
             throw error;
           }
         }
-    }
+    } */
 
     showSnackbar(message: string): void {
         this.snackBar.open(message, 'Close', {

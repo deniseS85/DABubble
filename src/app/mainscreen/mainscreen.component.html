@@ -52,7 +52,10 @@
                         
                         <div class="edit-profile-image-popup" *ngIf="isChangeImagePopupOpen">
                             <div (click)="openAvatar()">Avatare auswählen</div>
-                            <div (click)="openUploadImage()">Eigenes bild auswählen</div>
+                            <div>
+                                <label for="img" class="btn upload">Eigenes Bild auswählen</label>
+                                <input type="file" id="img" style="display:none;" (change)="uploadFiles($event)">
+                            </div>
                         </div>
 
                         <div class="choose-avatar" *ngIf="isChooseAvatarOpen">

@@ -293,10 +293,10 @@ export class WorkspaceComponent {
       ?.setValue(selectedUsersNames);
   }
 
-  addChannel() {
-    this.channelService.addNewChannel({
-      channelname: this.createdChannelName,
-      description: this.createdChannelDescription
-     });
-  }
+  // addChannel() {
+  //   this.channelService.addNewChannel({
+  //     channelname: this.createdChannelName,
+  //     description: this.createdChannelDescription
+  //    });
+  // }
 }

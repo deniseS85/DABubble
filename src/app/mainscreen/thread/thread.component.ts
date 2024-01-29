@@ -72,8 +72,6 @@ export class ThreadComponent {
     const chat = this.channelService.getChannelName(this.channelID);
     const channelData = (await getDoc(chat));
     this.activeChannelName = channelData.data()?.['channelname'];
-    console.warn(this.activeChannelName)
-    // this.activeChannelName = chan.channelname
   }
 
 
@@ -96,6 +94,7 @@ export class ThreadComponent {
     const docRef = await getDoc(this.getAnswerRef(this.channelID, this.messageID));
 
     this.loadedMessage = docRef.data();
+    console.log(this.loadedMessage)
   }
 
 

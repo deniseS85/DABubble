@@ -287,10 +287,10 @@ export class WorkspaceComponent {
     let newChannel = {
       channelname: this.createdChannelName,
       description: this.createdChannelDescription,
-      channelUsers: this.selectedUsers,
+      channelUsers: this.allUsers,
     };
     this.createNewChannel(newChannel);
-    console.log('setChannel:', this.selectedUsers);
+    console.log('setChannel:', newChannel);
     
   }
 

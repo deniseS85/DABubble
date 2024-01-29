@@ -36,14 +36,8 @@
         <div class="channels-list" >
           <div *ngFor="let channel of channels"  class="channels-name selectable" (click)="handleClick($event)">
             <span class="hashtag">#</span>
-<<<<<<< HEAD
             <span>{{ channel.channelname }}</span>
           </div>
-=======
-            <span>{{ this.channelDataService.channelName }}</span>
-          </div>
-
->>>>>>> 0d805e83b1c69c6d50cffdd510a418f5561aaf04
         </div>
         <div class="channels-add-hover">
           <div class="channels-add" (click)="showChannelCreateWindow()">

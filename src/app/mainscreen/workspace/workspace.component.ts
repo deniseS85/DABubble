@@ -12,8 +12,8 @@ import { ChannelDataService } from '../../services/channel-data.service';
   styleUrl: './workspace.component.scss',
 })
 export class WorkspaceComponent {
-  @ViewChild('channelCreateWindow')channelCreateWindow!: ElementRef<HTMLElement>;
-  @ViewChild('channelCreateContainer')channelCreateContainer!: ElementRef<HTMLElement>;
+  // @ViewChild('channelCreateWindow')channelCreateWindow!: ElementRef<HTMLElement>;
+  // @ViewChild('channelCreateContainer')channelCreateContainer!: ElementRef<HTMLElement>;
   panelOpenState1 = false;
   panelOpenState2 = false;
 
@@ -28,7 +28,7 @@ export class WorkspaceComponent {
   isChannelCreateWindow: boolean = false;
   isFirstScreen: boolean = true;
   isSecondScreen: boolean = false;
-  showInputNames: boolean = false;
+  isShowInputNames: boolean = false;
 
   createdChannelName: string = '';
   createdChannelDescription: string = '';
@@ -46,7 +46,6 @@ export class WorkspaceComponent {
     private elRef: ElementRef,
     private renderer: Renderer2,
     private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     public channelService: ChannelService,
     public channelDataService: ChannelDataService
@@ -229,19 +228,13 @@ export class WorkspaceComponent {
   }
 
   /**
-   * Show input names on button click.
+   * Show / Hide input names on button click.
    */
   onShowClick() {
-    this.showInputNames = true;
-    this.cdr.detectChanges();
+    this.isShowInputNames = true;
   }
-
-  /**
-   * Hide input names on button click.
-   */
   onHideClick() {
-    this.showInputNames = false;
-    this.cdr.detectChanges();
+    this.isShowInputNames = false;
   }
 
   /**
@@ -274,26 +267,18 @@ export class WorkspaceComponent {
   }
 
   /**
-   * Select a user and update the selected users input.
+   * Select / Remove a user and show the selected user in the input.
    *
    * @param {User} user - The user to be selected.
    */
   selectUser(user: User): void {
     if (!this.selectedUsers.includes(user)) {
       this.selectedUsers.push(user);
-      this.updateSelectedUsersInput();
       this.searchQuery = '';
     }
   }
-
-  /**
-   * Remove a user and update the selected users input.
-   *
-   * @param {User} user - The user to be removed.
-   */
   removeUser(user: User): void {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
-    this.updateSelectedUsersInput();
   }
 
   /**

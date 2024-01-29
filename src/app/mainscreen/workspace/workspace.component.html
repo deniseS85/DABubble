@@ -182,7 +182,7 @@
           >Bestimmte Leute hinzufügen</mat-radio-button
         >
       </mat-radio-group>
-      <div class="user-selection-container mrgn-bt-25" *ngIf="showInputNames">
+      <div class="user-selection-container mrgn-bt-25" *ngIf="isShowInputNames">
         <div class="selected-users-container">
           <div class="selected-users" *ngFor="let user of selectedUsers">
             <span class="profile">
@@ -200,7 +200,7 @@
             />
             <div
               class="contacts-list-pop-up"
-              *ngIf="showInputNames && searchQuery.trim()"
+              *ngIf="isShowInputNames && searchQuery.trim()"
             >
               <div class="contacts-list">
                 <div

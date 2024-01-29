@@ -97,7 +97,7 @@
               <img [src]="getProfileImagePath(user)" />
               <p class="active-point" *ngIf="user.isOnline == true"></p>
             </span>
-            <span>{{ user.firstname }} {{ user.lastname }}</span>
+            <span>{{ user.firstname }} {{ user.lastname }} {{ user.id === userID ? '(Du)' : '' }}</span>
           </div>
         </div>
       </mat-expansion-panel>

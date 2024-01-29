@@ -46,7 +46,31 @@
                         <p class="title">Dein Profil bearbeiten</p>
                         <mat-icon (click)="closeEditUser()" class="close-icon">close</mat-icon>
                     </div>
-                    <img [src]="getProfileImagePath()" alt="">
+                    <div class="edit-profile">
+                        <img [src]="getProfileImagePath()" alt="">
+                        <img (click)="toggleChangeImagePopup()" class="edit-image-icon" src="./assets/img/edit-image.png">
+                        
+                        <div class="edit-profile-image-popup" *ngIf="isChangeImagePopupOpen">
+                            <div (click)="openAvatar()">Avatare auswählen</div>
+                            <div (click)="openUploadImage()">Eigenes bild auswählen</div>
+                        </div>
+
+                        <div class="choose-avatar" *ngIf="isChooseAvatarOpen">
+                            <div class="choose-avatar-header">
+                                <mat-icon (click)="closeAvatar()">arrow_back</mat-icon>
+                                <p>Wählen Sie einen Avatar<br> aus der Liste</p>
+                            </div>
+                            <div id="avatarSelection">
+                                <img (click)="selectAvatar(1)" class="avatar-pic" src="./assets/img/avatar1.png">
+                                <img (click)="selectAvatar(2)" class="avatar-pic" src="./assets/img/avatar2.png">
+                                <img (click)="selectAvatar(3)" class="avatar-pic" src="./assets/img/avatar3.png">
+                                <img (click)="selectAvatar(4)" class="avatar-pic" src="./assets/img/avatar4.png">
+                                <img (click)="selectAvatar(5)" class="avatar-pic" src="./assets/img/avatar5.png">
+                                <img (click)="selectAvatar(6)" class="avatar-pic" src="./assets/img/avatar6.png">
+                            </div>
+                        </div>
+                        
+                    </div>
                     <div class="edit-container">
                         <div class="input-fields">
                             <div class="title-input">

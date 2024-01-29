@@ -25,6 +25,10 @@ export class MainscreenComponent implements OnInit {
     userList;
     private unsubscribeSnapshot: Unsubscribe | undefined;
     userIsOnline: boolean = false;
+    isChangeImagePopupOpen: boolean = false;
+    isChooseAvatarOpen: boolean = false;
+    selectedAvatar: string = '';
+
 
 
    /*  @Output() emojiSelectedEvent = new EventEmitter<string>(); */
@@ -45,12 +49,17 @@ export class MainscreenComponent implements OnInit {
     }
 
     getProfileImagePath(): string {
-        if (this.user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
-          return this.user.profileImg;
+        if (this.selectedAvatar) {
+            return this.selectedAvatar;
         } else {
-          return `./assets/img/${this.user.profileImg}`;
+            if (this.user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+                return this.user.profileImg;
+            } else {
+                return `./assets/img/${this.user.profileImg}`;
+            }
         }
-      }
+    }
+
 
     ngOnDestroy(){
         if (this.unsubscribeSnapshot) {
@@ -125,8 +134,8 @@ export class MainscreenComponent implements OnInit {
         this.user.lastname = lastName;
     
         try {
-            
-            let updatedData = this.user.toUserJson();
+            let updatedData = { ...this.user.toUserJson(), profileImg: this.selectedAvatar };
+            updatedData.profileImg = this.selectedAvatar?.replace('./assets/img/', '');
             await updateDoc(this.getUserID(), updatedData);
             await this.changeEmailInAuth(this.user.email);
 
@@ -147,6 +156,29 @@ export class MainscreenComponent implements OnInit {
         try {
           this.authService.updateAndVerifyEmail(newEmail);
         } catch (error) {}
-      }
+    }
+
+    toggleChangeImagePopup() {
+        this.isChangeImagePopupOpen = !this.isChangeImagePopupOpen;
+    }
+
+    openAvatar() {
+        this.isChooseAvatarOpen = true;
+        this.isChangeImagePopupOpen = false;
+    }
+
+    closeAvatar() {
+        this.isChooseAvatarOpen = false;
+    }
+
+    selectAvatar(avatarNr: number) {
+        this.selectedAvatar = `./assets/img/avatar${avatarNr}.png`;
+        this.isChooseAvatarOpen = false;
+    }
+
+    openUploadImage() {
+
+    }
+
 
 }

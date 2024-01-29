@@ -2,6 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
 import { Observable } from 'rxjs';
+import { addDoc } from 'firebase/firestore';
+import { Channel } from '../models/channel.class';
 
 @Injectable({
   providedIn: 'root'
@@ -92,8 +94,9 @@ export class ChannelService {
     return channels;
   }
 
-  addNewChannel() {
-    
+ async addNewChannel(newChannel: Channel) {
+    await addDoc(this.getChannelRef(), newChannel).catch(
+      (err) => { console.error(err) });
   }
 
   getChannelRef() {

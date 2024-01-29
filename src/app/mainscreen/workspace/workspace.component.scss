@@ -175,6 +175,7 @@ mat-expansion-panel-header {
             background-color: #ECEEFE !important;
         }
     }
+}
     
     .profile {
         border-radius: 100%;
@@ -194,7 +195,6 @@ mat-expansion-panel-header {
             border: 2px solid white;
         }
     }
-}
 
 .direct-message-title {
 
@@ -211,10 +211,7 @@ mat-expansion-panel-header {
 }
 
 .channel-create-window {
-    display: none;
-    z-index: 100;
-    height: 100vh;
-    width: 100vw;
+    z-index: 10;
     position: absolute;
     top: 0;
     left: 0;
@@ -224,27 +221,26 @@ mat-expansion-panel-header {
 }
 
 .channel-create-container {
-    z-index: 110;
+    z-index: 20;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
     border-radius: 30px;
-    width: 40vw;
     padding: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
     font-size: 18px;
 }
 
 .channel-create-title {
     display: flex;
     justify-content: space-between;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
 }
 
-.channels-create-close-hover {
+.channels-create-close {
     cursor: pointer;
     border-radius: 100%;
     padding: 5px;
@@ -253,6 +249,10 @@ mat-expansion-panel-header {
         background-color: #ECEEFE;
         color: #444DF2;
     }
+}
+
+.mrgn-bt-25 {
+    margin-bottom: 25px;
 }
 
 .channel-create-form {
@@ -268,10 +268,6 @@ mat-expansion-panel-header {
     button:disabled {
         background-color: #686868;
     }
-}
-
-.fnt-sz-24 {
-    font-size: 24px;
 }
 
 .fnt-wt-700 {
@@ -340,10 +336,6 @@ mat-expansion-panel-header {
     color: white;
 }
 
-.second-screen {
-    display: none;
-}
-
 .example-radio-group {
     display: flex;
     flex-direction: column;
@@ -406,6 +398,7 @@ mat-expansion-panel-header {
 
     img {
         height: 30px;
+        width: 30px;
     }
 
     mat-icon {

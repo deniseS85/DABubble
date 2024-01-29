@@ -119,6 +119,7 @@
                 gap: 20px;
                 position: relative;
                 
+                
     
                 &:hover{
                     background-color:#ECEEFE;
@@ -129,7 +130,7 @@
     
                     .reactionContainer{
                         display: flex !important;
-                        animation: slidein 0.1s ease-in-out forwards;                      
+                        animation: slidein 0.1s ease-in-out forwards;                       
                     }
     
                     .answerFromRight{                    
@@ -309,21 +310,11 @@
             img{
                 width: 24px;
                 height: 24px;
-            }
-
-            .emoji-selection {
-                
-                position: absolute;
-                top:20px;
-                transform: translateX(-50%);
-                z-index: 1000;
-            }
-        
-
-        
+            }       
     }
 
     .threadContainerTextReactionsEmojis{
+        position: relative;
         padding: 5px 10px;
         display: flex;
         align-items: center;
@@ -337,17 +328,49 @@
             width: 24px;
             height: 24px;
         }
-    }
 
-    svg{
-        padding: 5px;
-        background-color: white;
-        border-radius: 20px;
-        
         &:hover{
-            fill: #797EF3;
+            .reactionsInfoContainer{
+                display: flex !important;
+            }
         }
     }
+
+    .reactionsInfoContainer{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateY(-100%);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        flex-direction: column;
+        background-color: #444DF2;
+        color: white;
+        border-radius: 30px 30px 30px 0;
+        padding: 15px 10px;
+
+        .reactionsInfoContainerUsers{
+            display: flex;
+            gap: 4px;
+        }
+
+        span{
+            white-space: nowrap;
+        }
+
+    }
+
+    // svg{
+    //     padding: 5px;
+    //     background-color: white;
+    //     border-radius: 20px;
+        
+    //     &:hover{
+    //         fill: #797EF3;
+    //     }
+    // }
 }
 
 
@@ -388,6 +411,29 @@
         justify-content: center;
         gap: 5px;
         cursor: pointer;
+
+        .emoji-container{     
+            display: flex !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+
+            img{
+                width: 24px;
+                height: 24px;
+            }
+
+            .emoji-selection {                                
+                position: absolute;
+                top:20px;
+                z-index: 1000;
+
+                emoji-mart{
+                    background-color: white;
+                }
+            }        
+    }
 
         .editMessage{
             position: relative;

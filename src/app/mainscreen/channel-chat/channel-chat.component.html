@@ -8,10 +8,10 @@
             </div>
             <div class="header-right">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
-                    <div *ngFor="let channelUser of channelUsers ">
+                    <div *ngFor="let channelUser of this.channelDataService.channelUsers ">
                         <img [src]="'../../../assets/img/' + channelUser.profilImg" alt="">
                     </div>
-                    <div class="counter-channel-members">{{ channelUsers.length }}</div>
+                    <div class="counter-channel-members">{{  this.channelDataService.channelUsers.length }}</div>
                 </div>
 
                 <div class="person-add-icon-container">
@@ -169,7 +169,7 @@
 
     <div class="footer-write-new-message">
         <div>
-            <Textarea class="textarea" placeholder="Nachricht an # {{ channelName }}"></Textarea>
+            <Textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"></Textarea>
         </div>
         <div class="footer-line-icons">
             <div class="footer-icons-left">
@@ -197,7 +197,7 @@
             </div>
         </div>
         <div class="fw-400 fs-18 channel-container">
-            <div>#</div><span> {{ channelName }}</span>
+            <div>#</div><span> {{ this.channelDataService.channelName }}</span>
         </div>
         <div>
             <!-- <input type="text" autofocus [(ngModel)]="newChannelMember" (keypress)="checkUser()"> -->
@@ -268,7 +268,7 @@
                 <img src="./assets/img/{{ user.profileImg }}" (click)="showProfil = true; openPopup()">
                 <span>{{ userFullName }} (Du)</span>
             </div>
-            <div class="member-list-div" (click)="showProfil = true; openPopup()" *ngFor="let channelUser of channelUsers">
+            <div class="member-list-div" (click)="showProfil = true; openPopup()" *ngFor="let channelUser of this.channelDataService.channelUsers">
                 <img [src]="'../../../assets/img/' + channelUser.profilImg" alt="">
                 <span>{{ channelUser.firstname }} {{ channelUser.lastname }}</span>
             </div>
@@ -330,7 +330,7 @@
 <div class="popup-background" *ngIf="editChannelOpen" (click)="editChannelOpen = false; closePopup()">
     <div class="popup-maincontainer bigPopup editChannelPopup" (click)="doNotClose($event)">
         <div class="headline-container">
-            <span class="fw-700"><span>#</span><span> {{ channelName }}</span></span>
+            <span class="fw-700"><span>#</span><span> {{  this.channelDataService.channelName }}</span></span>
             <div class="close-icon-container" (click)="editChannelOpen = false; closePopup()">
                 <mat-icon>close</mat-icon>
             </div>
@@ -347,10 +347,10 @@
                         (click)="channelNameChange = false; saveNewChannelName()">Speichern</span>
                 </div>
                 <div class="channel-name-container" *ngIf="!channelNameChange">
-                    <div class="fw-700">#</div> <span class="channel-name"> {{ channelName }}</span>
+                    <div class="fw-700">#</div> <span class="channel-name"> {{ this.channelDataService.channelName }}</span>
                 </div>
                 <div>
-                    <input type="text"  [(ngModel)]="newChannelName"  autofocus placeholder="{{ channelName }}" *ngIf="channelNameChange"
+                    <input type="text"  [(ngModel)]="newChannelName"  autofocus placeholder="{{  this.channelDataService.channelName }}" *ngIf="channelNameChange"
                         class="input-change-channel-name">
                 </div>
             </div>
@@ -365,11 +365,11 @@
                         (click)="channelDescriptionChange = false; saveNewDescription()" >Speichern</span>
                 </div>
                 <div class="channel-description">
-                    <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{ channelDescription }}</span>
+                    <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{  this.channelDataService.channelDescription }}</span>
                     <input type="text"  [(ngModel)]="newChannelDescription"  autofocus *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
                     <div class="seperator"></div>
                     <span class="fw-700">Erstellt von</span>
-                    <div class="edited-by-name">{{ channelCreator }}</div>
+                    <div class="edited-by-name">{{ this.channelDataService.channelCreator }}</div>
                 </div>
             </div>
         </div>

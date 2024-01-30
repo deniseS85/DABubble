@@ -100,7 +100,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
 
   firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
-  unsubChannelUser: Unsubscribe | undefined;
 
   /* //////////////////////////////////////// */
   chats: Chat[] = [ 
@@ -182,25 +181,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
         this.allUsers.push(user);
       });
     });
-
-    this.unsubChannelUser = onSnapshot(this.channelService.getChannelRef(), (list) => {
-      this.channelInfo = [];
-      list.forEach(channel => {
-        let channelInfo = new Channel(channel.data());
-        this.channelName = channelInfo.channelname;
-        this.channelUsers = channelInfo.channelUsers;
-        this.channelCreator = channelInfo.channelCreator;
-        this.channelDescription = channelInfo.description;
-        this.channelID = channelInfo.channelID;
-        console.log(channelInfo.channelUsers);
-      });
-    });
-  }
-
-  ngOnDestroy() {
-    this.unsubUser;
-    this.unsubChannelUser;
-    this.unsubscribeSnapshot;
   }
 
   showReaction(index: number) {

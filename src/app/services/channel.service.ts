@@ -95,7 +95,7 @@ export class ChannelService {
   }
 
   async addNewChannel(newChannel: {}) {
-    await addDoc(this.getChannelRef(), newChannel ).catch(
+    await addDoc(this.getChannelRef(), newChannel).catch(
       (err) => { console.error(err) });
   }
 
@@ -104,9 +104,8 @@ export class ChannelService {
   }
 
   getChannelName(channelname: string) {
-    
     return doc(collection(this.firestore, 'channels'), channelname);
-    
+
   }
 
   getChannelDescription(channelDescription: string) {

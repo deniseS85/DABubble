@@ -176,12 +176,25 @@ export class WorkspaceComponent {
    */
   handleClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
+    this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
     this.elRef.nativeElement
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
     this.renderer.addClass(selectableElement, 'selected');
   }
+
+  selectedChannel(target: HTMLSpanElement) {
+    let selectedChannel = (target as HTMLSpanElement).textContent;
+
+    if (selectedChannel?.includes('#')) {
+      selectedChannel = selectedChannel.substring(1);
+    }
+    if (selectedChannel) {
+      this.channelDataService.changeSelectedChannel(selectedChannel);
+    }
+  }
+
 
   /**
    * Find the parent element with the class 'selectable'.

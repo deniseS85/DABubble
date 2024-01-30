@@ -49,5 +49,9 @@ export class ChannelDataService {
     this.unsubChannelUser;
     this.items.unsubscribe();
   }
+
+  changeSelectedChannel(selectedChannelName: string) {
+    this.channelName = selectedChannelName;
+  }
 }
  

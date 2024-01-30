@@ -141,6 +141,26 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     },
     date: "Heute",
   },
+  {
+    avatar: "../../../assets/img/avatarSofia.png",
+    reactionMenu: {
+      emoji: "../../../assets/img/emoji1.png",
+      handsUp: "../../../assets/img/hands-up.png",
+      addReaction: "../../../assets/img/add_reaction.png",
+      answer: "../../../assets/img/Answer.png",
+      isEmojiOpen: false,
+      selectedEmojis: []
+    },
+    userName: "Ich",
+    sendingTime: "14.25 Uhr",
+    messageContent: "Ich bin der currentUser!",
+    answerInfo: {
+      counter: 0,
+      lastAnswerTime: ""
+    },
+    date: "Heute",
+  },
+  
 ];
   chatUserID: string = '';
   userIsOnline: boolean = false;

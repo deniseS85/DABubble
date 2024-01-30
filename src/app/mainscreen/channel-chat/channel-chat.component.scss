@@ -21,7 +21,7 @@
 .channel-chat-header {
     display: flex;
     justify-content: space-between;
-    padding: 25px 45px;
+    padding: 16px 45px;
 }
 
 .header-left {
@@ -111,23 +111,25 @@
     }
 }
 
-// MESSAGES CHANNEL
-.messages-main-container {
-    padding: 0 45px;
-    padding-bottom: 1px;
-    background-color: white;
-}
 
+.channel-chat-container {
+    max-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 40px;
+    scroll-behavior: smooth;
+}
+ 
 .date-incoming-message {
     display: flex;
     justify-content: center;
     margin-top: -17px;
-
     span {
         border: 1px solid #ADB0D9;
         border-radius: 30px;
         padding: 5px 15px;
         background-color: white;
+        z-index: 1;
     }
 }
 

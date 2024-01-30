@@ -165,6 +165,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
       this.checkIsGuestLogin();
     }
 
+    this.getAllUserInfo();
+  }
+
+  ngOnDestroy() {
+    this.unsubUser;
+    this.unsubscribeSnapshot;
+  }
+
+  getAllUserInfo() {
     this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
       this.allUsers = [];
       list.forEach(singleUser => {

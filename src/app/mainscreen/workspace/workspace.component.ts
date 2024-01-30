@@ -225,6 +225,7 @@ export class WorkspaceComponent {
    * Navigate to the second screen of channel creation.
    */
   toggleChannelCreateContainer() {
+    this.selectedUsers = this.allUsers;
     this.isFirstScreen = !this.isFirstScreen;
     this.isSecondScreen = !this.isSecondScreen;
   }
@@ -234,9 +235,13 @@ export class WorkspaceComponent {
    */
   onShowClick() {
     this.isShowInputNames = true;
+    this.selectedUsers = [];
+
   }
   onHideClick() {
     this.isShowInputNames = false;
+    this.selectedUsers = this.allUsers;
+
   }
 
   /**
@@ -291,12 +296,12 @@ export class WorkspaceComponent {
         return {
           firstname: user.firstname,
           lastname: user.lastname,
-          profileImg: user.profileImg
+          profilImg: user.profileImg
         };
       })
     };
     this.createNewChannel(newChannel);
-    console.log('setChannel:', newChannel);
+    console.log(newChannel);
 
   }
 

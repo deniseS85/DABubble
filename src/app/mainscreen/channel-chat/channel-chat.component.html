@@ -209,7 +209,7 @@
                 <div class="selected-users-container">
                   <div class="selected-users" *ngFor="let user of selectedUsers">
                     <span class="profile">
-                      <!-- <img [src]="getProfileImagePath(user)" /> -->
+                      <img [src]="getProfileImagePath(user)" />
                     </span>
                     {{ user.firstname + " " + user.lastname }}
                     <span (click)="removeUser(user)"><mat-icon>close</mat-icon></span>
@@ -232,7 +232,7 @@
                           (click)="selectUser(user)"
                         >
                           <span class="profile">
-                            <!-- <img [src]="getProfileImagePath(user)" /> -->
+                            <img [src]="getProfileImagePath(user)" />
                             <p class="active-point" *ngIf="user.isOnline == true"></p>
                           </span>
                           <span>{{ user.firstname }} {{ user.lastname }}</span>

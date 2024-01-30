@@ -370,22 +370,19 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
   }
 
-
-
-
   /**
    * Get the profile image path for a user.
    *
    * @param {User} user - The user object.
    * @returns {string} The profile image path.
    */
-  // getProfileImagePath(user: User): string {
-  //   if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
-  //     return user.profileImg;
-  //   } else {
-  //     return `./assets/img/${user.profileImg}`;
-  //   }
-  // }
+  getProfileImagePath(user: User): string {
+    if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+      return user.profileImg;
+    } else {
+      return `./assets/img/${user.profileImg}`;
+    }
+  }
 
 
 

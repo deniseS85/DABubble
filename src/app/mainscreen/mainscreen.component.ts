@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -30,6 +30,7 @@ export class MainscreenComponent implements OnInit {
     isChangeImagePopupOpen: boolean = false;
     isChooseAvatarOpen: boolean = false;
     selectedAvatarNr!: number | string | null;
+    emailChanged: boolean = false;
 
    /*  @Output() emojiSelectedEvent = new EventEmitter<string>(); */
 
@@ -126,6 +127,7 @@ export class MainscreenComponent implements OnInit {
     closeEditUser() {
         this.isEditMode = false;
         this.isProfileInfoOpen = false;
+        this.isChangeImagePopupOpen = false;
     }
 
     async saveUserChange() {
@@ -138,21 +140,20 @@ export class MainscreenComponent implements OnInit {
                 this.user.profileImg = this.selectedAvatarNr;
             } else {
                 let oldFileName = this.extractFileNameFromPath(this.user.profileImg);
-                let oldImgRef = ref(this.storage, `images/${oldFileName}`);
-                await deleteObject(oldImgRef);
+                if (this.user.profileImg.startsWith('https')) {
+                    let oldImgRef = ref(this.storage, `images/${oldFileName}`);
+                    await deleteObject(oldImgRef);
+                  }
                 this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
             }
         }
-    
         try {
-            let updatedData = { ...this.user.toUserJson()};
-            await updateDoc(this.getUserID(), updatedData);
-           /*  await this.changeEmailInAuth(this.user.email); */
-            this.authService.setUserData(updatedData);
-            this.updateUserNameInLocalStorage();
-            this.closeEditUser();
-            this.closeUserInfo();
-            this.isProfileMenuOpen = false;
+            await this.updateData();
+            setTimeout(() => {
+                this.closeEditUser();
+                this.closeUserInfo();
+                this.isProfileMenuOpen = false;
+            }, 2000);
         } catch (error) {}
     }
 
@@ -162,15 +163,27 @@ export class MainscreenComponent implements OnInit {
         return fileNameWithToken.split('?')[0];
     }
 
+    async updateData() {
+        let updatedData = { ...this.user.toUserJson()};
+        await this.changeEmailInAuth(this.user.email);
+        await updateDoc(this.getUserID(), updatedData);
+        this.authService.setUserData(updatedData);
+        this.updateUserNameInLocalStorage();
+    }
+
     updateUserNameInLocalStorage() {
           localStorage.setItem('userFirstName', this.user.firstname);
           localStorage.setItem('userLastName', this.user.lastname);
     }
 
+
     async changeEmailInAuth(newEmail: any) {
         try {
-          this.authService.updateAndVerifyEmail(newEmail);
-        } catch (error) {}
+            this.authService.updateAndVerifyEmail(newEmail);
+            this.emailChanged = true;
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     toggleChangeImagePopup() {

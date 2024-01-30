@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="user-info-details" *ngIf="isEditMode">
+                <div class="user-edit" *ngIf="isEditMode">
                     <div class="user-info-header">
                         <p class="title">Dein Profil bearbeiten</p>
                         <mat-icon (click)="closeEditUser()" class="close-icon">close</mat-icon>
@@ -94,6 +94,10 @@
                         <button (click)="closeEditUser()" class="cancel-btn" type="button">Abbrechen</button>
                         <button (click)="saveUserChange()" class="save-btn" type="button">Speichern</button>
                     </div>
+
+                    <div class="confirm-container" *ngIf="emailChanged">
+                        <div class="confirm-text">E-Mail wurde gesendet. Bitte bestätigen Sie die neue E-Mail-Adresse.</div>
+                    </div>                 
                 </div>
             </div>
             <div class="overlay" *ngIf="isProfileMenuOpen" (click)="toggleProfileMenu()"></div>

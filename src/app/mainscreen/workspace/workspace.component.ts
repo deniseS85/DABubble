@@ -205,6 +205,11 @@ export class WorkspaceComponent {
       this.renderer.setStyle(this.body, 'overflow', 'hidden');
     } else {
       this.renderer.setStyle(this.body, 'overflow', 'auto');
+      this.isShowInputNames = false;
+      this.searchQuery = '';
+      this.selectedUsers = [];
+      this.isFirstScreen = !this.isFirstScreen;
+      this.isSecondScreen = !this.isSecondScreen;
     }
   }
 
@@ -235,6 +240,7 @@ export class WorkspaceComponent {
    */
   onShowClick() {
     this.isShowInputNames = true;
+    this.searchQuery = '';
     this.selectedUsers = [];
 
   }

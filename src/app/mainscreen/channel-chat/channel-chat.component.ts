@@ -252,6 +252,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
 
   closePopup(): void {
     this.renderer.setStyle(this.body, 'overflow', 'auto');
+    this.searchQuery = '';
+    this.selectedUsers = [];
   }
 
   doNotClose(event: MouseEvent): void {

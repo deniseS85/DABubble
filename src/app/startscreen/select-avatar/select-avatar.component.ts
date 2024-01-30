@@ -125,29 +125,8 @@ export class SelectAvatarComponent implements OnInit {
           return false;
         }
       
-       /*  let exists = await this.fileAlreadyExists(file.name);
-        if (exists) {
-          this.showSnackbar('Error: This file already exists.');
-          return false;
-        } */
-      
         return true;
     }
-
-   /*  async fileAlreadyExists(fileName: string): Promise<boolean> {
-        let imgRef = ref(this.storage, `images/${fileName}`);
-      
-        try {
-          await getMetadata(imgRef);
-          return true;
-        } catch (error: any) {
-          if (error.code === 'storage/object-not-found') {
-            return false;
-          } else {
-            throw error;
-          }
-        }
-    } */
 
     showSnackbar(message: string): void {
         this.snackBar.open(message, 'Close', {

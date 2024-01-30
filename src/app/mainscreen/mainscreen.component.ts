@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
 import { Firestore, Unsubscribe, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { collection } from 'firebase/firestore';
-import { Storage, ref, uploadBytes, getDownloadURL, getMetadata } from '@angular/fire/storage';
+import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -137,6 +137,9 @@ export class MainscreenComponent implements OnInit {
             if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {
                 this.user.profileImg = this.selectedAvatarNr;
             } else {
+                let oldFileName = this.extractFileNameFromPath(this.user.profileImg);
+                let oldImgRef = ref(this.storage, `images/${oldFileName}`);
+                await deleteObject(oldImgRef);
                 this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
             }
         }
@@ -144,13 +147,19 @@ export class MainscreenComponent implements OnInit {
         try {
             let updatedData = { ...this.user.toUserJson()};
             await updateDoc(this.getUserID(), updatedData);
-            await this.changeEmailInAuth(this.user.email);
+           /*  await this.changeEmailInAuth(this.user.email); */
             this.authService.setUserData(updatedData);
             this.updateUserNameInLocalStorage();
             this.closeEditUser();
             this.closeUserInfo();
             this.isProfileMenuOpen = false;
         } catch (error) {}
+    }
+
+    extractFileNameFromPath(path: string): string {
+        let pathArray = path.split('%2F');
+        let fileNameWithToken = pathArray[pathArray.length - 1];
+        return fileNameWithToken.split('?')[0];
     }
 
     updateUserNameInLocalStorage() {
@@ -198,11 +207,10 @@ export class MainscreenComponent implements OnInit {
       
         let timestamp = new Date().getTime();
         let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
+
       
         uploadBytes(imgRef, file).then(async () => {
             let url = await getDownloadURL(imgRef);
-            console.log('Image uploaded successfully:', url);
-
             this.selectedAvatarNr = url;
         
         });
@@ -219,30 +227,8 @@ export class MainscreenComponent implements OnInit {
           this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG.');
           return false;
         }
-      /* 
-        let exists = await this.fileAlreadyExists(file.name);
-        if (exists) {
-          this.showSnackbar('Error: This file already exists.');
-          return false;
-        } */
-      
         return true;
     }
-
-  /*   async fileAlreadyExists(fileName: string): Promise<boolean> {
-        let imgRef = ref(this.storage, `images/${fileName}`);
-      
-        try {
-          await getMetadata(imgRef);
-          return true;
-        } catch (error: any) {
-          if (error.code === 'storage/object-not-found') {
-            return false;
-          } else {
-            throw error;
-          }
-        }
-    } */
 
     showSnackbar(message: string): void {
         this.snackBar.open(message, 'Close', {

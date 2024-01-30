@@ -821,8 +821,8 @@ input {
     gap: 10px;
 
     img {
-        height: 30px;
-        width: 30px;
+        height: 30px !important;
+        width: 30px !important;
     }
 
     mat-icon {

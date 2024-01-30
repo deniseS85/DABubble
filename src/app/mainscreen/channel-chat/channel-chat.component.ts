@@ -280,6 +280,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     event.stopPropagation();
   }
 
+  addNewMemberToChannelUsers(user: User) {
+    console.log(user);
+  }
+
   saveNewDescription() {
     this.updateChannel(this.channelDataService.channelID, {
       description: this.newChannelDescription

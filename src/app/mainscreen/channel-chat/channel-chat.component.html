@@ -220,6 +220,7 @@
                       type="text"
                       class="channel-create-input channel-create-description-input"
                       (input)="onSearchInputChange($event)"
+                      [(ngModel)]="searchQuery"
                     />
                     <div
                       class="contacts-list-pop-up"

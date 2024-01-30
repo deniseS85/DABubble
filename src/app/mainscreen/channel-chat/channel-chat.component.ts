@@ -114,6 +114,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
       selectedEmojis: []
     },
     userName: "Noah Braun",
+    chatUserID: 'kdsjfkdsjfkjjkdjfddks',
     sendingTime: "14.25 Uhr",
     messageContent: "Super neuer Chat, Klasse!",
     answerInfo: {
@@ -133,6 +134,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
       selectedEmojis: []
     },
     userName: "Sofia Müller",
+    chatUserID: 'kldfjkdjkjsfdksjkd',
     sendingTime: "14.25 Uhr",
     messageContent: "Ja, wirklich der Wahnsinn!",
     answerInfo: {
@@ -152,17 +154,18 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
       selectedEmojis: []
     },
     userName: "Ich",
+    chatUserID: '58cPaPteJ8gFgzmP1pMv',
     sendingTime: "14.25 Uhr",
     messageContent: "Ich bin der currentUser!",
     answerInfo: {
-      counter: 0,
-      lastAnswerTime: ""
+      counter: 3,
+      lastAnswerTime: "Letzte Antwort"
     },
     date: "Heute",
   },
   
 ];
-  chatUserID: string = '';
+ /*  chatUserID: string = ''; */
   userIsOnline: boolean = false;
   /* //////////////////////////////////////// */
 
@@ -329,8 +332,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     } catch (error) {}
   }
 
-  isCurrentUser(chatUserID: string): boolean {
-    return this.chatUserID === this.userID;
+  isCurrentUser(chatIndex: number): boolean {
+    console.log(this.chats[chatIndex].chatUserID === this.userID);
+    return  this.chats[chatIndex].chatUserID === this.userID;
   }
   
   

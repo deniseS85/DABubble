@@ -31,15 +31,16 @@
                 <span class="fs-18">{{ chat.date }}</span>
             </div>
 
-            <div class="new-message-somebody-container" (mouseenter)="toggleAnimationState('visible', chatIndex)"
-                (mouseleave)="toggleAnimationState('hidden', chatIndex)">
+            <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'"
+                (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible') : toggleAnimationState('visible', chatIndex)"
+                (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden') : toggleAnimationState('hidden', chatIndex)">
                 <div>
                     <img [src]="chat.avatar" alt="">
                 </div>
                 <div>
-                    <div class="name-and-time-container">
-                        <div class="reaction-menu-message right-0" [@slideAndFade]="chat.animationState">
-                        
+                    <div [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
+                        <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87' : 'reaction-menu-message right-0'"
+                        [@slideAndFade]="isCurrentUser(chatIndex) ? animationState1 : chat.animationState">
                             <div *ngIf="chat.reactionMenu.selectedEmojis && chat.reactionMenu.selectedEmojis.length > 0">
                                 <div class="last-emoji">{{getEmojiPath(chat, 0)}}</div>
                             </div>
@@ -49,7 +50,7 @@
                         
                             <div class="emoji-container">
                                 <img (click)="toggleEmoji($event, chatIndex)" [src]="chat.reactionMenu.addReaction" alt="">
-                                <div *ngIf="chat.reactionMenu.isEmojiOpen" class="emoji-selection">
+                                <div *ngIf="chat.reactionMenu.isEmojiOpen" [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-80' : 'emoji-selection right-43'">
                                     <emoji-mart 
                                     class="emoji-mart"
                                     [style]="{ width: '240px', cursor: 'default' }"
@@ -66,11 +67,19 @@
                                 <img [src]="chat.reactionMenu.answer" alt="">
                             </div>
                         </div>
-
-                        <span class="writing-name fs-18 fw-700">{{ chat.userName }}</span>
-                        <div class="sending-time fs-14 fw-400">{{ chat.sendingTime }}</div>
+                        <div class="writing-name-sending-time">
+                            <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
+                                <div class="sending-time fs-14 f400">{{ chat.sendingTime }}</div>
+                                <span class="writing-name fs-18 fw-700">{{ chat.userName }}</span>
+                            </ng-container>
+                            <ng-template #otherUser>
+                                <div class="sending-time fs-18 fw-700">{{ chat.userName }}</div>
+                                <span class="writing-name fs-14 fw-400">{{ chat.sendingTime }}</span>
+                            </ng-template>
+                        </div>
                     </div>
-                    <div class="message-somebody fs-18 fw-400">{{ chat.messageContent }}</div>
+                    <div [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">{{ chat.messageContent }}</div>
+                    
                     <div class="answer-container">
                         <div *ngIf='chat.answerInfo.counter > 0' class="counter-answers fs-18 fw-400">{{ chat.answerInfo.counter }} Antworten</div>
                         <div class="last-answer-time fs-14 fw-400">{{ chat.answerInfo.lastAnswerTime }}</div>
@@ -86,6 +95,8 @@
                 </div>
             </div>
         </div>
+
+
         <!-- currentUser -->
         <!-- <div class="new-message-avatar-main-div" *ngIf="isCurrentUser(userID)">
             <div class="seperator"></div>
@@ -99,6 +110,8 @@
                 </div>
                 <div>
                     <div class="name-and-time-container">
+
+
                         <div class="reaction-menu-message left-0" [@slideAndFadeLeft]="animationState1">
                             <div>
                                 <img src="../../../assets/img/emoji1.png" alt="">
@@ -129,11 +142,12 @@
                             </div>
 
                         </div>
+
                         <div class="sending-time fs-14 fw-400">14.25 Uhr</div>
                         <span class="writing-name fs-18 fw-700">{{user.firstname}} {{user.lastname}}</span>
                     </div>
-
                     <div class="message-avatar fs-18 fw-400">Ja, wirklich der Wahnsinn!</div>
+
                     <div *ngFor="let reaction of reactions; let i = index" class="reaction-icons-container">
 
                         <div class="reaction-smiley hover-function">

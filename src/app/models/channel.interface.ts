@@ -22,6 +22,7 @@ export interface Chat {
       selectedEmojis: string[];
     };
     userName: string;
+    chatUserID: string;
     sendingTime: string;
     messageContent: string;
     answerInfo: {

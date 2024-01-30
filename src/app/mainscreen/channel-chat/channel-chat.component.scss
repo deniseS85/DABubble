@@ -141,7 +141,7 @@
 
 .new-message-somebody-container {
     position: relative;
-    margin-top: 20px;
+    margin: 20px 0 35px 0;
     display: flex;
     justify-content: flex-start;
     gap: 30px;
@@ -165,12 +165,12 @@
     }
 }
 
-.new-message-avatar-main-div {
+/* .new-message-avatar-main-div {
     margin-top: 20px;
     .current-user-image {
         width: 70px;
     }
-}
+} */
 
 .new-message-avatar-container {
     position: relative;
@@ -179,7 +179,7 @@
     flex-direction: row-reverse;
     gap: 30px;
     padding: 20px 0;
-
+    background-color: white;
     &:hover {
         cursor: pointer;
         background-color: #ECEEFE;
@@ -196,16 +196,18 @@
     align-items: center;
     gap: 20px;
     margin: 8px 0;
+    height: 21px;
     .reactions {
         cursor: pointer;
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 10px;
         margin-left: -20px;
         border: 1px solid transparent;
         height: 34px;
         .single-emoji {
-            padding: 3px 10px;
+            padding: 0.5px 8px 2.5px 8px;
             border-radius: 20px;
             border: 1px solid #ADB0D9;
         }
@@ -248,8 +250,31 @@
             position: absolute;
             top: 184px;
             right: 43px;
+            z-index: 2;
         }
     }  
+}
+
+.right-43 {
+    right: 43px;
+}
+
+.left-80 {
+    left: 80px;
+}
+
+.writing-name-sending-time {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.float-left {
+    justify-content: start;
+}
+
+.float-right {
+    justify-content: end;
 }
 
 .reactions-to-message-maincontainer {
@@ -279,8 +304,8 @@
     }
 }
 
-.left-0 {
-    left: 0px;
+.left-87 {
+    left: 87px;
 }
 
 .right-0 {

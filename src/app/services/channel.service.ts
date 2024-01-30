@@ -108,6 +108,10 @@ export class ChannelService {
 
   }
 
+  getSingleChannel(channelId: string) {
+    return doc(collection(this.firestore, 'channels'), channelId)
+  }
+
   getChannelDescription(channelDescription: string) {
     return doc(collection(this.firestore, 'channels'), channelDescription);
   }

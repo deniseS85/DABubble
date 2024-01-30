@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
-import { Firestore, Unsubscribe, collectionData, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { Observable } from "rxjs";
 import { collection } from 'firebase/firestore';
@@ -18,7 +18,7 @@ export class ChannelDataService {
   channelUsers: any[] = [];
 
   newChannelMember: string = '';
-  channelID: string = '';
+  channelID: string = 'DE4cTsdDLnNeJIVHWd8e';
 
   items$;
   items;
@@ -29,16 +29,14 @@ export class ChannelDataService {
   constructor(
     private channelService: ChannelService,
   ) { 
-    this.items$ = collectionData(this.channelService.getChannelRef());
-    this.items = this.items$.subscribe( (list) => {
-      list.forEach(channel => {
+    this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
+    this.items = this.items$.subscribe( (channel) => {
         let channelInfo = new Channel(channel);
         this.channelName = channelInfo.channelname;
         this.channelUsers = channelInfo.channelUsers;
         this.channelCreator = channelInfo.channelCreator;
         this.channelDescription = channelInfo.description;
         this.channelID = channelInfo.channelID;
-      });
     });
   }
 

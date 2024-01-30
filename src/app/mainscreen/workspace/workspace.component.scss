@@ -26,17 +26,22 @@
     padding: 8px;
     margin-right: -10px;
     border-radius: 50%;
-    
+    font-size: 24px;
     &:hover {
         background-color: #ECEEFE;
-        
-        .normal-img {
-            display: none;
-        }
-        
-        .hover-img {
-            display: block;
-            padding-bottom: 3px;
+        color: #444DF2;
+    }
+
+    @media (max-width: 400px) {
+        padding: 20px;
+        background-color: #444DF2;
+        color: white;
+        position: absolute;
+        bottom: 40px;
+        right: 30px;
+        &:hover {
+            background-color: #797EF3;
+            color: white;
         }
     }
 }
@@ -225,6 +230,16 @@ mat-expansion-panel-header {
     padding: 40px;
     font-size: 18px;
     min-width: 600px;
+
+    @media (max-width: 700px) {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 0;
+        transform: none;
+        min-width: 0;
+    }
 }
 
 .channel-create-title {
@@ -329,6 +344,19 @@ mat-expansion-panel-header {
     border-radius: 25px;
     background-color: #444DF2;
     color: white;
+}
+
+@media (max-width: 700px) {
+
+    .second-screen {
+        position: absolute;       
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 40px 20px 40px 20px;
+        border-radius: 30px;
+        background-color: #00000020;
+    }
 }
 
 .user-group-radio-button {

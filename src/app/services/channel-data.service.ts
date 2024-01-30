@@ -59,7 +59,6 @@ export class ChannelDataService {
           this.channelCreator = currentChannel.channelCreator;
           this.channelDescription = currentChannel.description;
           this.channelID = currentChannel.channelID;
-          console.log(currentChannel.description);
         }
       });
       unsubChannel;

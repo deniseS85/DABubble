@@ -6,6 +6,7 @@ import { addDoc, updateDoc } from 'firebase/firestore';
 import { Channel } from '../models/channel.class';
 import { update } from 'firebase/database';
 import { User } from '../models/user.class';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ChannelService {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   collectionRef = collection(this.firestore, "channels");
   chatObservable$ = collectionData(this.collectionRef);
@@ -45,7 +46,6 @@ export class ChannelService {
       channelUsers: users,
       channelCreator: creator
     })
-
   }
 
   /**
@@ -61,10 +61,9 @@ export class ChannelService {
 
 
   getMessageRef(channelID: string) {
-    return collection(this.firestore, "channel", channelID, "message");
+    return collection(this.firestore, "channels", channelID, "messages");
   }
-
-
+  
 
   sendAnswer(channelID: string, messageID: string, answer: any) {
 
@@ -73,6 +72,16 @@ export class ChannelService {
 
     setDoc(ref, newAnswer);
   }
+
+  sendMessage(channelID: string, message: any) {
+    
+    const ref = doc(this.getMessageRef(channelID));
+    console.warn(ref)
+    const newMessage = ({ ...message, messageID: ref.id });
+    console.warn(newMessage)
+    setDoc(ref, newMessage);
+  }
+
 
 
   getAnswerRef(channelID: string, messageID: string) {
@@ -129,6 +138,22 @@ export class ChannelService {
 
   getChannelUsers() {
     return doc(collection(this.firestore, 'channels'));
+  }
+
+  async getCreatorsName() {
+    this.authService.restoreUserData();
+
+    if (this.authService.isUserAnonymous()) {
+      return 'Gast';     
+
+    } else {
+      const userFirstName = this.authService.getUserFirstName();
+    const userLastName = this.authService.getUserLastName();    
+    const channelCreator = userFirstName + userLastName;
+
+    return channelCreator
+    }
+    
   }
 
 }

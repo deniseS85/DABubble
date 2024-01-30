@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
 import { Firestore, Unsubscribe, doc, getDoc, updateDoc } from '@angular/fire/firestore';

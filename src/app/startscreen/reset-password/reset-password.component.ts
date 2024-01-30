@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, HostListener, ElementRef, ViewChild, inject } from '@angular/core';
 import { StartscreenComponent } from '../startscreen.component';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
 
 @Component({

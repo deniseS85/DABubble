@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { signInAnonymously, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { collection, getDocs, query, where, Firestore } from '@angular/fire/firestore';
 

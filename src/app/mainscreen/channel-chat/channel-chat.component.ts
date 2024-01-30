@@ -1,6 +1,6 @@
 import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { AuthService } from "../../auth.service";
+import { AuthService } from "../../services/auth.service";
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
@@ -8,6 +8,8 @@ import { Channel } from "../../models/channel.class";
 import { ActivatedRoute } from '@angular/router';
 import { Chat } from '../../models/channel.interface';
 import { ChannelDataService } from '../../services/channel-data.service';
+import { DatePipe } from '@angular/common';
+import { getCountFromServer, getDocs, query } from 'firebase/firestore';
 
 @Component({
   selector: 'app-channel-chat',
@@ -85,6 +87,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   newChannelName: string = '';
   newChannelDescription: string = '';
   newChannelMember: string = '';
+
+  messagetext: string = '';
+  allMessages: any[] = [];
 
   channelID: string = '';
   userFullName: string = '';
@@ -175,11 +180,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     private authservice: AuthService,
     public channelService: ChannelService,
     private route: ActivatedRoute,
-    public channelDataService: ChannelDataService 
+    public channelDataService: ChannelDataService ,
+    private datePipe: DatePipe,
   ) {
+    this.loadMessagesOfThisChannel();
     this.showContainer = new Array(this.reactions.length).fill(false);
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
+    
   }
 
   ngOnInit() {
@@ -337,7 +345,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
   }
 
   isCurrentUser(chatIndex: number): boolean {
-    console.log(this.chats[chatIndex].chatUserID === this.userID);
+    // console.log(this.chats[chatIndex].chatUserID === this.userID);
     return  this.chats[chatIndex].chatUserID === this.userID;
   }
   
@@ -418,5 +426,66 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     } else {
       this.enabled = false;
     }
+  }
+
+
+  /**
+   * collect datas of currentUSer(writer of the message), messagetext, timestamp and reactions etc.
+   */
+  addMessage(){
+    
+      const message = {
+        messagetext: this.messagetext,
+        messageUserName: this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName(),
+        messageUserProfileImg: this.authservice.getUserImg(),
+        messageID: '',
+        activeUserMessage: false,
+        isEmojiOpen: false,
+        react: [],
+        timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
+        date: this.datePipe.transform(new Date(), 'yyyy-MM-dd') // zum Vergkleiche für anzeige "Heute" oder z.B. "21.Januar"
+      }
+      
+      this.messagetext = '';
+      this.channelService.sendMessage(this.channelDataService.channelID, message);    
+  }
+
+
+  /**
+   * load all messages of an channelChat an add boolean, if currentUser is Sender of Message
+   */
+  async loadMessagesOfThisChannel(){
+    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
+    
+    const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
+      this.allMessages = [];
+      const currentUsername = this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName()
+      querySnapshot.forEach((doc: any) => {       
+        
+        if (doc.data().messageUserName === currentUsername) {
+          const newData = doc.data();
+          const nd = ({ ...newData, activeUserMessage: true })
+          this.allMessages.push(nd);;
+
+        } else {
+          const newData = doc.data();
+          const nd = ({ ...newData, activeUserMessage: false })
+          this.allMessages.push(nd); 
+        }
+      })      
+    })    
+  }
+
+
+  toggleEmojiNew(messageID: string){
+
+  }
+
+  handleReaction($event: any, message: any){
+
+  }
+
+  editMessage(messageID: string){
+
   }
 }

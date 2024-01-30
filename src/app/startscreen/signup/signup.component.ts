@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, View
 import { StartscreenComponent } from '../startscreen.component';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({

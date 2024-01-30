@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
 import { Firestore, arrayRemove, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { ChannelService } from '../../services/channel.service';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditAnswerComponent } from './edit-answer/edit-answer.component';
@@ -24,7 +24,7 @@ export class ThreadComponent {
    * hier nehme ich die angelegten Beispielchannel und die Message
    */
   channelID: string = "DE4cTsdDLnNeJIVHWd8e";
-  messageID: string = 'ZiUntAZxxJhnldQAhBlN';
+  messageID: string = 'A5zuzBTY3E5hWoJCaMo9';
   
   /**
    * hier alle Variablen, die aus der Antwort gezogen werden(User, Zeit, Message)
@@ -92,9 +92,7 @@ export class ThreadComponent {
 
   async loadMessage() {
     const docRef = await getDoc(this.getAnswerRef(this.channelID, this.messageID));
-
     this.loadedMessage = docRef.data();
-    console.log(this.loadedMessage)
   }
 
 
@@ -113,18 +111,13 @@ export class ThreadComponent {
           const newData = doc.data();
           const nd = ({ ...newData, activeUserAnswers: true })
           this.allAnswers.push(nd);
-          // this.getReactions(newData.answerID);
-
+  
         } else {
           const newData = doc.data();
           const nd = ({ ...newData, activeUserAnswers: false })
           this.allAnswers.push(nd);
-          // console.log(newData.answerID)
-          // this.getReactions(newData.answerID);  
-
+                
         }
-
-
       })
     })
   }

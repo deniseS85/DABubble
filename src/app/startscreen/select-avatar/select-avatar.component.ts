@@ -4,7 +4,7 @@ import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { collection, addDoc } from "firebase/firestore"; 
 import { User } from '../../models/user.class';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Storage, ref, uploadBytes, getDownloadURL, getMetadata } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

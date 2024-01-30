@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
 import { ChannelDataService } from '../../services/channel-data.service';
+import { query } from 'firebase/firestore';
 
 @Component({
   selector: 'app-workspace',
@@ -48,6 +49,7 @@ export class WorkspaceComponent {
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
+    this.loadChannels()
   }
 
   async ngOnInit(): Promise<void> {
@@ -55,7 +57,7 @@ export class WorkspaceComponent {
       this.checkIsGuestLogin();
     }
     this.getUserList();
-    await this.getAllChannel();
+    // await this.getAllChannel();
   }
 
   ngOnDestroy() {
@@ -96,12 +98,12 @@ export class WorkspaceComponent {
 
   /**
    * Retrieve and update the channel list.
-   *
+   * auskommentiert von Klemens
    * @returns {Promise<void>} A Promise that resolves after retrieving the channel list.
    */
-  private async getAllChannel(): Promise<void> {
-    await this.getChannelList();
-  }
+  // private async getAllChannel(): Promise<void> {
+  //   await this.getChannelList();
+  // }
 
   /**
    * Get the profile image path for a user.
@@ -144,13 +146,31 @@ export class WorkspaceComponent {
 
   /**
    * Retrieve and update the channel list.
-   *
+   * auskommentiert von Klemens --> neueFunktion darunter
    * @returns {Promise<void>} A Promise that resolves after retrieving the channel list.
    */
-  async getChannelList(): Promise<void> {
-    this.channels = await this.channelService.getAllChannels();
-    console.log('Channels:', this.channels);
-  }
+  // async getChannelList(): Promise<void> {
+  //   this.channels = await this.channelService.getAllChannels();
+  //   console.log('Channels:', this.channels);
+  // }
+
+
+
+  /**
+   * hier wird Live-Update der Channels aktiviert
+   * funktion wird im constructor aufgerufen um bei ersten öffnen des workspaces zu laden
+   */
+  async loadChannels(){
+    const queryAllChannels = await query(this.channelService.collectionRef);
+
+    const unsub = onSnapshot(queryAllChannels, (querySnapshot) => {
+      this.channels = [];
+      querySnapshot.forEach((doc: any) => {
+        this.channels.push(doc.data());
+    });    
+  });
+  
+}
 
   /**
    * Check if the user is logged in as a guest and update user information accordingly.
@@ -307,26 +327,60 @@ export class WorkspaceComponent {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
   }
 
-  setNewChannelItems() {
-    let newChannel = {
-      channelname: this.createdChannelName,
-      description: this.createdChannelDescription,
-      channelUsers: this.selectedUsers.map(user => {
+  /**
+   * Für den Channel benötigen wir habe ich noch ein paar Variablen bzw. Arrays mehr
+   * UsersID's brauchen wir um messages zu erstellen und individuell zuzuweisen
+   * channelCreator für das 'Erstellt von' im channel Menu 
+   * und die channelID wird beim erstellen im channel.Service hinzugefügt, diese ist zum löschen und editieren ganz nützlich
+   */
+  async setNewChannelItems() {    
+      const channelname = this.createdChannelName;
+      const channelDescription = this.createdChannelDescription;
+      const channelUsers =  this.selectedUsers.map(user => {
         return {
           firstname: user.firstname,
           lastname: user.lastname,
           profileImg: user.profileImg
         };
-      })
-    };
-    this.createNewChannel(newChannel);
+      });
+      const channelUsersID = this.selectedUsers.map(user => {
+        return user.id
+      });
+      const channelCreator = this.channelService.getCreatorsName();
+
+    
+    this.channelService.createChannel(channelname, channelDescription, channelUsersID, channelUsers, await channelCreator);
     this.toggleChannelCreateWindow();
-    this.getAllChannel();
+    // this.getAllChannel();
   }
 
-  createNewChannel(newChannelItems: {}) {
-    this.channelService.addNewChannel(newChannelItems);
-  }
+
+  /**
+   * auskommentiert von Klemens --> neue Funktion darüber
+   * @param users 
+   * @param currentUserId 
+   * @returns 
+   */
+  // setNewChannelItems() {
+  //   let newChannel = {
+  //     channelname: this.createdChannelName,
+  //     description: this.createdChannelDescription,
+  //     channelUsers: this.selectedUsers.map(user => {
+  //       return {
+  //         firstname: user.firstname,
+  //         lastname: user.lastname,
+  //         profileImg: user.profileImg
+  //       };
+  //     })
+  //   };
+  //   this.createNewChannel(newChannel);
+  //   this.toggleChannelCreateWindow();
+  //   this.getAllChannel();
+  // }
+
+  // createNewChannel(newChannelItems: {}) {
+  //   this.channelService.addNewChannel(newChannelItems);
+  // }
 
   sortUsers(users: User[], currentUserId: string): User[] {
     return users.slice().sort((a, b) => {

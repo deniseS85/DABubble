@@ -3,7 +3,7 @@ import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { Observable } from "rxjs";
-import { collection } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -28,15 +28,15 @@ export class ChannelDataService {
 
   constructor(
     private channelService: ChannelService,
-  ) { 
+  ) {
     this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
-    this.items = this.items$.subscribe( (channel) => {
-        let channelInfo = new Channel(channel);
-        this.channelName = channelInfo.channelname;
-        this.channelUsers = channelInfo.channelUsers;
-        this.channelCreator = channelInfo.channelCreator;
-        this.channelDescription = channelInfo.description;
-        this.channelID = channelInfo.channelID;
+    this.items = this.items$.subscribe((channel) => {
+      let channelInfo = new Channel(channel);
+      this.channelName = channelInfo.channelname;
+      this.channelUsers = channelInfo.channelUsers;
+      this.channelCreator = channelInfo.channelCreator;
+      this.channelDescription = channelInfo.description;
+      this.channelID = channelInfo.channelID;
     });
   }
 
@@ -48,8 +48,26 @@ export class ChannelDataService {
     this.items.unsubscribe();
   }
 
-  changeSelectedChannel(selectedChannelName: string) {
+  async changeSelectedChannel(selectedChannelName: string) {
     this.channelName = selectedChannelName;
+    let unsubChannel = onSnapshot(this.channelService.getChannelRef(), (list) => {
+      list.forEach((channel) => {
+        let currentChannel = new Channel(channel.data());
+        if (currentChannel.channelname === this.channelName) {
+          this.channelName = currentChannel.channelname;
+          this.channelUsers = currentChannel.channelUsers;
+          this.channelCreator = currentChannel.channelCreator;
+          this.channelDescription = currentChannel.description;
+          this.channelID = currentChannel.channelID;
+          console.log(currentChannel.description);
+        }
+      });
+    })
   }
 }
- 
+
+
+
+
+
+

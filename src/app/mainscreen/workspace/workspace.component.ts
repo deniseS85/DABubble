@@ -320,8 +320,8 @@ export class WorkspaceComponent {
       })
     };
     this.createNewChannel(newChannel);
-    console.log(newChannel);
-
+    this.toggleChannelCreateWindow();
+    this.getAllChannel();
   }
 
   createNewChannel(newChannelItems: {}) {

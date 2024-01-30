@@ -280,24 +280,20 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     event.stopPropagation();
   }
 
-  checkUser() {
-
-  }
-
   saveNewDescription() {
-    this.updateChannel(this.channelID,{
+    this.updateChannel(this.channelDataService.channelID, {
       description: this.newChannelDescription
       });
   }
 
   saveNewChannelName() {
-    this.updateChannel(this.channelID,{
+    this.updateChannel(this.channelDataService.channelID, {
       channelname: this.newChannelName
       });
   }
 
   async updateChannel(channelID: string, item: {}) {
-    await updateDoc(this.getSingelChannelRef(this.channelID), item);
+    await updateDoc(this.getSingelChannelRef(channelID), item);
   }
 
   getSingelChannelRef(docId: string) {

@@ -8,8 +8,11 @@
             </div>
             <div class="header-right">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
-                    <div *ngFor="let channelUser of this.channelDataService.channelUsers ">
-                        <img [src]="'../../../assets/img/' + channelUser.profilImg" alt="">
+                    <div *ngFor="let user of this.channelDataService.channelUsers ">
+                        <span class="profile">
+                            <img [src]="getProfileImagePath(user)" />
+                            <p class="active-point" *ngIf="user.isOnline == true"></p>
+                          </span>
                     </div>
                     <div class="counter-channel-members">{{  this.channelDataService.channelUsers.length }}</div>
                 </div>

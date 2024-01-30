@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -50,11 +51,7 @@ export class AuthService {
                 await this.setOnlineStatus(userId, false);
     
                 if (user.isAnonymous) {
-                    try {
-                        await user.delete();
-                    } catch (error) {
-                        console.error('Fehler beim Löschen des anonymen Benutzers:', error);
-                    }
+                    await user.delete();
                 }
             }
             await this.auth.signOut();
@@ -66,13 +63,16 @@ export class AuthService {
         }
     }
 
-    updateAndVerifyEmail(newEmail: any) {
+    async updateAndVerifyEmail(newEmail: any): Promise<void> {
         const user = this.auth.currentUser;
-       
         if (user) {
             verifyBeforeUpdateEmail(user, newEmail).then(() => {
-          }).catch((error) => {});
-        }
+                console.log('email gesendet')
+              }).catch((error) => {
+                // An error happened.
+              });
+            
+        } 
     }
 
     async setOnlineStatus(userId: string, isOnline: boolean): Promise<void> {

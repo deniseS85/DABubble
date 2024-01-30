@@ -153,7 +153,8 @@ export class MainscreenComponent implements OnInit {
                 this.closeEditUser();
                 this.closeUserInfo();
                 this.isProfileMenuOpen = false;
-            }, 2000);
+                this.emailChanged = false;
+            }, 3000);
         } catch (error) {}
     }
 
@@ -165,7 +166,8 @@ export class MainscreenComponent implements OnInit {
 
     async updateData() {
         let updatedData = { ...this.user.toUserJson()};
-        await this.changeEmailInAuth(this.user.email);
+        this.authService.updateAndVerifyEmail(this.user.email);
+        this.emailChanged = true;
         await updateDoc(this.getUserID(), updatedData);
         this.authService.setUserData(updatedData);
         this.updateUserNameInLocalStorage();
@@ -174,16 +176,6 @@ export class MainscreenComponent implements OnInit {
     updateUserNameInLocalStorage() {
           localStorage.setItem('userFirstName', this.user.firstname);
           localStorage.setItem('userLastName', this.user.lastname);
-    }
-
-
-    async changeEmailInAuth(newEmail: any) {
-        try {
-            this.authService.updateAndVerifyEmail(newEmail);
-            this.emailChanged = true;
-        } catch (error) {
-            console.error(error);
-        }
     }
 
     toggleChangeImagePopup() {

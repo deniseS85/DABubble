@@ -366,10 +366,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     if (!this.selectedUsers.includes(user)) {
       this.selectedUsers.push(user);
       this.searchQuery = '';
+      this.checkInputValidity();
     }
   }
   removeUser(user: User): void {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
+    this.checkInputValidity();
   }
 
   /**
@@ -386,8 +388,11 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
     }
   }
 
-
-
-
-
+  checkInputValidity() {
+    if (this.selectedUsers.length !== 0) {
+      this.enabled = true;
+    } else {
+      this.enabled = false;
+    }
+  }
 }

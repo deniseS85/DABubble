@@ -62,6 +62,7 @@ export class ChannelDataService {
           console.log(currentChannel.description);
         }
       });
+      unsubChannel;
     })
   }
 }

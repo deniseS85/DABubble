@@ -200,7 +200,51 @@
             <div>#</div><span> {{ channelName }}</span>
         </div>
         <div>
-            <input type="text" autofocus [(ngModel)]="newChannelMember" (keypress)="checkUser()">
+            <!-- <input type="text" autofocus [(ngModel)]="newChannelMember" (keypress)="checkUser()"> -->
+
+
+
+            <!-- User filter function -->
+            <div class="user-selection-container mrgn-bt-25">
+                <div class="selected-users-container">
+                  <div class="selected-users" *ngFor="let user of selectedUsers">
+                    <span class="profile">
+                      <!-- <img [src]="getProfileImagePath(user)" /> -->
+                    </span>
+                    {{ user.firstname + " " + user.lastname }}
+                    <span (click)="removeUser(user)"><mat-icon>close</mat-icon></span>
+                  </div>
+                  <div class="relative">
+                    <input
+                      placeholder="Name eingeben"
+                      type="text"
+                      class="channel-create-input channel-create-description-input"
+                      (input)="onSearchInputChange($event)"
+                    />
+                    <div
+                      class="contacts-list-pop-up"
+                      *ngIf="searchQuery.trim()"
+                    >
+                      <div class="contacts-list">
+                        <div
+                          *ngFor="let user of filterUsers()"
+                          (click)="selectUser(user)"
+                        >
+                          <span class="profile">
+                            <!-- <img [src]="getProfileImagePath(user)" /> -->
+                            <p class="active-point" *ngIf="user.isOnline == true"></p>
+                          </span>
+                          <span>{{ user.firstname }} {{ user.lastname }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              
         </div>
         <div class="btn-container">
             <button class="btn fw-700 fs-18" [class.enabled]="enabled">Hinzufügen</button>

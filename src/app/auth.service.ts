@@ -68,8 +68,9 @@ export class AuthService {
 
     updateAndVerifyEmail(newEmail: any) {
         const user = this.auth.currentUser;
+       
         if (user) {
-          verifyBeforeUpdateEmail(user, newEmail).then(() => {
+            verifyBeforeUpdateEmail(user, newEmail).then(() => {
           }).catch((error) => {});
         }
     }

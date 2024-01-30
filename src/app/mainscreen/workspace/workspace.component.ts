@@ -315,7 +315,7 @@ export class WorkspaceComponent {
         return {
           firstname: user.firstname,
           lastname: user.lastname,
-          profilImg: user.profileImg
+          profileImg: user.profileImg
         };
       })
     };

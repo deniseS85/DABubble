@@ -53,7 +53,7 @@
                                 <div *ngIf="chat.reactionMenu.isEmojiOpen" [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-80' : 'emoji-selection right-43'">
                                     <emoji-mart 
                                     class="emoji-mart"
-                                    [style]="{ width: '240px', cursor: 'default' }"
+                                    [style]="{ width: '240px', cursor: 'default'}"
                                     (emojiSelect)="emojiSelected($event, chatIndex)"
                                     color = #535AF1
                                     set = "apple"
@@ -95,6 +95,7 @@
                 </div>
             </div>
         </div>
+        
 
 
         <!-- currentUser -->

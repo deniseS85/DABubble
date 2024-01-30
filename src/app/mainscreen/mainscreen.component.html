@@ -11,7 +11,7 @@
             <span class="mainContainerHeaderProfilName">{{  isEditMode ? editedUserFullName : userFullName  }}</span>
             <div class="profile">
                 <img class="profile-img" [src]="getProfileImagePath()" alt="">
-                <p class="active-point" [ngClass]="{'online': userIsOnline, 'offline': !userIsOnline}"></p>
+                <p class="active-point" [ngClass]="userIsOnline ? 'online' : ''"></p>
             </div>
             <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
             <div class="profil-info-header" *ngIf="isProfileMenuOpen">

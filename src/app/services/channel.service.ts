@@ -1,9 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
+import { Firestore, arrayUnion, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
 import { Observable } from 'rxjs';
-import { addDoc } from 'firebase/firestore';
+import { addDoc, updateDoc } from 'firebase/firestore';
 import { Channel } from '../models/channel.class';
+import { update } from 'firebase/database';
+import { User } from '../models/user.class';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +101,12 @@ export class ChannelService {
       (err) => { console.error(err) });
   }
 
+  async addChannelUser(user: User) {
+    await updateDoc(this.getChannelUsers(), {
+      channelUsers: arrayUnion(user)
+    });
+  }
+
   getChannelRef() {
     return collection(this.firestore, 'channels');
   }
@@ -119,8 +127,8 @@ export class ChannelService {
     return doc(collection(this.firestore, 'channels'), channelCreator);
   }
 
-  getChannelUsers(channelUsers: string) {
-    return doc(collection(this.firestore, 'channels'), channelUsers);
+  getChannelUsers() {
+    return doc(collection(this.firestore, 'channels'));
   }
 
 }

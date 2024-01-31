@@ -2,7 +2,7 @@
     background-color: white;
     padding: 32px 30px;
     border-radius: 30px;
-
+    overflow-y: auto;
     height: 100%;
     box-sizing: border-box;
 }
@@ -347,16 +347,31 @@ mat-expansion-panel-header {
 }
 
 @media (max-width: 700px) {
+    .second-screen-background {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #00000020;
+    }
 
     .second-screen {
+        z-index: 200;
         position: absolute;       
         left: 0;
         right: 0;
         bottom: 0;
         padding: 40px 20px 40px 20px;
         border-radius: 30px;
-        background-color: #00000020;
+        background-color: white;
     }
+}
+
+.channel-create-close {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
 }
 
 .user-group-radio-button {

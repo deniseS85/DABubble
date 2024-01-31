@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ChangeDetectorRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, Renderer2, HostListener, inject } from '@angular/core';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -28,6 +28,7 @@ export class WorkspaceComponent {
   isSecondScreen: boolean = false;
   isShowInputNames: boolean = false;
   isButtonDisabled: boolean = true;
+  isScreenSmall: boolean = false;
 
   createdChannelName: string = '';
   createdChannelDescription: string = '';
@@ -52,11 +53,17 @@ export class WorkspaceComponent {
     this.loadChannels()
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.checkScreenSize();
+  }
+
   async ngOnInit(): Promise<void> {
     if (this.userID) {
       this.checkIsGuestLogin();
     }
     this.getUserList();
+    this.checkScreenSize();
     // await this.getAllChannel();
   }
 
@@ -71,6 +78,18 @@ export class WorkspaceComponent {
       this.checkIsGuestLogin();
     }
     this.getUserList();
+  }
+
+  /**
+   * Monitoring the width of the screen and set the channel create windows to mobile/desktop view
+   */
+  private checkScreenSize(): void {
+    this.isScreenSmall = window.innerWidth < 700;
+    if (this.isScreenSmall || !this.isSecondScreen) {
+      this.isFirstScreen = true;
+    } else {
+      this.isFirstScreen = false;
+    }
   }
 
   /**
@@ -232,18 +251,19 @@ export class WorkspaceComponent {
   /**
    * Display the channel creation window.
    */
-  toggleChannelCreateWindow() {
-    this.isChannelCreateWindow = !this.isChannelCreateWindow;
-    if (this.isChannelCreateWindow) {
-      this.renderer.setStyle(this.body, 'overflow', 'hidden');
-    } else {
-      this.renderer.setStyle(this.body, 'overflow', 'auto');
-      this.isShowInputNames = false;
-      this.searchQuery = '';
-      this.selectedUsers = [];
-      this.isFirstScreen = !this.isFirstScreen;
-      this.isSecondScreen = !this.isSecondScreen;
-    }
+  openChannelCreateWindow() {
+    this.isChannelCreateWindow = true;
+    this.renderer.setStyle(this.body, 'overflow', 'hidden');
+  }
+
+  closeChannelCreateWindow() {
+    this.isChannelCreateWindow = false;
+    this.renderer.setStyle(this.body, 'overflow', 'auto');
+    this.isShowInputNames = false;
+    this.searchQuery = '';
+    this.selectedUsers = [];
+    this.isFirstScreen = true;
+    this.isSecondScreen = false;
   }
 
   /**
@@ -262,11 +282,24 @@ export class WorkspaceComponent {
   /**
    * Navigate to the second screen of channel creation.
    */
-  toggleChannelCreateContainer() {
+  openChannelCreateContainer() {
     this.selectedUsers = this.allUsers;
-    this.isFirstScreen = !this.isFirstScreen;
-    this.isSecondScreen = !this.isSecondScreen;
+    this.isSecondScreen = true;
+    if(this.isScreenSmall) {
+      this.isFirstScreen = true;
+    } else {
+      this.isFirstScreen = false;
+    }
   }
+
+  closeChannelCreateContainer() {
+    this.isShowInputNames = false;
+    this.searchQuery = '';
+    this.selectedUsers = [];
+    this.isFirstScreen = true;
+    this.isSecondScreen = false;
+  }
+
 
   /**
    * Show / Hide input names on button click.
@@ -350,7 +383,7 @@ export class WorkspaceComponent {
 
     
     this.channelService.createChannel(channelname, channelDescription, channelUsersID, channelUsers, await channelCreator);
-    this.toggleChannelCreateWindow();
+    this.closeChannelCreateWindow();
     // this.getAllChannel();
   }
 
@@ -374,7 +407,7 @@ export class WorkspaceComponent {
   //     })
   //   };
   //   this.createNewChannel(newChannel);
-  //   this.toggleChannelCreateWindow();
+  //   this.closeChannelCreateWindow();
   //   this.getAllChannel();
   // }
 

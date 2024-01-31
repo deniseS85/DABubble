@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="channels-add-hover">
-          <div class="channels-add" (click)="toggleChannelCreateWindow()">
+          <div class="channels-add" (click)="openChannelCreateWindow()">
             <mat-icon>add_circle_outline</mat-icon>
             <span>Channel hinzufügen</span>
           </div>
@@ -50,7 +50,7 @@
       </mat-expansion-panel>
     </mat-accordion>
     <div>
-      <div class="channels-add-icon" (click)="toggleChannelCreateWindow()">
+      <div class="channels-add-icon" (click)="openChannelCreateWindow()">
         +
       </div>
     </div>
@@ -110,7 +110,7 @@
       <div>Channel erstellen</div>
       <mat-icon
         class="channels-create-close"
-        (click)="toggleChannelCreateWindow()"
+        (click)="closeChannelCreateWindow()"
         >close</mat-icon
       >
     </div>
@@ -144,7 +144,7 @@
       />
       <div class="btn-container">
         <button 
-          (click)="toggleChannelCreateContainer()" 
+          (click)="openChannelCreateContainer()" 
           class="btn fnt-wt-700"
           [disabled]="isButtonDisabled"
         >
@@ -153,12 +153,14 @@
       </div>
     </div>
 
+    <div class="second-screen-background" *ngIf="isSecondScreen"></div>
     <div class="second-screen" *ngIf="isSecondScreen">
+      <div class="channel-create-close" (click)="closeChannelCreateContainer()"><img src="./assets/img/channel_create_close.png"></div>
       <div class="channel-create-title">
         <div>Leute hinzufügen</div>
         <mat-icon
           class="channels-create-close"
-          (click)="toggleChannelCreateWindow()"
+          (click)="closeChannelCreateWindow()"
         >
           close
         </mat-icon>
@@ -201,10 +203,7 @@
               (input)="onSearchInputChange($event)"
               [(ngModel)]="searchQuery"
             />
-            <div
-              class="contacts-list-pop-up"
-              *ngIf="isShowInputNames && searchQuery.trim()"
-            >
+            <div class="contacts-list-pop-up" *ngIf="searchQuery.trim()">
               <div class="contacts-list">
                 <div
                   *ngFor="let user of filterUsers()"
@@ -230,6 +229,6 @@
 <div
   class="channel-create-window"
   *ngIf="isChannelCreateWindow"
-  (click)="toggleChannelCreateWindow()"
+  (click)="closeChannelCreateWindow()"
   #channelCreateWindow
 ></div>

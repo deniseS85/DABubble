@@ -299,8 +299,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   addNewMemberToChannelUsers() {
-    this.channelUsers = this.channelUsers.concat(this.selectedUsers);
-    console.log(this.channelUsers);
+    console.log(this.channelDataService.channelUsers);
+    this.channelDataService.channelUsers = this.channelDataService.channelUsers.concat(this.selectedUsers);
+    console.log(this.channelDataService.channelUsers);
   }
 
   saveNewDescription() {

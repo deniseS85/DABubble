@@ -136,13 +136,8 @@ export class ThreadComponent {
           answer.react.push(reactionData);
         }
         // updateDoc(doc(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id,),)
-
-
       })
-
     })
-
-
   }
 
 

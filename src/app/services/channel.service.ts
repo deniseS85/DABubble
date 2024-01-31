@@ -110,10 +110,8 @@ export class ChannelService {
       (err) => { console.error(err) });
   }
 
-  async addChannelUser(user: User) {
-    await updateDoc(this.getChannelUsers(), {
-      channelUsers: arrayUnion(user)
-    });
+  async addChannelUser(newChannelUser: User[]) {
+    await addDoc(this.getChannelRef(), newChannelUser);
   }
 
   getChannelRef() {

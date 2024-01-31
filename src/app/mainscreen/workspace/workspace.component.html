@@ -35,7 +35,8 @@
           <div
             *ngFor="let channel of channels"
             class="channels-name selectable"
-            (click)="handleClick($event)"
+            (click)="handleClick($event); openChannel(channel.channelID)"
+
           >
             <span class="hashtag">#</span>
             <span>{{ channel.channelname }}</span>

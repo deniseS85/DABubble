@@ -5,6 +5,7 @@ import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { query } from 'firebase/firestore';
+import { MainscreenComponent } from '../mainscreen.component';
 
 @Component({
   selector: 'app-workspace',
@@ -42,6 +43,7 @@ export class WorkspaceComponent {
   channels: any[] = [];
 
   constructor(
+    private main: MainscreenComponent,
     private elRef: ElementRef,
     private renderer: Renderer2,
     private route: ActivatedRoute,
@@ -422,5 +424,23 @@ export class WorkspaceComponent {
       return (a.firstname + ' ' + a.lastname).localeCompare(b.firstname + ' ' + b.lastname);
     });
   }
+
+
+  /**
+   * channelwechsel --> kurzfristig in ordnung, aber nicht gut
+   * @param channelID 
+   */
+  openChannel(channelID: string){
+    this.main.channelOpen = false;
+    this.channelService.activeChannelID = channelID;
+    console.log(channelID)
+
+    setTimeout(() => {
+      this.main.channelOpen = true;
+    }, 0.02);
+  }
 }
+
+
+
 

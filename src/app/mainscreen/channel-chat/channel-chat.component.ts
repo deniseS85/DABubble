@@ -10,6 +10,7 @@ import { Chat } from '../../models/channel.interface';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { DatePipe } from '@angular/common';
 import { getCountFromServer, getDocs, query } from 'firebase/firestore';
+import { MainscreenComponent } from '../mainscreen.component';
 
 
 @Component({
@@ -110,6 +111,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
 
   constructor(
+    private main: MainscreenComponent,
     private elRef: ElementRef,
     private renderer: Renderer2,
     private authservice: AuthService,
@@ -395,7 +397,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * load all messages of an channelChat an add boolean, if currentUser is Sender of Message
    */
   async loadMessagesOfThisChannel() {
-    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
+    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelService.activeChannelID));
 
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allMessages = [];
@@ -455,6 +457,19 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     const messageRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), messageID);
 
     await updateDoc(messageRef, {answerInfo: answerInfos})
+    const a = (await getDoc(messageRef)).data();
+    // console.log(a['answerInfo'])
+  }
+
+
+  openThread(messageID: string){
+    
+    this.main.threadOpen = false;    
+    this.channelService.activeMessageID = messageID;
+    setTimeout(() => {
+      this.main.threadOpen = true
+    }, 0.001);
+    
   }
  
 

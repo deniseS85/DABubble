@@ -1,5 +1,6 @@
 import { Component, Injectable, inject } from '@angular/core';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+import { getDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +36,14 @@ export class ReactionsService {
     event: any,
     message: any,
     userName: any,
+    typ: string
   ) {
     const reaction = event.emoji.native;
-    const reactCollectionRef = doc(this.firestore, "channels", channelID, "messages", channelMessageID, 'answers', message.answerID);
-
+    const reactCollectionRef = this.getRef(typ, channelID, channelMessageID, threadMessageID)
+    console.warn((await getDoc(reactCollectionRef)).data())
     let allEmojis: any[] = [];
     let allReactions: any[] = [];
+    
 
     message.react.forEach((reac: any) => {
       allEmojis.push(reac.emoji);
@@ -84,6 +87,19 @@ export class ReactionsService {
 
     } else {
       this.addNewEmojiReaction(message, reactCollectionRef, reaction, userName)
+    }
+  }
+
+
+  getRef(typ: string, channelID: string, messageID: string, answerID: string){
+    if(typ == "threadReaction"){
+      return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID);
+    } else if ( typ == "channelReaction"){
+      return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID);
+    } else if ( typ == "chatReaction"){
+      return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID);
+    } else {
+      return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID)
     }
   }
 

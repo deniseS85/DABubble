@@ -115,7 +115,7 @@
                                     </div>
                                 </div>    
                                 <div>
-                                    <img class="react-icon" src="./assets/img/Answer.png" alt="">
+                                    <img class="react-icon" src="./assets/img/Answer.png" alt="" (click)="openThread(message.messageID)">
                                 </div>
                                 <div *ngIf="isCurrentUser(chatIndex)">
                                     <img (click)="editMessage(channelID)" class="edit-icon" src="./assets/img/edit-message.png" alt="">
@@ -135,18 +135,18 @@
                         </div>
                         <div [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">{{ message.messagetext }}</div>
                       
-                        <div class="answer-container" *ngFor="let answer of message.answers, let answerIndex = index">
-                            <div>{{answer.answertext}}</div>
-                            <div *ngIf="message.answerInfo && message.answerInfo.counter > 0" class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
-                            <div *ngIf="message.answerInfo && message.answerInfo.lastAnswerTime" class="last-answer-time fs-14 fw-400">{{ message.answerInfo.lastAnswerTime }}</div>
-                            <div class="reactions" *ngIf="message.answerInfo && message.answerInfo.counter == 0">
+                        <div class="answer-container" *ngIf="message.answerInfo.counter > 0" (click)="openThread(message.messageID)">
+                            <!-- <div>{{answer.answertext}}</div> -->
+                            <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
+                            <div  class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime }}</div>
+                            <!-- <div class="reactions" *ngIf="message.answerInfo.counter == 0">
                                 <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png" alt="">
                                 <ng-container *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 0">
                                     <div class="single-emoji" *ngFor="let selectedEmoji of getUniqueEmojis(message.react.selectedEmojis)">
                                         {{ selectedEmoji }}{{ getEmojiCount(message.react.selectedEmojis, selectedEmoji) > 1 ? ' ' + getEmojiCount(message.react.selectedEmojis, selectedEmoji) : '' }}
                                     </div>
                                 </ng-container>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

@@ -23,8 +23,11 @@ export class ThreadComponent {
    * müssen dann beim Öffnen vom Chat mit übergeben werden
    * hier nehme ich die angelegten Beispielchannel und die Message
    */
-  channelID: string = "DE4cTsdDLnNeJIVHWd8e";
-  messageID: string = 'A5zuzBTY3E5hWoJCaMo9';
+  // channelID: string = "DE4cTsdDLnNeJIVHWd8e";
+  // messageID: string = 'A5zuzBTY3E5hWoJCaMo9';
+
+  channelID: string = "";
+  messageID: string = '';
   
   /**
    * hier alle Variablen, die aus der Antwort gezogen werden(User, Zeit, Message)
@@ -61,6 +64,8 @@ export class ThreadComponent {
     public channelDataService: ChannelDataService,
     private reactionService: ReactionsService,
   ) {
+    this.channelID = this.channelService.activeChannelID;
+    this.messageID = this.channelService.activeMessageID;
     this.loadMessage();
     this.loadAnswers();
     this.loadCurrentUser();
@@ -230,12 +235,13 @@ export class ThreadComponent {
     const emoji = event.emoji.native;
 
     this.answertext = this.answertext + emoji;
-    this.toggleEmojiAnswer()
+    this.toggleEmojiAnswer();
   }
 
 
   handleReaction(event: any, answer: any){
-    this.reactionService.handleReaction(this.channelID, this.messageID, answer.answerID, '', '', event, answer, this.userNameComplete)
+    const typ = 'threadReaction';
+    this.reactionService.handleReaction(this.channelID, this.messageID, answer.answerID, '', '', event, answer, this.userNameComplete, typ)
   }
 
 

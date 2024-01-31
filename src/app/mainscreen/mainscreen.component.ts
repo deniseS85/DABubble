@@ -15,7 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MainscreenComponent implements OnInit {
     firestore: Firestore = inject(Firestore);
     user = new User();
-    threadOpen: boolean =  true;
+    threadOpen: boolean =  false;
+    channelOpen: boolean = true;
     userFirstName: String = '';
     userLastName: String = '';
     userFullName: String = '';

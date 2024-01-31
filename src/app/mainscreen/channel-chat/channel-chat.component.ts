@@ -171,9 +171,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     this.allMessages.forEach((message, index) => {
       if (index === chatIndex) {
         message.isEmojiOpen = !message.isEmojiOpen;
-      } else {
-        message.isEmojiOpen = false;
-      }
+        console.log(message.isEmojiOpen)
+      } 
     });
   }
 
@@ -191,6 +190,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       userSelectedEmojis.push(selectedEmoji.emoji.native);
     }
   }
+
+  closeEmojiContainers(chatIndex: number) {
+    this.allMessages[chatIndex].isEmojiOpen = false;
+}
 
   getUniqueEmojis(selectedEmojis: string[]): string[] {
     return Array.from(new Set(selectedEmojis));
@@ -442,7 +445,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     
     //if there are no answers, no update
     if(counter>0){
-      this.updateAnswerInfoStatus(answerInfos, messageID)
+      this.updateAnswerInfoStatus(answerInfos, messageID);
     }    
   }
 

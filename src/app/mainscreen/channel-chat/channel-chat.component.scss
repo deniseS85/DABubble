@@ -153,6 +153,7 @@
     justify-content: flex-start;
     gap: 30px;
     padding: 20px 0;
+    cursor: default;
     &:hover {
         cursor: pointer;
         background-color: #ECEEFE;
@@ -186,6 +187,7 @@
     gap: 30px;
     padding: 20px 0;
     background-color: white;
+    cursor: default;
     &:hover {
         cursor: pointer;
         background-color: #ECEEFE;
@@ -220,7 +222,7 @@
     }
 }
 
-.reaction-menu-message {
+.reaction-menu-message, .react-container {
     top: -25px;
     background-color: #ffffff;
     position: absolute;
@@ -249,8 +251,10 @@
         }
         .last-emoji {
             font-size: 20px;
+            cursor: pointer;
         }
     }
+  
     .emoji-container {
         position: relative;
         .emoji-selection {
@@ -262,13 +266,25 @@
     }  
 }
 
+::ng-deep emoji-mart .emoji-mart-category .emoji-mart-emoji span {
+    cursor: pointer;
+}
+
+.react-icon {
+    cursor: pointer;
+}
+
+.edit-icon {
+    cursor: pointer;
+    width: 26px;
+}
 
 .right-43 {
     right: 43px;
 }
 
-.left-39 {
-    left: 39px;
+.left-1 {
+    left: -1px;
 }
 
 .writing-name-sending-time {

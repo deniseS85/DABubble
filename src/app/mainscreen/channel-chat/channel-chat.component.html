@@ -88,9 +88,10 @@
                     <span class="fs-18">{{ message.date | date: 'EEEE, dd MMMM' : 'de' }}</span>
                 </div>
 
-                <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'"
+                <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'" style="cursor: default;"
                     (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible') : toggleAnimationState('visible', chatIndex)"
-                    (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden') : toggleAnimationState('hidden', chatIndex)">
+                    (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden') : toggleAnimationState('hidden', chatIndex)"
+                    (mouseleave)="message.isEmojiOpen = false">
                     <div>
                         <img class="profile-img" [src]="message.messageUserProfileImg.startsWith('https') ? message.messageUserProfileImg : './assets/img/' + message.messageUserProfileImg" alt="">
                     </div>
@@ -99,21 +100,25 @@
                             <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'"
                             [@slideAndFade]="isCurrentUser(chatIndex) ? animationState1 : message.animationState">
 
-                            <div *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 0">
+                                <div *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 0">
                                     <div class="last-emoji">{{getEmojiPath(message, 0)}}</div>
                                 </div>
                                 <div *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 1">
                                     <div class="last-emoji">{{getEmojiPath(message, 1)}}</div>
                                 </div>
 
+                                
                                 <div class="emoji-container">
-                                    <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png" alt="">
-                                    <div *ngIf="message.isEmojiOpen" [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-39' : 'emoji-selection right-43'">
-                                        <app-emoji-picker (emojiSelect)="emojiSelected($event, chatIndex)"></app-emoji-picker>
+                                    <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png" alt="" class="react-icon">
+                                    <div *ngIf="message.isEmojiOpen" [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-1' : 'emoji-selection right-43'">
+                                        <app-emoji-picker (emojiSelect)="emojiSelected($event, chatIndex); closeEmojiContainers(chatIndex)"></app-emoji-picker>
                                     </div>
                                 </div>    
                                 <div>
-                                    <img src="./assets/img/Answer.png" alt="">
+                                    <img class="react-icon" src="./assets/img/Answer.png" alt="">
+                                </div>
+                                <div *ngIf="isCurrentUser(chatIndex)">
+                                    <img (click)="editMessage(channelID)" class="edit-icon" src="./assets/img/edit-message.png" alt="">
                                 </div>
 
                             </div>

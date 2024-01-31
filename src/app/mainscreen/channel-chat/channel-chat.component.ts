@@ -11,6 +11,7 @@ import { ChannelDataService } from '../../services/channel-data.service';
 import { DatePipe } from '@angular/common';
 import { getCountFromServer, getDocs, query } from 'firebase/firestore';
 
+
 @Component({
   selector: 'app-channel-chat',
   templateUrl: './channel-chat.component.html',
@@ -99,87 +100,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   reactions = [
     { users: 'Noah Braun', count: 1 },
   ];
-
   showContainer: boolean[] = [];
-
   firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
-
-
   selectedUsers: User[] = [];
   searchQuery: string = '';
-
   isButtonDisabled: boolean = true;
-
   userList;
-
-  /* //////////////////////////////////////// */
-  chats: Chat[] = [
-    {
-      avatar: "../../../assets/img/avatarNoah.png",
-      reactionMenu: {
-        emoji: "../../../assets/img/emoji1.png",
-        handsUp: "../../../assets/img/hands-up.png",
-        addReaction: "../../../assets/img/add_reaction.png",
-        answer: "../../../assets/img/Answer.png",
-        isEmojiOpen: false,
-        selectedEmojis: []
-      },
-      userName: "Noah Braun",
-      chatUserID: 'kdsjfkdsjfkjjkdjfddks',
-      sendingTime: "14.25 Uhr",
-      messageContent: "Super neuer Chat, Klasse!",
-      answerInfo: {
-        counter: 2,
-        lastAnswerTime: "Letzte Antwort 14:56 Uhr"
-      },
-      date: "Dienstag, 14.Januar",
-    },
-    {
-      avatar: "../../../assets/img/avatarSofia.png",
-      reactionMenu: {
-        emoji: "../../../assets/img/emoji1.png",
-        handsUp: "../../../assets/img/hands-up.png",
-        addReaction: "../../../assets/img/add_reaction.png",
-        answer: "../../../assets/img/Answer.png",
-        isEmojiOpen: false,
-        selectedEmojis: []
-      },
-      userName: "Sofia Müller",
-      chatUserID: 'kldfjkdjkjsfdksjkd',
-      sendingTime: "14.25 Uhr",
-      messageContent: "Ja, wirklich der Wahnsinn!",
-      answerInfo: {
-        counter: 0,
-        lastAnswerTime: ""
-      },
-      date: "Heute",
-    },
-    {
-      avatar: "../../../assets/img/avatarSofia.png",
-      reactionMenu: {
-        emoji: "../../../assets/img/emoji1.png",
-        handsUp: "../../../assets/img/hands-up.png",
-        addReaction: "../../../assets/img/add_reaction.png",
-        answer: "../../../assets/img/Answer.png",
-        isEmojiOpen: false,
-        selectedEmojis: []
-      },
-      userName: "Ich",
-      chatUserID: '58cPaPteJ8gFgzmP1pMv',
-      sendingTime: "14.25 Uhr",
-      messageContent: "Ich bin der currentUser!",
-      answerInfo: {
-        counter: 3,
-        lastAnswerTime: "Letzte Antwort"
-      },
-      date: "Heute",
-    },
-
-  ];
-  /*  chatUserID: string = ''; */
   userIsOnline: boolean = false;
-  /* //////////////////////////////////////// */
+
 
   constructor(
     private elRef: ElementRef,
@@ -230,8 +159,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   toggleAnimationState(state: 'visible' | 'hidden', index: number): void {
-    this.chats.forEach((chat, i) => {
-      chat.animationState = i === index ? state : 'hidden';
+    this.allMessages.forEach((message, i) => {
+      message.animationState = i === index ? state : 'hidden';
     });
   }
 
@@ -242,21 +171,21 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   toggleEmoji(event: Event, chatIndex: number) {
     event.stopPropagation();
 
-    this.chats.forEach((chat, index) => {
+    this.allMessages.forEach((message, index) => {
       if (index === chatIndex) {
-        chat.reactionMenu.isEmojiOpen = !chat.reactionMenu.isEmojiOpen;
+        message.isEmojiOpen = !message.isEmojiOpen;
       } else {
-        chat.reactionMenu.isEmojiOpen = false;
+        message.isEmojiOpen = false;
       }
     });
   }
 
   emojiSelected(selectedEmoji: any, chatIndex: number) {
-    if (!this.chats[chatIndex].reactionMenu.selectedEmojis) {
-      this.chats[chatIndex].reactionMenu.selectedEmojis = [];
+    if (!this.allMessages[chatIndex].react.selectedEmojis) {
+      this.allMessages[chatIndex].react.selectedEmojis = [];
     }
 
-    let userSelectedEmojis = this.chats[chatIndex].reactionMenu.selectedEmojis;
+    let userSelectedEmojis = this.allMessages[chatIndex].react.selectedEmojis;
     let emojiIndex = userSelectedEmojis.indexOf(selectedEmoji.emoji.native);
 
     if (emojiIndex !== -1) {
@@ -274,8 +203,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     return selectedEmojis.filter(e => e === emoji).length;
   }
 
-  getEmojiPath(chat: Chat, index: number): string {
-    const selectedEmojis = chat.reactionMenu.selectedEmojis;
+  getEmojiPath(message: any, index: number): string {
+    const selectedEmojis = message.react.selectedEmojis;
 
     if (selectedEmojis && selectedEmojis.length > index) {
       return selectedEmojis[selectedEmojis.length - 1 - index];
@@ -299,9 +228,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   addNewMemberToChannelUsers() {
-    console.log(this.channelDataService.channelUsers);
+  /*   console.log(this.channelDataService.channelUsers); */
     this.channelDataService.channelUsers = this.channelDataService.channelUsers.concat(this.selectedUsers);
-    console.log(this.channelDataService.channelUsers);
+   /*  console.log(this.channelDataService.channelUsers); */
   }
 
   saveNewDescription() {
@@ -354,8 +283,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   isCurrentUser(chatIndex: number): boolean {
-    // console.log(this.chats[chatIndex].chatUserID === this.userID);
-    return this.chats[chatIndex].chatUserID === this.userID;
+    return this.allMessages[chatIndex].messageUserID === this.userID;
   }
 
 
@@ -441,18 +369,26 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     const message = {
       messagetext: this.messagetext,
       messageUserName: this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName(),
+      messageUserID: this.userID,
       messageUserProfileImg: this.authservice.getUserImg(),
       messageID: '',
       activeUserMessage: false,
       isEmojiOpen: false,
-      react: [],
       timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
-      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd') // zum Vergkleiche für anzeige "Heute" oder z.B. "21.Januar"
+      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),// zum Vergkleiche für anzeige "Heute" oder z.B. "21.Januar"
+      react: {
+        selectedEmojis: []
+      },
+      answerInfo: {
+        counter: 0,
+        lastAnswerTime: ""
+      }, 
     }
 
     this.messagetext = '';
     this.channelService.sendMessage(this.channelDataService.channelID, message);
   }
+
 
 
   /**
@@ -475,7 +411,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
           const newData = doc.data();
           const nd = ({ ...newData, activeUserMessage: false })
           this.allMessages.push(nd);
-          console.log(this.allMessages)
         }
       })
     })

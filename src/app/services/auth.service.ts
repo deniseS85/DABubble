@@ -134,6 +134,7 @@ export class AuthService {
     getUserImg(): string {
         return this.userImg
     }
+    
 
     getUserEmail(): string {
         let user = this.auth.currentUser;

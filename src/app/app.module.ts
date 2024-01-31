@@ -35,6 +35,7 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EditAnswerComponent } from './mainscreen/thread/edit-answer/edit-answer.component';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { EmojiPickerComponent } from './mainscreen/emoji-picker/emoji-picker.component';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     DataProtectionComponent,
     TestQueryComponent,
     EditAnswerComponent,
+    EmojiPickerComponent,
   ],
   imports: [
     BrowserModule,

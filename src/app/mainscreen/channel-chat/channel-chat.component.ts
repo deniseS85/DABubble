@@ -168,8 +168,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   toggleEmoji(event: Event, chatIndex: number) {
-    event.stopPropagation();
-
     this.allMessages.forEach((message, index) => {
       if (index === chatIndex) {
         message.isEmojiOpen = !message.isEmojiOpen;
@@ -178,6 +176,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       }
     });
   }
+/* 
+  closeEmojiMenu(chatIndex: number) {
+    this.allMessages[chatIndex].isEmojiOpen = false;
+  } */
 
   emojiSelected(selectedEmoji: any, chatIndex: number) {
     if (!this.allMessages[chatIndex].react.selectedEmojis) {

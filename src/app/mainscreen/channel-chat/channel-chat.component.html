@@ -96,7 +96,7 @@
                     </div>
                     <div>
                         <div [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
-                            <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87' : 'reaction-menu-message right-0'"
+                            <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'"
                             [@slideAndFade]="isCurrentUser(chatIndex) ? animationState1 : message.animationState">
 
                             <div *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 0">
@@ -108,17 +108,8 @@
 
                                 <div class="emoji-container">
                                     <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png" alt="">
-                                    <div *ngIf="message.isEmojiOpen" [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-80' : 'emoji-selection right-43'">
-                                        <emoji-mart 
-                                        class="emoji-mart"
-                                        [style]="{ width: '240px', cursor: 'default'}"
-                                        (emojiSelect)="emojiSelected($event, chatIndex)"
-                                        color = #535AF1
-                                        set = "apple"
-                                        [enableSearch] = "false"
-                                        [showPreview] = "false"
-                                        title="Choose your emoji">
-                                        </emoji-mart>
+                                    <div *ngIf="message.isEmojiOpen" [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-39' : 'emoji-selection right-43'">
+                                        <app-emoji-picker (emojiSelect)="emojiSelected($event, chatIndex)"></app-emoji-picker>
                                     </div>
                                 </div>    
                                 <div>

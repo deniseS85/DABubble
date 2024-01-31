@@ -261,12 +261,13 @@
     }  
 }
 
+
 .right-43 {
     right: 43px;
 }
 
-.left-80 {
-    left: 80px;
+.left-39 {
+    left: 39px;
 }
 
 .writing-name-sending-time {
@@ -316,6 +317,12 @@
 
 .right-0 {
     right: 0px;
+    border-radius: 25px 25px 0px 25px;
+}
+
+.flex-reverse {
+    flex-direction: row-reverse;
+    border-radius: 25px 25px 25px 0;
 }
 
 .d-none {

@@ -3,8 +3,10 @@
     <div class="header-container">
         <header class="channel-chat-header">
             <div class="header-left" (click)="editChannelOpen = true; openPopup()">
-                <span> <span class="hashtag">#</span> {{ this.channelDataService.channelName }} <img
-                        src="../../../assets/img/keyboard_arrow_down.png" alt=""></span>
+                <span> 
+                    <span class="hashtag">#</span> {{ this.channelDataService.channelName }} 
+                    <img src="../../../assets/img/keyboard_arrow_down.png" alt="">
+                </span>
             </div>
             <div class="header-right">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
@@ -77,62 +79,7 @@
 
     <!-- '################# Ende Klemens code -->
 
-    <!-- <div class="channel-chat-container">
-        <div class="messageContainer" *ngFor="let chat of chats; let chatIndex = index"
-        [ngClass]="{'threadContainerAnswerReverse' : chat.activeUserMessage}">   
-            <img src="./assets/img/{{chat.messageUserProfileImg}}" alt="">
-        
-
-            <div class="date-incoming-message">
-                <span class="fs-18">{{ chat.date }}</span>
-            </div>
-            <div>         
-                    
-                
-                <div>
-                    <div>
-                        <div>              
-                            <div class="emoji-container">
-                                <img (click)="toggleEmoji($event, chatIndex)" alt="">
-                                <div *ngIf="chat.isEmojiOpen" [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-80' : 'emoji-selection right-43'">
-                                    <emoji-mart 
-                                    class="emoji-mart"
-                                    [style]="{ width: '240px', cursor: 'default'}"
-                                    (emojiSelect)="emojiSelected($event, chatIndex)"
-                                    color = #535AF1
-                                    set = "apple"
-                                    [enableSearch] = "false"
-                                    [showPreview] = "false"
-                                    title="Choose your emoji">
-                                    </emoji-mart>
-                                </div>
-                            </div>
-                            <div>
-                                < <img [src]="chat.reactionMenu.answer" alt=""> -->
-                            <!-- </div>
-                        </div>
-                        <div class="writing-name-sending-time">                            
-                                <div class="sending-time fs-14 f400">{{ chat.timestamp }}</div>
-                                <span class="writing-name fs-18 fw-700">{{ chat.messageUserName }}</span>
-                            </div>
-                    </div>
-                    <div>{{ chat.messagetext }}</div>
-                    
-                    <div class="answer-container"> --> 
-                        <!-- <div *ngIf='chat.answerInfo.counter > 0' class="counter-answers fs-18 fw-400">{{ chat.answerInfo.counter }} Antworten</div>
-                        <div class="last-answer-time fs-14 fw-400">{{ chat.answerInfo.lastAnswerTime }}</div>
-                        <div class="reactions" *ngIf="chat.answerInfo.counter == 0">
-                            <img (click)="toggleEmoji($event, chatIndex)" [src]="chat.reactionMenu.addReaction" alt="">
-                            <ng-container *ngIf="chat.reactionMenu.selectedEmojis && chat.reactionMenu.selectedEmojis.length > 0">
-                                <div class="single-emoji" *ngFor="let selectedEmoji of getUniqueEmojis(chat.reactionMenu.selectedEmojis)">
-                                    {{ selectedEmoji }}{{ getEmojiCount(chat.reactionMenu.selectedEmojis, selectedEmoji) > 1 ? ' ' + getEmojiCount(chat.reactionMenu.selectedEmojis, selectedEmoji) : '' }}
-                                </div>
-                            </ng-container>
-                        </div> -->
-                    <!-- </div>
-                </div>
-            </div>
-        </div> -->
+   
 
         <div class="channel-chat-container">
             <div *ngFor="let message of allMessages; let chatIndex = index">
@@ -155,7 +102,7 @@
                             <div *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 0">
                                     <div class="last-emoji">{{getEmojiPath(message, 0)}}</div>
                                 </div>
-                                <div *ngIf="message.react.length > 1">
+                                <div *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 1">
                                     <div class="last-emoji">{{getEmojiPath(message, 1)}}</div>
                                 </div>
 
@@ -180,18 +127,19 @@
                             </div>
                             <div class="writing-name-sending-time">
                                 <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
-                                    <div class="sending-time fs-14 f400">{{ message.timestamp }}</div>
+                                    <div class="sending-time fs-14 f400">{{ message.timestamp }} Uhr</div>
                                     <span class="writing-name fs-18 fw-700">{{ message.messageUserName }}</span>
                                 </ng-container>
                                 <ng-template #otherUser>
                                     <div class="sending-time fs-18 fw-700">{{ message.messageUserName }}</div>
-                                    <span class="writing-name fs-14 fw-400">{{ message.timestamp }}</span>
+                                    <span class="writing-name fs-14 fw-400">{{ message.timestamp }} Uhr</span>
                                 </ng-template>
                             </div>
                         </div>
                         <div [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">{{ message.messagetext }}</div>
                       
-                        <div class="answer-container">
+                        <div class="answer-container" *ngFor="let answer of message.answers, let answerIndex = index">
+                            <div>{{answer.answertext}}</div>
                             <div *ngIf="message.answerInfo && message.answerInfo.counter > 0" class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
                             <div *ngIf="message.answerInfo && message.answerInfo.lastAnswerTime" class="last-answer-time fs-14 fw-400">{{ message.answerInfo.lastAnswerTime }}</div>
                             <div class="reactions" *ngIf="message.answerInfo && message.answerInfo.counter == 0">
@@ -202,7 +150,7 @@
                                     </div>
                                 </ng-container>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div> 
@@ -416,93 +364,3 @@
 
     </div>
 </div>
-
-<!-- currentUser -->
-        <!-- <div class="new-message-avatar-main-div" *ngIf="isCurrentUser(userID)">
-            <div class="seperator"></div>
-            <div class="date-incoming-message">
-                <span class="fs-18">Heute</span>
-            </div>
-            <div class="new-message-avatar-container" (mouseenter)="toggleAnimationState1('visible')"
-                (mouseleave)="toggleAnimationState1('hidden')">
-                <div>
-                    <img class='current-user-image'src="../../../assets/img/{{ user.profileImg }}" alt="">
-                </div>
-                <div>
-                    <div class="name-and-time-container">
-
-
-                        <div class="reaction-menu-message left-0" [@slideAndFadeLeft]="animationState1">
-                            <div>
-                                <img src="../../../assets/img/emoji1.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../../../assets/img/hands-up.png" alt="">
-                            </div>
-                            <div class="emoji-container">
-                                <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">
-                                <div *ngIf="chat.reactionMenu.isEmo
-                                
-                                jiOpen" class="emoji-selection">
-                                    <emoji-mart 
-                                    class="emoji-mart"
-                                    [style]="{ width: '240px' }"
-                                    (emojiSelect)="emojiSelected($event)"
-                                    color = #535AF1
-                                    set = "apple"
-                                    [enableSearch] = "false"
-                                    [showPreview] = "false"
-                                    title="Choose your emoji">
-                                    </emoji-mart>
-                                </div>
-                            </div>
-                            <div>
-                                <img src="../../../assets/img/Answer.png" alt="">
-                            </div>
-                            <div>
-                                <mat-icon>more_vert</mat-icon>
-                            </div>
-
-                        </div>
-
-                        <div class="sending-time fs-14 fw-400">14.25 Uhr</div>
-                        <span class="writing-name fs-18 fw-700">{{user.firstname}} {{user.lastname}}</span>
-                    </div>
-                    <div class="message-avatar fs-18 fw-400">Ja, wirklich der Wahnsinn!</div>
-
-                    <div *ngFor="let reaction of reactions; let i = index" class="reaction-icons-container">
-
-                        <div class="reaction-smiley hover-function">
-                            <img class="normal-img" src="../../../assets/img/add_reaction.png">
-                            <img class="hover-img" src="../../../assets/img/add_reaction_hover.png">
-                        </div>
-                        <div class="reactions-to-message-maincontainer">
-                            <div class="who-reacted-to-message-container" *ngIf="showContainer[0]">
-                                <img src="../../../assets/img/emoji1.png" alt="">
-                                <span class="fs-18 fw-700">{{ reaction.users }}</span>
-                                <span>hat reagiert</span>
-                            </div>
-                            <div class="added-reaction-container" (mouseover)="showReaction(0)"
-                                (mouseout)="hideReaction(0)">
-                                <img src="../../../assets/img/emoji1.png" alt="">
-                                <div class="counter-single-reaction">{{ reaction.count }}</div>
-                            </div>
-                        </div>
-
-                        <div class="reactions-to-message-maincontainer">
-                            <div class="who-reacted-to-message-container" *ngIf="showContainer[1]">
-                                <img src="../../../assets/img/emoji2.png" alt="">
-                                <span class="fs-18 fw-700">{{ reaction.users }}</span>
-                                <span>hat reagiert</span>
-                            </div>
-                            <div class="added-reaction-container" (mouseover)="showReaction(1)"
-                                (mouseout)="hideReaction(1)">
-                                <img src="../../../assets/img/emoji2.png" alt="">
-                                <div class="counter-single-reaction">{{ reaction.count }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-    <!-- </div> -->

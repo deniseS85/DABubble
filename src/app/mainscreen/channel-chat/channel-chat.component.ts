@@ -90,7 +90,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   messagetext: string = '';
   allMessages: any[] = [];
-
   channelID: string = '';
   userFullName: string = '';
   private unsubscribeSnapshot: Unsubscribe | undefined;
@@ -415,6 +414,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       })
     })
   }
+
+  
+
 
 
   toggleEmojiNew(messageID: string) {

@@ -203,13 +203,13 @@
     gap: 20px;
     margin: 8px 0;
     height: 21px;
+    color: black;
     .reactions {
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        margin-left: -20px;
         border: 1px solid transparent;
         height: 34px;
         .single-emoji {

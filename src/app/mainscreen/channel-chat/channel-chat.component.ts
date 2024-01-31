@@ -399,7 +399,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allMessages = [];
       const currentUsername = this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName()
-      querySnapshot.forEach((doc: any) => {
+      querySnapshot.forEach((doc: any) => {          
 
         if (doc.data().messageUserName === currentUsername) {
           const newData = doc.data();
@@ -411,12 +411,51 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
           const nd = ({ ...newData, activeUserMessage: false })
           this.allMessages.push(nd);
         }
+        //for every Message load Answers
+        this.loadAnswers(doc.data().messageID, doc);  
       })
     })
   }
 
   
+  /**
+   * load all Answers of a Message, count them, take last timestamp and update in Firebase
+   * @param messageID 
+   * @param message 
+   */
+  async loadAnswers(messageID: string, message: any){
 
+    const answerRef = this.channelService.getAnswerRef(this.channelDataService.channelID, messageID);
+    let counter = 0;
+    let answersTimes: any[] = [];
+
+    //for each Answer count 1+ and push time in timearray
+    const snap = await getDocs(answerRef);
+    snap.forEach((doc:any) => {
+      counter++;
+      answersTimes.push(doc.data().timestamp)           
+    });    
+    
+    //create JSON with counter and lastElement of the Timearray
+    const answerInfos = {
+      counter: counter,
+      lastAnswerTime: answersTimes.pop()
+    }
+    
+    //if there are no answers, no update
+    if(counter>0){
+      this.updateAnswerInfoStatus(answerInfos, messageID)
+    }    
+  }
+
+
+
+  async updateAnswerInfoStatus(answerInfos: any, messageID: string){
+    const messageRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), messageID);
+
+    await updateDoc(messageRef, {answerInfo: answerInfos})
+  }
+ 
 
 
   toggleEmojiNew(messageID: string) {

@@ -23,7 +23,7 @@ export class ReactionsService {
    * @param chatID 
    * @param chatMessageID 
    * @param event 
-   * @param answer 
+   * @param message 
    * @param userName 
    */
   async handleReaction(
@@ -33,16 +33,16 @@ export class ReactionsService {
     chatID: string,
     chatMessageID: string,
     event: any,
-    answer: any,
+    message: any,
     userName: any,
   ) {
     const reaction = event.emoji.native;
-    const reactCollectionRef = doc(this.firestore, "channels", channelID, "messages", channelMessageID, 'answers', answer.answerID);
+    const reactCollectionRef = doc(this.firestore, "channels", channelID, "messages", channelMessageID, 'answers', message.answerID);
 
     let allEmojis: any[] = [];
     let allReactions: any[] = [];
 
-    answer.react.forEach((reac: any) => {
+    message.react.forEach((reac: any) => {
       allEmojis.push(reac.emoji);
       allReactions.push(reac)
     });
@@ -58,32 +58,32 @@ export class ReactionsService {
         // lösche den activen User, da er den Emoji löscht
         existingEmoji.user = this.deleteUserFromReaction(existingEmoji, userName);
         // aktualisiere die User dieses Emojis
-        answer.react[emojiIndex].user = existingEmoji.user
+        message.react[emojiIndex].user = existingEmoji.user
 
-        this.updateReactions(answer, reactCollectionRef)
+        this.updateReactions(message, reactCollectionRef)
         //wenn Menge der User die den Emoji geklickt haben null ist, lösche den Emoji aus DB
         if (existingEmoji.user.length == 0) {
-          const index = answer.react.indexOf(existingEmoji);
-          answer.react.splice(index, 1);
+          const index = message.react.indexOf(existingEmoji);
+          message.react.splice(index, 1);
 
-          this.updateReactions(answer, reactCollectionRef)
+          this.updateReactions(message, reactCollectionRef)
           console.warn('sliceUser')
         }
 
       } else if (!existingEmoji.user.includes(userName)) {
         existingEmoji.user.push(userName);
 
-        answer.react[emojiIndex].user = existingEmoji.user
+        message.react[emojiIndex].user = existingEmoji.user
 
         await updateDoc(reactCollectionRef, {
-          react: answer.react
+          react: message.react
         });
 
         console.warn(existingEmoji.user, 'addUser')
       }
 
     } else {
-      this.addNewEmojiReaction(answer, reactCollectionRef, reaction, userName)
+      this.addNewEmojiReaction(message, reactCollectionRef, reaction, userName)
     }
   }
 

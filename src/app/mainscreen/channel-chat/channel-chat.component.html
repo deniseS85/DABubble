@@ -85,7 +85,7 @@
             <div *ngFor="let message of allMessages; let chatIndex = index">
                 <div class="seperator"></div>
                 <div class="date-incoming-message">
-                    <span class="fs-18">{{ message.date }}</span>
+                    <span class="fs-18">{{ message.date | date: 'EEEE, dd MMMM' : 'de' }}</span>
                 </div>
 
                 <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'"
@@ -115,6 +115,7 @@
                                 <div>
                                     <img src="./assets/img/Answer.png" alt="">
                                 </div>
+
                             </div>
                             <div class="writing-name-sending-time">
                                 <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">

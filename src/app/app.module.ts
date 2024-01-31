@@ -36,7 +36,11 @@ import { EditAnswerComponent } from './mainscreen/thread/edit-answer/edit-answer
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EmojiPickerComponent } from './mainscreen/emoji-picker/emoji-picker.component';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 
+registerLocaleData(localeDe, 'de');
 
 @NgModule({
   declarations: [
@@ -77,9 +81,9 @@ import { EmojiPickerComponent } from './mainscreen/emoji-picker/emoji-picker.com
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideDatabase(() => getDatabase()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, { provide: LOCALE_ID, useValue: 'de' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

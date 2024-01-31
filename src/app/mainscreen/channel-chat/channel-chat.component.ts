@@ -176,10 +176,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       }
     });
   }
-/* 
-  closeEmojiMenu(chatIndex: number) {
-    this.allMessages[chatIndex].isEmojiOpen = false;
-  } */
 
   emojiSelected(selectedEmoji: any, chatIndex: number) {
     if (!this.allMessages[chatIndex].react.selectedEmojis) {

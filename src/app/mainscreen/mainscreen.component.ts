@@ -149,12 +149,15 @@ export class MainscreenComponent implements OnInit {
         }
         try {
             await this.updateData();
-            setTimeout(() => {
+            this.closeEditUser();
+                this.closeUserInfo();
+                this.isProfileMenuOpen = false;
+           /*  setTimeout(() => {
                 this.closeEditUser();
                 this.closeUserInfo();
                 this.isProfileMenuOpen = false;
                 this.emailChanged = false;
-            }, 3000);
+            }, 3000); */
         } catch (error) {}
     }
 
@@ -166,8 +169,8 @@ export class MainscreenComponent implements OnInit {
 
     async updateData() {
         let updatedData = { ...this.user.toUserJson()};
-        this.authService.updateAndVerifyEmail(this.user.email);
-        this.emailChanged = true;
+       /*  this.authService.updateAndVerifyEmail(this.user.email);
+        this.emailChanged = true; */
         await updateDoc(this.getUserID(), updatedData);
         this.authService.setUserData(updatedData);
         this.updateUserNameInLocalStorage();

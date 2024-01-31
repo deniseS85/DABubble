@@ -471,6 +471,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy{
           const newData = doc.data();
           const nd = ({ ...newData, activeUserMessage: false })
           this.allMessages.push(nd); 
+          console.log(this.allMessages)
         }
       })      
     })    

@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, reauthenticateWithCredential, verifyBeforeUpdateEmail, getAuth, updateEmail, updateProfile, User, sendEmailVerification } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
-import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
+import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';;
 
 @Injectable({
   providedIn: 'root'
@@ -64,15 +63,25 @@ export class AuthService {
     }
 
     async updateAndVerifyEmail(newEmail: any): Promise<void> {
-        const user = this.auth.currentUser;
-        if (user) {
+       
+
+       
+          
+     /*    updateEmail(auth.currentUser, "user@example.com").then(() => {
+            // Email updated!
+            // ...
+          }).catch((error) => {
+            // An error occurred
+            // ...
+          }); */
+        /* if (user) {
             verifyBeforeUpdateEmail(user, newEmail).then(() => {
                 console.log('email gesendet')
               }).catch((error) => {
                 // An error happened.
               });
             
-        } 
+        }  */
     }
 
     async setOnlineStatus(userId: string, isOnline: boolean): Promise<void> {

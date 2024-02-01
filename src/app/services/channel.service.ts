@@ -66,7 +66,7 @@ export class ChannelService {
   getMessageRef(channelID: string) {
     return collection(this.firestore, "channels", channelID, "messages");
   }
-  
+
 
   sendAnswer(channelID: string, messageID: string, answer: any) {
 
@@ -77,7 +77,7 @@ export class ChannelService {
   }
 
   sendMessage(channelID: string, message: any) {
-    
+
     const ref = doc(this.getMessageRef(channelID));
     console.warn(ref)
     const newMessage = ({ ...message, messageID: ref.id });
@@ -113,8 +113,16 @@ export class ChannelService {
       (err) => { console.error(err) });
   }
 
-  async addChannelUser(channelId: string, newChannelUser: { [x: string]: any; }) {
-    await updateDoc(this.getSingleChannel(channelId), newChannelUser);
+  async addChannelUser(channelId: string, newChannelUsers: any) {
+   this.updateChannel(channelId, {channelUsers: newChannelUsers});
+  }
+
+  async updateChannel(channelID: string, item: {}) {
+    await updateDoc(this.getSingelChannelRef(channelID), item);
+  }
+
+  getSingelChannelRef(docId: string) {
+    return doc(collection(this.firestore, 'channels'), docId);
   }
 
   getChannelRef() {
@@ -145,16 +153,16 @@ export class ChannelService {
     this.authService.restoreUserData();
 
     if (this.authService.isUserAnonymous()) {
-      return 'Gast';     
+      return 'Gast';
 
     } else {
       const userFirstName = this.authService.getUserFirstName();
-    const userLastName = this.authService.getUserLastName();    
-    const channelCreator = userFirstName + userLastName;
+      const userLastName = this.authService.getUserLastName();
+      const channelCreator = userFirstName + userLastName;
 
-    return channelCreator
+      return channelCreator
     }
-    
+
   }
 
 }

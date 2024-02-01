@@ -413,7 +413,8 @@ export class WorkspaceComponent {
         return {
           firstname: user.firstname,
           lastname: user.lastname,
-          profileImg: user.profileImg
+          profileImg: user.profileImg,
+          id: user.id
         };
       });
       const channelUsersID = this.selectedUsers.map(user => {

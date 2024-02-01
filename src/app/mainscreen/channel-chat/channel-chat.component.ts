@@ -98,7 +98,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   channelCreator: string = '';
   channelDescription: string = '';
   channelUsers: any[] = [];
-  channelUsersUpdated: any[] = [];
 
   newChannelName: string = '';
   newChannelDescription: string = '';
@@ -259,14 +258,18 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    */
   async addNewMemberToChannelUsers() {
     let userallreadyInChannel = false;
-    const newUser = this.selectedUser.toJson(this.selectedUser);
-
-    userallreadyInChannel = this.checkIfMemberAllreadyIn(this.channelDataService.channelUsers, newUser);
-    if (userallreadyInChannel) {
-      console.warn(this.selectedUser.firstname, ' is allready Memeber of this channel')
-    } else {
-          this.addUserToChannel(newUser) 
-    }
+    let newUsersArray: any = [];
+    this.selectedUsers.forEach((user) => {
+      const newUser = user.toJson(user);      
+      userallreadyInChannel = this.checkIfMemberAllreadyIn(this.channelDataService.channelUsers, newUser);
+      
+      if (userallreadyInChannel) {
+        console.warn(this.selectedUser.firstname, ' is allready Memeber of this channel')
+      } else {
+        newUsersArray.push(newUser)
+      }
+      this.addUserToChannel(newUsersArray)
+    })
   }
 
   /**
@@ -292,18 +295,43 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * push new Member datas to the userArray and update
    * @param newUser new member
    */
-  async addUserToChannel(newUser: any){
+  async addUserToChannel(newUserArray: any) {
     const refChannelUsers = await getDoc(this.getSingelChannelRef(this.channelDataService.channelID))
-      
-      if(refChannelUsers.exists()){                      
-        this.channelUsersUpdated = refChannelUsers.data()['channelUsers'];
-        this.channelUsersUpdated.push(newUser);
 
-        await this.updateChannelUsers(this.channelUsersUpdated)        
-      } 
-  }  
+    if (refChannelUsers.exists()) {
+      let channelUsersUpdated = refChannelUsers.data()['channelUsers'];
 
-  
+      newUserArray.forEach((user:any) => {
+        channelUsersUpdated.push(user);
+      })     
+
+      await this.updateChannelUsers(channelUsersUpdated)
+    }
+  }
+
+
+  leaveChannel() {
+
+    const newusers: any = this.channelDataService.channelUsers;
+    newusers.forEach((user: any) => {
+      if (user.id == this.userID) {
+        const index = newusers.indexOf(user);
+        newusers.splice(index, 1)
+      } else {
+        return
+      }
+    })
+
+    this.updateChannelUsers(newusers);
+  }
+
+
+  updateChannelUsersIDS(newIDs: string) {
+    this.updateChannel(this.channelDataService.channelID, {
+      channelUsersID: newIDs
+    });
+  }
+
   updateChannelUsers(newUsers: any) {
     this.updateChannel(this.channelDataService.channelID, {
       channelUsers: newUsers
@@ -405,8 +433,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    */
   selectUser(user: User): void {
     if (!this.selectedUsers.includes(user)) {
-      this.selectedUsers.push(user);
-      this.selectedUser = new User(user);
+      this.selectedUsers.push(new User(user));
+      // this.selectedUser = new User(user);
       this.searchQuery = '';
       this.checkInputValidity();
     }

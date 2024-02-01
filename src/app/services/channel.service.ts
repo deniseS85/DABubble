@@ -79,9 +79,7 @@ export class ChannelService {
   sendMessage(channelID: string, message: any) {
 
     const ref = doc(this.getMessageRef(channelID));
-    console.warn(ref)
     const newMessage = ({ ...message, messageID: ref.id });
-    console.warn(newMessage)
     setDoc(ref, newMessage);
   }
 

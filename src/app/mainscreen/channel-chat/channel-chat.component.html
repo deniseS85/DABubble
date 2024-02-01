@@ -1,3 +1,4 @@
+<!-- *ngIf="this.channelDataService.channelUsers" in class'maincontainer' einfügen zum ausblenden am anfang -->
 <div class="main-container">
     
     <div class="header-container">
@@ -357,7 +358,7 @@
         </div>
 
         <div class="btn-container">
-            <button class="btn enabled">Channel verlassen</button>
+            <button class="btn enabled" (click)="leaveChannel()">Channel verlassen</button>
         </div>
 
     </div>

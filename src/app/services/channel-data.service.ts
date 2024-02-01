@@ -16,6 +16,7 @@ export class ChannelDataService {
   channelCreator: string = '';
   channelDescription: string = '';
   channelUsers: any[] = [];
+  channelUsersID: any[] = [];
 
   newChannelMember: string = '';
   channelID: string = 'DE4cTsdDLnNeJIVHWd8e';
@@ -37,6 +38,7 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.description;
       this.channelID = channelInfo.channelID;
+      this.channelUsersID = channelInfo.channelUsersID
     });
   }
 

@@ -179,6 +179,10 @@
                     font-size: 18px;
                     font-weight: normal;
                     gap: 20px;
+                    @media only screen and (max-width: 750px) {
+                      position: relative;
+                      transform: translate(0%, -130%);
+                    }
                     .title {
                         font-size: clamp(1.25rem, 1.1203rem + 0.2764vw, 1.5625rem);
                         font-weight: bold;
@@ -493,4 +497,15 @@
         transform: translateX(0);
     }
 }
+
+.mobile-view {
+    height: 0 !important;
+    padding: 0 !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+
 

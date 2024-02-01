@@ -1,4 +1,16 @@
-<div class="workspace-container">
+<div class="normal-hover-img">
+  <div class="workspace-menu-close-container" (click)="toggleWorkspace()">
+    <div>Workspace-Menü schließen</div>
+    <div class="workspace-menu-close-icon">
+      <img class="normal-img" src="./assets/img/workspace_hide.png" *ngIf="isWorkspaceContainer">
+      <img class="hover-img" src="./assets/img/workspace_hide_hover.png" *ngIf="isWorkspaceContainer">
+      <img class="normal-img" src="./assets/img/workspace_show.png" *ngIf="!isWorkspaceContainer">
+      <img class="hover-img" src="./assets/img/workspace_show_hover.png" *ngIf="!isWorkspaceContainer">
+    </div>
+  </div>
+</div>
+
+<div class="workspace-container" *ngIf="isWorkspaceContainer"  [@leftRightAnimation]>
   <div class="server-container">
     <div class="server-logo-name">
       <img src="./assets/img/workspace_logo.png" />
@@ -20,7 +32,7 @@
           [collapsedHeight]="'60px'"
           [expandedHeight]="'60px'"
         >
-          <div class="channels-title-hover">
+          <div class="normal-hover-img">
             <mat-panel-title class="channels-title">
               <mat-icon *ngIf="!panelOpenState1">arrow_right</mat-icon>
               <mat-icon *ngIf="panelOpenState1">arrow_drop_down</mat-icon>
@@ -68,16 +80,13 @@
           [collapsedHeight]="'60px'"
           [expandedHeight]="'60px'"
         >
-          <div class="channels-title-hover">
+          <div class="normal-hover-img">
             <mat-panel-title class="channels-title direct-message-title">
               <mat-icon *ngIf="!panelOpenState2">arrow_right</mat-icon>
               <mat-icon *ngIf="panelOpenState2">arrow_drop_down</mat-icon>
               <div></div>
-              <img class="normal-img" src="./assets/img/account_circle.png" />
-              <img
-                class="hover-img"
-                src="./assets/img/account_circle_hover.png"
-              />
+              <img class="normal-img" src="./assets/img/account_circle.png"/>
+              <img class="hover-img" src="./assets/img/account_circle_hover.png"/>
               <span>Direktnachrichten</span>
             </mat-panel-title>
           </div>
@@ -187,7 +196,7 @@
         />
         <label class="user-group-radio-button-label" for="selectedUsers">Bestimmte Leute hinzufügen</label>
       </div>
-      <div class="user-selection-container mrgn-bt-25" *ngIf="isShowInputNames" [@inOutAnimation]>
+      <div class="user-selection-container mrgn-bt-25" *ngIf="isShowInputNames" [@upDownAnimation]>
         <div class="selected-users-container">
           <div class="selected-users" *ngFor="let user of selectedUsers">
             <span class="profile">
@@ -204,11 +213,11 @@
               (input)="onSearchInputChange($event)"
               [(ngModel)]="searchQuery"
             />
-            <div class="contacts-list-pop-up" *ngIf="searchQuery.trim()" [@inOutAnimation]>
+            <div class="contacts-list-pop-up" *ngIf="searchQuery.trim()" [@upDownAnimation]>
               <div class="contacts-list">
                 <div
                   *ngFor="let user of filterUsers()"
-                  [@inOutAnimation]
+                  [@upDownAnimation]
                   (click)="selectUser(user)"
                 >
                   <span class="profile">

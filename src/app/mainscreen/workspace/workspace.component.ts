@@ -14,29 +14,36 @@ import { animate, style, transition, trigger } from '@angular/animations';
   styleUrl: './workspace.component.scss',
 
   animations: [
-    trigger(
-      'inOutAnimation', 
-      [
-        transition(
-          ':enter', 
-          [
+    trigger('upDownAnimation', [
+        transition(':enter', [
             style({ height: 0, opacity: 0 }),
             animate('0.3s ease-in-out', 
                     style({ height: '*', opacity: 1 }))
           ]
         ),
-        transition(
-          ':leave', 
-          [
+        transition(':leave', [
             style({ height: '*', opacity: 1 }),
             animate('0.3s ease-in-out', 
                     style({ height: 0, opacity: 0 }))
           ]
         )
+      ]),
+    
+    trigger('leftRightAnimation', [
+      transition(':enter', [
+        style({ width: 0, opacity: 0 }),
+        animate('0.3s ease-in-out', 
+        style({ width: '*', opacity: 1 }))
       ]
-    )
-  ]
-  
+      ),
+      transition(':leave', [
+        style({ width: '*', opacity: 1 }),
+        animate('0.3s ease-in-out', 
+        style({ width: 0, opacity: 0 }))
+      ]
+      )
+    ]),
+  ],
 })
 export class WorkspaceComponent {
   panelOpenState1 = false;
@@ -50,6 +57,7 @@ export class WorkspaceComponent {
   selectedUsers: User[] = [];
   searchQuery: string = '';
 
+  isWorkspaceContainer: boolean = true;
   isChannelCreateWindow: boolean = false;
   isFirstScreen: boolean = true;
   isSecondScreen: boolean = false;
@@ -106,6 +114,10 @@ export class WorkspaceComponent {
       this.checkIsGuestLogin();
     }
     this.getUserList();
+  }
+
+  toggleWorkspace() {
+    this.isWorkspaceContainer = !this.isWorkspaceContainer;
   }
 
   /**

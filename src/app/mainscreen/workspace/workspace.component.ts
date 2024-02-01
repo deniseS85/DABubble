@@ -6,11 +6,37 @@ import { ChannelService } from '../../services/channel.service';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { query } from 'firebase/firestore';
 import { MainscreenComponent } from '../mainscreen.component';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
   styleUrl: './workspace.component.scss',
+
+  animations: [
+    trigger(
+      'inOutAnimation', 
+      [
+        transition(
+          ':enter', 
+          [
+            style({ height: 0, opacity: 0 }),
+            animate('0.3s ease-in-out', 
+                    style({ height: '*', opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave', 
+          [
+            style({ height: '*', opacity: 1 }),
+            animate('0.3s ease-in-out', 
+                    style({ height: 0, opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ]
+  
 })
 export class WorkspaceComponent {
   panelOpenState1 = false;

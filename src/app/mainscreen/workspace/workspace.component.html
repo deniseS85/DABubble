@@ -187,7 +187,7 @@
         />
         <label class="user-group-radio-button-label" for="selectedUsers">Bestimmte Leute hinzufügen</label>
       </div>
-      <div class="user-selection-container mrgn-bt-25" *ngIf="isShowInputNames">
+      <div class="user-selection-container mrgn-bt-25" *ngIf="isShowInputNames" [@inOutAnimation]>
         <div class="selected-users-container">
           <div class="selected-users" *ngFor="let user of selectedUsers">
             <span class="profile">
@@ -204,10 +204,11 @@
               (input)="onSearchInputChange($event)"
               [(ngModel)]="searchQuery"
             />
-            <div class="contacts-list-pop-up" *ngIf="searchQuery.trim()">
+            <div class="contacts-list-pop-up" *ngIf="searchQuery.trim()" [@inOutAnimation]>
               <div class="contacts-list">
                 <div
                   *ngFor="let user of filterUsers()"
+                  [@inOutAnimation]
                   (click)="selectUser(user)"
                 >
                   <span class="profile">

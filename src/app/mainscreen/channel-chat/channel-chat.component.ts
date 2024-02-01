@@ -60,6 +60,20 @@ import { MainscreenComponent } from '../mainscreen.component';
       })),
       transition('true <=> false', animate('100ms ease')),
     ]),
+    trigger('rollOutInAnimation', [
+        transition(':enter', [
+            style({ height: 0, opacity: 0 }),
+            animate('0.3s ease-in-out', 
+                    style({ height: '*', opacity: 1 }))
+          ]
+        ),
+        transition(':leave', [
+            style({ height: '*', opacity: 1 }),
+            animate('0.3s ease-in-out', 
+                    style({ height: 0, opacity: 0 }))
+          ]
+        )
+      ]),
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy {

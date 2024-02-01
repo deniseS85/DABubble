@@ -6,7 +6,6 @@ import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from "../../models/channel.class";
 import { ActivatedRoute } from '@angular/router';
-import { Chat } from '../../models/channel.interface';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { DatePipe } from '@angular/common';
 import { getCountFromServer, getDocs, query } from 'firebase/firestore';

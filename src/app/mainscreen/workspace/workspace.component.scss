@@ -160,7 +160,7 @@ mat-expansion-panel-header {
     margin-top: 15px;
     font-size: 18px;
     font-weight: 400;
-    
+    width: 300px;
     div {
         display: flex;
         align-items: center;
@@ -169,7 +169,7 @@ mat-expansion-panel-header {
         padding: 5px 25px;
         border-radius: 35px;
         cursor: pointer;
-
+        
         &:hover {
             background-color: #ECEEFE !important;
         }

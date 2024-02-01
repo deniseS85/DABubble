@@ -61,7 +61,7 @@ export class ChannelDataService {
           this.channelID = currentChannel.channelID;
         }
       });
-      // console.warn(unsubChannel)
+      /* // console.warn(unsubChannel) */
       unsubChannel;
     })
   }

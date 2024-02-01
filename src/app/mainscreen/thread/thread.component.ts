@@ -190,6 +190,7 @@ export class ThreadComponent {
 
   closeThread() {
     this.main.threadOpen = false;
+    
   }
 
 

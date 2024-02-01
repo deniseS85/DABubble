@@ -156,7 +156,7 @@
 
     <div class="second-screen-background" *ngIf="isSecondScreen"></div>
     <div class="second-screen" *ngIf="isSecondScreen">
-      <div class="channel-create-close" (click)="closeChannelCreateContainer()"><img src="./assets/img/channel_create_close.png"></div>
+      <div class="channel-create-close" *ngIf="isScreenSmall" (click)="closeChannelCreateContainer()"><img src="./assets/img/channel_create_close.png"></div>
       <div class="channel-create-title">
         <div>Leute hinzufügen</div>
         <mat-icon

@@ -131,7 +131,6 @@ export class MainscreenComponent implements OnInit {
 
     closeUserInfo() {
         this.isProfileInfoOpen = false;
-        this.isProfileInfoOpen = false;
     }
 
     openEditUser() {

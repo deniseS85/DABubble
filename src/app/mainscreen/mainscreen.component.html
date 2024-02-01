@@ -14,15 +14,15 @@
                 <p class="active-point" [ngClass]="userIsOnline ? 'online' : ''"></p>
             </div>
             <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
-            <div class="profil-info-header" *ngIf="isProfileMenuOpen">
-                <div *ngIf="screenWidth <= 750">
+            <div class="profil-info-header" *ngIf="isProfileMenuOpen" [ngClass]="{'mobile-view': screenWidth <= 750 && isProfileInfoOpen || isEditMode}">
+                <div *ngIf="screenWidth <= 750" [ngClass]="{'d-none': screenWidth <= 750 && isProfileInfoOpen}">
                     <img src="./assets/img/line-user-info.png">
                 </div>
-                <div (click)="openUserInfo()" class="profile" (mouseover)="isProfileHovered = true" (mouseout)="isProfileHovered = false">
+                <div (click)="openUserInfo()" class="profile" (mouseover)="isProfileHovered = true" (mouseout)="isProfileHovered = false" [ngClass]="{'d-none': screenWidth <= 750 && isProfileInfoOpen  || isEditMode}">
                     <img *ngIf="screenWidth <= 750" [src]="isProfileHovered ? './assets/img/account_circle_hover.png' : './assets/img/account_circle.png'">
-                     <span>Profil</span> 
+                    <span>Profil</span> 
                 </div>
-                <div (click)="logout(user.id)" class="logout" (mouseover)="isLogoutHovered = true" (mouseout)="isLogoutHovered = false">
+                <div (click)="logout(user.id)" class="logout" (mouseover)="isLogoutHovered = true" (mouseout)="isLogoutHovered = false" [ngClass]="{'d-none': screenWidth <= 750 && isProfileInfoOpen  || isEditMode}">
                     <img *ngIf="screenWidth <= 750" [src]="isLogoutHovered ? './assets/img/logout_hover.png' : './assets/img/logout.png'">
                     <span>Log out</span>
                 </div>

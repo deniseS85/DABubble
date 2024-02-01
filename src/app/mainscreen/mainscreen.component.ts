@@ -33,6 +33,8 @@ export class MainscreenComponent implements OnInit {
     selectedAvatarNr!: number | string | null;
     emailChanged: boolean = false;
     screenWidth: number = window.innerWidth;
+    isProfileHovered: boolean = false;
+    isLogoutHovered: boolean = false;
 
    /*  @Output() emojiSelectedEvent = new EventEmitter<string>(); */
 

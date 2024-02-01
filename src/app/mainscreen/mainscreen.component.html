@@ -18,14 +18,13 @@
                 <div *ngIf="screenWidth <= 750">
                     <img src="./assets/img/line-user-info.png">
                 </div>
-                <div (click)="openUserInfo()" class="profile">
-                    <img *ngIf="screenWidth <= 750" src="./assets/img/account_circle.png">
+                <div (click)="openUserInfo()" class="profile" (mouseover)="isProfileHovered = true" (mouseout)="isProfileHovered = false">
+                    <img *ngIf="screenWidth <= 750" [src]="isProfileHovered ? './assets/img/account_circle_hover.png' : './assets/img/account_circle.png'">
                      <span>Profil</span> 
                 </div>
-                <div (click)="logout(user.id)" class="logout">
-                    <img *ngIf="screenWidth <= 750" src="./assets/img/logout.png">
+                <div (click)="logout(user.id)" class="logout" (mouseover)="isLogoutHovered = true" (mouseout)="isLogoutHovered = false">
+                    <img *ngIf="screenWidth <= 750" [src]="isLogoutHovered ? './assets/img/logout_hover.png' : './assets/img/logout.png'">
                     <span>Log out</span>
-                   
                 </div>
 
                 <div class="user-info-details" *ngIf="isProfileInfoOpen">

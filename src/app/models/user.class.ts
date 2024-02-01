@@ -28,6 +28,18 @@ export class User {
         };
     }
 
+
+    public toJson(user: any) {
+        return {
+            id: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            profileImg: user.profileImg,
+            isOnline: user.isOnline
+        };
+    }
+
     setUserObject(obj:any, id:string) {
         return new User({
             id: id || "",

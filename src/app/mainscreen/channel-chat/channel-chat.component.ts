@@ -61,19 +61,19 @@ import { MainscreenComponent } from '../mainscreen.component';
       transition('true <=> false', animate('100ms ease')),
     ]),
     trigger('rollOutInAnimation', [
-        transition(':enter', [
-            style({ height: 0, opacity: 0 }),
-            animate('0.3s ease-in-out', 
-                    style({ height: '*', opacity: 1 }))
-          ]
-        ),
-        transition(':leave', [
-            style({ height: '*', opacity: 1 }),
-            animate('0.3s ease-in-out', 
-                    style({ height: 0, opacity: 0 }))
-          ]
-        )
-      ]),
+      transition(':enter', [
+        style({ height: 0, opacity: 0 }),
+        animate('0.3s ease-in-out',
+          style({ height: '*', opacity: 1 }))
+      ]
+      ),
+      transition(':leave', [
+        style({ height: '*', opacity: 1 }),
+        animate('0.3s ease-in-out',
+          style({ height: 0, opacity: 0 }))
+      ]
+      )
+    ]),
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy {
@@ -98,6 +98,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   channelCreator: string = '';
   channelDescription: string = '';
   channelUsers: any[] = [];
+  channelUsersUpdated: any[] = [];
 
   newChannelName: string = '';
   newChannelDescription: string = '';
@@ -117,6 +118,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
   selectedUsers: User[] = [];
+  selectedUser: User = new User();
   searchQuery: string = '';
   isButtonDisabled: boolean = true;
   userList;
@@ -187,7 +189,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       if (index === chatIndex) {
         message.isEmojiOpen = !message.isEmojiOpen;
         console.log(message.isEmojiOpen)
-      } 
+      }
     });
   }
 
@@ -208,7 +210,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   closeEmojiContainers(chatIndex: number) {
     this.allMessages[chatIndex].isEmojiOpen = false;
-}
+  }
 
   getUniqueEmojis(selectedEmojis: string[]): string[] {
     return Array.from(new Set(selectedEmojis));
@@ -242,9 +244,70 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  addNewMemberToChannelUsers() {
-    this.channelDataService.channelUsers = this.channelDataService.channelUsers.concat(this.selectedUsers);
-    this.channelService.addChannelUser(this.channelDataService.channelID, this.channelDataService.channelUsers);
+  /**
+   * auskommentiert von klemens --> andere Funktion unten
+   */
+  // addNewMemberToChannelUsers() {
+  //   this.channelDataService.channelUsers = this.channelDataService.channelUsers.concat(this.selectedUsers);
+  //   this.channelService.addChannelUser(this.channelDataService.channelID, this.channelDataService.channelUsers);
+  // }
+
+
+
+  /**
+   * get selected User, check if he/she is allready Member and add him/her
+   */
+  async addNewMemberToChannelUsers() {
+    let userallreadyInChannel = false;
+    const newUser = this.selectedUser.toJson(this.selectedUser);
+
+    userallreadyInChannel = this.checkIfMemberAllreadyIn(this.channelDataService.channelUsers, newUser);
+    if (userallreadyInChannel) {
+      console.warn(this.selectedUser.firstname, ' is allready Memeber of this channel')
+    } else {
+          this.addUserToChannel(newUser) 
+    }
+  }
+
+  /**
+   * 
+   * @param users array of all channelmembers
+   * @param newUser potential new Member
+   * @returns a boolean if the potential member is allready a member of the channel
+   */
+  checkIfMemberAllreadyIn(users: any, newUser: any) {
+    let allreadyThere = false;
+
+    users.forEach((user: any) => {
+      if (user.firstname == newUser.firstname) {
+        allreadyThere = true;
+      } else {
+        return
+      }
+    })
+    return allreadyThere
+  }
+
+  /**
+   * push new Member datas to the userArray and update
+   * @param newUser new member
+   */
+  async addUserToChannel(newUser: any){
+    const refChannelUsers = await getDoc(this.getSingelChannelRef(this.channelDataService.channelID))
+      
+      if(refChannelUsers.exists()){                      
+        this.channelUsersUpdated = refChannelUsers.data()['channelUsers'];
+        this.channelUsersUpdated.push(newUser);
+
+        await this.updateChannelUsers(this.channelUsersUpdated)        
+      } 
+  }  
+
+  
+  updateChannelUsers(newUsers: any) {
+    this.updateChannel(this.channelDataService.channelID, {
+      channelUsers: newUsers
+    });
   }
 
   saveNewDescription() {
@@ -343,6 +406,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   selectUser(user: User): void {
     if (!this.selectedUsers.includes(user)) {
       this.selectedUsers.push(user);
+      this.selectedUser = new User(user);
       this.searchQuery = '';
       this.checkInputValidity();
     }
@@ -396,7 +460,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       answerInfo: {
         counter: 0,
         lastAnswerTime: ""
-      }, 
+      },
     }
 
     this.messagetext = '';
@@ -414,7 +478,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allMessages = [];
       const currentUsername = this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName()
-      querySnapshot.forEach((doc: any) => {          
+      querySnapshot.forEach((doc: any) => {
 
         if (doc.data().messageUserName === currentUsername) {
           const newData = doc.data();
@@ -427,18 +491,18 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
           this.allMessages.push(nd);
         }
         //for every Message load Answers
-        this.loadAnswers(doc.data().messageID, doc);  
+        this.loadAnswers(doc.data().messageID, doc);
       })
     })
   }
 
-  
+
   /**
    * load all Answers of a Message, count them, take last timestamp and update in Firebase
    * @param messageID 
    * @param message 
    */
-  async loadAnswers(messageID: string, message: any){
+  async loadAnswers(messageID: string, message: any) {
 
     const answerRef = this.channelService.getAnswerRef(this.channelDataService.channelID, messageID);
     let counter = 0;
@@ -446,44 +510,44 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
     //for each Answer count 1+ and push time in timearray
     const snap = await getDocs(answerRef);
-    snap.forEach((doc:any) => {
+    snap.forEach((doc: any) => {
       counter++;
-      answersTimes.push(doc.data().timestamp)           
-    });    
-    
+      answersTimes.push(doc.data().timestamp)
+    });
+
     //create JSON with counter and lastElement of the Timearray
     const answerInfos = {
       counter: counter,
       lastAnswerTime: answersTimes.pop()
     }
-    
+
     //if there are no answers, no update
-    if(counter>0){
+    if (counter > 0) {
       this.updateAnswerInfoStatus(answerInfos, messageID);
-    }    
+    }
   }
 
 
 
-  async updateAnswerInfoStatus(answerInfos: any, messageID: string){
+  async updateAnswerInfoStatus(answerInfos: any, messageID: string) {
     const messageRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), messageID);
 
-    await updateDoc(messageRef, {answerInfo: answerInfos})
+    await updateDoc(messageRef, { answerInfo: answerInfos })
     const a = (await getDoc(messageRef)).data();
     // console.log(a['answerInfo'])
   }
 
 
-  openThread(messageID: string){
-    
-    this.main.threadOpen = false;    
+  openThread(messageID: string) {
+
+    this.main.threadOpen = false;
     this.channelService.activeMessageID = messageID;
     setTimeout(() => {
       this.main.threadOpen = true
     }, 0.001);
-    
+
   }
- 
+
 
 
   toggleEmojiNew(messageID: string) {

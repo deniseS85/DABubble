@@ -118,11 +118,7 @@ export class ChannelService {
   }
 
   async updateChannel(channelID: string, item: {}) {
-    await updateDoc(this.getSingelChannelRef(channelID), item);
-  }
-
-  getSingelChannelRef(docId: string) {
-    return doc(collection(this.firestore, 'channels'), docId);
+    await updateDoc(this.getSingleChannel(channelID), item);
   }
 
   getChannelRef() {

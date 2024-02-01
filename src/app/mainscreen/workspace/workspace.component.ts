@@ -458,8 +458,8 @@ export class WorkspaceComponent {
    */
   openChannel(channelID: string){
     this.main.channelOpen = false;
+    this.main.threadOpen = false;
     this.channelService.activeChannelID = channelID;
-    console.log(channelID)
 
     setTimeout(() => {
       this.main.channelOpen = true;

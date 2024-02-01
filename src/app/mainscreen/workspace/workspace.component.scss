@@ -210,7 +210,7 @@ mat-expansion-panel-header {
 }
 
 .channel-create-window {
-    z-index: 10;
+    z-index: 1000;
     position: absolute;
     top: 0;
     left: 0;
@@ -220,7 +220,7 @@ mat-expansion-panel-header {
 }
 
 .channel-create-container {
-    z-index: 20;
+    z-index: 1500;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -353,11 +353,11 @@ mat-expansion-panel-header {
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: #00000020;
+        background-color: #00000030;
     }
 
     .second-screen {
-        z-index: 200;
+        z-index: 2000;
         position: absolute;       
         left: 0;
         right: 0;
@@ -372,6 +372,7 @@ mat-expansion-panel-header {
     display: flex;
     justify-content: center;
     margin-bottom: 25px;
+    cursor: pointer;
 }
 
 .user-group-radio-button {
@@ -389,26 +390,30 @@ mat-expansion-panel-header {
     background-color: white;
     border: 1px solid #68686820;
     border-radius: 0 30px 30px 30px;
-    box-shadow: 0px 6px 10px #00000020;
+    box-shadow: 0px 6px 10px #00000030;
     padding: 5px 15px;
     width: 300px;
     margin-top: -12px;
     margin-left: 20px;
 
+    animation: slide-up 0.3s ease-in-out;
+    transform-origin: top;
+
+    @keyframes slide-up {
+        0% {
+            transform: rotateX(90deg);
+
+        }
+        100% {
+            transform: rotateX(0deg);
+        }
+    }
+
     @media (max-width: 700px) {
         bottom: 0;
         margin-bottom: 60px;
         border-radius: 30px 30px 30px 0;
-        animation: slide-up 0.3s ease-in-out;
-    }
-
-    @keyframes slide-up {
-        0% {
-            transform: translateY(60%);
-        }
-        100% {
-            transform: translateY(0);
-        }
+        transform-origin: bottom;
     }
 }
 

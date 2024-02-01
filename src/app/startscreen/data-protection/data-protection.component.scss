@@ -41,7 +41,7 @@
     }
     h2 {
         color: #444DF2;
-        font-size: clamp(1.25rem, 1.0268rem + 1.1161vw, 2.8125rem);        
+        font-size: clamp(1.125rem, 0.8839rem + 1.2054vw, 2.8125rem);        
         font-weight: 400;
         margin: 0;
         text-align: center;
@@ -67,4 +67,17 @@
         }
     }
 
+}
+
+@media (max-height: 896px) {
+    .privacy {
+        height: 400px;
+    }
+}
+
+@media (max-height: 740px) {
+    .privacy {
+        height: 80vh;
+        transform: translate(-50%, -62%);
+    }
 }

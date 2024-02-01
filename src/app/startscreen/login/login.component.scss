@@ -325,6 +325,9 @@
         transform: translate(-50%, -62%);
         .data-proteccion {
             bottom: -62px;
+            a {
+                padding: 7px 15px;
+            }
         }
     }
     .sign-up-option {

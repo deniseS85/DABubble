@@ -17,7 +17,7 @@ export class SignupComponent {
     @Output() openPrivacy = new EventEmitter<void>();
     signUpForm!: FormGroup;
     userAlreadyExists: boolean = false;
-    shouldWordBreak: boolean = window.innerWidth <= 511;
+    shouldWordBreak: boolean = window.innerWidth <= 511 && window.innerHeight > 896;
     isChecked: boolean = false;
     @ViewChild('checkboxSelector') checkboxSelector!: ElementRef;
 
@@ -28,7 +28,7 @@ export class SignupComponent {
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
-        this.shouldWordBreak = window.innerWidth <= 511;
+        this.shouldWordBreak = window.innerWidth <= 511 && window.innerHeight > 896;
     }
 
     toggleChecked () {

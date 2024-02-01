@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -32,6 +32,7 @@ export class MainscreenComponent implements OnInit {
     isChooseAvatarOpen: boolean = false;
     selectedAvatarNr!: number | string | null;
     emailChanged: boolean = false;
+    screenWidth: number = window.innerWidth;
 
    /*  @Output() emojiSelectedEvent = new EventEmitter<string>(); */
 
@@ -49,6 +50,12 @@ export class MainscreenComponent implements OnInit {
             this.checkIsGuestLogin();
         }
     }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event): void {
+        this.screenWidth = window.innerWidth;
+    }
+
 
     getProfileImagePath(): string {
         if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
@@ -112,6 +119,12 @@ export class MainscreenComponent implements OnInit {
     openUserInfo() {
         this.isProfileInfoOpen = true;
         this.isEditMode = false;
+    }
+
+    openUserInfoResponsiv() {
+        if (window.innerWidth < 750) {
+            this.toggleProfileMenu();
+        }
     }
 
     closeUserInfo() {

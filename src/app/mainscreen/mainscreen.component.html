@@ -8,15 +8,25 @@
         <input type="text" placeholder="Code learning durchsuchen" id="headerInput">
      
         <div class="mainContainerHeaderProfil">
-            <span class="mainContainerHeaderProfilName">{{  isEditMode ? editedUserFullName : userFullName  }}</span>
-            <div class="profile">
+            <span class="mainContainerHeaderProfilName">{{ isEditMode ? editedUserFullName : userFullName  }}</span>
+            <div class="profile" (click)="openUserInfoResponsiv()">
                 <img class="profile-img" [src]="getProfileImagePath()" alt="">
                 <p class="active-point" [ngClass]="userIsOnline ? 'online' : ''"></p>
             </div>
             <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
             <div class="profil-info-header" *ngIf="isProfileMenuOpen">
-                <div (click)="openUserInfo()" class="profile">Profil</div>
-                <div (click)="logout(user.id)" class="logout">Log out</div>
+                <div *ngIf="screenWidth <= 750">
+                    <img src="./assets/img/line-user-info.png">
+                </div>
+                <div (click)="openUserInfo()" class="profile">
+                    <img *ngIf="screenWidth <= 750" src="./assets/img/account_circle.png">
+                     <span>Profil</span> 
+                </div>
+                <div (click)="logout(user.id)" class="logout">
+                    <img *ngIf="screenWidth <= 750" src="./assets/img/logout.png">
+                    <span>Log out</span>
+                   
+                </div>
 
                 <div class="user-info-details" *ngIf="isProfileInfoOpen">
                     <div class="user-info-header">
@@ -103,7 +113,7 @@
             <div class="overlay" *ngIf="isProfileMenuOpen" (click)="toggleProfileMenu()"></div>
         </div>
     </div>
-    
+
     <div class="mainContainerContent">
         <app-workspace></app-workspace>
         <app-channel-chat *ngIf="channelOpen"></app-channel-chat>

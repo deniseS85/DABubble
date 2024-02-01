@@ -113,8 +113,8 @@ export class ChannelService {
       (err) => { console.error(err) });
   }
 
-  async addChannelUser(newChannelUser: User[]) {
-    await addDoc(this.getChannelRef(), newChannelUser);
+  async addChannelUser(channelId: string, newChannelUser: { [x: string]: any; }) {
+    await updateDoc(this.getSingleChannel(channelId), newChannelUser);
   }
 
   getChannelRef() {

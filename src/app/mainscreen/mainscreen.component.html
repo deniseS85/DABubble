@@ -103,23 +103,10 @@
             <div class="overlay" *ngIf="isProfileMenuOpen" (click)="toggleProfileMenu()"></div>
         </div>
     </div>
+    
     <div class="mainContainerContent">
         <app-workspace></app-workspace>
         <app-channel-chat *ngIf="channelOpen"></app-channel-chat>
         <app-thread *ngIf="threadOpen"></app-thread>        
     </div>
 </div>
-
-<!-- 
-<div class="reaction-emoji-thread">
-    <emoji-mart
-      class="emoji-mart"
-      [style]="{ width: '238px' }"
-      (emojiSelect)="emojiSelected($event)"
-      color = #535AF1
-      set = "apple"
-      [enableSearch] = "false"
-      [showPreview] = "false"
-      title="Choose your emoji"
-    ></emoji-mart>
-</div> -->

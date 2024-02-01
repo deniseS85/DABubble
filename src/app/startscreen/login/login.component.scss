@@ -18,12 +18,12 @@
     z-index: 3;
     h2 {
         color: #444DF2;
-        font-size: clamp(1.25rem, 1.0268rem + 1.1161vw, 2.8125rem);        
+        font-size: clamp(1.125rem, 0.8839rem + 1.2054vw, 2.8125rem);        
         font-weight: 400;
         margin: 0;
     }
     p {
-        font-size: clamp(0.9375rem, 0.8482rem + 0.4464vw, 1.5625rem);
+        font-size: clamp(0.75rem, 0.6339rem + 0.5804vw, 1.5625rem);
         text-align: center;
         margin: 0;
         color: rgba(0, 0, 0, 0.7);
@@ -32,18 +32,18 @@
         width: 100%;
         position: relative;
         input {
-            padding: 0 20px 0 60px;
-            height: clamp(2.8125rem, 2.5893rem + 1.1161vw, 4.375rem);
+            padding: 0 clamp(0.625rem, 0.5357rem + 0.4464vw, 1.25rem) 0 clamp(3.125rem, 3.0357rem + 0.4464vw, 3.75rem);
+            height: clamp(1.875rem, 1.5179rem + 1.7857vw, 4.375rem);
             width: 100%;
             box-sizing: border-box;
             border-radius: 30px;
             background-color: #ECEEFE;
             border: 1px solid transparent;
-            font-size: clamp(0.9375rem, 0.8482rem + 0.4464vw, 1.5625rem);
+            font-size: clamp(0.75rem, 0.6339rem + 0.5804vw, 1.5625rem);
             transition: 225ms ease-in-out;
             cursor: pointer;
             &::placeholder {
-                font-size: clamp(0.875rem, 0.7768rem + 0.4911vw, 1.5625rem);
+                font-size: clamp(0.75rem, 0.6339rem + 0.5804vw, 1.5625rem);
             }
             &:hover {
                 border: 1px solid #444DF2;
@@ -53,7 +53,7 @@
         mat-icon {
             position: absolute;
             left: 20px;
-            top: clamp(0.6875rem, 0.5804rem + 0.5357vw, 1.4375rem);
+            top: clamp(0.1875rem, 0.0089rem + 0.8929vw, 1.4375rem);
             color: gray;
             font-size: clamp(0.875rem, 0.7768rem + 0.4911vw, 1.5625rem);
             display: flex;
@@ -65,7 +65,7 @@
             position: absolute;
             left: 10px;
             color: red;
-            font-size: clamp(0.75rem, 0.6964rem + 0.2679vw, 1.125rem);
+            font-size: clamp(0.6875rem, 0.625rem + 0.3125vw, 1.125rem);
         }
     }
     .reset-password {
@@ -107,7 +107,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: clamp(2.8125rem, 2.5893rem + 1.1161vw, 4.375rem);
+        height: clamp(1.875rem, 1.5179rem + 1.7857vw, 4.375rem);
         gap: 10px;
         transition: 225ms ease-in-out;
         cursor: pointer;
@@ -132,10 +132,10 @@
         gap: 10px;
         .login-btn, .guest-login-btn {
             border-radius: 30px;
-            height: clamp(2.1875rem, 1.875rem + 1.5625vw, 4.375rem);
+            height: clamp(1.875rem, 1.5179rem + 1.7857vw, 4.375rem);
             width: clamp(6.25rem, 5.4464rem + 4.0179vw, 11.875rem);
             cursor: pointer;
-            font-size: clamp(0.9375rem, 0.8482rem + 0.4464vw, 1.5625rem);
+            font-size: clamp(0.75rem, 0.6339rem + 0.5804vw, 1.5625rem);
         }
         .login-btn {
             background-color: #444DF2;
@@ -211,6 +211,7 @@
         border-radius: 30px;
         border: 1px solid transparent;
         cursor: pointer;
+        font-size: clamp(0.75rem, 0.6339rem + 0.5804vw, 1.5625rem);
         &:hover {
             border: 1px solid #444DF2;
             transition: 225ms ease-in-out;
@@ -221,7 +222,7 @@
             border-radius: 30px;
         } 
         @media only screen and (max-width: 324px) {
-            padding: 10px;
+            padding: 5px 10px;
         }
     }
     @media only screen and (max-width: 711px) {
@@ -289,7 +290,6 @@
     }
 }
 
-
 @keyframes slideInFromRight {
     0% {
         opacity: 0;
@@ -298,5 +298,37 @@
     100% {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@media (max-height: 896px) {
+    .login {
+        height: 400px;
+        .reset-password {
+            margin-top: 0;
+        }
+        .google-btn img {
+            width: 15px;
+        }
+        .data-proteccion {
+            bottom: -19%;
+        }
+        .sign-up-option {
+            bottom: 4%;
+        }
+    }
+}
+
+@media (max-height: 740px) {
+    .login {
+        height: 80vh;
+        transform: translate(-50%, -62%);
+        .data-proteccion {
+            bottom: -62px;
+        }
+    }
+    .sign-up-option {
+        flex-direction: unset;
+        width: 100%;
     }
 }

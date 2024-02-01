@@ -1,7 +1,7 @@
 .login-container {
-    background: linear-gradient(1deg, #313AE5 10%, #797EF3 90%);
+    background: #797EF3;
     height: 100vh;
-    animation: backgroundAnimation 3000ms ease-in-out 800ms forwards;
+    animation: backgroundAnimation 2s ease-in-out 800ms forwards;
     z-index: 2;
     position: relative;
     .login-animation {
@@ -29,12 +29,11 @@
         }
     }
     @keyframes backgroundAnimation {
-        0% {
-            background: linear-gradient(1deg, #313AE5 10%, #797EF3 90%);
+        from {
+            background-color: #797EF3
         }
-
-        100% {
-            background: #ECEEFE;
+        to {
+            background-color: #ECEEFE; 
             z-index: 0;
         }
     }
@@ -66,8 +65,8 @@
         }
 
         100% {
-            top: 70px;
-            left: 160px;
+            top: 100px;
+            left: 190px;
         }
     }
     @keyframes nameAnimation {
@@ -100,6 +99,129 @@
             opacity: 1;
             font-size: 1.5rem;
             color: black;
+        }
+    }
+
+}
+
+@media  (max-width: 750px) {
+    .login-animation img {
+        width: 80px !important;
+    }
+    p {
+        margin-left: 0 !important;
+        font-size: 18px !important;
+        animation: nameAnimationResponsiv 2500ms ease-in-out 800ms forwards !important;
+    }
+    @keyframes nameAnimationResponsiv {
+        0% {
+            transform: translateX(0px);
+        }
+
+        40% {
+            transform: translateX(30px);
+            opacity: 0.3;
+            font-size: 2.5rem;
+        }
+
+        60% {
+            transform: translateX(30px);
+            opacity: 1;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        75% {
+            transform: translateX(30px);
+            opacity: 1;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        100% {
+            transform: translateX(30px);
+            opacity: 1;
+            font-size: 1.5rem;
+            color: black;
+        }
+    }
+   
+}
+
+@media (max-width: 450px) {
+    .login-animation img {
+        width: 40px !important;
+    }
+    p {
+        animation: nameAnimationResponsivSmall 2500ms ease-in-out 800ms forwards !important;
+    }
+    @keyframes nameAnimationResponsivSmall {
+        0% {
+            transform: translateX(0px);
+        }
+
+        40% {
+            transform: translateX(10px);
+            opacity: 0.3;
+            font-size: 2.5rem;
+        }
+
+        60% {
+            transform: translateX(10px);
+            opacity: 1;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        75% {
+            transform: translateX(10px);
+            opacity: 1;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        100% {
+            transform: translateX(10px);
+            opacity: 1;
+            font-size: 1.5rem;
+            color: black;
+        }
+    }
+}
+
+@media (max-height: 896px) {
+    .login-animation {
+        animation: logoContainerAnimationResponsiv 1000ms ease-in-out 1500ms forwards !important;
+       
+    }
+    @keyframes logoContainerAnimationResponsiv {
+        0% {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        100% {
+            top: 40px;
+            left: 160px;
+        }
+    }
+}
+
+@media (max-height: 740px) {
+    .login-animation {
+        animation: logoContainerAnimationResponsivSmall 1000ms ease-in-out 1500ms;
+        @keyframes logoContainerAnimationResponsiv {
+            0% {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+            100% {
+                top: 40px;
+                left: 160px;
+                opacity: 0;
+            }
         }
     }
 }

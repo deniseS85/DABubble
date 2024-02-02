@@ -92,6 +92,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   showProfil: boolean = false;
   userIsOnline: boolean = false;
   officialChannel: boolean = true;
+  isChannelCreator: boolean = true;
 
   user: User = new User;
   channel: Channel = new Channel;
@@ -221,7 +222,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       if (!this.allMessages[chatIndex].react.selectedEmojis) {
         this.allMessages[chatIndex].react.selectedEmojis = [];
       }
-      
+
       let userSelectedEmojis = this.allMessages[chatIndex].react.selectedEmojis;
       let emojiIndex = userSelectedEmojis.indexOf(selectedEmoji.emoji.native);
   
@@ -233,46 +234,91 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     }
   
 
-  closeEmojiContainers(chatIndex: number) {
+    /**
+   * Closes the emoji containers for a specific message.
+   * Sets the isEmojiOpen property of the message at the specified chatIndex to false.
+   * 
+   * @param {number} chatIndex - The index of the message in the allMessages array.
+   * @returns {void}
+   */
+  closeEmojiContainers(chatIndex: number): void {
     this.allMessages[chatIndex].isEmojiOpen = false;
   }
 
+  /**
+   * Retrieves unique emojis from an array of selected emojis.
+   * 
+   * @param {string[]} selectedEmojis - The array of selected emojis.
+   * @returns {string[]} An array containing only unique emojis.
+   */
   getUniqueEmojis(selectedEmojis: string[]): string[] {
     return Array.from(new Set(selectedEmojis));
   }
 
+  /**
+   * Retrieves the count of a specific emoji in an array of selected emojis.
+   * 
+   * @param {string[]} selectedEmojis - The array of selected emojis.
+   * @param {string} emoji - The emoji to count.
+   * @returns {number} The count of the specified emoji.
+   */
   getEmojiCount(selectedEmojis: string[], emoji: string): number {
     return selectedEmojis.filter(e => e === emoji).length;
   }
 
+  /**
+   * Retrieves the path of an emoji image.
+   * 
+   * @param {any} message - The message object containing react data.
+   * @param {number} index - The index of the emoji in the selectedEmojis array.
+   * @returns {string} The path of the emoji image.
+   */
   getEmojiPath(message: any, index: number): string {
     const selectedEmojis = message.react.selectedEmojis;
-
     if (selectedEmojis && selectedEmojis.length > index) {
       return selectedEmojis[selectedEmojis.length - 1 - index];
     }
-
     return '';
   }
 
-  openChannelDirectMessage() {
-    let userFullName = this.userProfileView.firstname + " " + this.userProfileView.lastname;
-    this.addUSerOpen = false;
-    this.showMembersOpen = false;
-    this.showProfil = false;
-    this.officialChannel = false;
-    this.channelDataService.channelName = userFullName;
-  }
 
-  openPopup(): void {
-    this.renderer.setStyle(this.body, 'overflow', 'hidden');
-  }
-
-  closePopup(): void {
-    this.renderer.setStyle(this.body, 'overflow', 'auto');
-    this.searchQuery = '';
-    this.selectedUsers = [];
-  }
+    /**
+   * Opens a direct message channel with a user.
+   * Sets the channel name to the full name of the user profile view.
+   * Closes various UI components related to channel management.
+   * 
+   * @returns {void}
+   */
+    openChannelDirectMessage(): void {
+      let userFullName = this.userProfileView.firstname + " " + this.userProfileView.lastname;
+      this.addUSerOpen = false;
+      this.showMembersOpen = false;
+      this.showProfil = false;
+      this.officialChannel = false;
+      this.channelDataService.channelName = userFullName;
+    }
+  
+    /**
+     * Opens a popup by setting overflow to hidden on the body element.
+     * 
+     * @returns {void}
+     */
+    openPopup(): void {
+      this.renderer.setStyle(this.body, 'overflow', 'hidden');
+    }
+  
+    /**
+     * Closes a popup by setting overflow to auto on the body element.
+     * Resets search query and selected users.
+     * 
+     * @returns {void}
+     */
+    closePopup(): void {
+      this.renderer.setStyle(this.body, 'overflow', 'auto');
+      this.searchQuery = '';
+      this.selectedUsers = [];
+    }
+  
 
   doNotClose(event: MouseEvent): void {
     event.stopPropagation();
@@ -376,6 +422,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     });
   }
 
+  deleteCurrentChannel() {
+    
+  }
+
   async updateChannel(channelID: string, item: {}) {
     await updateDoc(this.getSingelChannelRef(channelID), item);
   }
@@ -384,33 +434,51 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     return doc(collection(this.firestore, 'channels'), docId);
   }
 
-  checkIsGuestLogin(): void {
-    getDoc(this.getUserID()).then((docSnapshot) => {
-      if (docSnapshot.exists()) {
-        this.getUserfromFirebase();
-      } else {
-        this.userFullName = 'Gast';
-        this.user.profileImg = 'guest-profile.png';
-      }
-    });
-  }
+ /**
+   * Checks if the current user is a guest login.
+   * Retrieves user data from Firestore if the user exists, otherwise sets default values for a guest user.
+   * 
+   * @returns {void}
+   */
+ checkIsGuestLogin(): void {
+  getDoc(this.getUserID()).then((docSnapshot) => {
+    if (docSnapshot.exists()) {
+      // If user exists, retrieve user data
+      this.getUserfromFirebase();
+    } else {
+      // If user does not exist, set default values for a guest user
+      this.userFullName = 'Gast';
+      this.user.profileImg = 'guest-profile.png';
+    }
+  });
+}
 
   getUserID() {
     return doc(collection(this.firestore, 'users'), this.userID);
   }
 
-  async getUserfromFirebase(): Promise<void> {
+   /**
+   * Retrieves user data from Firebase Firestore.
+   * Populates local user data with the fetched user document.
+   * Sets user online status.
+   * 
+   * @returns {Promise<void>} A Promise that resolves when user data retrieval is completed.
+   */
+   async getUserfromFirebase(): Promise<void> {
     try {
       const userDocRef = doc(this.firestore, 'users', this.userID);
       const userDocSnap = await getDoc(userDocRef);
-
       if (userDocSnap.exists()) {
+        // Populate local user data with fetched user document
         this.user = new User(userDocSnap.data());
         this.user.id = this.userID;
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+        // Set user online status
         this.userIsOnline = await this.authservice.getOnlineStatus(this.userID);
       }
-    } catch (error) { }
+    } catch (error) {
+      // Handle errors
+    }
   }
 
   isCurrentUser(chatIndex: number): boolean {
@@ -420,8 +488,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   setUserProfileView(user: User) {
     this.userProfileView = user;
   }
-
-
 
   // User filter function
 

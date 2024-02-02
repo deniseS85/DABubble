@@ -350,7 +350,16 @@
                     <input type="text"  [(ngModel)]="newChannelDescription"  autofocus *ngIf="channelDescriptionChange" placeholder="Dein Text hier">
                     <div class="seperator"></div>
                     <span class="fw-700">Erstellt von</span>
-                    <div class="edited-by-name">{{ this.channelDataService.channelCreator }}</div>
+                    <div class="channel-creator-container">
+                        <div class="edited-by-name">{{ this.channelDataService.channelCreator }}</div>
+                        <button 
+                        *ngIf="isChannelCreator"
+                        class="btn enabled" 
+                        (click)="editChannelOpen = false; 
+                        deleteCurrentChannel(); 
+                        closePopup()" 
+                        >Channel löschen</button>
+                    </div>
                 </div>
             </div>
         </div>

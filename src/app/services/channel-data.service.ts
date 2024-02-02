@@ -24,7 +24,6 @@ export class ChannelDataService {
 
   items$!: Observable<Channel>; 
   items: any;
-  allMessages: any[] = [];
 
   firestore: Firestore = inject(Firestore);
   unsubChannelUser: Unsubscribe | undefined;
@@ -33,7 +32,7 @@ export class ChannelDataService {
     private channelService: ChannelService, private authservice: AuthService
   ) {
     this.loadFirstChannel();
-    this.loadChannelData();
+  
   }
 
   
@@ -57,6 +56,7 @@ export class ChannelDataService {
         this.channelCreator = channel.channelCreator;
         this.channelDescription = channel.channelDescription;
         this.channelID = channel.channelID;
+        
       });
     } 
   }
@@ -70,6 +70,7 @@ export class ChannelDataService {
         let firstChannel = new Channel(firstChannelData);
         console.log(firstChannel.channelID)
         this.channelID = firstChannel.channelID;
+        this.loadChannelData();
     } 
   }
 
@@ -87,10 +88,12 @@ export class ChannelDataService {
           this.channelID = currentChannel.channelID;
         }
       });
-      /* // console.warn(unsubChannel) */
+     
       unsubChannel;
     })
   }
+
+  
 
 }
 

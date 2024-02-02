@@ -119,7 +119,7 @@
                                     <img class="react-icon" src="./assets/img/Answer.png" alt="" (click)="openThread(message.messageID)">
                                 </div>
                                 <div *ngIf="isCurrentUser(chatIndex)">
-                                    <img (click)="editMessage(channelID)" class="edit-icon" src="./assets/img/edit-message.png" alt="">
+                                    <img (click)="editMessage(this.channelDataService.channelID)" class="edit-icon" src="./assets/img/edit-message.png" alt="">
                                 </div>
 
                             </div>

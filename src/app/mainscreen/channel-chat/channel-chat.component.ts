@@ -105,7 +105,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   messagetext: string = '';
   allMessages: any[] = [];
-  channelID: string = '';
+ /*  channelID: string = ''; */
   userFullName: string = '';
   private unsubscribeSnapshot: Unsubscribe | undefined;
 
@@ -137,7 +137,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     public channelDataService: ChannelDataService,
     private datePipe: DatePipe,
   ) {
-    this.loadMessagesOfThisChannel();
     this.showContainer = new Array(this.reactions.length).fill(false);
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
@@ -149,6 +148,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       this.checkIsGuestLogin();
     }
     this.getAllUserInfo();
+    this.loadMessagesOfThisChannel();
  
   }
 
@@ -509,8 +509,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    */
   async loadMessagesOfThisChannel() {
     const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
-   
-    console.log(this.channelDataService.channelID)
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allMessages = [];
       const currentUsername = this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName()

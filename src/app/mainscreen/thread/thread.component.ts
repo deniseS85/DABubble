@@ -91,7 +91,7 @@ export class ThreadComponent {
     this.userFirstName = this.authService.getUserFirstName();
     this.userLastName = this.authService.getUserLastName();
     this.userImg = this.authService.getUserImg();
-    this.userNameComplete = this.userFirstName + this.userLastName;
+    this.userNameComplete = this.userFirstName + ' ' + this.userLastName;
   }
 
 
@@ -264,13 +264,6 @@ export class ThreadComponent {
     const typ = 'messageReaction';
     this.reactionService.handleReaction(this.channelID, this.messageID, '', '', '', event, message, this.userNameComplete, typ)
   }
-
-
-
-
-
-
-
 
 
   // /**

@@ -1204,3 +1204,80 @@ input {
 }
 
 
+// klemens für reationContainer
+
+
+.threadContainerTextReactions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+
+    .emoji-con{     
+            
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+
+            img{
+                width: 24px;
+                height: 24px;
+            }       
+    }
+
+    .threadContainerTextReactionsEmojis{
+        position: relative;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid #ADB0D9;
+        border-radius: 20px;
+        background-color: white;
+        cursor: pointer;
+    
+        img{
+            width: 24px;
+            height: 24px;
+        }
+
+        &:hover{
+            .reactionsInfoContainer{
+                display: flex !important;
+            }
+        }
+    }
+
+    .reactionsInfoContainer{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateY(-100%);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        flex-direction: column;
+        background-color: #444DF2;
+        color: white;
+        border-radius: 30px 30px 30px 0;
+        padding: 15px 10px;
+
+        .reactionsInfoContainerUsers{
+            display: flex;
+            gap: 4px;
+
+            .user{
+                white-space: nowrap
+            }
+        }
+
+        span{
+            white-space: nowrap;
+        }
+
+    }
+}
+

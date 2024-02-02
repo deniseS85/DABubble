@@ -35,7 +35,7 @@ export class ReactionsService {
     chatMessageID: string,
     event: any,
     message: any,
-    userName: any,
+    userName: string,
     typ: string
   ) {
     const reaction = event.emoji.native;
@@ -44,18 +44,17 @@ export class ReactionsService {
     let allEmojis: any[] = [];
     let allReactions: any[] = [];
     
-    
-    // message.react.forEach((reac: any) => {
-    //   allEmojis.push(reac.emoji);
-    //   allReactions.push(reac)
-    // });
+
+    message.react.forEach((reac: any) => {
+      allEmojis.push(reac.emoji);
+      allReactions.push(reac)
+    });
 
     if (this.reactionAllreadyThere(allEmojis, reaction)) {
 
       // finde index des Emojis im Array
       const emojiIndex = allEmojis.indexOf(reaction);
       const existingEmoji = allReactions[emojiIndex];
-
       // Wenn activeUser schon bestehendes Emoji geklickt hat
       if (existingEmoji.user.includes(userName)) {
         // lösche den activen User, da er den Emoji löscht
@@ -137,11 +136,8 @@ export class ReactionsService {
       emoji: reaction,
       user: [userName]
     }
-
-    console.warn(answer)
-    console.warn(answer)
-
-    answer.react['selectedEmojis'].push(react);
+    
+    answer.react.push(react);
     this.updateReactions(answer, reactCollectionRef)
   }
 

@@ -135,7 +135,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     public channelDataService: ChannelDataService,
     private datePipe: DatePipe,
   ) {
-    this.loadMessagesOfThisChannel();
+
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
   }

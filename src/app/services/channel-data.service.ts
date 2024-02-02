@@ -3,8 +3,7 @@ import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { Observable, map } from "rxjs";
-import { query, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore';
-import { AuthService } from './auth.service';
+import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -21,29 +20,28 @@ export class ChannelDataService {
 
   newChannelMember: string = '';
   channelID: string = '';
+  
 
   items$!: Observable<Channel>; 
   items: any;
+  
 
   firestore: Firestore = inject(Firestore);
   unsubChannelUser: Unsubscribe | undefined;
 
   constructor(
-    private channelService: ChannelService, private authservice: AuthService
+    private channelService: ChannelService,
   ) {
     this.loadFirstChannel();
-  
   }
 
-  
+  ngOnInit() {
+  }
+
   ngOnDestroy() {
-    if (this.unsubChannelUser) {
-        this.unsubChannelUser();
-    }
-    if (this.items) {
-        this.items.unsubscribe();
-    }
-}
+    this.unsubChannelUser;
+    this.items.unsubscribe();
+  }
 
   private loadChannelData() {
     if (this.channelID) {
@@ -56,9 +54,10 @@ export class ChannelDataService {
         this.channelCreator = channel.channelCreator;
         this.channelDescription = channel.channelDescription;
         this.channelID = channel.channelID;
-        
       });
-    } 
+    } else {
+      console.error('Ungültige channelID');
+    }
   }
 
   async loadFirstChannel() {
@@ -68,12 +67,10 @@ export class ChannelDataService {
     if (!allChannelsSnapshot.empty) {
         let firstChannelData = allChannelsSnapshot.docs[0].data();
         let firstChannel = new Channel(firstChannelData);
-        console.log(firstChannel.channelID)
         this.channelID = firstChannel.channelID;
         this.loadChannelData();
     } 
-  }
-
+}
 
   async changeSelectedChannel(selectedChannelName: string) {
     this.channelName = selectedChannelName;
@@ -88,17 +85,8 @@ export class ChannelDataService {
           this.channelID = currentChannel.channelID;
         }
       });
-     
+      /* // console.warn(unsubChannel) */
       unsubChannel;
     })
   }
-
-  
-
 }
-
-
-
-
-
-

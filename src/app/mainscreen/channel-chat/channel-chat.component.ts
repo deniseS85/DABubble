@@ -77,28 +77,35 @@ import { MainscreenComponent } from '../mainscreen.component';
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy {
+  body = this.elRef.nativeElement.ownerDocument.body;
+  firestore: Firestore = inject(Firestore);
+
   animationState = 'hidden';
   animationState1 = 'hidden';
 
-  addUSerOpen = false;
-  showMembersOpen = false;
-  editChannelOpen = false;
-  officialChannel = true;
+  addUSerOpen: boolean = false;
+  showMembersOpen: boolean = false;
+  editChannelOpen: boolean = false;
+  enabled: boolean = false;
+  channelNameChange: boolean = false;
+  channelDescriptionChange: boolean = false;
+  showProfil: boolean = false;
+  userIsOnline: boolean = false;
+  officialChannel: boolean = true;
+  isChannelCreator: boolean = true;
 
-  enabled = false;
-  channelNameChange = false;
-  channelDescriptionChange = false;
-  showProfil = false;
+  user: User = new User;
+  channel: Channel = new Channel;
+  userProfileView: User = new User();
 
-  user = new User;
   userID: any;
-  channel = new Channel;
+
   allUsers: User[] = [];
   channelInfo: Channel[] = [];
+  channelUsers: any[] = [];
   channelName: string = '';
   channelCreator: string = '';
   channelDescription: string = '';
-  channelUsers: any[] = [];
 
   newChannelName: string = '';
   newChannelDescription: string = '';
@@ -107,25 +114,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   allMessages: any[] = [];
  /*  channelID: string = ''; */
   userFullName: string = '';
-  private unsubscribeSnapshot: Unsubscribe | undefined;
 
-  body = this.elRef.nativeElement.ownerDocument.body;
-
-  reactions = [
-    { users: 'Noah Braun', count: 1 },
-  ];
-  showContainer: boolean[] = [];
-  firestore: Firestore = inject(Firestore);
-  unsubUser: Unsubscribe | undefined;
   selectedUsers: User[] = [];
   selectedUser: User = new User();
   searchQuery: string = '';
   isButtonDisabled: boolean = true;
   userList;
-  userIsOnline: boolean = false;
 
-  userProfileView: User = new User();
-
+  private unsubscribeSnapshot: Unsubscribe | undefined;
+  unsubUser: Unsubscribe | undefined;
 
   constructor(
     private main: MainscreenComponent,
@@ -137,10 +134,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     public channelDataService: ChannelDataService,
     private datePipe: DatePipe,
   ) {
-    this.showContainer = new Array(this.reactions.length).fill(false);
+    this.loadMessagesOfThisChannel();
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
-
   }
 
   ngOnInit() {
@@ -157,7 +153,22 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     this.unsubscribeSnapshot;
   }
 
-  getAllUserInfo() {
+  checkUserIsCreator() {
+    let userFullName = this.user.firstname + this.user.lastname;
+        if(userFullName == this.channelDataService.channelCreator) {
+          this.isChannelCreator = true;
+    } else {
+      this.isChannelCreator = false;
+    }
+  }
+
+  /**
+   * Retrieves all user information from the database.
+   * Subscribes to changes in the user data and updates the local allUsers array accordingly.
+   * 
+   * @returns {void}
+   */
+  getAllUserInfo(): void {
     this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
       this.allUsers = [];
       list.forEach(singleUser => {
@@ -168,88 +179,157 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  showReaction(index: number) {
-    this.showContainer[index] = true;
-  }
-
-  hideReaction(index: number) {
-    this.showContainer[index] = false;
-  }
-
-  toggleAnimationState(state: 'visible' | 'hidden', index: number): void {
-    this.allMessages.forEach((message, i) => {
-      message.animationState = i === index ? state : 'hidden';
-    });
-  }
-
-  toggleAnimationState1(state: 'visible' | 'hidden'): void {
-    this.animationState1 = state;
-  }
-
-  toggleEmoji(event: Event, chatIndex: number) {
-    this.allMessages.forEach((message, index) => {
-      if (index === chatIndex) {
-        message.isEmojiOpen = !message.isEmojiOpen;
-        console.log(message.isEmojiOpen)
+    /**
+   * Toggles the animation state of messages.
+   * Sets the animationState property of each message in the allMessages array based on the provided state and index.
+   *
+   * @param {('visible' | 'hidden')} state - The animation state to set ('visible' or 'hidden').
+   * @param {number} index - The index of the message to update.
+   * @returns {void}
+   */
+    toggleAnimationState(state: 'visible' | 'hidden', index: number): void {
+      this.allMessages.forEach((message, i) => {
+        message.animationState = i === index ? state : 'hidden';
+      });
+    }
+  
+    /**
+     * Toggles the animation state of a specific element.
+     * Sets the animationState1 property to the provided state.
+     *
+     * @param {('visible' | 'hidden')} state - The animation state to set ('visible' or 'hidden').
+     * @returns {void}
+     */
+    toggleAnimationState1(state: 'visible' | 'hidden'): void {
+      this.animationState1 = state;
+    }
+  
+    /**
+     * Toggles the visibility of emojis in a message.
+     * Sets the isEmojiOpen property of the message at the specified chatIndex.
+     * 
+     * @param {Event} event - The event triggering the toggle.
+     * @param {number} chatIndex - The index of the message in the allMessages array.
+     * @returns {void}
+     */
+    toggleEmoji(event: Event, chatIndex: number): void {
+      this.allMessages.forEach((message, index) => {
+        if (index === chatIndex) {
+          message.isEmojiOpen = !message.isEmojiOpen;
+          console.log(message.isEmojiOpen)
+        }
+      });
+    }
+  
+    /**
+     * Handles the selection of an emoji.
+     * Adds or removes the selected emoji to/from the selectedEmojis array of the message at the specified chatIndex.
+     * 
+     * @param {any} selectedEmoji - The selected emoji object.
+     * @param {number} chatIndex - The index of the message in the allMessages array.
+     * @returns {void}
+     */
+    emojiSelected(selectedEmoji: any, chatIndex: number): void {
+      if (!this.allMessages[chatIndex].react.selectedEmojis) {
+        this.allMessages[chatIndex].react.selectedEmojis = [];
       }
-    });
-  }
 
-  emojiSelected(selectedEmoji: any, chatIndex: number) {
-    if (!this.allMessages[chatIndex].react.selectedEmojis) {
-      this.allMessages[chatIndex].react.selectedEmojis = [];
+      let userSelectedEmojis = this.allMessages[chatIndex].react.selectedEmojis;
+      let emojiIndex = userSelectedEmojis.indexOf(selectedEmoji.emoji.native);
+  
+      if (emojiIndex !== -1) {
+        userSelectedEmojis.splice(emojiIndex, 1);
+      } else {
+        userSelectedEmojis.push(selectedEmoji.emoji.native);
+      }
     }
+  
 
-    let userSelectedEmojis = this.allMessages[chatIndex].react.selectedEmojis;
-    let emojiIndex = userSelectedEmojis.indexOf(selectedEmoji.emoji.native);
-
-    if (emojiIndex !== -1) {
-      userSelectedEmojis.splice(emojiIndex, 1);
-    } else {
-      userSelectedEmojis.push(selectedEmoji.emoji.native);
-    }
-  }
-
-  closeEmojiContainers(chatIndex: number) {
+    /**
+   * Closes the emoji containers for a specific message.
+   * Sets the isEmojiOpen property of the message at the specified chatIndex to false.
+   * 
+   * @param {number} chatIndex - The index of the message in the allMessages array.
+   * @returns {void}
+   */
+  closeEmojiContainers(chatIndex: number): void {
     this.allMessages[chatIndex].isEmojiOpen = false;
   }
 
+  /**
+   * Retrieves unique emojis from an array of selected emojis.
+   * 
+   * @param {string[]} selectedEmojis - The array of selected emojis.
+   * @returns {string[]} An array containing only unique emojis.
+   */
   getUniqueEmojis(selectedEmojis: string[]): string[] {
     return Array.from(new Set(selectedEmojis));
   }
 
+  /**
+   * Retrieves the count of a specific emoji in an array of selected emojis.
+   * 
+   * @param {string[]} selectedEmojis - The array of selected emojis.
+   * @param {string} emoji - The emoji to count.
+   * @returns {number} The count of the specified emoji.
+   */
   getEmojiCount(selectedEmojis: string[], emoji: string): number {
     return selectedEmojis.filter(e => e === emoji).length;
   }
 
+  /**
+   * Retrieves the path of an emoji image.
+   * 
+   * @param {any} message - The message object containing react data.
+   * @param {number} index - The index of the emoji in the selectedEmojis array.
+   * @returns {string} The path of the emoji image.
+   */
   getEmojiPath(message: any, index: number): string {
     const selectedEmojis = message.react.selectedEmojis;
-
     if (selectedEmojis && selectedEmojis.length > index) {
       return selectedEmojis[selectedEmojis.length - 1 - index];
     }
-
     return '';
   }
 
-  openChannelDirectMessage() {
-    let userFullName = this.userProfileView.firstname + " " + this.userProfileView.lastname;
-    this.addUSerOpen = false;
-    this.showMembersOpen = false;
-    this.showProfil = false; 
-    this.officialChannel = false;
-    this.channelDataService.channelName = userFullName;
-  }
 
-  openPopup(): void {
-    this.renderer.setStyle(this.body, 'overflow', 'hidden');
-  }
-
-  closePopup(): void {
-    this.renderer.setStyle(this.body, 'overflow', 'auto');
-    this.searchQuery = '';
-    this.selectedUsers = [];
-  }
+    /**
+   * Opens a direct message channel with a user.
+   * Sets the channel name to the full name of the user profile view.
+   * Closes various UI components related to channel management.
+   * 
+   * @returns {void}
+   */
+    openChannelDirectMessage(): void {
+      let userFullName = this.userProfileView.firstname + " " + this.userProfileView.lastname;
+      this.addUSerOpen = false;
+      this.showMembersOpen = false;
+      this.showProfil = false;
+      this.officialChannel = false;
+      this.channelDataService.channelName = userFullName;
+    }
+  
+    /**
+     * Opens a popup by setting overflow to hidden on the body element.
+     * 
+     * @returns {void}
+     */
+    openPopup(): void {
+      this.renderer.setStyle(this.body, 'overflow', 'hidden');
+    }
+  
+    /**
+     * Closes a popup by setting overflow to auto on the body element.
+     * Resets search query and selected users.
+     * 
+     * @returns {void}
+     */
+    closePopup(): void {
+      this.renderer.setStyle(this.body, 'overflow', 'auto');
+      this.searchQuery = '';
+      this.selectedUsers = [];
+    }
+  
 
   doNotClose(event: MouseEvent): void {
     event.stopPropagation();
@@ -353,6 +433,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     });
   }
 
+  deleteCurrentChannel() {
+  }
+
   async updateChannel(channelID: string, item: {}) {
     await updateDoc(this.getSingelChannelRef(channelID), item);
   }
@@ -361,33 +444,51 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     return doc(collection(this.firestore, 'channels'), docId);
   }
 
-  checkIsGuestLogin(): void {
-    getDoc(this.getUserID()).then((docSnapshot) => {
-      if (docSnapshot.exists()) {
-        this.getUserfromFirebase();
-      } else {
-        this.userFullName = 'Gast';
-        this.user.profileImg = 'guest-profile.png';
-      }
-    });
-  }
+ /**
+   * Checks if the current user is a guest login.
+   * Retrieves user data from Firestore if the user exists, otherwise sets default values for a guest user.
+   * 
+   * @returns {void}
+   */
+ checkIsGuestLogin(): void {
+  getDoc(this.getUserID()).then((docSnapshot) => {
+    if (docSnapshot.exists()) {
+      // If user exists, retrieve user data
+      this.getUserfromFirebase();
+    } else {
+      // If user does not exist, set default values for a guest user
+      this.userFullName = 'Gast';
+      this.user.profileImg = 'guest-profile.png';
+    }
+  });
+}
 
   getUserID() {
     return doc(collection(this.firestore, 'users'), this.userID);
   }
 
-  async getUserfromFirebase(): Promise<void> {
+   /**
+   * Retrieves user data from Firebase Firestore.
+   * Populates local user data with the fetched user document.
+   * Sets user online status.
+   * 
+   * @returns {Promise<void>} A Promise that resolves when user data retrieval is completed.
+   */
+   async getUserfromFirebase(): Promise<void> {
     try {
       const userDocRef = doc(this.firestore, 'users', this.userID);
       const userDocSnap = await getDoc(userDocRef);
-
       if (userDocSnap.exists()) {
+        // Populate local user data with fetched user document
         this.user = new User(userDocSnap.data());
         this.user.id = this.userID;
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+        // Set user online status
         this.userIsOnline = await this.authservice.getOnlineStatus(this.userID);
       }
-    } catch (error) { }
+    } catch (error) {
+      // Handle errors
+    }
   }
 
   isCurrentUser(chatIndex: number): boolean {
@@ -397,8 +498,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   setUserProfileView(user: User) {
     this.userProfileView = user;
   }
-
-
 
   // User filter function
 
@@ -446,6 +545,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       this.checkInputValidity();
     }
   }
+
   removeUser(user: User): void {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
     this.checkInputValidity();

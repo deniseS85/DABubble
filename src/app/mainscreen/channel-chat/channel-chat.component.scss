@@ -851,6 +851,11 @@ input {
     gap: 15px;
 }
 
+.channel-creator-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 
 // User filter function

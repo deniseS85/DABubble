@@ -24,7 +24,6 @@ export class ChannelDataService {
 
   items$!: Observable<Channel>; 
   items: any;
-  
 
   firestore: Firestore = inject(Firestore);
   unsubChannelUser: Unsubscribe | undefined;

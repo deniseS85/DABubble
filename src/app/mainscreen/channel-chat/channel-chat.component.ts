@@ -333,7 +333,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   saveNewDescription() {
     this.updateChannel(this.channelDataService.channelID, {
-      description: this.newChannelDescription
+      channelDescription: this.newChannelDescription
     });
   }
 

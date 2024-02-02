@@ -51,7 +51,7 @@ export class ChannelDataService {
         this.channelName = channel.channelname;
         this.channelUsers = channel.channelUsers;
         this.channelCreator = channel.channelCreator;
-        this.channelDescription = channel.description;
+        this.channelDescription = channel.channelDescription;
         this.channelID = channel.channelID;
         this.channelUsersID = channel.channelUsersID;
       });
@@ -81,7 +81,7 @@ export class ChannelDataService {
           this.channelName = currentChannel.channelname;
           this.channelUsers = currentChannel.channelUsers;
           this.channelCreator = currentChannel.channelCreator;
-          this.channelDescription = currentChannel.description;
+          this.channelDescription = currentChannel.channelDescription;
           this.channelID = currentChannel.channelID;
         }
       });

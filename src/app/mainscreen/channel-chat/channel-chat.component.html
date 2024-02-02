@@ -9,7 +9,7 @@
                     <img src="../../../assets/img/keyboard_arrow_down.png" alt="">
                 </span>
             </div>
-            <div class="header-right">
+            <div class="header-right" *ngIf="officialChannel">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
                     <div *ngFor="let user of this.channelDataService.channelUsers ">
                         <span class="profile">
@@ -249,7 +249,7 @@
         </div>
 
         <div class="current-channel-member-list">
-            <div class="member-list-div" (click)="userProfileView(user); showProfil = true; openPopup()" *ngFor="let user of this.channelDataService.channelUsers">
+            <div class="member-list-div" (click)="setUserProfileView(user); showProfil = true; openPopup()" *ngFor="let user of this.channelDataService.channelUsers">
                 <span class="profile">
                     <img [src]="getProfileImagePath(user)" />
                     <p class="active-point" *ngIf="user.isOnline == true"></p>
@@ -278,13 +278,13 @@
 
         <div class="profil-detail-view">
             <div class="profile-img-big-container">
-                <img [src]="getProfileImagePath(userProfilView)" />
+                <img [src]="getProfileImagePath(userProfileView)" />
             </div>
             <div class="profile-info-container">
-                <span class="profile-name">{{ userProfilView.firstname }} {{ userProfilView.lastname }}</span>
-                <div class="activ-sign">
+                <span class="profile-name">{{ userProfileView.firstname }} {{ userProfileView.lastname }}</span>
+                <div class="activ-sign" *ngIf="userProfileView.isOnline">
                     <img src="../../../assets/img/online.png" alt="">
-                    <span class="activ-txt"  *ngIf="userProfilView.isOnline">Aktiv</span>
+                    <span class="activ-txt"  *ngIf="userProfileView.isOnline">Aktiv</span>
                 </div>
                 <div class="profile-mail-container">
                     <div class="mail-description">
@@ -292,11 +292,11 @@
                         <span>E-Mail-Adresse</span>
                     </div>
                     <div class="mail-container">
-                        {{ userProfilView.email }}
+                        {{ userProfileView.email }}
                     </div>
                 </div>
             </div>
-            <div class="message-btn-container">
+            <div class="message-btn-container" (click)="openChannelDirectMessage()">
                 <button class="btn enabled send-message-btn">
                     <img src="../../../assets/img/mode_comment.png" alt="">
                     <span>Nachricht</span>

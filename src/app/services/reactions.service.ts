@@ -44,11 +44,11 @@ export class ReactionsService {
     let allEmojis: any[] = [];
     let allReactions: any[] = [];
     
-
-    message.react.forEach((reac: any) => {
-      allEmojis.push(reac.emoji);
-      allReactions.push(reac)
-    });
+    
+    // message.react.forEach((reac: any) => {
+    //   allEmojis.push(reac.emoji);
+    //   allReactions.push(reac)
+    // });
 
     if (this.reactionAllreadyThere(allEmojis, reaction)) {
 
@@ -94,8 +94,8 @@ export class ReactionsService {
   getRef(typ: string, channelID: string, messageID: string, answerID: string){
     if(typ == "threadReaction"){
       return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID);
-    } else if ( typ == "channelReaction"){
-      return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID);
+    } else if ( typ == "messageReaction"){
+      return doc(this.firestore, "channels", channelID, "messages", messageID);
     } else if ( typ == "chatReaction"){
       return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID);
     } else {
@@ -127,7 +127,7 @@ export class ReactionsService {
 
 
   /**
-   * 
+   * HIER NOCHMAL ANPASSEN [selectedEMOJIS] raus
    * @param answer 
    * @param reactCollectionRef 
    */
@@ -138,7 +138,10 @@ export class ReactionsService {
       user: [userName]
     }
 
-    answer.react.push(react);
+    console.warn(answer)
+    console.warn(answer)
+
+    answer.react['selectedEmojis'].push(react);
     this.updateReactions(answer, reactCollectionRef)
   }
 

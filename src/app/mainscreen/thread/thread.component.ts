@@ -96,9 +96,12 @@ export class ThreadComponent {
 
 
   async loadMessage() {
-    const docRef = await getDoc(this.getAnswerRef(this.channelID, this.messageID));
-    this.loadedMessage = docRef.data();
+    const docRef = await getDoc(this.getAnswerRef(this.channelID, this.messageID));    
+    this.loadedMessage = docRef.data();    
   }
+
+
+
 
 
   /**
@@ -128,22 +131,25 @@ export class ThreadComponent {
   }
 
 
-  async getReactions(id: string) {
-    this.allReactions = [];
-    const ref = await query(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id, "reactions"));
-    const unsub = onSnapshot(ref, (qSnap) => {
 
-      qSnap.forEach((d: any) => {
-        const reactionData = d.data();
+  /**
+   * wird nicht mehr gebraucht
+   */
+  // async getReactions(id: string) {
+  //   this.allReactions = [];
+  //   const ref = await query(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id, "reactions"));
+  //   const unsub = onSnapshot(ref, (qSnap) => {
 
-        const answer = this.allAnswers.find((ans) => ans.answerID === id);
-        if (answer) {
-          answer.react.push(reactionData);
-        }
-        // updateDoc(doc(collection(this.firestore, "channels", this.channelID, "messages", this.messageID, 'answers', id,),)
-      })
-    })
-  }
+  //     qSnap.forEach((d: any) => {
+  //       const reactionData = d.data();
+
+  //       const answer = this.allAnswers.find((ans) => ans.answerID === id);
+  //       if (answer) {
+  //         answer.react.push(reactionData);
+  //       }
+  //     })
+  //   })
+  // }
 
 
   sendAnswer() {
@@ -218,6 +224,15 @@ export class ThreadComponent {
 
   // Emojis
 
+  toggleEmojiMessage(id: string) {
+      if (this.loadedMessage.messageID === id) {
+        this.loadedMessage.isEmojiOpen = !this.loadedMessage.isEmojiOpen;
+      } else {
+        this.loadedMessage.isEmojiOpen = false;
+      }
+    
+  }
+
   toggleEmoji(id: string) {
     this.allAnswers.forEach((answer) => {
       if (answer.answerID === id) {
@@ -243,6 +258,11 @@ export class ThreadComponent {
   handleReaction(event: any, answer: any){
     const typ = 'threadReaction';
     this.reactionService.handleReaction(this.channelID, this.messageID, answer.answerID, '', '', event, answer, this.userNameComplete, typ)
+  }
+
+  handleReactionMessage(event: any, message: any){
+    const typ = 'messageReaction';
+    this.reactionService.handleReaction(this.channelID, this.messageID, '', '', '', event, message, this.userNameComplete, typ)
   }
 
 

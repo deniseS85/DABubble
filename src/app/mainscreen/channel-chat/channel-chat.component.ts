@@ -498,8 +498,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * load all messages of an channelChat an add boolean, if currentUser is Sender of Message
    */
   async loadMessagesOfThisChannel() {
-    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelService.activeChannelID));
-
+    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
+   
+    console.log(this.channelDataService.channelID)
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allMessages = [];
       const currentUsername = this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName()

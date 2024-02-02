@@ -3,7 +3,8 @@ import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { Observable, map } from "rxjs";
-import { query, getDocs } from 'firebase/firestore';
+import { query, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,19 +21,19 @@ export class ChannelDataService {
 
   newChannelMember: string = '';
   channelID: string = '';
-  
 
   items$!: Observable<Channel>; 
   items: any;
-  
+  allMessages: any[] = [];
 
   firestore: Firestore = inject(Firestore);
   unsubChannelUser: Unsubscribe | undefined;
 
   constructor(
-    private channelService: ChannelService,
+    private channelService: ChannelService, private authservice: AuthService
   ) {
     this.loadFirstChannel();
+    this.loadChannelData();
   }
 
   
@@ -56,11 +57,8 @@ export class ChannelDataService {
         this.channelCreator = channel.channelCreator;
         this.channelDescription = channel.channelDescription;
         this.channelID = channel.channelID;
-        this.channelUsersID = channel.channelUsersID;
       });
-    } else {
-      console.error('Ungültige channelID');
-    }
+    } 
   }
 
   async loadFirstChannel() {
@@ -70,11 +68,11 @@ export class ChannelDataService {
     if (!allChannelsSnapshot.empty) {
         let firstChannelData = allChannelsSnapshot.docs[0].data();
         let firstChannel = new Channel(firstChannelData);
-        console.log('loadFirstChannel - firstChannel:', firstChannel);
+        console.log(firstChannel.channelID)
         this.channelID = firstChannel.channelID;
-        this.loadChannelData();
     } 
-}
+  }
+
 
   async changeSelectedChannel(selectedChannelName: string) {
     this.channelName = selectedChannelName;
@@ -93,6 +91,7 @@ export class ChannelDataService {
       unsubChannel;
     })
   }
+
 }
 
 

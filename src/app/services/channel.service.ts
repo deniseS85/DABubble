@@ -20,7 +20,7 @@ export class ChannelService {
   collectionRef = collection(this.firestore, "channels");
   chatObservable$ = collectionData(this.collectionRef);
 
-  activeChannelID: string = 'DE4cTsdDLnNeJIVHWd8e';
+  /* activeChannelID: string = '4w03K0592Ephea3D9fsK'; */
   activeMessageID: string = '';
 
 

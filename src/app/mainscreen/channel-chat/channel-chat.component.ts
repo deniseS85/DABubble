@@ -113,7 +113,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   messagetext: string = '';
   allMessages: any[] = [];
-  channelID: string = '';
+ /*  channelID: string = ''; */
   userFullName: string = '';
 
   selectedUsers: User[] = [];
@@ -146,6 +146,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       this.checkIsGuestLogin();
     }
     this.getAllUserInfo();
+    this.loadMessagesOfThisChannel();
+ 
   }
 
   ngOnDestroy() {
@@ -614,8 +616,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * load all messages of an channelChat an add boolean, if currentUser is Sender of Message
    */
   async loadMessagesOfThisChannel() {
-    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelService.activeChannelID));
-
+    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allMessages = [];
       const currentUsername = this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName()

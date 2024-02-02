@@ -64,7 +64,7 @@ export class ThreadComponent {
     public channelDataService: ChannelDataService,
     private reactionService: ReactionsService,
   ) {
-    this.channelID = this.channelService.activeChannelID;
+    this.channelID = this.channelDataService.channelID;
     this.messageID = this.channelService.activeMessageID;
     this.loadMessage();
     this.loadAnswers();

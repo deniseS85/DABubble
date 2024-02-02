@@ -53,7 +53,6 @@ export class ChannelDataService {
         this.channelCreator = channel.channelCreator;
         this.channelDescription = channel.channelDescription;
         this.channelID = channel.channelID;
-        this.channelUsersID = channel.channelUsersID;
       });
     } else {
       console.error('Ungültige channelID');
@@ -90,9 +89,3 @@ export class ChannelDataService {
     })
   }
 }
-
-
-
-
-
-

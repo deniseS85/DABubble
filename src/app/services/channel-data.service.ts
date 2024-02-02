@@ -3,7 +3,7 @@ import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { Observable, map } from "rxjs";
-import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { query, getDocs } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,7 @@ export class ChannelDataService {
 
   items$!: Observable<Channel>; 
   items: any;
+  
 
   firestore: Firestore = inject(Firestore);
   unsubChannelUser: Unsubscribe | undefined;
@@ -34,13 +35,15 @@ export class ChannelDataService {
     this.loadFirstChannel();
   }
 
-  ngOnInit() {
-  }
-
+  
   ngOnDestroy() {
-    this.unsubChannelUser;
-    this.items.unsubscribe();
-  }
+    if (this.unsubChannelUser) {
+        this.unsubChannelUser();
+    }
+    if (this.items) {
+        this.items.unsubscribe();
+    }
+}
 
   private loadChannelData() {
     if (this.channelID) {
@@ -67,6 +70,7 @@ export class ChannelDataService {
     if (!allChannelsSnapshot.empty) {
         let firstChannelData = allChannelsSnapshot.docs[0].data();
         let firstChannel = new Channel(firstChannelData);
+        console.log('loadFirstChannel - firstChannel:', firstChannel);
         this.channelID = firstChannel.channelID;
         this.loadChannelData();
     } 

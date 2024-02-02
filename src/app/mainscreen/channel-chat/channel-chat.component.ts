@@ -147,8 +147,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     if (this.userID) {
       this.checkIsGuestLogin();
     }
-
     this.getAllUserInfo();
+ 
   }
 
   ngOnDestroy() {

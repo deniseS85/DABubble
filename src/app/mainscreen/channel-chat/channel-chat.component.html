@@ -233,7 +233,7 @@
         <div class="btn-container">
             <button class="btn fw-700 fs-18" 
             [class.enabled]="enabled"
-            (click)="addNewMemberToChannelUsers()">Hinzufügen</button>
+            (click)="addNewMemberToChannelUsers(); addUSerOpen = false; closePopup()">Hinzufügen</button>
         </div>
     </div>
 </div>
@@ -285,8 +285,6 @@
                 <div class="activ-sign">
                     <img src="../../../assets/img/online.png" alt="">
                     <span class="activ-txt"  *ngIf="userProfilView.isOnline">Aktiv</span>
-                    <!-- <img src="" alt="">
-                    <span>Abwesend</span> -->
                 </div>
                 <div class="profile-mail-container">
                     <div class="mail-description">
@@ -358,7 +356,7 @@
         </div>
 
         <div class="btn-container">
-            <button class="btn enabled" (click)="leaveChannel()">Channel verlassen</button>
+            <button class="btn enabled" (click)="leaveChannel(); editChannelOpen = false; closePopup()">Channel verlassen</button>
         </div>
 
     </div>

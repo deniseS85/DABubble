@@ -409,22 +409,11 @@ export class WorkspaceComponent {
   async setNewChannelItems() {    
       const channelname = this.createdChannelName;
       const channelDescription = this.createdChannelDescription;
-      const channelUsers =  this.selectedUsers.map(user => {
-        return {
-          firstname: user.firstname,
-          lastname: user.lastname,
-          profileImg: user.profileImg,
-          id: user.id
-        };
-      });
-      const channelUsersID = this.selectedUsers.map(user => {
-        return user.id
-      });
+      const channelUsers = this.selectedUsers.map(user => user.toUserJson());
       const channelCreator = this.channelService.getCreatorsName();
-
     
-    this.channelService.createChannel(channelname, channelDescription, channelUsersID, channelUsers, await channelCreator);
-    this.closeChannelCreateWindow();
+      this.channelService.createChannel(channelname, channelDescription, channelUsers, await channelCreator);
+      this.closeChannelCreateWindow();
     // this.getAllChannel();
   }
 

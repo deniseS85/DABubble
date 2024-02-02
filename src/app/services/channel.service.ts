@@ -37,7 +37,7 @@ export class ChannelService {
    *    profilImg: user.profilImg,   * 
    * }
    */
-  createChannel(channelname: string, description: string, userIDs: any[], users: any[], creator: string) {
+  createChannel(channelname: string, description: string, users: any[], creator: string) {
 
     const docRef = doc(this.collectionRef)
 
@@ -45,7 +45,6 @@ export class ChannelService {
       channelID: docRef.id,
       channelname: channelname,
       channelDescription: description,
-      channelUsersID: userIDs,
       channelUsers: users,
       channelCreator: creator
     })

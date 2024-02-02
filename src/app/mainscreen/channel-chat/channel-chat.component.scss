@@ -763,11 +763,13 @@ input {
 .profile-background {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .profile-popup {
     bottom: 0;
     width: 500px;
+    height: max-content;
     padding: 40px;
     border-radius: 30px 30px 30px 30px;
     gap: 20px;
@@ -785,6 +787,7 @@ input {
         width: 200px;
         height: 200px;
         border-radius: 50%;
+        object-fit: cover;
     }
 }
 

@@ -77,28 +77,34 @@ import { MainscreenComponent } from '../mainscreen.component';
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy {
+  body = this.elRef.nativeElement.ownerDocument.body;
+  firestore: Firestore = inject(Firestore);
+
   animationState = 'hidden';
   animationState1 = 'hidden';
 
-  addUSerOpen = false;
-  showMembersOpen = false;
-  editChannelOpen = false;
-  officialChannel = true;
+  addUSerOpen: boolean = false;
+  showMembersOpen: boolean = false;
+  editChannelOpen: boolean = false;
+  enabled: boolean = false;
+  channelNameChange: boolean = false;
+  channelDescriptionChange: boolean = false;
+  showProfil: boolean = false;
+  userIsOnline: boolean = false;
+  officialChannel: boolean = true;
 
-  enabled = false;
-  channelNameChange = false;
-  channelDescriptionChange = false;
-  showProfil = false;
+  user: User = new User;
+  channel: Channel = new Channel;
+  userProfileView: User = new User();
 
-  user = new User;
   userID: any;
-  channel = new Channel;
+
   allUsers: User[] = [];
   channelInfo: Channel[] = [];
+  channelUsers: any[] = [];
   channelName: string = '';
   channelCreator: string = '';
   channelDescription: string = '';
-  channelUsers: any[] = [];
 
   newChannelName: string = '';
   newChannelDescription: string = '';
@@ -107,25 +113,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   allMessages: any[] = [];
   channelID: string = '';
   userFullName: string = '';
-  private unsubscribeSnapshot: Unsubscribe | undefined;
 
-  body = this.elRef.nativeElement.ownerDocument.body;
-
-  reactions = [
-    { users: 'Noah Braun', count: 1 },
-  ];
-  showContainer: boolean[] = [];
-  firestore: Firestore = inject(Firestore);
-  unsubUser: Unsubscribe | undefined;
   selectedUsers: User[] = [];
   selectedUser: User = new User();
   searchQuery: string = '';
   isButtonDisabled: boolean = true;
   userList;
-  userIsOnline: boolean = false;
 
-  userProfileView: User = new User();
-
+  private unsubscribeSnapshot: Unsubscribe | undefined;
+  unsubUser: Unsubscribe | undefined;
 
   constructor(
     private main: MainscreenComponent,
@@ -138,17 +134,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
   ) {
     this.loadMessagesOfThisChannel();
-    this.showContainer = new Array(this.reactions.length).fill(false);
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
-
   }
 
   ngOnInit() {
     if (this.userID) {
       this.checkIsGuestLogin();
     }
-
     this.getAllUserInfo();
   }
 
@@ -157,7 +150,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     this.unsubscribeSnapshot;
   }
 
-  getAllUserInfo() {
+  /**
+   * Retrieves all user information from the database.
+   * Subscribes to changes in the user data and updates the local allUsers array accordingly.
+   * 
+   * @returns {void}
+   */
+  getAllUserInfo(): void {
     this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
       this.allUsers = [];
       list.forEach(singleUser => {
@@ -168,47 +167,71 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  showReaction(index: number) {
-    this.showContainer[index] = true;
-  }
-
-  hideReaction(index: number) {
-    this.showContainer[index] = false;
-  }
-
-  toggleAnimationState(state: 'visible' | 'hidden', index: number): void {
-    this.allMessages.forEach((message, i) => {
-      message.animationState = i === index ? state : 'hidden';
-    });
-  }
-
-  toggleAnimationState1(state: 'visible' | 'hidden'): void {
-    this.animationState1 = state;
-  }
-
-  toggleEmoji(event: Event, chatIndex: number) {
-    this.allMessages.forEach((message, index) => {
-      if (index === chatIndex) {
-        message.isEmojiOpen = !message.isEmojiOpen;
-        console.log(message.isEmojiOpen)
+    /**
+   * Toggles the animation state of messages.
+   * Sets the animationState property of each message in the allMessages array based on the provided state and index.
+   *
+   * @param {('visible' | 'hidden')} state - The animation state to set ('visible' or 'hidden').
+   * @param {number} index - The index of the message to update.
+   * @returns {void}
+   */
+    toggleAnimationState(state: 'visible' | 'hidden', index: number): void {
+      this.allMessages.forEach((message, i) => {
+        message.animationState = i === index ? state : 'hidden';
+      });
+    }
+  
+    /**
+     * Toggles the animation state of a specific element.
+     * Sets the animationState1 property to the provided state.
+     *
+     * @param {('visible' | 'hidden')} state - The animation state to set ('visible' or 'hidden').
+     * @returns {void}
+     */
+    toggleAnimationState1(state: 'visible' | 'hidden'): void {
+      this.animationState1 = state;
+    }
+  
+    /**
+     * Toggles the visibility of emojis in a message.
+     * Sets the isEmojiOpen property of the message at the specified chatIndex.
+     * 
+     * @param {Event} event - The event triggering the toggle.
+     * @param {number} chatIndex - The index of the message in the allMessages array.
+     * @returns {void}
+     */
+    toggleEmoji(event: Event, chatIndex: number): void {
+      this.allMessages.forEach((message, index) => {
+        if (index === chatIndex) {
+          message.isEmojiOpen = !message.isEmojiOpen;
+          console.log(message.isEmojiOpen)
+        }
+      });
+    }
+  
+    /**
+     * Handles the selection of an emoji.
+     * Adds or removes the selected emoji to/from the selectedEmojis array of the message at the specified chatIndex.
+     * 
+     * @param {any} selectedEmoji - The selected emoji object.
+     * @param {number} chatIndex - The index of the message in the allMessages array.
+     * @returns {void}
+     */
+    emojiSelected(selectedEmoji: any, chatIndex: number): void {
+      if (!this.allMessages[chatIndex].react.selectedEmojis) {
+        this.allMessages[chatIndex].react.selectedEmojis = [];
       }
-    });
-  }
-
-  emojiSelected(selectedEmoji: any, chatIndex: number) {
-    if (!this.allMessages[chatIndex].react.selectedEmojis) {
-      this.allMessages[chatIndex].react.selectedEmojis = [];
+      
+      let userSelectedEmojis = this.allMessages[chatIndex].react.selectedEmojis;
+      let emojiIndex = userSelectedEmojis.indexOf(selectedEmoji.emoji.native);
+  
+      if (emojiIndex !== -1) {
+        userSelectedEmojis.splice(emojiIndex, 1);
+      } else {
+        userSelectedEmojis.push(selectedEmoji.emoji.native);
+      }
     }
-
-    let userSelectedEmojis = this.allMessages[chatIndex].react.selectedEmojis;
-    let emojiIndex = userSelectedEmojis.indexOf(selectedEmoji.emoji.native);
-
-    if (emojiIndex !== -1) {
-      userSelectedEmojis.splice(emojiIndex, 1);
-    } else {
-      userSelectedEmojis.push(selectedEmoji.emoji.native);
-    }
-  }
+  
 
   closeEmojiContainers(chatIndex: number) {
     this.allMessages[chatIndex].isEmojiOpen = false;
@@ -236,7 +259,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     let userFullName = this.userProfileView.firstname + " " + this.userProfileView.lastname;
     this.addUSerOpen = false;
     this.showMembersOpen = false;
-    this.showProfil = false; 
+    this.showProfil = false;
     this.officialChannel = false;
     this.channelDataService.channelName = userFullName;
   }
@@ -446,6 +469,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       this.checkInputValidity();
     }
   }
+
   removeUser(user: User): void {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
     this.checkInputValidity();

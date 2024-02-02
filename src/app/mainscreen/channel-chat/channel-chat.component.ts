@@ -593,7 +593,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       messagetext: this.messagetext,
       messageUserName: this.userFullName, 
       messageUserID: this.userID,
-      messageUserProfileImg: this.authservice.getUserImg(),
+      messageUserProfileImg: this.getProfileImagePath(this.userProfileView),
       messageID: '',
       activeUserMessage: false,
       isEmojiOpen: false,
@@ -697,7 +697,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
 
-  editMessage(messageID: string) {
+  editMessage() {
 
   }
 }

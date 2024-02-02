@@ -105,32 +105,8 @@
                         <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'"
                             [@slideAndFade]="isCurrentUser(chatIndex) ? animationState1 : message.animationState">
 
-<<<<<<< HEAD
                             <div *ngIf="message.react && message.react.length > 0">
                                 <div class="last-emoji">{{getEmojiPath(message, 0)}}</div>
-=======
-                                <div *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 0">
-                                    <div class="last-emoji">{{getEmojiPath(message, 0)}}</div>
-                                </div>
-                                <div *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 1">
-                                    <div class="last-emoji">{{getEmojiPath(message, 1)}}</div>
-                                </div>
-
-                                
-                                <div class="emoji-container">
-                                    <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png" alt="" class="react-icon">
-                                    <div *ngIf="message.isEmojiOpen" [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-1' : 'emoji-selection right-43'">
-                                        <app-emoji-picker (emojiSelect)="emojiSelected($event, chatIndex); closeEmojiContainers(chatIndex)"></app-emoji-picker>
-                                    </div>
-                                </div>    
-                                <div>
-                                    <img class="react-icon" src="./assets/img/Answer.png" alt="" (click)="openThread(message.messageID)">
-                                </div>
-                                <div *ngIf="isCurrentUser(chatIndex)">
-                                    <img (click)="editMessage(this.channelDataService.channelID)" class="edit-icon" src="./assets/img/edit-message.png" alt="">
-                                </div>
-
->>>>>>> e27dcc37a545c32a3b7edaea86dc92a56c9dc70c
                             </div>
                             <div *ngIf="message.react && message.react.length > 1">
                                 <div class="last-emoji">{{getEmojiPath(message, 1)}}</div>
@@ -151,7 +127,7 @@
                                     (click)="openThread(message.messageID)">
                             </div>
                             <div *ngIf="isCurrentUser(chatIndex)">
-                                <img (click)="editMessage(channelID)" class="edit-icon"
+                                <img (click)="editMessage()" class="edit-icon"
                                     src="./assets/img/edit-message.png" alt="">
                             </div>
 
@@ -177,14 +153,6 @@
                         <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
                         <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime
                             }}</div>
-                        <!-- <div class="reactions" *ngIf="message.answerInfo.counter == 0">
-                                <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png" alt="">
-                                <ng-container *ngIf="message.react.selectedEmojis && message.react.selectedEmojis.length > 0">
-                                    <div class="single-emoji" *ngFor="let selectedEmoji of getUniqueEmojis(message.react.selectedEmojis)">
-                                        {{ selectedEmoji }}{{ getEmojiCount(message.react.selectedEmojis, selectedEmoji) > 1 ? ' ' + getEmojiCount(message.react.selectedEmojis, selectedEmoji) : '' }}
-                                    </div>
-                                </ng-container>
-                            </div> -->
                     </div>
                     <div class="threadContainerTextReactions">
                         <div class="threadContainerTextReactionsEmojis" *ngFor="let reaction of message.react">
@@ -216,7 +184,7 @@
     <div class="footer-write-new-message">
         <div>
             <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
-                [(ngModel)]="messagetext"></Textarea>
+                [(ngModel)]="messagetext" (keyup.enter)="addMessage()"></Textarea>
         </div>
         <div class="footer-line-icons">
             <div class="footer-icons-left">

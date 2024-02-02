@@ -45,8 +45,7 @@ export class ChannelDataService {
   private loadChannelData() {
     if (this.channelID) {
       this.items$ = docData(this.channelService.getSingleChannel(this.channelID)).pipe(
-        map((data: any) => new Channel(data))
-      ) as Observable<Channel>;
+        map((data: any) => new Channel(data))) as Observable<Channel>;
   
       this.items = this.items$.subscribe((channel: Channel) => {
         this.channelName = channel.channelname;
@@ -62,19 +61,16 @@ export class ChannelDataService {
   }
 
   async loadFirstChannel() {
-      let firstChannelQuery = query(this.channelService.getChannelRef(), orderBy('channelname'), limit(1));
-      let firstChannelSnapshot = await getDocs(firstChannelQuery);
+    let allChannelsQuery = query(this.channelService.getChannelRef());
+    let allChannelsSnapshot = await getDocs(allChannelsQuery);
 
-      if (!firstChannelSnapshot.empty) {
-        let firstChannelData = firstChannelSnapshot.docs[0].data();
+    if (!allChannelsSnapshot.empty) {
+        let firstChannelData = allChannelsSnapshot.docs[0].data();
         let firstChannel = new Channel(firstChannelData);
-
         this.channelID = firstChannel.channelID;
         this.loadChannelData();
-      } else {
-        console.error('Kein Channel gefunden');
-      }
-  }
+    } 
+}
 
   async changeSelectedChannel(selectedChannelName: string) {
     this.channelName = selectedChannelName;

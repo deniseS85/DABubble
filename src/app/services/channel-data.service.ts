@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
-import { Observable } from "rxjs";
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { Observable, map } from "rxjs";
+import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +19,11 @@ export class ChannelDataService {
   channelUsersID: any[] = [];
 
   newChannelMember: string = '';
-  channelID: string = 'DE4cTsdDLnNeJIVHWd8e';
+  channelID: string = '';
+  
 
-  items$;
-  items;
+  items$!: Observable<Channel>; 
+  items: any;
 
   firestore: Firestore = inject(Firestore);
   unsubChannelUser: Unsubscribe | undefined;
@@ -30,16 +31,7 @@ export class ChannelDataService {
   constructor(
     private channelService: ChannelService,
   ) {
-    this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
-    this.items = this.items$.subscribe((channel) => {
-      let channelInfo = new Channel(channel);
-      this.channelName = channelInfo.channelname;
-      this.channelUsers = channelInfo.channelUsers;
-      this.channelCreator = channelInfo.channelCreator;
-      this.channelDescription = channelInfo.description;
-      this.channelID = channelInfo.channelID;
-      this.channelUsersID = channelInfo.channelUsersID
-    });
+    this.loadFirstChannel();
   }
 
   ngOnInit() {
@@ -48,6 +40,40 @@ export class ChannelDataService {
   ngOnDestroy() {
     this.unsubChannelUser;
     this.items.unsubscribe();
+  }
+
+  private loadChannelData() {
+    if (this.channelID) {
+      this.items$ = docData(this.channelService.getSingleChannel(this.channelID)).pipe(
+        map((data: any) => new Channel(data))
+      ) as Observable<Channel>;
+  
+      this.items = this.items$.subscribe((channel: Channel) => {
+        this.channelName = channel.channelname;
+        this.channelUsers = channel.channelUsers;
+        this.channelCreator = channel.channelCreator;
+        this.channelDescription = channel.description;
+        this.channelID = channel.channelID;
+        this.channelUsersID = channel.channelUsersID;
+      });
+    } else {
+      console.error('Ungültige channelID');
+    }
+  }
+
+  async loadFirstChannel() {
+      let firstChannelQuery = query(this.channelService.getChannelRef(), orderBy('channelname'), limit(1));
+      let firstChannelSnapshot = await getDocs(firstChannelQuery);
+
+      if (!firstChannelSnapshot.empty) {
+        let firstChannelData = firstChannelSnapshot.docs[0].data();
+        let firstChannel = new Channel(firstChannelData);
+
+        this.channelID = firstChannel.channelID;
+        this.loadChannelData();
+      } else {
+        console.error('Kein Channel gefunden');
+      }
   }
 
   async changeSelectedChannel(selectedChannelName: string) {

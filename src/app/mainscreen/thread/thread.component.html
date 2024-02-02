@@ -46,7 +46,7 @@
                 {{loadedMessage.messagetext}}
             </div>
             <div class="threadContainerTextReactions">
-                <div class="threadContainerTextReactionsEmojis" *ngFor="let answer of loadedMessage.react.selectedEmojis">
+                <div class="threadContainerTextReactionsEmojis" *ngFor="let answer of loadedMessage.react">
                     <div class="reactionsInfoContainer">
                         <div>{{answer.emoji}}</div>
                         <div class="reactionsInfoContainerUsers" *ngFor="let user of answer.user; let i = index">

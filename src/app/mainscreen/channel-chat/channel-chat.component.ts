@@ -10,6 +10,7 @@ import { ChannelDataService } from '../../services/channel-data.service';
 import { DatePipe } from '@angular/common';
 import { getCountFromServer, getDocs, query } from 'firebase/firestore';
 import { MainscreenComponent } from '../mainscreen.component';
+import { ReactionsService } from '../../services/reactions.service';
 
 
 @Component({
@@ -129,6 +130,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     private elRef: ElementRef,
     private renderer: Renderer2,
     private authservice: AuthService,
+    private reactionService: ReactionsService,
     public channelService: ChannelService,
     private route: ActivatedRoute,
     public channelDataService: ChannelDataService,
@@ -241,6 +243,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
         userSelectedEmojis.push(selectedEmoji.emoji.native);
       }
     }
+
+    handleReactionMessage(event: any, message: any){
+      const typ = 'messageReaction';
+      console.error(this.userFullName)
+      this.reactionService.handleReaction(this.channelDataService.channelID, message.messageID, '', '', '', event, message, this.userFullName, typ)
+    }
   
 
     /**
@@ -283,10 +291,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * @returns {string} The path of the emoji image.
    */
   getEmojiPath(message: any, index: number): string {
-    const selectedEmojis = message.react.selectedEmojis;
-    if (selectedEmojis && selectedEmojis.length > index) {
-      return selectedEmojis[selectedEmojis.length - 1 - index];
-    }
+    
+    // const selectedEmojis = message.react[index].emoji;
+    // if (selectedEmojis && selectedEmojis.length > index) {
+    //   console.warn(selectedEmojis)
+    //   return selectedEmojis[selectedEmojis.length - 1 - index];
+    // }
     return '';
   }
 
@@ -579,7 +589,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
     const message = {
       messagetext: this.messagetext,
-      messageUserName: this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName(),
+      messageUserName: this.userFullName, 
       messageUserID: this.userID,
       messageUserProfileImg: this.authservice.getUserImg(),
       messageID: '',
@@ -587,9 +597,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       isEmojiOpen: false,
       timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),// zum Vergkleiche für anzeige "Heute" oder z.B. "21.Januar"
-      react: {
-        selectedEmojis: []
-      },
+      react: [],
       answerInfo: {
         counter: 0,
         lastAnswerTime: ""
@@ -687,9 +695,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   }
 
-  handleReaction($event: any, message: any) {
-
-  }
 
   editMessage(messageID: string) {
 

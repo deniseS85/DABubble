@@ -112,7 +112,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   messagetext: string = '';
   allMessages: any[] = [];
- /*  channelID: string = ''; */
   userFullName: string = '';
 
   selectedUsers: User[] = [];
@@ -437,7 +436,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   async updateChannel(channelID: string, item: {}) {
-    await updateDoc(this.getSingelChannelRef(channelID), item);
+    await updateDoc(this.getSingelChannelRef(this.channelDataService.channelID), item);
   }
 
   getSingelChannelRef(docId: string) {

@@ -47,7 +47,8 @@ export class ChannelService {
       channelDescription: description,
       channelUsers: users,
       channelCreator: creator
-    })
+      
+    });
   }
 
   /**

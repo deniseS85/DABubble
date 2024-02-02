@@ -120,7 +120,7 @@
           >
             <span class="profile">
               <img [src]="getProfileImagePath(user)" />
-              <p class="active-point" *ngIf="user.isOnline == true"></p>
+              <p class="active-point" *ngIf="user.isOnline"></p>
             </span>
             <span
               >{{ user.firstname }} {{ user.lastname }}

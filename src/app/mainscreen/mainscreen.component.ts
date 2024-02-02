@@ -92,7 +92,8 @@ export class MainscreenComponent implements OnInit {
             this.user = new User(userDocSnap.data());
             this.user.id = this.userID;
             this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-            this.userIsOnline = await this.authService.getOnlineStatus(this.userID);
+            this.userIsOnline = this.user.isOnline;
+            
           }
         } catch (error) {}
     }

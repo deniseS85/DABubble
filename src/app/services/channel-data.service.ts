@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
-import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { Observable, map } from "rxjs";
-import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { query, getDocs } from 'firebase/firestore';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ChannelDataService {
 
   newChannelMember: string = '';
   channelID: string = '';
-  
+  allMessages: any[] = [];
 
   items$!: Observable<Channel>; 
   items: any;
@@ -29,7 +30,7 @@ export class ChannelDataService {
   unsubChannelUser: Unsubscribe | undefined;
 
   constructor(
-    private channelService: ChannelService,
+    private channelService: ChannelService, private authservice: AuthService
   ) {
     this.loadFirstChannel();
   }
@@ -68,7 +69,9 @@ export class ChannelDataService {
         let firstChannel = new Channel(firstChannelData);
         this.channelID = firstChannel.channelID;
         this.loadChannelData();
-    } 
+    } else {
+      console.error('Keine Kanäle gefunden.');
+  }
 }
 
   async changeSelectedChannel(selectedChannelName: string) {
@@ -88,4 +91,27 @@ export class ChannelDataService {
       unsubChannel;
     })
   }
+
+  async loadMessagesOfThisChannel() {
+    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelID));
+    const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
+      this.allMessages = [];
+      const currentUsername = this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName()
+      querySnapshot.forEach((doc: any) => {
+
+        if (doc.data().messageUserName === currentUsername) {
+          const newData = doc.data();
+          const nd = ({ ...newData, activeUserMessage: true })
+          this.allMessages.push(nd);;
+
+        } else {
+          const newData = doc.data();
+          const nd = ({ ...newData, activeUserMessage: false })
+          this.allMessages.push(nd);
+        }
+      })
+    })
+  }
+
+
 }

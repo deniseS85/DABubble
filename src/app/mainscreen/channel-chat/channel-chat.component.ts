@@ -151,6 +151,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     this.unsubscribeSnapshot;
   }
 
+  checkUserIsCreator() {
+    let userFullName = this.user.firstname + this.user.lastname;
+        if(userFullName == this.channelDataService.channelCreator) {
+          this.isChannelCreator = true;
+    } else {
+      this.isChannelCreator = false;
+    }
+  }
+
   /**
    * Retrieves all user information from the database.
    * Subscribes to changes in the user data and updates the local allUsers array accordingly.
@@ -423,7 +432,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   deleteCurrentChannel() {
-    
   }
 
   async updateChannel(channelID: string, item: {}) {

@@ -249,7 +249,7 @@
         </div>
 
         <div class="current-channel-member-list">
-            <div class="member-list-div" (click)="showProfil = true; openPopup()" *ngFor="let user of this.channelDataService.channelUsers">
+            <div class="member-list-div" (click)="userProfileView(user); showProfil = true; openPopup()" *ngFor="let user of this.channelDataService.channelUsers">
                 <span class="profile">
                     <img [src]="getProfileImagePath(user)" />
                     <p class="active-point" *ngIf="user.isOnline == true"></p>
@@ -278,13 +278,13 @@
 
         <div class="profil-detail-view">
             <div class="profile-img-big-container">
-                <img src="../../../assets/img/noah-big-avatar.png" alt="">
+                <img [src]="getProfileImagePath(userProfilView)" />
             </div>
             <div class="profile-info-container">
-                <span class="profile-name">Noah Braun</span>
+                <span class="profile-name">{{ userProfilView.firstname }} {{ userProfilView.lastname }}</span>
                 <div class="activ-sign">
                     <img src="../../../assets/img/online.png" alt="">
-                    <span class="activ-txt">Aktiv</span>
+                    <span class="activ-txt"  *ngIf="userProfilView.isOnline">Aktiv</span>
                     <!-- <img src="" alt="">
                     <span>Abwesend</span> -->
                 </div>
@@ -294,7 +294,7 @@
                         <span>E-Mail-Adresse</span>
                     </div>
                     <div class="mail-container">
-                        noah.braun&#64;topmail.com
+                        {{ userProfilView.email }}
                     </div>
                 </div>
             </div>

@@ -123,6 +123,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   userList;
   userIsOnline: boolean = false;
 
+  userProfilView: User = new User();
+
 
   constructor(
     private main: MainscreenComponent,
@@ -242,15 +244,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   doNotClose(event: MouseEvent): void {
     event.stopPropagation();
   }
-
-  /**
-   * auskommentiert von klemens --> andere Funktion unten
-   */
-  // addNewMemberToChannelUsers() {
-  //   this.channelDataService.channelUsers = this.channelDataService.channelUsers.concat(this.selectedUsers);
-  //   this.channelService.addChannelUser(this.channelDataService.channelID, this.channelDataService.channelUsers);
-  // }
-
 
 
   /**
@@ -389,6 +382,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   isCurrentUser(chatIndex: number): boolean {
     return this.allMessages[chatIndex].messageUserID === this.userID;
+  }
+
+  userProfileView(user: User) {
+    this.userProfilView = user;
   }
 
 

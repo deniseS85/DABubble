@@ -83,6 +83,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   addUSerOpen = false;
   showMembersOpen = false;
   editChannelOpen = false;
+  officialChannel = true;
 
   enabled = false;
   channelNameChange = false;
@@ -123,7 +124,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   userList;
   userIsOnline: boolean = false;
 
-  userProfilView: User = new User();
+  userProfileView: User = new User();
 
 
   constructor(
@@ -231,6 +232,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     return '';
   }
 
+  openChannelDirectMessage() {
+    let userFullName = this.userProfileView.firstname + " " + this.userProfileView.lastname;
+    this.addUSerOpen = false;
+    this.showMembersOpen = false;
+    this.showProfil = false; 
+    this.officialChannel = false;
+    this.channelDataService.channelName = userFullName;
+  }
+
   openPopup(): void {
     this.renderer.setStyle(this.body, 'overflow', 'hidden');
   }
@@ -253,9 +263,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     let userallreadyInChannel = false;
     let newUsersArray: any = [];
     this.selectedUsers.forEach((user) => {
-      const newUser = user.toJson(user);      
+      const newUser = user.toJson(user);
       userallreadyInChannel = this.checkIfMemberAllreadyIn(this.channelDataService.channelUsers, newUser);
-      
+
       if (userallreadyInChannel) {
         console.warn(this.selectedUser.firstname, ' is allready Memeber of this channel')
       } else {
@@ -294,9 +304,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     if (refChannelUsers.exists()) {
       let channelUsersUpdated = refChannelUsers.data()['channelUsers'];
 
-      newUserArray.forEach((user:any) => {
+      newUserArray.forEach((user: any) => {
         channelUsersUpdated.push(user);
-      })     
+      })
 
       await this.updateChannelUsers(channelUsersUpdated)
     }
@@ -384,8 +394,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     return this.allMessages[chatIndex].messageUserID === this.userID;
   }
 
-  userProfileView(user: User) {
-    this.userProfilView = user;
+  setUserProfileView(user: User) {
+    this.userProfileView = user;
   }
 
 

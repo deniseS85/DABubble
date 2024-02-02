@@ -1,6 +1,6 @@
 export interface Channel{
     channelID: string;
-    description: string;
+    channelDescription: string;
     channelname: string;       
     channelUsers: any[];
     channelCreator: string;

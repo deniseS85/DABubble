@@ -1,9 +1,9 @@
 <div class="threadContainer">
 
     <app-threads-header [activeChannelName]="activeChannelName"></app-threads-header>
-
+    <app-thread-question></app-thread-question>
     <!-- ThreadQuestion -->
-    <div class="threadContainerQuestion">
+    <!-- <div class="threadContainerQuestion">
         <img class="profilPic" src="./assets/img/avatarNoah.png" alt="">
         <div class="threadContainerQuestionContainer">
 
@@ -25,7 +25,7 @@
             </div>
 
 
-            <!-- Fehler beheben -->
+            
             <div class="threadContainerQuestionInfo">
                 <div class="threadContainerInfoPerson">{{loadedMessage.messageUserName}}</div>
                 <div class="threadContainerInfoTime">{{loadedMessage.timestamp}} Uhr</div>
@@ -50,7 +50,7 @@
                     <img (click)="toggleEmojiMessage(loadedMessage.messageID)" src="../../../assets/img/add_reaction.png" alt="">                </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Stroke between -->
     <div class="threadContainerAnswersStroke">

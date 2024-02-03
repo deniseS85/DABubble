@@ -1,0 +1,135 @@
+.threadContainerQuestion{
+    width: calc(100% - 80px);
+    padding: 10px 40px 10px 40px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    margin-top: 17px;
+    position: relative;
+
+    &:hover{
+        background-color:#ECEEFE;
+
+        .threadContainerTextLeft{
+            background-color: white;
+        }
+
+        .reactionContainer{
+            display: flex !important;
+            animation: slidein 0.1s ease-in-out forwards;                      
+        }
+    }            
+
+
+    .threadContainerQuestionContainer{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 8px;
+        position: relative;               
+        
+
+        .threadContainerQuestionInfo{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;                    
+        }                
+    }
+}
+
+.threadContainerInfoPerson{
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24.5px;
+}
+
+.threadContainerInfoTime{
+    font-size: 14px;
+    color:#686868;
+    line-height: 19.5px;
+}
+
+.threadContainerTextLeft{
+    padding: 15px;
+    border-radius: 0 20px 20px 20px;
+    background-color: #ECEEFE;
+    font-size: 18px;
+    line-height: 24.5px;
+}
+
+.threadContainerTextReactions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+
+    .emoji-con{     
+            
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+
+            img{
+                width: 24px;
+                height: 24px;
+            }       
+    }
+
+    .threadContainerTextReactionsEmojis{
+        position: relative;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid #ADB0D9;
+        border-radius: 20px;
+        background-color: white;
+        cursor: pointer;
+    
+        img{
+            width: 24px;
+            height: 24px;
+        }
+
+        &:hover{
+            .reactionsInfoContainer{
+                display: flex !important;
+            }
+        }
+    }
+
+    .reactionsInfoContainer{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateY(-100%);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        flex-direction: column;
+        background-color: #444DF2;
+        color: white;
+        border-radius: 30px 30px 30px 0;
+        padding: 15px 10px;
+
+        .reactionsInfoContainerUsers{
+            display: flex;
+            gap: 4px;
+        }
+
+        span{
+            white-space: nowrap;
+        }
+
+    }
+}
+
+.profilPic {
+    width: 70px;
+    height: 70px;
+}

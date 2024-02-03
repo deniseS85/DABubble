@@ -52,7 +52,6 @@ export class ThreadComponent {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.channelID = this.channelDataService.channelID;
     this.messageID = this.channelService.activeMessageID;
-    this.loadMessage();
     this.loadAnswers();
     this.loadCurrentUser();
     this.getChannelName();
@@ -74,12 +73,6 @@ export class ThreadComponent {
       this.userNameComplete = currentUser['firstname'] + " " + currentUser['lastname'];
       this.userImg = currentUser['profileImg']
     }
-  }
-
-
-  async loadMessage() {
-    const docRef = await getDoc(this.getAnswerRef(this.channelID, this.messageID));    
-    this.loadedMessage = docRef.data();
   }
 
 
@@ -125,11 +118,6 @@ export class ThreadComponent {
   }
 
 
-  getAnswerRef(channelId: string, messageId: string) {
-    return doc(this.firestore, "channels", channelId, "messages", messageId);
-  }
-
-
   getAllAnswersRef(channelId: string, messageId: string) {
     return collection(this.firestore, "channels", channelId, "messages", messageId, 'answers');
   }
@@ -166,16 +154,6 @@ export class ThreadComponent {
 
   // Emojis
 
-  toggleEmojiMessage(id: string) {
-      if (this.loadedMessage.messageID === id) {
-        this.loadedMessage.isEmojiOpen = !this.loadedMessage.isEmojiOpen;
-      } else {
-        this.loadedMessage.isEmojiOpen = false;
-      }
-    
-  }
-
-
   toggleEmoji(id: string) {
     this.allAnswers.forEach((answer) => {
       if (answer.answerID === id) {
@@ -192,9 +170,5 @@ export class ThreadComponent {
     this.reactionService.handleReaction(this.channelID, this.messageID, answer.answerID, '', '', event, answer, this.userNameComplete, typ)
   }
 
-  handleReactionMessage(event: any, message: any){
-    const typ = 'messageReaction';
-    this.reactionService.handleReaction(this.channelID, this.messageID, '', '', '', event, message, this.userNameComplete, typ)
-  }
 
 }

@@ -31,16 +31,28 @@ export class ThreadQuestionComponent {
   }
  
 
+  /**
+   * get Message, about which the thread is about
+   */
   async loadMessage() {
     const docRef = await getDoc(this.getAnswerRef(this.channelID, this.messageID));    
     this.loadedMessage = docRef.data();   
   }
 
+
+  /**
+   * get the Ref of the message
+   */
   getAnswerRef(channelId: string, messageId: string) {
     return doc(this.firestore, "channels", channelId, "messages", messageId);
   }
 
 
+  /**
+   * send Emoji selection to the reactionService
+   * @param event 
+   * @param message 
+   */
   handleReactionMessage(event: any, message: any){
     const typ = 'messageReaction';
     this.reactionService.handleReaction(this.channelID, this.messageID, '', '', '', event, message, this.loadedMessage.messageUserName, typ)
@@ -48,6 +60,9 @@ export class ThreadQuestionComponent {
   }
 
 
+  /**
+   * toggle the visibility of the emojibar
+   */
   toggleEmojiMessage() {     
         this.isEmojiOpen = !this.isEmojiOpen;  
     

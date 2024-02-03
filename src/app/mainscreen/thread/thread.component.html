@@ -1,18 +1,6 @@
 <div class="threadContainer">
 
-    <div class="threadContainerHeader">
-        <div class="threadContainerHeaderHeadline">
-            <div class="threadContainerHeaderHeadlineMain">Thread</div>
-            <div class="threadContainerHeaderHeadlineChanal">#</div>
-            <div class="threadContainerHeaderHeadlineChanal">{{ activeChannelName }}</div>
-        </div>
-        <div class="threadContainerHeaderCloseBtn" title="closeThreads" (click)="closeThread()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-                <path
-                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-            </svg>
-        </div>
-    </div>
+    <app-threads-header [activeChannelName]="activeChannelName"></app-threads-header>
 
     <!-- ThreadQuestion -->
     <div class="threadContainerQuestion">
@@ -131,37 +119,6 @@
         </div>
     </div>
 
-    <!-- write Answer -->
-    <!-- <div class="footer-write-new-message">
-        <div>
-            <textarea class="textarea" [(ngModel)]="answertext" id="answertext" placeholder="Antworten..."  (keyup.enter)="sendAnswer()"></textarea>
-        </div>
-        <div class="footer-line-icons">
-            <div class="footer-icons-left">
-                <mat-icon>add</mat-icon>
-                <div class="seperator-vert"></div>
-                <div class="emoji-container">
-                    <img (click)="toggleEmojiAnswer()" src="../../../assets/img/add_reaction.png" alt="">
-                        <div *ngIf="isAnswertextEmojiOpen" class="emoji-selection">
-                            <emoji-mart class="emoji-mart" 
-                            [style]="{ width: '240px', cursor: 'default' }"
-                            (emojiSelect)="addEmojitoText($event)" 
-                            color=#535AF1 
-                            set="apple"
-                            [enableSearch]="false" 
-                            [showPreview]="false" 
-                            title="Choose your emoji">
-                            </emoji-mart>
-                        </div>
-                </div>
-                <mat-icon>alternate_email</mat-icon>
-            </div>
-            <div class="footer-icons-right">
-                <mat-icon title="channel" (click)="sendAnswer()">send_icon</mat-icon>
-            </div>
-            
-        </div>
-    </div> -->
     <app-threads-send-message></app-threads-send-message>
 </div>
 

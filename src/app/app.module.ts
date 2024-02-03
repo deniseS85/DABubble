@@ -40,6 +40,7 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { ThreadsSendMessageComponent } from './mainscreen/thread/threads-send-message/threads-send-message.component';
+import { ThreadsHeaderComponent } from './mainscreen/thread/threads-header/threads-header.component';
 
 registerLocaleData(localeDe, 'de');
 
@@ -62,6 +63,7 @@ registerLocaleData(localeDe, 'de');
     EditAnswerComponent,
     EmojiPickerComponent,
     ThreadsSendMessageComponent,
+    ThreadsHeaderComponent,
   ],
   imports: [
     BrowserModule,

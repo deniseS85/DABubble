@@ -97,11 +97,8 @@ export class ThreadComponent {
 
   async loadMessage() {
     const docRef = await getDoc(this.getAnswerRef(this.channelID, this.messageID));    
-    this.loadedMessage = docRef.data();    
+    this.loadedMessage = docRef.data();
   }
-
-
-
 
 
   /**
@@ -114,7 +111,7 @@ export class ThreadComponent {
       this.allAnswers = [];
       querySnapshot.forEach((doc: any) => {
         this.allReactions = [];
-
+        
         if (doc.data().answerUserName === this.userNameComplete) {
           const newData = doc.data();
           const nd = ({ ...newData, activeUserAnswers: true })
@@ -125,7 +122,7 @@ export class ThreadComponent {
           const nd = ({ ...newData, activeUserAnswers: false })
           this.allAnswers.push(nd);
                 
-        }
+        }       
       })
     })
   }
@@ -155,7 +152,7 @@ export class ThreadComponent {
   sendAnswer() {
     this.answer = {
       answertext: this.answertext,
-      answerUserName: this.userFirstName + this.userLastName,
+      answerUserName: this.userFirstName + ' ' + this.userLastName,
       userProfileImg: this.userImg,
       answerID: '',
       activeUserAnswers: false,

@@ -1,5 +1,19 @@
-import { Component, ElementRef, Renderer2, HostListener, OnInit, inject } from '@angular/core';
-import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
+import {
+  Component,
+  ElementRef,
+  Renderer2,
+  HostListener,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  Firestore,
+  Unsubscribe,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+} from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
@@ -15,33 +29,25 @@ import { animate, style, transition, trigger } from '@angular/animations';
 
   animations: [
     trigger('upDownAnimation', [
-        transition(':enter', [
-            style({ height: 0, opacity: 0 }),
-            animate('0.3s ease-in-out', 
-                    style({ height: '*', opacity: 1 }))
-          ]
-        ),
-        transition(':leave', [
-            style({ height: '*', opacity: 1 }),
-            animate('0.3s ease-in-out', 
-                    style({ height: 0, opacity: 0 }))
-          ]
-        )
+      transition(':enter', [
+        style({ height: 0, opacity: 0 }),
+        animate('0.3s ease-in-out', style({ height: '*', opacity: 1 })),
       ]),
-    
+      transition(':leave', [
+        style({ height: '*', opacity: 1 }),
+        animate('0.3s ease-in-out', style({ height: 0, opacity: 0 })),
+      ]),
+    ]),
+
     trigger('leftRightAnimation', [
       transition(':enter', [
         style({ width: 0, opacity: 0 }),
-        animate('0.3s ease-in-out', 
-        style({ width: '*', opacity: 1 }))
-      ]
-      ),
+        animate('0.3s ease-in-out', style({ width: '*', opacity: 1 })),
+      ]),
       transition(':leave', [
         style({ width: '*', opacity: 1 }),
-        animate('0.3s ease-in-out', 
-        style({ width: 0, opacity: 0 }))
-      ]
-      )
+        animate('0.3s ease-in-out', style({ width: 0, opacity: 0 })),
+      ]),
     ]),
   ],
 })
@@ -53,6 +59,7 @@ export class WorkspaceComponent implements OnInit {
   userID: any;
   allUsers: User[] = [];
   userFullName: String = '';
+  highlightedUser: string | null = null;
 
   selectedUsers: User[] = [];
   searchQuery: string = '';
@@ -86,7 +93,7 @@ export class WorkspaceComponent implements OnInit {
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
-    this.loadChannels()
+    this.loadChannels();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -101,8 +108,9 @@ export class WorkspaceComponent implements OnInit {
     this.getUserList();
     this.checkScreenSize();
     // await this.getAllChannel();
-    this.channelDataService.highlightUser$.subscribe(userFullName => {
-      console.log('Received userFullName in WorkspaceComponent:', userFullName);
+    this.channelDataService.highlightUser$.subscribe((userFullName) => {
+      this.highlightedUser = userFullName;
+      this.highlightUserElement();
     });
   }
 
@@ -203,7 +211,7 @@ export class WorkspaceComponent implements OnInit {
         this.user.id = this.userID;
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
       }
-    } catch (error) { }
+    } catch (error) {}
   }
 
   /**
@@ -216,23 +224,20 @@ export class WorkspaceComponent implements OnInit {
   //   console.log('Channels:', this.channels);
   // }
 
-
-
   /**
    * hier wird Live-Update der Channels aktiviert
    * funktion wird im constructor aufgerufen um bei ersten öffnen des workspaces zu laden
    */
-  async loadChannels(){
+  async loadChannels() {
     const queryAllChannels = await query(this.channelService.collectionRef);
 
     const unsub = onSnapshot(queryAllChannels, (querySnapshot) => {
       this.channels = [];
       querySnapshot.forEach((doc: any) => {
         this.channels.push(doc.data());
-    });    
-  });
-  
-}
+      });
+    });
+  }
 
   /**
    * Check if the user is logged in as a guest and update user information accordingly.
@@ -277,7 +282,6 @@ export class WorkspaceComponent implements OnInit {
     }
   }
 
-
   /**
    * Find the parent element with the class 'selectable'.
    *
@@ -289,6 +293,15 @@ export class WorkspaceComponent implements OnInit {
       target = target.parentElement!;
     }
     return target;
+  }
+
+  private highlightUserElement(): void {
+    if (this.highlightedUser) {
+      const userElement = this.elRef.nativeElement.querySelector(`[data-username="${this.highlightedUser}"]`);
+      if (userElement) {
+        userElement.classList.add('selected');
+      }
+    }
   }
 
   /**
@@ -328,7 +341,7 @@ export class WorkspaceComponent implements OnInit {
   openChannelCreateContainer() {
     this.selectedUsers = this.allUsers;
     this.isSecondScreen = true;
-    if(this.isScreenSmall) {
+    if (this.isScreenSmall) {
       this.isFirstScreen = true;
     } else {
       this.isFirstScreen = false;
@@ -343,7 +356,6 @@ export class WorkspaceComponent implements OnInit {
     this.isSecondScreen = false;
   }
 
-
   /**
    * Show / Hide input names on button click.
    */
@@ -351,12 +363,10 @@ export class WorkspaceComponent implements OnInit {
     this.isShowInputNames = true;
     this.searchQuery = '';
     this.selectedUsers = [];
-
   }
   onHideClick() {
     this.isShowInputNames = false;
     this.selectedUsers = this.allUsers;
-
   }
 
   /**
@@ -406,26 +416,30 @@ export class WorkspaceComponent implements OnInit {
   /**
    * Für den Channel benötigen wir habe ich noch ein paar Variablen bzw. Arrays mehr
    * UsersID's brauchen wir um messages zu erstellen und individuell zuzuweisen
-   * channelCreator für das 'Erstellt von' im channel Menu 
+   * channelCreator für das 'Erstellt von' im channel Menu
    * und die channelID wird beim erstellen im channel.Service hinzugefügt, diese ist zum löschen und editieren ganz nützlich
    */
-  async setNewChannelItems() {    
-      const channelname = this.createdChannelName;
-      const channelDescription = this.createdChannelDescription;
-      const channelUsers = this.selectedUsers.map(user => user.toUserJson());
-      const channelCreator = this.channelService.getCreatorsName();
-    
-      this.channelService.createChannel(channelname, channelDescription, channelUsers, await channelCreator);
-      this.closeChannelCreateWindow();
+  async setNewChannelItems() {
+    const channelname = this.createdChannelName;
+    const channelDescription = this.createdChannelDescription;
+    const channelUsers = this.selectedUsers.map((user) => user.toUserJson());
+    const channelCreator = this.channelService.getCreatorsName();
+
+    this.channelService.createChannel(
+      channelname,
+      channelDescription,
+      channelUsers,
+      await channelCreator
+    );
+    this.closeChannelCreateWindow();
     // this.getAllChannel();
   }
 
-
   /**
    * auskommentiert von Klemens --> neue Funktion darüber
-   * @param users 
-   * @param currentUserId 
-   * @returns 
+   * @param users
+   * @param currentUserId
+   * @returns
    */
   // setNewChannelItems() {
   //   let newChannel = {
@@ -452,16 +466,17 @@ export class WorkspaceComponent implements OnInit {
     return users.slice().sort((a, b) => {
       if (a.id === currentUserId) return -1;
       if (b.id === currentUserId) return 1;
-      return (a.firstname + ' ' + a.lastname).localeCompare(b.firstname + ' ' + b.lastname);
+      return (a.firstname + ' ' + a.lastname).localeCompare(
+        b.firstname + ' ' + b.lastname
+      );
     });
   }
 
-
   /**
    * channelwechsel --> kurzfristig in ordnung, aber nicht gut
-   * @param channelID 
+   * @param channelID
    */
-  openChannel(channelID: string){
+  openChannel(channelID: string) {
     this.main.channelOpen = false;
     this.main.threadOpen = false;
     this.channelDataService.channelID = channelID;
@@ -471,7 +486,3 @@ export class WorkspaceComponent implements OnInit {
     }, 0.02);
   }
 }
-
-
-
-

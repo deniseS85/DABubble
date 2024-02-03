@@ -589,32 +589,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  /**
-   * collect datas of currentUSer(writer of the message), messagetext, timestamp and reactions etc.
-   */
-  /* addMessage() {
-    const message = {
-      messagetext: this.messagetext,
-      messageUserName: this.userFullName, 
-      messageUserID: this.userID,
-      messageUserProfileImg: this.getProfileImagePath(this.userProfileView),
-      messageID: '',
-      activeUserMessage: false,
-      isEmojiOpen: false,
-      timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
-      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),// zum Vergkleiche für anzeige "Heute" oder z.B. "21.Januar"
-      react: [],
-      answerInfo: {
-        counter: 0,
-        lastAnswerTime: ""
-      },
-    }
-
-    this.messagetext = '';
-    this.channelService.sendMessage(this.channelDataService.channelID, message);
-  } */
-
   async addMessage() {
     try {
         const userDocRef = doc(this.firestore, 'users', this.userID);
@@ -645,34 +619,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
         console.error('Fehler beim Abrufen der Benutzerdaten:', error);
     } 
 }
-
-
-  
-  /**
-   * load all messages of an channelChat an add boolean, if currentUser is Sender of Message
-   */
- /*  async loadMessagesOfThisChannel() {
-    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
-    const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
-      this.allMessages = [];
-      const currentUsername = this.authservice.getUserFirstName() + ' ' + this.authservice.getUserLastName()
-      querySnapshot.forEach((doc: any) => {
-
-        if (doc.data().messageUserName === currentUsername) {
-          const newData = doc.data();
-          const nd = ({ ...newData, activeUserMessage: true })
-          this.allMessages.push(nd);;
-
-        } else {
-          const newData = doc.data();
-          const nd = ({ ...newData, activeUserMessage: false })
-          this.allMessages.push(nd);
-        }
-        //for every Message load Answers
-        this.loadAnswers(doc.data().messageID, doc);
-      })
-    })
-  } */
 
   async loadMessagesOfThisChannel() {
     const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
@@ -717,9 +663,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       });
 
       const userData = await Promise.resolve({
-        firstName: user.firstname,
-        lastName: user.lastname,
-        img: user.profileImg,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        profileImg: user.profileImg,
         isOnline: user.isOnline,
         unsubscribe: unsubscribe
       });

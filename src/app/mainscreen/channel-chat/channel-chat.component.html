@@ -41,8 +41,7 @@
                 (mouseleave)="message.isEmojiOpen = false">
                 <div class="profile-message-img">
                     <img class="profile-img"
-                        [src]="message.img.startsWith('https') ? message.img : './assets/img/' + message.img"
-                        alt="">
+                        [src]="message.profileImg.startsWith('https') ? message.profileImg : './assets/img/' + message.profileImg" alt="">
                         <p class="active-point" *ngIf="message.isOnline"></p>
                 </div>
 
@@ -83,10 +82,10 @@
                         <div class="writing-name-sending-time">
                             <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
                                 <div class="sending-time fs-14 f400">{{ message.timestamp }} Uhr</div>
-                                <span class="writing-name fs-18 fw-700">{{ message.firstName }} {{message.lastName }}</span>
+                                <span class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}</span>
                             </ng-container>
                             <ng-template #otherUser>
-                                <div class="writing-name fs-18 fw-700">{{ message.firstName }} {{message.lastName }}</div>
+                                <div class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}</div>
                                 <span class="sending-time fs-14 fw-400">{{ message.timestamp }} Uhr</span>
                             </ng-template>
                         </div>

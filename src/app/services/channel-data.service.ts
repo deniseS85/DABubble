@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
-import { Observable, map } from "rxjs";
+import { Observable, Subject, map } from "rxjs";
 import { query, getDocs, collection, doc } from 'firebase/firestore';
 import { AuthService } from './auth.service';
 
@@ -87,6 +87,13 @@ export class ChannelDataService {
         /* // console.warn(unsubChannel) */
         unsubChannel;
       })
+  }
+
+  private highlightUserSubject = new Subject<string>();
+  highlightUser$ = this.highlightUserSubject.asObservable();
+
+  highlightUserInWorkspace(userFullName: string): void {
+    this.highlightUserSubject.next(userFullName);
   }
 
 }

@@ -317,6 +317,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       this.showProfil = false;
       this.officialChannel = false;
       this.channelDataService.channelName = userFullName;
+      this.channelDataService.highlightUserInWorkspace(userFullName);
     }
   
     /**

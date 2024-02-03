@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, HostListener, inject } from '@angular/core';
+import { Component, ElementRef, Renderer2, HostListener, OnInit, inject } from '@angular/core';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -45,7 +45,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ]),
   ],
 })
-export class WorkspaceComponent {
+export class WorkspaceComponent implements OnInit {
   panelOpenState1 = false;
   panelOpenState2 = false;
 
@@ -101,6 +101,9 @@ export class WorkspaceComponent {
     this.getUserList();
     this.checkScreenSize();
     // await this.getAllChannel();
+    this.channelDataService.highlightUser$.subscribe(userFullName => {
+      console.log('Received userFullName in WorkspaceComponent:', userFullName);
+    });
   }
 
   ngOnDestroy() {

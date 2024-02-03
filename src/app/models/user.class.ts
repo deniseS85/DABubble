@@ -5,6 +5,7 @@ export class User {
     email: string;
     profileImg: string;
     isOnline: boolean;
+
     
 
     constructor(obj?: any) {

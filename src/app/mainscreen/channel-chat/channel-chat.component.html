@@ -39,14 +39,11 @@
                 (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible') : toggleAnimationState('visible', chatIndex)"
                 (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden') : toggleAnimationState('hidden', chatIndex)"
                 (mouseleave)="message.isEmojiOpen = false">
-
-<!-- ######## bild und isOnlineStatus von usern holen #############  -->
                 <div class="profile-message-img">
-                    {{chatIndex}}
                     <img class="profile-img"
-                        [src]="message.messageUserProfileImg.startsWith('https') ? message.messageUserProfileImg : './assets/img/' + message.messageUserProfileImg"
+                        [src]="message.img.startsWith('https') ? message.img : './assets/img/' + message.img"
                         alt="">
-                        <p class="active-point" *ngIf="message.activeUserMessage"></p>
+                        <p class="active-point" *ngIf="message.isOnline"></p>
                 </div>
 
 
@@ -86,18 +83,10 @@
                         <div class="writing-name-sending-time">
                             <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
                                 <div class="sending-time fs-14 f400">{{ message.timestamp }} Uhr</div>
-                                <!-- ##### name von user holen ############# -->
-                                <span class="writing-name fs-18 fw-700">{{ message.messageUserName }}</span>
-
-
+                                <span class="writing-name fs-18 fw-700">{{ message.firstName }} {{message.lastName }}</span>
                             </ng-container>
                             <ng-template #otherUser>
-
-
-                                 <!-- ##### name von user holen ############# -->
-                                <div class="writing-name fs-18 fw-700">{{ message.messageUserName }}</div>
-
-
+                                <div class="writing-name fs-18 fw-700">{{ message.firstName }} {{message.lastName }}</div>
                                 <span class="sending-time fs-14 fw-400">{{ message.timestamp }} Uhr</span>
                             </ng-template>
                         </div>

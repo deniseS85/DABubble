@@ -623,11 +623,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
             const message = {
                 messagetext: this.messagetext,
-                messageUserName: this.userFullName,
                 messageUserID: this.userID,
-                messageUserProfileImg: userData['profileImg'],
                 messageID: '',
-                activeUserMessage: this.userIsOnline, 
                 isEmojiOpen: false,
                 timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
                 date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -644,7 +641,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
         }
     } catch (error) {
         console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-    } console.log(this.allUsers)
+    } 
 }
 
 
@@ -652,7 +649,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   /**
    * load all messages of an channelChat an add boolean, if currentUser is Sender of Message
    */
-  async loadMessagesOfThisChannel() {
+ /*  async loadMessagesOfThisChannel() {
     const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
     const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
       this.allMessages = [];
@@ -673,6 +670,41 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
         this.loadAnswers(doc.data().messageID, doc);
       })
     })
+  } */
+
+  async loadMessagesOfThisChannel() {
+    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
+    const unsub = onSnapshot(queryAllAnswers, async (querySnapshot) => {
+      this.allMessages = [];
+  
+      for (const doc of querySnapshot.docs) {
+        const messageData = doc.data();
+        const userData = await this.loadUserData(messageData['messageUserID']);
+  
+        if (userData) {
+          const message = {
+            ...messageData,
+            ...userData,
+          };
+          this.allMessages.push(message);
+          this.loadAnswers(messageData['messageID'], doc);
+        }
+      }
+    });
+  }
+
+  async loadUserData(messageUserID: string) {
+    const user = this.allUsers.find(u => u.id === messageUserID);
+    if (user) {
+      return {
+        firstName: user.firstname,
+        lastName: user.lastname,
+        img: user.profileImg,
+        isOnline: user.isOnline
+      };
+    } else {
+      return null;
+    }
   }
 
 

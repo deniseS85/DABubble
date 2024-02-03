@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../services/auth.service";
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
@@ -122,6 +122,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   isButtonDisabled: boolean = true;
   userList;
   unsubUser: Unsubscribe | undefined;
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
 
 
   private userDataSubject = new BehaviorSubject<any>(null);
@@ -151,13 +152,25 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     }
     this.getAllUserInfo();
     this.loadMessagesOfThisChannel();
+    /* this.scrollToBottom(); */
  
   }
+
+ /*  ngAfterViewChecked() {        
+    this.scrollToBottom();        
+}  */
+
 
   ngOnDestroy() {
     this.unsubUser;
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
+  scrollToBottom(): void {
+    try {
+        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    } catch(err) { }                 
+}
 
   checkUserIsCreator() {
     let userFullName = this.user.firstname + this.user.lastname;
@@ -637,6 +650,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
           this.allMessages.push(message);
           this.loadAnswers(messageData['messageID'], doc);
         }
+
+        this.allMessages.sort((a, b) => {
+          const timestampA = new Date(`${a.date} ${a.timestamp}`);
+          const timestampB = new Date(`${b.date} ${b.timestamp}`);
+          return timestampA.getTime() - timestampB.getTime();
+        });
       }
     });
     const userDataSubscription = this.userData$.subscribe((userData) => {
@@ -650,30 +669,30 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   async loadUserData(messageUserID: string): Promise<any> {
-    const user = this.allUsers.find(u => u.id === messageUserID);
+      const user = this.allUsers.find(u => u.id === messageUserID);
 
-    if (user) {
-      const userDocRef = doc(this.firestore, 'users', messageUserID);
-      const unsubscribe = onSnapshot(userDocRef, (doc) => {
-        if (doc.exists()) {
-          const updatedUser = doc.data();
-          Object.assign(user, updatedUser);
-          this.userDataSubject.next({ ...user });
+      if (user) {
+          const userDocRef = doc(this.firestore, 'users', messageUserID);
+          const unsubscribe = onSnapshot(userDocRef, (doc) => {
+              if (doc.exists()) {
+                  const updatedUser = doc.data();
+                  Object.assign(user, updatedUser);
+                  this.userDataSubject.next({ ...user });
+              }
+            });
+
+            const userData = await Promise.resolve({
+                firstname: user.firstname,
+                lastname: user.lastname,
+                profileImg: user.profileImg,
+                isOnline: user.isOnline,
+                unsubscribe: unsubscribe
+            });
+
+          return userData;
+        } else {
+          return null;
         }
-      });
-
-      const userData = await Promise.resolve({
-        firstname: user.firstname,
-        lastname: user.lastname,
-        profileImg: user.profileImg,
-        isOnline: user.isOnline,
-        unsubscribe: unsubscribe
-      });
-
-      return userData;
-    } else {
-      return null;
-    }
   }
 
 
@@ -707,7 +726,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       this.updateAnswerInfoStatus(answerInfos, messageID);
     }
   }
-
 
 
   async updateAnswerInfoStatus(answerInfos: any, messageID: string) {

@@ -27,7 +27,7 @@
         </header>
     </div>
 
-    <div class="channel-chat-container">
+    <div class="channel-chat-container" #chatContainer>
         <div *ngFor="let message of allMessages; let chatIndex = index">
             <div class="seperator"></div>
             <div class="date-incoming-message">

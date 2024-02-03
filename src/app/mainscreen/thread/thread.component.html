@@ -1,56 +1,7 @@
 <div class="threadContainer">
 
     <app-threads-header [activeChannelName]="activeChannelName"></app-threads-header>
-    <app-thread-question></app-thread-question>
-    <!-- ThreadQuestion -->
-    <!-- <div class="threadContainerQuestion">
-        <img class="profilPic" src="./assets/img/avatarNoah.png" alt="">
-        <div class="threadContainerQuestionContainer">
-
-            <div class="reactionContainer">
-                <div class="reactionMenu">
-                    <img (click)="toggleEmojiMessage(loadedMessage.messageID)" src="../../../assets/img/add_reaction.png" alt="">
-                            <div *ngIf="loadedMessage.isEmojiOpen" class="emoji-selection">
-                                <emoji-mart class="emoji-mart" 
-                                [style]="{ width: '240px', cursor: 'default' }"
-                                (emojiSelect)="handleReactionMessage($event, loadedMessage)" 
-                                color=#535AF1 
-                                set="apple"
-                                [enableSearch]="false" 
-                                [showPreview]="false" 
-                                title="Choose your emoji">
-                                </emoji-mart>
-                            </div>
-                </div>
-            </div>
-
-
-            
-            <div class="threadContainerQuestionInfo">
-                <div class="threadContainerInfoPerson">{{loadedMessage.messageUserName}}</div>
-                <div class="threadContainerInfoTime">{{loadedMessage.timestamp}} Uhr</div>
-            </div>
-            <div class="threadContainerTextLeft">
-                {{loadedMessage.messagetext}}
-            </div>
-            <div class="threadContainerTextReactions">
-                <div class="threadContainerTextReactionsEmojis" *ngFor="let answer of loadedMessage.react">
-                    <div class="reactionsInfoContainer">
-                        <div>{{answer.emoji}}</div>
-                        <div class="reactionsInfoContainerUsers" *ngFor="let user of answer.user; let i = index">
-                            <div>{{user}}</div>
-                            <div *ngIf="i < (answer.user.length - 1)"> &</div>
-                        </div>
-                        <span>hat reagiert</span>
-                    </div>
-                    <div>{{answer.emoji}}</div>
-                    <div class="threadContainerTextReactionsAmount">{{answer.user.length}}</div>
-                </div>                    
-                <div class="emoji-con">
-                    <img (click)="toggleEmojiMessage(loadedMessage.messageID)" src="../../../assets/img/add_reaction.png" alt="">                </div>
-            </div>
-        </div>
-    </div> -->
+    <app-thread-question></app-thread-question>    
 
     <!-- Stroke between -->
     <div class="threadContainerAnswersStroke">

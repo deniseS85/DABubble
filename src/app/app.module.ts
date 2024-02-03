@@ -22,7 +22,6 @@ import { ResetPasswordComponent } from './startscreen/reset-password/reset-passw
 import { SelectAvatarComponent } from './startscreen/select-avatar/select-avatar.component';
 import { ImprintComponent } from './startscreen/imprint/imprint.component';
 import { DataProtectionComponent } from './startscreen/data-protection/data-protection.component';
-import { TestQueryComponent } from './testQueryData/test-query/test-query.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -60,7 +59,6 @@ registerLocaleData(localeDe, 'de');
     SelectAvatarComponent,
     ImprintComponent,
     DataProtectionComponent,
-    TestQueryComponent,
     EditAnswerComponent,
     EmojiPickerComponent,
     ThreadsSendMessageComponent,

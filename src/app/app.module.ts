@@ -39,6 +39,7 @@ import { EmojiPickerComponent } from './mainscreen/emoji-picker/emoji-picker.com
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { ThreadsSendMessageComponent } from './mainscreen/thread/threads-send-message/threads-send-message.component';
 
 registerLocaleData(localeDe, 'de');
 
@@ -60,6 +61,7 @@ registerLocaleData(localeDe, 'de');
     TestQueryComponent,
     EditAnswerComponent,
     EmojiPickerComponent,
+    ThreadsSendMessageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,30 @@
+<div class="footer-write-new-message">
+    <div>
+        <textarea class="textarea" [(ngModel)]="answertext" id="answertext" placeholder="Antworten..."  (keyup.enter)="sendAnswer()"></textarea>
+    </div>
+    <div class="footer-line-icons">
+        <div class="footer-icons-left">
+            <mat-icon>add</mat-icon>
+            <div class="seperator-vert"></div>
+            <div class="emoji-container">
+                <img (click)="toggleEmojiAnswer()" src="../../../assets/img/add_reaction.png" alt="">
+                    <div *ngIf="isAnswertextEmojiOpen" class="emoji-selection">
+                        <emoji-mart class="emoji-mart" 
+                        [style]="{ width: '240px', cursor: 'default' }"
+                        (emojiSelect)="addEmojitoText($event)" 
+                        color=#535AF1 
+                        set="apple"
+                        [enableSearch]="false" 
+                        [showPreview]="false" 
+                        title="Choose your emoji">
+                        </emoji-mart>
+                    </div>
+            </div>
+            <mat-icon>alternate_email</mat-icon>
+        </div>
+        <div class="footer-icons-right">
+            <mat-icon title="channel" (click)="sendAnswer()">send_icon</mat-icon>
+        </div>
+
+    </div>
+</div>

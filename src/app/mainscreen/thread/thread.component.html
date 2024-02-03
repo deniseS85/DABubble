@@ -132,7 +132,7 @@
     </div>
 
     <!-- write Answer -->
-    <div class="footer-write-new-message">
+    <!-- <div class="footer-write-new-message">
         <div>
             <textarea class="textarea" [(ngModel)]="answertext" id="answertext" placeholder="Antworten..."  (keyup.enter)="sendAnswer()"></textarea>
         </div>
@@ -159,8 +159,9 @@
             <div class="footer-icons-right">
                 <mat-icon title="channel" (click)="sendAnswer()">send_icon</mat-icon>
             </div>
-
+            
         </div>
-    </div>
-
+    </div> -->
+    <app-threads-send-message></app-threads-send-message>
 </div>
+

@@ -622,6 +622,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
             const userData = userDocSnap.data();
 
             const message = {
+                messageUserName: userData['firstname'] + ' ' + userData['lastname'],
+                messageUserProfileImg: userData['profileImg'],
                 messagetext: this.messagetext,
                 messageUserID: this.userID,
                 messageID: '',

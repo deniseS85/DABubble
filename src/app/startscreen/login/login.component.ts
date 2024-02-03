@@ -63,9 +63,7 @@ export class LoginComponent {
                 this.userAlreadyExists = false;
             }
         } catch (error:any) {
-            if (error.code === 'auth/invalid-credential') {
-                this.isWrongPassword = true;
-            }
+            this.handleAuthError(error);
         }
     }
 
@@ -126,7 +124,8 @@ export class LoginComponent {
                     this.openSelectAvatar.emit({
                         firstname: firstName,
                         lastname: lastName,
-                        email: email
+                        email: email,
+                        isOnline: true
 
                     });
                 } else {
@@ -161,8 +160,10 @@ export class LoginComponent {
     }
 
     private handleAuthError(error: any) {
-        if (error.code === 'auth/invalid-credential') {
-          this.isWrongPassword = true;
-        }
+        if (error.code && error.code.startsWith('auth/')) {
+            if (error.code === 'auth/wrong-password') {
+                this.isWrongPassword = true;
+            }
+        } 
     }
 }

@@ -141,12 +141,25 @@
     padding: 0 45px;
 }
 
-.profile-img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
+.profile-message-img {
     border-radius: 100%;
+    object-fit: cover;
+    position: relative;
+    .profile-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 100%;
+    }
+    .active-point {
+        position: absolute;
+        bottom: 62px;
+        right: 0;
+        margin: 0;
+        border: 2px solid white;
+    }
 }
+
 
 .new-message-somebody-container {
     position: relative;
@@ -1209,7 +1222,7 @@ input {
 
 .threadContainerTextReactions{
     display: flex;
-    justify-content: center;
+   /*  justify-content: center; */
     align-items: center;
     gap: 12px;
     position: relative;

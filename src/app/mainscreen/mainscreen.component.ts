@@ -3,7 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
 import { Firestore, Unsubscribe, doc, getDoc, updateDoc } from '@angular/fire/firestore';
-import { collection } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -36,21 +36,29 @@ export class MainscreenComponent implements OnInit {
     isProfileHovered: boolean = false;
     isLogoutHovered: boolean = false;
 
-   /*  @Output() emojiSelectedEvent = new EventEmitter<string>(); */
-
     constructor(public authService: AuthService, private router: Router, private route: ActivatedRoute, private storage: Storage, private snackBar: MatSnackBar) {
             this.userID = this.route.snapshot.paramMap.get('id');
             this.userList = this.getUserfromFirebase();
     }
 
-   /*  emojiSelected(event: any) {
-        this.emojiSelectedEvent.emit(event.emoji.native);
-      }
- */
     ngOnInit(): void {
         if (this.userID) {
             this.checkIsGuestLogin();
+            this.subscribeToUserChanges(); 
         }
+    }
+
+    private subscribeToUserChanges(): void {
+        const userDocRef = doc(this.firestore, 'users', this.userID);
+    
+        this.unsubscribeSnapshot = onSnapshot(userDocRef, (doc) => {
+            if (doc.exists()) {
+                this.user = new User(doc.data());
+                this.user.id = this.userID;
+                this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+                this.userIsOnline = this.user.isOnline;
+            }
+        });
     }
 
     @HostListener('window:resize', ['$event'])

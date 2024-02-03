@@ -14,7 +14,7 @@
                     <div *ngFor="let user of this.channelDataService.channelUsers ">
                         <span class="profile">
                             <img [src]="getProfileImagePath(user)" />
-                            <p class="active-point" *ngIf="user.isOnline == true"></p>
+                            <p class="active-point" *ngIf="user.isOnline"></p>
                         </span>
                     </div>
                     <div class="counter-channel-members">{{ this.channelDataService.channelUsers.length }}</div>
@@ -26,61 +26,6 @@
             </div>
         </header>
     </div>
-
-
-    <!-- '################# Anfang Klemens code -->
-    <!--  <div class="answersContainer">
-        <div class="threadContainerAnswer" *ngFor="let answer of allMessages"
-            [ngClass]="{'threadContainerAnswerReverse' : answer.activeUserMessage}">
-            <img class="profilPic" src="./assets/img/{{answer.messageUserProfileImg}}" alt="">
-            <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : answer.activeUserMessage}">
-
-                <div class="reactionContainer" [ngClass]="{'absoluteLeft' : answer.activeUserMessage}">
-                    <div class="reactionMenu">
-                        <div class="emoji-container">
-                            <img (click)="toggleEmoji(answer.messageID, 1)" src="../../../assets/img/add_reaction.png" alt="">
-                            <div *ngIf="answer.isEmojiOpen" class="emoji-selection">
-                                <emoji-mart class="emoji-mart" 
-                                [style]="{ width: '240px', cursor: 'default' }"
-                                (emojiSelect)="handleReaction($event, answer)" 
-                                color=#535AF1 
-                                set="apple"
-                                [enableSearch]="false" 
-                                [showPreview]="false" 
-                                title="Choose your emoji">
-                                </emoji-mart>
-                            </div>
-                        </div>
-                        <div class="editMessage" *ngIf="answer.activeUserMessage">
-                            <mat-icon>more_vert</mat-icon>
-                            <div class="editMessageBtn">
-                                <span >Nachricht bearbeiten</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="threadContainerAnswerInfo"
-                    [ngClass]="{'threadContainerAnswerReverse' : answer.activeUserMessage}">
-                    <div class="threadContainerInfoPerson">{{answer.messageUserName}}</div>
-                    <div class="threadContainerInfoTime">{{answer.timestamp}} Uhr</div>
-                </div>
-                <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : answer.activeUserMessage}">
-                    {{answer.messagetext}}
-                </div> -->
-    <!-- <div class="answer-container">
-                    <div *ngIf="answer['answers'].length" > 0' class="counter-answers fs-18 fw-400">{{ answer['answers'].length }} Antworten</div>
-                    <div class="last-answer-time fs-14 fw-400">{{ answer.timestamp }}</div>     
-                    <div class="reactions" *ngIf="answer['answers'].length == 0">                        
-                    </div>
-                </div> -->
-
-    <!--  </div>
-        </div>
-    </div> -->
-
-    <!-- '################# Ende Klemens code -->
-
-
 
     <div class="channel-chat-container">
         <div *ngFor="let message of allMessages; let chatIndex = index">
@@ -94,11 +39,17 @@
                 (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible') : toggleAnimationState('visible', chatIndex)"
                 (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden') : toggleAnimationState('hidden', chatIndex)"
                 (mouseleave)="message.isEmojiOpen = false">
-                <div>
+
+<!-- ######## bild und isOnlineStatus von usern holen #############  -->
+                <div class="profile-message-img">
+                    {{chatIndex}}
                     <img class="profile-img"
                         [src]="message.messageUserProfileImg.startsWith('https') ? message.messageUserProfileImg : './assets/img/' + message.messageUserProfileImg"
                         alt="">
+                        <p class="active-point" *ngIf="message.activeUserMessage"></p>
                 </div>
+
+
                 <div>
                     <div
                         [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
@@ -135,10 +86,18 @@
                         <div class="writing-name-sending-time">
                             <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
                                 <div class="sending-time fs-14 f400">{{ message.timestamp }} Uhr</div>
+                                <!-- ##### name von user holen ############# -->
                                 <span class="writing-name fs-18 fw-700">{{ message.messageUserName }}</span>
+
+
                             </ng-container>
                             <ng-template #otherUser>
+
+
+                                 <!-- ##### name von user holen ############# -->
                                 <div class="writing-name fs-18 fw-700">{{ message.messageUserName }}</div>
+
+
                                 <span class="sending-time fs-14 fw-400">{{ message.timestamp }} Uhr</span>
                             </ng-template>
                         </div>

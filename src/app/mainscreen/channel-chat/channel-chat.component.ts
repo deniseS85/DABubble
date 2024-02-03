@@ -142,7 +142,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.userID) {
-      this.checkIsGuestLogin();
+      this.checkIsGuestLogin(); 
     }
     this.getAllUserInfo();
     this.loadMessagesOfThisChannel();
@@ -151,7 +151,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unsubUser;
-    this.unsubscribeSnapshot;
+    if (this.unsubscribeSnapshot) {
+      this.unsubscribeSnapshot();
+  }
   }
 
   checkUserIsCreator() {
@@ -217,7 +219,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
       this.allMessages.forEach((message, index) => {
         if (index === chatIndex) {
           message.isEmojiOpen = !message.isEmojiOpen;
-          console.log(message.isEmojiOpen)
         }
       });
     }
@@ -508,6 +509,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     this.userProfileView = user;
   }
 
+  
+
   // User filter function
 
 
@@ -586,8 +589,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   /**
    * collect datas of currentUSer(writer of the message), messagetext, timestamp and reactions etc.
    */
-  addMessage() {
-
+  /* addMessage() {
     const message = {
       messagetext: this.messagetext,
       messageUserName: this.userFullName, 
@@ -607,10 +609,45 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
     this.messagetext = '';
     this.channelService.sendMessage(this.channelDataService.channelID, message);
-  }
+  } */
+
+  async addMessage() {
+    try {
+        // Abrufen der Benutzerdaten direkt aus Firebase
+        const userDocRef = doc(this.firestore, 'users', this.userID);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+
+            const message = {
+                messagetext: this.messagetext,
+                messageUserName: this.userFullName,
+                messageUserID: this.userID,
+                messageUserProfileImg: userData['profileImg'],
+                messageID: '',
+                activeUserMessage: this.userIsOnline, 
+                isEmojiOpen: false,
+                timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
+                date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+                react: [],
+                answerInfo: {
+                    counter: 0,
+                    lastAnswerTime: ""
+                },
+            }
+
+            // Nachricht senden
+            this.messagetext = '';
+            this.channelService.sendMessage(this.channelDataService.channelID, message);
+        }
+    } catch (error) {
+        console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+    } console.log(this.allUsers)
+}
 
 
-
+  
   /**
    * load all messages of an channelChat an add boolean, if currentUser is Sender of Message
    */

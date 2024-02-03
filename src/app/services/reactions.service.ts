@@ -40,7 +40,6 @@ export class ReactionsService {
   ) {
     const reaction = event.emoji.native;
     const reactCollectionRef = this.getRef(typ, channelID, channelMessageID, threadMessageID)
-    console.warn((await getDoc(reactCollectionRef)).data())
     let allEmojis: any[] = [];
     let allReactions: any[] = [];
     
@@ -69,7 +68,6 @@ export class ReactionsService {
           message.react.splice(index, 1);
 
           this.updateReactions(message, reactCollectionRef)
-          console.warn('sliceUser')
         }
 
       } else if (!existingEmoji.user.includes(userName)) {
@@ -81,7 +79,6 @@ export class ReactionsService {
           react: message.react
         });
 
-        console.warn(existingEmoji.user, 'addUser')
       }
 
     } else {

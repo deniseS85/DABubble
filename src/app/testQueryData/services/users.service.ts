@@ -12,6 +12,7 @@ import { User } from '../../models/user.class';
 export class UsersService {
 
   firestore: Firestore = inject(Firestore);
+  
 
   constructor() {
   

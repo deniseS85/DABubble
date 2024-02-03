@@ -8,9 +8,10 @@ import { Channel } from "../../models/channel.class";
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { DatePipe } from '@angular/common';
-import { getCountFromServer, getDocs, query } from 'firebase/firestore';
+import { getDocs, query } from 'firebase/firestore';
 import { MainscreenComponent } from '../mainscreen.component';
 import { ReactionsService } from '../../services/reactions.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 
 @Component({
@@ -120,9 +121,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   isButtonDisabled: boolean = true;
   userList;
-
-  private unsubscribeSnapshot: Unsubscribe | undefined;
   unsubUser: Unsubscribe | undefined;
+
+
+  private userDataSubject = new BehaviorSubject<any>(null);
+  userData$ = this.userDataSubject.asObservable();
+  
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private main: MainscreenComponent,
@@ -151,9 +156,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unsubUser;
-    if (this.unsubscribeSnapshot) {
-      this.unsubscribeSnapshot();
-  }
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   checkUserIsCreator() {
@@ -614,7 +617,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   async addMessage() {
     try {
-        // Abrufen der Benutzerdaten direkt aus Firebase
         const userDocRef = doc(this.firestore, 'users', this.userID);
         const userDocSnap = await getDoc(userDocRef);
 
@@ -636,8 +638,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
                     lastAnswerTime: ""
                 },
             }
-
-            // Nachricht senden
             this.messagetext = '';
             this.channelService.sendMessage(this.channelDataService.channelID, message);
         }
@@ -676,13 +676,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
   async loadMessagesOfThisChannel() {
     const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
-    const unsub = onSnapshot(queryAllAnswers, async (querySnapshot) => {
+      onSnapshot(queryAllAnswers, async (querySnapshot) => {
       this.allMessages = [];
-  
+
       for (const doc of querySnapshot.docs) {
         const messageData = doc.data();
         const userData = await this.loadUserData(messageData['messageUserID']);
-  
+
         if (userData) {
           const message = {
             ...messageData,
@@ -693,21 +693,43 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
         }
       }
     });
+    const userDataSubscription = this.userData$.subscribe((userData) => {
+      this.allMessages.forEach((message) => {
+        if (message.messageUserID === userData.id) {
+          Object.assign(message, userData);
+        }
+      });
+    });
+    this.subscriptions.push(userDataSubscription);
   }
 
-  async loadUserData(messageUserID: string) {
+  async loadUserData(messageUserID: string): Promise<any> {
     const user = this.allUsers.find(u => u.id === messageUserID);
+
     if (user) {
-      return {
+      const userDocRef = doc(this.firestore, 'users', messageUserID);
+      const unsubscribe = onSnapshot(userDocRef, (doc) => {
+        if (doc.exists()) {
+          const updatedUser = doc.data();
+          Object.assign(user, updatedUser);
+          this.userDataSubject.next({ ...user });
+        }
+      });
+
+      const userData = await Promise.resolve({
         firstName: user.firstname,
         lastName: user.lastname,
         img: user.profileImg,
-        isOnline: user.isOnline
-      };
+        isOnline: user.isOnline,
+        unsubscribe: unsubscribe
+      });
+
+      return userData;
     } else {
       return null;
     }
   }
+
 
 
   /**

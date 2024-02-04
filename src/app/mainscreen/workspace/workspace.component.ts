@@ -232,12 +232,16 @@ export class WorkspaceComponent implements OnInit {
    * Retrieve and update the channel list and load only channels in which currentUser is member
    */
   async loadChannels() {
-    const queryAllChannels = await query(this.channelService.collectionRef);
+    const queryAllChannels = query(this.channelService.collectionRef);    
 
-    const unsub = onSnapshot(queryAllChannels, (querySnapshot) => {
+    onSnapshot(queryAllChannels, (querySnapshot) => {
       this.channels = [];
       querySnapshot.forEach((doc: any) => {
-        this.channels.push(doc.data());
+        doc.data().channelUsers.forEach((user:any) => {
+          if(user.id === this.userID){
+            this.channels.push(doc.data());
+          } else { return }
+        })        
       });
     });
   }
@@ -412,13 +416,8 @@ export class WorkspaceComponent implements OnInit {
   async setNewChannelItems() {
     const channelname = this.createdChannelName;
     const channelDescription = this.createdChannelDescription;
-    const channelCreator = this.channelService.getCreatorsName();
-    
-    const isCurrentUserSelected = this.selectedUsers.some(u => u.id === this.user.id);
-    if (!isCurrentUserSelected) {
-      this.selectedUsers.push(this.user);
-    }
     const channelUsers = this.selectedUsers.map((user) => user.toUserJson());
+    const channelCreator = this.channelService.getCreatorsName();
 
     this.channelService.createChannel(
       channelname,
@@ -461,6 +460,10 @@ export class WorkspaceComponent implements OnInit {
   }
 
 
+
+  /**
+   * lädt nur die Personen mit denen ich chatte
+   */
   async loadChats(){
     const chatsRef = query(this.chatService.getChatsRef())
 
@@ -468,19 +471,20 @@ export class WorkspaceComponent implements OnInit {
       chats.forEach((chat: any) => {
        chat.data().chatUsers.forEach((user: any) =>{
         if(user.id === this.userID){
-          chat.data().chatUsers.forEach((notMe: any) => {
-            if (notMe.id != this.userID){
-              this.chats.push(notMe)
-            }
-          })
+          this.chats.push(chat.data())
+          
+          // hier können sie namen für die DM-Liste gezogen werden
+          // chat.data().chatUsers.forEach((notMe: any) => {
+          //   if (notMe.id != this.userID){
+          //     this.chats.push(notMe)
+          //   }
+          // })
         } else {
           return
         }
        })
       })
-    })
-
-    
+    })    
   }
 
 

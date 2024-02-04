@@ -24,6 +24,7 @@ export class ChannelService {
 
   /* activeChannelID: string = '4w03K0592Ephea3D9fsK'; */
   activeMessageID: string = '';
+  allAnswers: any[] = [];
 
 
   /**
@@ -163,7 +164,7 @@ export class ChannelService {
       return channelCreator
     }
 
-  }
+  }    
 
 
 }

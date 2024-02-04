@@ -1,5 +1,19 @@
-import { Component, ElementRef, Renderer2, HostListener, OnInit, inject } from '@angular/core';
-import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
+import {
+  Component,
+  ElementRef,
+  Renderer2,
+  HostListener,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  Firestore,
+  Unsubscribe,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+} from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
@@ -155,15 +169,6 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Retrieve and update the channel list.
-   * auskommentiert von Klemens
-   * @returns {Promise<void>} A Promise that resolves after retrieving the channel list.
-   */
-  // private async getAllChannel(): Promise<void> {
-  //   await this.getChannelList();
-  // }
-
-  /**
    * Get the profile image path for a user.
    *
    * @param {User} user - The user object.
@@ -203,31 +208,6 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Retrieve and update the channel list.
-   * auskommentiert von Klemens --> neueFunktion darunter
-   * @returns {Promise<void>} A Promise that resolves after retrieving the channel list.
-   */
-  // async getChannelList(): Promise<void> {
-  //   this.channels = await this.channelService.getAllChannels();
-  //   console.log('Channels:', this.channels);
-  // }
-
-  /**
-   * hier wird Live-Update der Channels aktiviert
-   * funktion wird im constructor aufgerufen um bei ersten öffnen des workspaces zu laden
-   */
-  async loadChannels() {
-    const queryAllChannels = await query(this.channelService.collectionRef);
-
-    const unsub = onSnapshot(queryAllChannels, (querySnapshot) => {
-      this.channels = [];
-      querySnapshot.forEach((doc: any) => {
-        this.channels.push(doc.data());
-      });
-    });
-  }
-
-  /**
    * Check if the user is logged in as a guest and update user information accordingly.
    */
   checkIsGuestLogin(): void {
@@ -242,12 +222,22 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Handles the click event on selectable elements.
-   * Removes the class "selected" from all other elements
-   * and sets this class to clicked elements
-   *
-   * @param {MouseEvent} event - The click event.
-   * @returns {void}
+   * Retrieve and update the channel list.
+   */
+  async loadChannels() {
+    const queryAllChannels = query(this.channelService.collectionRef);
+
+    onSnapshot(queryAllChannels, (querySnapshot) => {
+      this.channels = [];
+      querySnapshot.forEach((doc: any) => {
+        this.channels.push(doc.data());
+      });
+    });
+  }
+
+  /**
+   * Handles the click event on selectable elements. Removes the class "selected" 
+   * from all other elements and sets this class to clicked elements
    */
   handleClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -259,6 +249,9 @@ export class WorkspaceComponent implements OnInit {
     this.renderer.addClass(selectableElement, 'selected');
   }
 
+  /**
+   * Getting channel name from clicked element and forward to change the selected channel
+   */
   selectedChannel(target: HTMLSpanElement) {
     let selectedChannel = (target as HTMLSpanElement).textContent;
 
@@ -283,9 +276,14 @@ export class WorkspaceComponent implements OnInit {
     return target;
   }
 
+  /**
+   * Highligth the right user in the workspace when selecting direct-message from channel members
+   */
   private highlightUserElement(): void {
     if (this.highlightedUser) {
-      const userElement = this.elRef.nativeElement.querySelector(`[data-username="${this.highlightedUser}"]`);
+      const userElement = this.elRef.nativeElement.querySelector(
+        `[data-username="${this.highlightedUser}"]`
+      );
       if (userElement) {
         userElement.classList.add('selected');
       }
@@ -293,7 +291,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Display the channel creation window.
+   * Show/close the channel creation window.
    */
   openChannelCreateWindow() {
     this.isChannelCreateWindow = true;
@@ -311,8 +309,6 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Handles the input change event for the channel creation input field.
-   *
    * This function updates the status of the "Erstellen" button based on whether
    * the input field is empty or not. If the input is empty, the button is disabled.
    *
@@ -324,7 +320,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Navigate to the second screen of channel creation.
+   * Show/hide the second screen of channel creation.
    */
   openChannelCreateContainer() {
     this.selectedUsers = this.allUsers;
@@ -352,6 +348,7 @@ export class WorkspaceComponent implements OnInit {
     this.searchQuery = '';
     this.selectedUsers = [];
   }
+
   onHideClick() {
     this.isShowInputNames = false;
     this.selectedUsers = this.allUsers;
@@ -397,15 +394,13 @@ export class WorkspaceComponent implements OnInit {
       this.searchQuery = '';
     }
   }
+
   removeUser(user: User): void {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
   }
 
   /**
-   * Für den Channel benötigen wir habe ich noch ein paar Variablen bzw. Arrays mehr
-   * UsersID's brauchen wir um messages zu erstellen und individuell zuzuweisen
-   * channelCreator für das 'Erstellt von' im channel Menu
-   * und die channelID wird beim erstellen im channel.Service hinzugefügt, diese ist zum löschen und editieren ganz nützlich
+   * Setting the data to create new channel and forward data to channel creation function
    */
   async setNewChannelItems() {
     const channelname = this.createdChannelName;
@@ -420,36 +415,14 @@ export class WorkspaceComponent implements OnInit {
       await channelCreator
     );
     this.closeChannelCreateWindow();
-    // this.getAllChannel();
   }
 
   /**
-   * auskommentiert von Klemens --> neue Funktion darüber
-   * @param users
-   * @param currentUserId
-   * @returns
+   * Sorting the user list to show the logged-in user on top
+   * 
+   * @param users - all existing users
+   * @param currentUserId - id from current logged-in user
    */
-  // setNewChannelItems() {
-  //   let newChannel = {
-  //     channelname: this.createdChannelName,
-  //     description: this.createdChannelDescription,
-  //     channelUsers: this.selectedUsers.map(user => {
-  //       return {
-  //         firstname: user.firstname,
-  //         lastname: user.lastname,
-  //         profileImg: user.profileImg
-  //       };
-  //     })
-  //   };
-  //   this.createNewChannel(newChannel);
-  //   this.closeChannelCreateWindow();
-  //   this.getAllChannel();
-  // }
-
-  // createNewChannel(newChannelItems: {}) {
-  //   this.channelService.addNewChannel(newChannelItems);
-  // }
-
   sortUsers(users: User[], currentUserId: string): User[] {
     return users.slice().sort((a, b) => {
       if (a.id === currentUserId) return -1;

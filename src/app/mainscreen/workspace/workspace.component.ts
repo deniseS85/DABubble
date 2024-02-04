@@ -61,6 +61,7 @@ export class WorkspaceComponent implements OnInit {
   user = new User();
   userID: any;
   allUsers: User[] = [];
+  allUsersDM: User[] = [];
   userFullName: String = '';
   highlightedUser: string | null = null;
 
@@ -85,6 +86,7 @@ export class WorkspaceComponent implements OnInit {
   firestore: Firestore = inject(Firestore);
   unsubUser: Unsubscribe | undefined;
   channels: any[] = [];
+  chats: any[] = [];
 
   constructor(
     private main: MainscreenComponent,
@@ -98,7 +100,7 @@ export class WorkspaceComponent implements OnInit {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
     this.loadChannels();
-    this.newDMChat();
+    this.loadChats();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -458,49 +460,69 @@ export class WorkspaceComponent implements OnInit {
   }
 
 
-  
+  async loadChats(){
+    const chatsRef = query(this.chatService.getChatsRef())
 
-  async newDMChat(){
-
-    let newPair: any[] = [];
-    const allUsersQuery = query(this.channelService.getUsersRef())
-
-    const getAllchat = await getDocs(this.chatService.getChatsRef());
-
-    getAllchat.forEach((doc: any) => {
-      console.log(doc.data().chatUsers)
+    onSnapshot(chatsRef, (chats) => {
+      chats.forEach((chat: any) => {
+       chat.data().chatUsers.forEach((user: any) =>{
+        if(user.id === this.userID){
+          chat.data().chatUsers.forEach((notMe: any) => {
+            if (notMe.id != this.userID){
+              this.chats.push(notMe)
+            }
+          })
+        } else {
+          return
+        }
+       })
+      })
     })
 
-
-
     
-
-   
-    onSnapshot(allUsersQuery, (querySnapshot) => {          
-          
-          // build Array with allUsers
-          querySnapshot.forEach((doc: any) => {
-            
-            if(this.allUsers.length > 0){
-              
-              this.allUsers.forEach((user: any) => {
-
-                newPair = [];
-                newPair.push(user, doc.data())
-                const chatname = user.firstname + ' & ' + doc.data().firstname;
-                const chatUsers = newPair;
-                // this.chatService.createNewChat(chatname, chatUsers)
-                
-              })
-            }
-             this.allUsers.push(doc.data())           
-
-          },
-          );          
-        });
-
-    this.allUsers = []
   }
+
+
+
+  /**
+   * genutzt um einmalig chats zu erstellen
+   */
+
+  // async newDMChat(){
+
+  //   let newPair: any[] = [];    
+    
+  //   const allUsersQuery = query(this.channelService.getUsersRef())
+   
+  //   onSnapshot(allUsersQuery, (querySnapshot) => {          
+          
+  //         // build Array with allUsers
+  //         querySnapshot.forEach((doc: any) => {
+            
+  //           if(this.allUsersDM.length > 0){
+              
+  //             this.allUsersDM.forEach((user: any) => {
+
+  //               newPair = [];
+  //               newPair.push(user, doc.data())
+  //               const chatname = user.firstname + ' & ' + doc.data().firstname;
+  //               const chatUsers = newPair;
+                
+
+  //             // this.chatService.createNewChat(chatname, chatUsers)
+                
+                
+  //             })
+  //           }
+  //            this.allUsersDM.push(doc.data())           
+
+  //         },
+  //         );          
+  //       });
+
+  //   this.allUsersDM = []
+  // }
+
 }
 
 

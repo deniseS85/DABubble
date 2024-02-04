@@ -271,7 +271,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
     handleReactionMessage(event: any, message: any){
       const typ = 'messageReaction';
-      console.error(this.userFullName)
       this.reactionService.handleReaction(this.channelDataService.channelID, message.messageID, '', '', '', event, message, this.userFullName, typ)
     }
   
@@ -315,14 +314,17 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * @param {number} index - The index of the emoji in the selectedEmojis array.
    * @returns {string} The path of the emoji image.
    */
-  getEmojiPath(message: any, index: number): string {
-    
+  getEmojis(message: any): string[] {
+    if (message.react && message.react.length > 0) {
+        return message.react.slice(-2).map((reaction: any) => reaction.emoji).reverse();
+    }
+    return [];
     // const selectedEmojis = message.react[index].emoji;
     // if (selectedEmojis && selectedEmojis.length > index) {
     //   console.warn(selectedEmojis)
     //   return selectedEmojis[selectedEmojis.length - 1 - index];
     // }
-    return '';
+   /*  return ''; */
   }
 
 

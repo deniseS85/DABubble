@@ -48,15 +48,11 @@
                 <div>
                     <div [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
                         <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'" 
-                        [@slideAndFadeLeft]="isCurrentUser(chatIndex) ? (message.animationState1 || 'hidden') : 'hidden'"
-                        [@slideAndFade]="isCurrentUser(chatIndex) ? 'hidden' : (message.animationState || 'hidden')">
-                            <div *ngIf="message.react && message.react.length > 0">
-                                <div class="last-emoji">{{getEmojiPath(message, 0)}}</div>
+                            [@slideAndFadeLeft]="isCurrentUser(chatIndex) ? (message.animationState1 || 'hidden') : 'hidden'"
+                            [@slideAndFade]="isCurrentUser(chatIndex) ? 'hidden' : (message.animationState || 'hidden')">
+                            <div *ngFor="let emoji of getEmojis(message)">
+                                <div class="last-emoji" >{{ emoji }}</div>
                             </div>
-                            <div *ngIf="message.react && message.react.length > 1">
-                                <div class="last-emoji">{{getEmojiPath(message, 1)}}</div>
-                            </div>
-
                             <div class="emoji-container">
                                 <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png" alt=""
                                     class="react-icon">

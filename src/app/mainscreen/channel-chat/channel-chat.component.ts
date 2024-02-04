@@ -76,6 +76,7 @@ import { Subscription } from 'rxjs';
       ]
       )
     ]),
+     
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {

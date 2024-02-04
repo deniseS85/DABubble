@@ -410,8 +410,13 @@ export class WorkspaceComponent implements OnInit {
   async setNewChannelItems() {
     const channelname = this.createdChannelName;
     const channelDescription = this.createdChannelDescription;
-    const channelUsers = this.selectedUsers.map((user) => user.toUserJson());
     const channelCreator = this.channelService.getCreatorsName();
+    
+    const isCurrentUserSelected = this.selectedUsers.some(u => u.id === this.user.id);
+    if (!isCurrentUserSelected) {
+      this.selectedUsers.push(this.user);
+    }
+    const channelUsers = this.selectedUsers.map((user) => user.toUserJson());
 
     this.channelService.createChannel(
       channelname,

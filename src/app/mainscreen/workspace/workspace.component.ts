@@ -306,7 +306,7 @@ export class WorkspaceComponent implements OnInit {
     this.isChannelCreateWindow = true;
     this.renderer.setStyle(this.body, 'overflow', 'hidden');
   }
-  
+
   closeChannelCreateWindow() {
     this.isChannelCreateWindow = false;
     this.renderer.setStyle(this.body, 'overflow', 'auto');
@@ -318,8 +318,6 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Handles the input change event for the channel creation input field.
-   *
    * This function updates the status of the "Erstellen" button based on whether
    * the input field is empty or not. If the input is empty, the button is disabled.
    *
@@ -331,7 +329,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Navigate to the second screen of channel creation.
+   * Show/hide the second screen of channel creation.
    */
   openChannelCreateContainer() {
     this.selectedUsers = this.allUsers;
@@ -359,6 +357,7 @@ export class WorkspaceComponent implements OnInit {
     this.searchQuery = '';
     this.selectedUsers = [];
   }
+
   onHideClick() {
     this.isShowInputNames = false;
     this.selectedUsers = this.allUsers;
@@ -404,15 +403,13 @@ export class WorkspaceComponent implements OnInit {
       this.searchQuery = '';
     }
   }
+
   removeUser(user: User): void {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
   }
 
   /**
-   * Für den Channel benötigen wir habe ich noch ein paar Variablen bzw. Arrays mehr
-   * UsersID's brauchen wir um messages zu erstellen und individuell zuzuweisen
-   * channelCreator für das 'Erstellt von' im channel Menu
-   * und die channelID wird beim erstellen im channel.Service hinzugefügt, diese ist zum löschen und editieren ganz nützlich
+   * Setting the data to create new channel and forward data to channel creation function
    */
   async setNewChannelItems() {
     const channelname = this.createdChannelName;
@@ -431,32 +428,11 @@ export class WorkspaceComponent implements OnInit {
 
 
   /**
-   * auskommentiert von Klemens --> neue Funktion darüber
-   * @param users
-   * @param currentUserId
-   * @returns
+   * Sorting the user list to show the logged-in user on top
+   * 
+   * @param users - all existing users
+   * @param currentUserId - id from current logged-in user
    */
-  // setNewChannelItems() {
-  //   let newChannel = {
-  //     channelname: this.createdChannelName,
-  //     description: this.createdChannelDescription,
-  //     channelUsers: this.selectedUsers.map(user => {
-  //       return {
-  //         firstname: user.firstname,
-  //         lastname: user.lastname,
-  //         profileImg: user.profileImg
-  //       };
-  //     })
-  //   };
-  //   this.createNewChannel(newChannel);
-  //   this.closeChannelCreateWindow();
-  //   this.getAllChannel();
-  // }
-
-  // createNewChannel(newChannelItems: {}) {
-  //   this.channelService.addNewChannel(newChannelItems);
-  // }
-
   sortUsers(users: User[], currentUserId: string): User[] {
     return users.slice().sort((a, b) => {
       if (a.id === currentUserId) return -1;

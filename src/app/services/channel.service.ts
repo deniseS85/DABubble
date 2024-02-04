@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, arrayUnion, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { addDoc, updateDoc } from 'firebase/firestore';
 import { Channel } from '../models/channel.class';
 import { update } from 'firebase/database';
@@ -17,6 +17,8 @@ export class ChannelService {
 
   constructor(private authService: AuthService) { }
 
+  public userDataSubject = new BehaviorSubject<any>(null);
+  userData$ = this.userDataSubject.asObservable();
   collectionRef = collection(this.firestore, "channels");
   chatObservable$ = collectionData(this.collectionRef);
 
@@ -132,6 +134,10 @@ export class ChannelService {
     return doc(collection(this.firestore, 'channels'), channelId)
   }
 
+  getSingelChannelRef(docId: string) {
+    return doc(collection(this.firestore, 'channels'), docId);
+  }
+
   getChannelDescription(channelDescription: string) {
     return doc(collection(this.firestore, 'channels'), channelDescription);
   }
@@ -159,5 +165,6 @@ export class ChannelService {
     }
 
   }    
+
 
 }

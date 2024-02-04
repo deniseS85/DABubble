@@ -183,8 +183,9 @@
       </button>
     </div>
   </div>
-
-  <div class="channel-create-screen" *ngIf="isSecondScreen">
+  
+  <div class="second-screen-background" *ngIf="isSecondScreen" (click)="closeChannelCreateContainer()"></div>
+  <div class="channel-create-screen second-screen" *ngIf="isSecondScreen">
     <div
       class="channel-create-close"
       *ngIf="isScreenSmall"
@@ -227,7 +228,7 @@
       class="user-selection-container"
       *ngIf="isShowInputNames"
       [@upDownAnimation]
-    >
+      >
         <div class="selected-users" *ngFor="let user of selectedUsers">
           <span class="profile">
             <img [src]="getProfileImagePath(user)" />
@@ -271,7 +272,6 @@
     </div>
   </div>
 </div>
-<div class="second-screen-background" *ngIf="isSecondScreen"></div>
 <div
   class="channel-create-window"
   *ngIf="isChannelCreateWindow"

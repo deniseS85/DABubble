@@ -238,7 +238,7 @@ mat-expansion-panel-header {
 }
 
 .channel-create-container {
-  z-index: 1500;
+  z-index: 1200;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -360,6 +360,7 @@ mat-expansion-panel-header {
 
 @media (max-width: 750px) {
   .second-screen-background {
+    z-index: 1300;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -369,7 +370,7 @@ mat-expansion-panel-header {
   }
 
   .second-screen {
-    z-index: 2000;
+    z-index: 1600 !important;
     position: absolute;
     left: 0;
     right: 0;

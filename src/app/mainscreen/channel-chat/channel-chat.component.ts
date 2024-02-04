@@ -109,6 +109,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   channelName: string = '';
   channelCreator: string = '';
   channelDescription: string = '';
+  usersData: any[] = [];
 
   newChannelName: string = '';
   newChannelDescription: string = '';
@@ -152,6 +153,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     }
     this.getAllUserInfo();
     this.loadMessagesOfThisChannel();
+    this.loadUsersOfThisChannel();
   }
 
   ngAfterViewChecked() {
@@ -731,36 +733,59 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         }
   }
 
-  async fetchChannelInfo() {
-    // Annahme: channelInfo wird aus der Datenbank abgerufen
-    // Hier sollten Sie Ihre eigene Logik für den Datenabruf implementieren
-    // Beispiel:
-    const channelID = this.channelDataService.channelID;
-    const channelDocRef = doc(this.firestore, 'channels', channelID);
-    const channelDoc = await getDoc(channelDocRef);
-
-    if (channelDoc.exists()) {
-     
-    }
-  }
-
-  // Funktion, um Benutzerinformationen anhand der Benutzer-ID zu erhalten
-  async getUserInfo(userID: string): Promise<any> {
-    const userDocRef = doc(this.firestore, 'users', userID);
-    const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      return userData;
-    }
-
-    return null;
-  }
-
-
+  async loadUsersOfThisChannel() {
+    let channelDocRef = doc(this.firestore, 'channels', this.channelDataService.channelID);
+    let channelDoc = await getDoc(channelDocRef);
   
+    if (channelDoc.exists()) {
+      let channelData = channelDoc.data();
+      let usersDataPromises = channelData['channelUsers'].map(async (userID: string) => {
+        return await this.getUserInfo(userID);
+      });
+     
+      this.usersData = await Promise.all(usersDataPromises);
+      console.log(this.usersData)
+    }
+    this.updateUserData();
+  }
 
+  updateUserData() {  
+    const userDataSubscription = this.channelService.userData$.subscribe((userData) => {
+      this.usersData.forEach((user) => {
+        if (user && user.id && userData && userData.id && user.id === userData.id) {
+          Object.assign(user, userData);
+        }
+      });
+    });
+    this.subscriptions.push(userDataSubscription);
+}
+  
+  async getUserInfo(userID: string): Promise<any> {
+    const user = this.allUsers.find(u => u.id === userID);
 
+    if (user) {
+        const userDocRef = doc(this.firestore, 'users', userID);
+        const unsubscribe = onSnapshot(userDocRef, (doc) => {
+            if (doc.exists()) {
+              const updateUser = doc.data();
+              Object.assign(user, updateUser);
+              this.channelService.userDataSubject.next({ ...user });
+          }
+        });
+        const userData = await Promise.resolve({
+            firstname: user.firstname,
+            lastname: user.lastname,
+            profileImg: user.profileImg,
+            isOnline: user.isOnline,
+            email: user.email,
+            id: user.id,
+            unsubscribe: unsubscribe
+      });
+      return userData;
+    } else {
+      return null;
+    }
+  }
 
   /**
    * load all Answers of a Message, count them, take last timestamp and update in Firebase

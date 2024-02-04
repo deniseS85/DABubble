@@ -12,22 +12,21 @@
 
 
             <!-- ####### -->
-         <!--    <div class="header-right" *ngIf="officialChannel">
+            <div class="header-right" *ngIf="officialChannel">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
-                    <div *ngFor="let user of this.channelDataService.channelUsers">
-                        <span class="profile">
-                            <img [src]="getProfileImagePath(user)" />
-                            <p class="active-point" *ngIf="user.isOnline"></p>
-                        </span>
-                    </div>
-                    <div class="counter-channel-members">{{ this.channelDataService.channelUsers.length }}</div>
+                  <div *ngFor="let user of usersData">
+                    <span class="profile">
+                      <img [src]="getProfileImagePath(user)" />
+                      <p class="active-point" *ngIf="user.isOnline"></p>
+                    </span>
+                  </div>
+                  <div class="counter-channel-members">{{ usersData.length }}</div>
                 </div>
-
+              
                 <div class="person-add-icon-container">
-                    <img src="../../../assets/img/person_add.png" alt="" (click)="addUSerOpen = true; openPopup()">
+                  <img src="../../../assets/img/person_add.png" alt="" (click)="addUSerOpen = true; openPopup()">
                 </div>
-            </div>
- -->
+              </div>
             <!-- ########## -->
         </header>
     </div>
@@ -205,7 +204,7 @@
 
         <div class="current-channel-member-list">
             <div class="member-list-div" (click)="setUserProfileView(user); showProfil = true; openPopup()"
-                *ngFor="let user of this.channelDataService.channelUsers">
+                *ngFor="let user of usersData">
                 <span class="profile">
                     <img [src]="getProfileImagePath(user)" />
                     <p class="active-point" *ngIf="user.isOnline == true"></p>

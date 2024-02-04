@@ -19,7 +19,7 @@ export class ChannelDataService {
   channelUsers: any[] = [];
 
   newChannelMember: string = '';
-  channelID: string = '4w03K0592Ephea3D9fsK';
+  channelID: string = 'yFsL4j7BFN7t9llcXmHw';
   firstChannelID: string = '';
   items$;
   items;
@@ -54,19 +54,15 @@ export class ChannelDataService {
 
 
   async loadFirstChannel() {
-  
     let allChannelsQuery = query(this.channelService.getChannelRef());
     let allChannelsSnapshot = await getDocs(allChannelsQuery);
-
+  
     if (!allChannelsSnapshot.empty) {
       let firstChannelData = allChannelsSnapshot.docs[0].data();
       let firstChannel = new Channel(firstChannelData);
-      
+  
       this.firstChannelID = firstChannel.channelID;
-
-    } 
-    return this.firstChannelID;
-   
+    }
   }
 
 

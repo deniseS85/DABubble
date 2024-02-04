@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild, AfterViewChecked, HostListener, AfterViewInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../services/auth.service";
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
@@ -78,7 +78,7 @@ import { Subscription } from 'rxjs';
     ]), */
   ],
 })
-export class ChannelChatComponent implements OnInit, OnDestroy {
+export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
 
@@ -123,11 +123,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   userList;
   unsubUser: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+  private shouldScrollToBottom: boolean = true;
   
-
-/* 
-  private userDataSubject = new BehaviorSubject<any>(null);
-  userData$ = this.userDataSubject.asObservable(); */
   
   private subscriptions: Subscription[] = [];
 
@@ -145,6 +142,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
+    
   }
 
   ngOnInit() {
@@ -153,26 +151,45 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     }
     this.getAllUserInfo();
     this.loadMessagesOfThisChannel();
-    
-    /* this.scrollToBottom(); */
- 
   }
 
- /*  ngAfterViewChecked() {        
-    this.scrollToBottom();        
-}  */
+  ngAfterViewChecked() {
+    if (this.shouldScrollToBottom) {
+      this.scrollToBottom();
+    }
+  }
 
+  ngAfterViewInit() {
+    this.subscriptions.push(
+      this.chatContainer.nativeElement.addEventListener('scroll', this.handleScroll.bind(this))
+    );
+    this.scrollToBottom();
+  }
 
-  ngOnDestroy() {
-    this.unsubUser;
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+  private handleScroll() {
+    const element = this.chatContainer.nativeElement;
+    const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+    
+    this.shouldScrollToBottom = atBottom;
   }
 
   scrollToBottom(): void {
     try {
         this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
     } catch(err) { }                 
-}
+  }
+
+  @HostListener('scroll', ['$event'])
+  onScroll(event: Event): void {
+    let element = event.target as HTMLElement;
+    let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+    this.shouldScrollToBottom = atBottom;
+  }
+
+  ngOnDestroy() {
+    this.unsubUser;
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
   checkUserIsCreator() {
     let userFullName = this.user.firstname + this.user.lastname;
@@ -292,9 +309,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * @param {string[]} selectedEmojis - The array of selected emojis.
    * @returns {string[]} An array containing only unique emojis.
    */
-  getUniqueEmojis(selectedEmojis: string[]): string[] {
-    return Array.from(new Set(selectedEmojis));
-  }
+    getUniqueEmojis(selectedEmojis: string[]): string[] {
+      return Array.from(new Set(selectedEmojis));
+    }
 
   /**
    * Retrieves the count of a specific emoji in an array of selected emojis.
@@ -303,9 +320,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * @param {string} emoji - The emoji to count.
    * @returns {number} The count of the specified emoji.
    */
-  getEmojiCount(selectedEmojis: string[], emoji: string): number {
-    return selectedEmojis.filter(e => e === emoji).length;
-  }
+    getEmojiCount(selectedEmojis: string[], emoji: string): number {
+      return selectedEmojis.filter(e => e === emoji).length;
+    }
 
   /**
    * Retrieves the path of an emoji image.
@@ -314,18 +331,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * @param {number} index - The index of the emoji in the selectedEmojis array.
    * @returns {string} The path of the emoji image.
    */
-  getEmojis(message: any): string[] {
-    if (message.react && message.react.length > 0) {
-        return message.react.slice(-2).map((reaction: any) => reaction.emoji).reverse();
+    getEmojis(message: any): string[] {
+        if (message.react && message.react.length > 0) {
+            return message.react.slice(-2).map((reaction: any) => reaction.emoji).reverse();
+        }
+        return [];
     }
-    return [];
-    // const selectedEmojis = message.react[index].emoji;
-    // if (selectedEmojis && selectedEmojis.length > index) {
-    //   console.warn(selectedEmojis)
-    //   return selectedEmojis[selectedEmojis.length - 1 - index];
-    // }
-   /*  return ''; */
-  }
 
 
     /**
@@ -636,6 +647,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
             }
             this.messagetext = '';
             this.channelService.sendMessage(this.channelDataService.channelID, message);
+            setTimeout(() => {
+              this.scrollToBottom();
+          }, 10);
         }
     } catch (error) {
         console.error('Fehler beim Abrufen der Benutzerdaten:', error);

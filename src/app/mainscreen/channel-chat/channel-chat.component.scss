@@ -117,7 +117,7 @@
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 40px;
+    padding: 100px 40px 144px 40px;
     scroll-behavior: smooth;
     position: relative;
 }
@@ -1239,10 +1239,10 @@ input {
 
 .threadContainerTextReactions{
     display: flex;
-   /*  justify-content: center; */
     align-items: center;
     gap: 12px;
     position: relative;
+    margin-top: 5px;
 
     .emoji-con{     
             

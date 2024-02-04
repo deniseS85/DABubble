@@ -232,16 +232,12 @@ export class WorkspaceComponent implements OnInit {
    * Retrieve and update the channel list and load only channels in which currentUser is member
    */
   async loadChannels() {
-    const queryAllChannels = query(this.channelService.collectionRef);    
+    const queryAllChannels = await query(this.channelService.collectionRef);
 
-    onSnapshot(queryAllChannels, (querySnapshot) => {
+    const unsub = onSnapshot(queryAllChannels, (querySnapshot) => {
       this.channels = [];
       querySnapshot.forEach((doc: any) => {
-        doc.data().channelUsers.forEach((user:any) => {
-          if(user.id === this.userID){
-            this.channels.push(doc.data());
-          } else { return }
-        })        
+        this.channels.push(doc.data());
       });
     });
   }
@@ -416,8 +412,13 @@ export class WorkspaceComponent implements OnInit {
   async setNewChannelItems() {
     const channelname = this.createdChannelName;
     const channelDescription = this.createdChannelDescription;
-    const channelUsers = this.selectedUsers.map((user) => user.toUserJson());
     const channelCreator = this.channelService.getCreatorsName();
+    
+    const isCurrentUserSelected = this.selectedUsers.some(u => u.id === this.user.id);
+    if (!isCurrentUserSelected) {
+      this.selectedUsers.push(this.user);
+    }
+    const channelUsers = this.selectedUsers.map((user) => user.toUserJson());
 
     this.channelService.createChannel(
       channelname,

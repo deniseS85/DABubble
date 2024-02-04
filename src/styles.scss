@@ -38,6 +38,7 @@ $DABubble-theme: mat.define-light-theme((color: (primary: $DABubble-primary,
 html,
 body {
   height: 100%;
+  scroll-behavior: smooth;
   // overflow: hidden;
 }
 

@@ -231,7 +231,7 @@ export class WorkspaceComponent implements OnInit {
   /**
    * Retrieve and update the channel list and load only channels in which currentUser is member
    */
-  async loadChannels() {
+  /* async loadChannels() {
     const queryAllChannels = query(this.channelService.collectionRef);    
 
     onSnapshot(queryAllChannels, (querySnapshot) => {
@@ -242,6 +242,17 @@ export class WorkspaceComponent implements OnInit {
             this.channels.push(doc.data());
           } else { return }
         })        
+      });
+    });
+  } */
+
+  async loadChannels() {
+    const queryAllChannels = await query(this.channelService.collectionRef);
+
+    const unsub = onSnapshot(queryAllChannels, (querySnapshot) => {
+      this.channels = [];
+      querySnapshot.forEach((doc: any) => {
+        this.channels.push(doc.data());
       });
     });
   }
@@ -416,13 +427,13 @@ export class WorkspaceComponent implements OnInit {
   async setNewChannelItems() {
     const channelname = this.createdChannelName;
     const channelDescription = this.createdChannelDescription;
-    const channelUsers = this.selectedUsers.map((user) => user.toUserJson());
+    const channelUsersIDs = this.selectedUsers.map((user) => user.id);
     const channelCreator = this.channelService.getCreatorsName();
 
     this.channelService.createChannel(
       channelname,
       channelDescription,
-      channelUsers,
+      channelUsersIDs,
       await channelCreator
     );
     this.closeChannelCreateWindow();

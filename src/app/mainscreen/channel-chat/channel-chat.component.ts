@@ -45,7 +45,7 @@ import { Subscription } from 'rxjs';
       transition('hidden => visible', animate('200ms 150ms ease-out')),
       transition('visible => hidden', animate('200ms ease-in')),
     ]),
-    /* trigger('removeBorder', [
+    trigger('removeBorder', [
       state('false', style({
         border: '1px solid #ADB0D9',
         borderRadius: '20px',
@@ -75,7 +75,7 @@ import { Subscription } from 'rxjs';
           style({ height: 0, opacity: 0 }))
       ]
       )
-    ]), */
+    ]),
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
@@ -363,6 +363,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
      */
     openPopup(): void {
       this.renderer.setStyle(this.body, 'overflow', 'hidden');
+      console.log(this.allUsers);
+      console.log(this.channelDataService.channelID)
     }
   
     /**
@@ -397,8 +399,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         console.warn(this.selectedUser.firstname, ' is allready Memeber of this channel')
       } else {
         newUsersArray.push(newUser)
+       
       }
-      this.addUserToChannel(newUsersArray)
+      this.addUserToChannel(newUsersArray);
     })
   }
 
@@ -632,7 +635,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
             const userData = userDocSnap.data();
 
             const message = {
-                messageUserName: userData['firstname'] + ' ' + userData['lastname'],
+                messageUserName: userData['firstname'] + ' ' + userData['lastname'], /* evtl */
                 messageUserProfileImg: userData['profileImg'],
                 messagetext: this.messagetext,
                 messageUserID: this.userID,
@@ -726,6 +729,35 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
           return null;
         }
   }
+
+  async fetchChannelInfo() {
+    // Annahme: channelInfo wird aus der Datenbank abgerufen
+    // Hier sollten Sie Ihre eigene Logik für den Datenabruf implementieren
+    // Beispiel:
+    const channelID = this.channelDataService.channelID;
+    const channelDocRef = doc(this.firestore, 'channels', channelID);
+    const channelDoc = await getDoc(channelDocRef);
+
+    if (channelDoc.exists()) {
+     
+    }
+  }
+
+  // Funktion, um Benutzerinformationen anhand der Benutzer-ID zu erhalten
+  async getUserInfo(userID: string): Promise<any> {
+    const userDocRef = doc(this.firestore, 'users', userID);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData;
+    }
+
+    return null;
+  }
+
+
+  
 
 
 

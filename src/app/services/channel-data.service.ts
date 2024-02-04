@@ -17,7 +17,6 @@ export class ChannelDataService {
   channelCreator: string = '';
   channelDescription: string = '';
   channelUsers: any[] = [];
-  channelUsersID: any[] = [];
 
   newChannelMember: string = '';
   channelID: string = '4w03K0592Ephea3D9fsK';
@@ -64,7 +63,7 @@ export class ChannelDataService {
       let firstChannel = new Channel(firstChannelData);
       
       this.firstChannelID = firstChannel.channelID;
-      console.log(this.firstChannelID)
+
     } 
     return this.firstChannelID;
    

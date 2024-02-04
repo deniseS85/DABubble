@@ -115,7 +115,7 @@ export class ChannelService {
   }
 
   async addChannelUser(channelId: string, newChannelUsers: any) {
-   this.updateChannel(channelId, {channelUsers: newChannelUsers});
+   this.updateChannel(channelId, {channelUsersID: newChannelUsers});
   }
 
   async updateChannel(channelID: string, item: {}) {

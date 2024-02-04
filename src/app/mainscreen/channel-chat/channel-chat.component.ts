@@ -191,7 +191,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   ngOnDestroy() {
     this.unsubUser;
-   /*  this.subscriptions.forEach(sub => sub.unsubscribe()); */
   }
 
   checkUserIsCreator() {
@@ -696,14 +695,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   updateMessagesWithUserData() {
-      const userDataSubscription = this.channelService.userData$.subscribe((userData) => {
-        this.allMessages.forEach((message) => {
-          if (message.messageUserID === userData.id) {
-            Object.assign(message, userData);
-          }
-        });
+      this.channelService.userData$.subscribe((userData) => {
+      this.allMessages.forEach((message) => {
+        if (message.messageUserID === userData.id) {
+          Object.assign(message, userData);
+        }
       });
-      this.subscriptions.push(userDataSubscription);
+    });
   }
 
   async loadUserData(messageUserID: string): Promise<any> {
@@ -750,14 +748,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   updateUserData() {  
-    const userDataSubscription = this.channelService.userData$.subscribe((userData) => {
+      this.channelService.userData$.subscribe((userData) => {
       this.usersData.forEach((user) => {
         if (user && user.id && userData && userData.id && user.id === userData.id) {
           Object.assign(user, userData);
         }
       });
     });
-    this.subscriptions.push(userDataSubscription);
 }
   
   async getUserInfo(userID: string): Promise<any> {

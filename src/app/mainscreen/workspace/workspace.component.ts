@@ -1,19 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  Renderer2,
-  HostListener,
-  OnInit,
-  inject,
-} from '@angular/core';
-import {
-  Firestore,
-  Unsubscribe,
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-} from '@angular/fire/firestore';
+import { Component, ElementRef, Renderer2, HostListener, OnInit, inject } from '@angular/core';
+import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
@@ -107,7 +93,6 @@ export class WorkspaceComponent implements OnInit {
     }
     this.getUserList();
     this.checkScreenSize();
-    // await this.getAllChannel();
     this.channelDataService.highlightUser$.subscribe((userFullName) => {
       this.highlightedUser = userFullName;
       this.highlightUserElement();
@@ -127,6 +112,9 @@ export class WorkspaceComponent implements OnInit {
     this.getUserList();
   }
 
+  /**
+   * Show/hide the workspace container with the button on the left side
+   */
   toggleWorkspace() {
     this.isWorkspaceContainer = !this.isWorkspaceContainer;
   }
@@ -135,7 +123,7 @@ export class WorkspaceComponent implements OnInit {
    * Monitoring the width of the screen and set the channel create windows to mobile/desktop view
    */
   private checkScreenSize(): void {
-    this.isScreenSmall = window.innerWidth < 700;
+    this.isScreenSmall = window.innerWidth < 750;
     if (this.isScreenSmall || !this.isSecondScreen) {
       this.isFirstScreen = true;
     } else {

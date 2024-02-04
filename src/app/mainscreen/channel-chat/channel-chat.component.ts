@@ -733,7 +733,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
 
     await updateDoc(messageRef, { answerInfo: answerInfos })
     const a = (await getDoc(messageRef)).data();
-    // console.log(a['answerInfo'])
   }
 
 

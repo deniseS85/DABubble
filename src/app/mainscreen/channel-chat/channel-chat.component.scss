@@ -170,14 +170,16 @@
     justify-content: flex-start;
     gap: 30px;
     padding: 20px 0;
+    margin-left: -45px;
+    padding-left: 45px;
+    margin-right: -45px;
+    padding-right: 45px;
     cursor: default;
+
     &:hover {
         cursor: pointer;
         background-color: #ECEEFE;
-        margin-left: -45px;
-        padding-left: 45px;
-        margin-right: -45px;
-        padding-right: 45px;
+        
     }
 
     &:hover .message-somebody {
@@ -219,14 +221,14 @@
     gap: 30px;
     padding: 20px 0;
     background-color: white;
+    margin-left: -45px;
+    padding-left: 45px;
+    margin-right: -45px;
+    padding-right: 45px;
     cursor: default;
     &:hover {
         cursor: pointer;
         background-color: #ECEEFE;
-        margin-left: -45px;
-        padding-left: 45px;
-        margin-right: -45px;
-        padding-right: 45px;
     }
 }
 

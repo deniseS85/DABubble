@@ -98,7 +98,7 @@ export class WorkspaceComponent implements OnInit {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
     this.loadChannels();
-    this.newDMChat()
+    this.newDMChat();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -460,13 +460,22 @@ export class WorkspaceComponent implements OnInit {
 
   
 
-  newDMChat(){
-
-    const allUsersQuery = query(this.channelService.getUsersRef())
+  async newDMChat(){
 
     let newPair: any[] = [];
+    const allUsersQuery = query(this.channelService.getUsersRef())
 
-    console.log(allUsersQuery)
+    const getAllchat = await getDocs(this.chatService.getChatsRef());
+
+    getAllchat.forEach((doc: any) => {
+      console.log(doc.data().chatUsers)
+    })
+
+
+
+    
+
+   
     onSnapshot(allUsersQuery, (querySnapshot) => {          
           
           // build Array with allUsers
@@ -480,7 +489,7 @@ export class WorkspaceComponent implements OnInit {
                 newPair.push(user, doc.data())
                 const chatname = user.firstname + ' & ' + doc.data().firstname;
                 const chatUsers = newPair;
-                this.chatService.createNewChat(chatname, chatUsers)
+                // this.chatService.createNewChat(chatname, chatUsers)
                 
               })
             }
@@ -489,6 +498,8 @@ export class WorkspaceComponent implements OnInit {
           },
           );          
         });
+
+    this.allUsers = []
   }
 }
 

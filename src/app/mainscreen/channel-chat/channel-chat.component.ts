@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 import { getDocs, query } from 'firebase/firestore';
 import { MainscreenComponent } from '../mainscreen.component';
 import { ReactionsService } from '../../services/reactions.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -29,21 +29,21 @@ import { BehaviorSubject, Subscription } from 'rxjs';
         transform: 'translateX(-45px)',
         opacity: 1,
       })),
-      transition('hidden => visible', animate('100ms ease-out')),
-      transition('visible => hidden', animate('100ms ease-in')),
+      transition('hidden => visible', animate('200ms ease-out')),
+      transition('visible => hidden', animate('200ms ease-in')),
     ]),
 
     trigger('slideAndFadeLeft', [
       state('hidden', style({
-        transform: 'translateX(-30px)',
+        transform: 'translateX(-100px)',
         opacity: 0,
       })),
       state('visible', style({
-        transform: 'translateX(45px)',
+        transform: 'translateX(-40px)',
         opacity: 1,
       })),
-      transition('hidden => visible', animate('100ms ease-out')),
-      transition('visible => hidden', animate('100ms ease-in')),
+      transition('hidden => visible', animate('200ms ease-out')),
+      transition('visible => hidden', animate('200ms ease-in')),
     ]),
     trigger('removeBorder', [
       state('false', style({
@@ -124,9 +124,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   unsubUser: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
 
-
+/* 
   private userDataSubject = new BehaviorSubject<any>(null);
-  userData$ = this.userDataSubject.asObservable();
+  userData$ = this.userDataSubject.asObservable(); */
   
   private subscriptions: Subscription[] = [];
 
@@ -222,6 +222,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     toggleAnimationState1(state: 'visible' | 'hidden'): void {
       this.animationState1 = state;
     }
+    
   
     /**
      * Toggles the visibility of emojis in a message.
@@ -406,7 +407,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
    * @param newUser new member
    */
   async addUserToChannel(newUserArray: any) {
-    const refChannelUsers = await getDoc(this.getSingelChannelRef(this.channelDataService.channelID))
+    const refChannelUsers = await getDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID))
 
     if (refChannelUsers.exists()) {
       let channelUsersUpdated = refChannelUsers.data()['channelUsers'];
@@ -464,12 +465,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   }
 
   async updateChannel(channelID: string, item: {}) {
-    await updateDoc(this.getSingelChannelRef(this.channelDataService.channelID), item);
+    await updateDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID), item);
   }
 
-  getSingelChannelRef(docId: string) {
+ /*  getSingelChannelRef(docId: string) {
     return doc(collection(this.firestore, 'channels'), docId);
-  }
+  } */
 
  /**
    * Checks if the current user is a guest login.
@@ -633,6 +634,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     } 
 }
 
+  
   async loadMessagesOfThisChannel() {
     const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
       onSnapshot(queryAllAnswers, async (querySnapshot) => {
@@ -650,22 +652,29 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
           this.allMessages.push(message);
           this.loadAnswers(messageData['messageID'], doc);
         }
-
-        this.allMessages.sort((a, b) => {
-          const timestampA = new Date(`${a.date} ${a.timestamp}`);
-          const timestampB = new Date(`${b.date} ${b.timestamp}`);
-          return timestampA.getTime() - timestampB.getTime();
-        });
+       this.sortMessagesByTimeStamp();
       }
     });
-    const userDataSubscription = this.userData$.subscribe((userData) => {
-      this.allMessages.forEach((message) => {
-        if (message.messageUserID === userData.id) {
-          Object.assign(message, userData);
-        }
+    this.updateMessagesWithUserData();
+  }
+
+  sortMessagesByTimeStamp() {
+      this.allMessages.sort((a, b) => {
+        const timestampA = new Date(`${a.date} ${a.timestamp}`);
+        const timestampB = new Date(`${b.date} ${b.timestamp}`);
+        return timestampA.getTime() - timestampB.getTime();
       });
-    });
-    this.subscriptions.push(userDataSubscription);
+  }
+
+  updateMessagesWithUserData() {
+      const userDataSubscription = this.channelService.userData$.subscribe((userData) => {
+        this.allMessages.forEach((message) => {
+          if (message.messageUserID === userData.id) {
+            Object.assign(message, userData);
+          }
+        });
+      });
+      this.subscriptions.push(userDataSubscription);
   }
 
   async loadUserData(messageUserID: string): Promise<any> {
@@ -677,7 +686,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
               if (doc.exists()) {
                   const updatedUser = doc.data();
                   Object.assign(user, updatedUser);
-                  this.userDataSubject.next({ ...user });
+                  this.channelService.userDataSubject.next({ ...user });
               }
             });
 

@@ -171,4 +171,60 @@ export class ThreadComponent {
   }
 
 
+
+
+
+  /**
+   * worksapce function
+   */
+
+
+
+  // newDMChat(){
+
+  //   const allUsersQuery = query(this.channelService.getUsersRef())
+
+  //   let newPair: any[] = [];
+
+  //   console.log(allUsersQuery)
+  //   onSnapshot(allUsersQuery, (querySnapshot) => {          
+          
+  //         // build Array with allUsers
+  //         querySnapshot.forEach((doc: any) => {
+            
+  //           if(this.allUsers.length > 0){
+              
+  //             this.allUsers.forEach((user: any) => {
+
+  //               newPair = [];
+  //               newPair.push(user, doc.data())
+  //               const chatname = user.firstname + ' & ' + doc.data().firstname;
+  //               const chatUsers = newPair;
+  //               this.chatService.createNewChat(chatname, chatUsers)
+                
+  //             })
+  //           }
+  //            this.allUsers.push(doc.data())           
+
+  //         },
+  //         );          
+  //       });
+  // }
+
+  // async loadChannels() {
+  //   const queryAllChannels = query(this.channelService.collectionRef);    
+
+  //   onSnapshot(queryAllChannels, (querySnapshot) => {
+  //     this.channels = [];
+  //     querySnapshot.forEach((doc: any) => {
+  //       doc.data().channelUsers.forEach((user:any) => {
+  //         if(user.id === this.userID){
+  //           this.channels.push(doc.data());
+  //         } else { return }
+  //       })        
+  //     });
+  //   });
+  // }
+
+
 }

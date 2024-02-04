@@ -12,7 +12,9 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
+  setDoc,
 } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -21,6 +23,7 @@ import { ChannelDataService } from '../../services/channel-data.service';
 import { query } from 'firebase/firestore';
 import { MainscreenComponent } from '../mainscreen.component';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-workspace',
@@ -89,11 +92,13 @@ export class WorkspaceComponent implements OnInit {
     private renderer: Renderer2,
     private route: ActivatedRoute,
     public channelService: ChannelService,
+    public chatService: ChatService,
     public channelDataService: ChannelDataService
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
     this.loadChannels();
+    this.newDMChat()
   }
 
   @HostListener('window:resize', ['$event'])
@@ -222,15 +227,19 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Retrieve and update the channel list.
+   * Retrieve and update the channel list and load only channels in which currentUser is member
    */
   async loadChannels() {
-    const queryAllChannels = query(this.channelService.collectionRef);
+    const queryAllChannels = query(this.channelService.collectionRef);    
 
     onSnapshot(queryAllChannels, (querySnapshot) => {
       this.channels = [];
       querySnapshot.forEach((doc: any) => {
-        this.channels.push(doc.data());
+        doc.data().channelUsers.forEach((user:any) => {
+          if(user.id === this.userID){
+            this.channels.push(doc.data());
+          } else { return }
+        })        
       });
     });
   }
@@ -418,8 +427,8 @@ export class WorkspaceComponent implements OnInit {
       await channelCreator
     );
     this.closeChannelCreateWindow();
-    // this.getAllChannel();
   }
+
 
   /**
    * auskommentiert von Klemens --> neue Funktion darüber
@@ -471,4 +480,41 @@ export class WorkspaceComponent implements OnInit {
       this.main.channelOpen = true;
     }, 0.02);
   }
+
+
+  
+
+  newDMChat(){
+
+    const allUsersQuery = query(this.channelService.getUsersRef())
+
+    let newPair: any[] = [];
+
+    console.log(allUsersQuery)
+    onSnapshot(allUsersQuery, (querySnapshot) => {          
+          
+          // build Array with allUsers
+          querySnapshot.forEach((doc: any) => {
+            
+            if(this.allUsers.length > 0){
+              
+              this.allUsers.forEach((user: any) => {
+
+                newPair = [];
+                newPair.push(user, doc.data())
+                const chatname = user.firstname + ' & ' + doc.data().firstname;
+                const chatUsers = newPair;
+                this.chatService.createNewChat(chatname, chatUsers)
+                
+              })
+            }
+             this.allUsers.push(doc.data())           
+
+          },
+          );          
+        });
+  }
 }
+
+
+

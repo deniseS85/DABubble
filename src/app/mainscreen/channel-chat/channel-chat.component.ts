@@ -29,7 +29,7 @@ import { Subscription } from 'rxjs';
         transform: 'translateX(-45px)',
         opacity: 1,
       })),
-      transition('hidden => visible', animate('200ms ease-out')),
+      transition('hidden => visible', animate('200ms 150ms ease-out')),
       transition('visible => hidden', animate('200ms ease-in')),
     ]),
 
@@ -42,10 +42,10 @@ import { Subscription } from 'rxjs';
         transform: 'translateX(-40px)',
         opacity: 1,
       })),
-      transition('hidden => visible', animate('200ms ease-out')),
+      transition('hidden => visible', animate('200ms 150ms ease-out')),
       transition('visible => hidden', animate('200ms ease-in')),
     ]),
-    trigger('removeBorder', [
+    /* trigger('removeBorder', [
       state('false', style({
         border: '1px solid #ADB0D9',
         borderRadius: '20px',
@@ -75,15 +75,15 @@ import { Subscription } from 'rxjs';
           style({ height: 0, opacity: 0 }))
       ]
       )
-    ]),
+    ]), */
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy {
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
 
-  animationState = 'hidden';
-  animationState1 = 'hidden';
+ /*  animationState = 'hidden';
+  animationState1 = 'hidden'; */
 
   addUSerOpen: boolean = false;
   showMembersOpen: boolean = false;
@@ -123,6 +123,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
   userList;
   unsubUser: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+  
 
 /* 
   private userDataSubject = new BehaviorSubject<any>(null);
@@ -152,6 +153,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
     }
     this.getAllUserInfo();
     this.loadMessagesOfThisChannel();
+    
     /* this.scrollToBottom(); */
  
   }
@@ -219,8 +221,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy {
      * @param {('visible' | 'hidden')} state - The animation state to set ('visible' or 'hidden').
      * @returns {void}
      */
-    toggleAnimationState1(state: 'visible' | 'hidden'): void {
-      this.animationState1 = state;
+    toggleAnimationState1(state: 'visible' | 'hidden', index: number): void {
+      /* this.animationState1 = state; */
+
+      this.allMessages.forEach((message, i) => {
+        message.animationState1 = i === index ? state : 'hidden';
+      });
     }
     
   

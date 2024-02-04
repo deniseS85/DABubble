@@ -36,8 +36,8 @@
 
             <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'"
                 style="cursor: default;"
-                (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible') : toggleAnimationState('visible', chatIndex)"
-                (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden') : toggleAnimationState('hidden', chatIndex)"
+                (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible', chatIndex) : toggleAnimationState('visible', chatIndex)"
+                (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden', chatIndex) : toggleAnimationState('hidden', chatIndex)"
                 (mouseleave)="message.isEmojiOpen = false">
                 <div class="profile-message-img">
                     <img class="profile-img"
@@ -48,10 +48,8 @@
                 <div>
                     <div [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
                         <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'" 
-                        [@slideAndFadeLeft]="isCurrentUser(chatIndex) ? animationState1 : 'hidden'"
-                        [@slideAndFade]="isCurrentUser(chatIndex) ? 'hidden' : message.animationState">
-
-
+                        [@slideAndFadeLeft]="isCurrentUser(chatIndex) ? (message.animationState1 || 'hidden') : 'hidden'"
+                        [@slideAndFade]="isCurrentUser(chatIndex) ? 'hidden' : (message.animationState || 'hidden')">
                             <div *ngIf="message.react && message.react.length > 0">
                                 <div class="last-emoji">{{getEmojiPath(message, 0)}}</div>
                             </div>

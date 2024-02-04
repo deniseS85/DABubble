@@ -188,7 +188,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   ngOnDestroy() {
     this.unsubUser;
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+   /*  this.subscriptions.forEach(sub => sub.unsubscribe()); */
   }
 
   checkUserIsCreator() {
@@ -545,6 +545,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   setUserProfileView(user: User) {
     this.userProfileView = user;
   }
+
 
   
 

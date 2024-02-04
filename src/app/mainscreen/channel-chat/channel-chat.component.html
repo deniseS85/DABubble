@@ -75,10 +75,10 @@
                         <div class="writing-name-sending-time">
                             <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
                                 <div class="sending-time fs-14 f400">{{ message.timestamp }} Uhr</div>
-                                <span class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}</span>
+                                <span (click)="setUserProfileView(message); showProfil = true; openPopup()" class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}</span>
                             </ng-container>
                             <ng-template #otherUser>
-                                <div class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}</div>
+                                <div (click)="setUserProfileView(message); showProfil = true; openPopup()" class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}</div>
                                 <span class="sending-time fs-14 fw-400">{{ message.timestamp }} Uhr</span>
                             </ng-template>
                         </div>
@@ -190,7 +190,7 @@
 
 
 <div class="popup-background" *ngIf="showMembersOpen" (click)="showMembersOpen = false; closePopup()">
-    <div class="popup-maincontainer smallPopup showMembersPopup" (click)="doNotClose($event)">
+    <div class="popup-maincontainer smallPopup" (click)="doNotClose($event)">
         <div class="headline-container">
             <span class="fw-700">Mitglieder</span>
             <div class="close-icon-container" (click)="showMembersOpen = false; closePopup()">

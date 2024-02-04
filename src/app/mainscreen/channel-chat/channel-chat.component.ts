@@ -62,6 +62,7 @@ import { Subscription } from 'rxjs';
       })),
       transition('true <=> false', animate('100ms ease')),
     ]),
+    */
     trigger('rollOutInAnimation', [
       transition(':enter', [
         style({ height: 0, opacity: 0 }),
@@ -75,7 +76,7 @@ import { Subscription } from 'rxjs';
           style({ height: 0, opacity: 0 }))
       ]
       )
-    ]), */
+    ]), 
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {

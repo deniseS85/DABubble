@@ -1,5 +1,19 @@
-import { Component, ElementRef, Renderer2, HostListener, OnInit, inject } from '@angular/core';
-import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
+import {
+  Component,
+  ElementRef,
+  Renderer2,
+  HostListener,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  Firestore,
+  Unsubscribe,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+} from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
@@ -155,15 +169,6 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Retrieve and update the channel list.
-   * auskommentiert von Klemens
-   * @returns {Promise<void>} A Promise that resolves after retrieving the channel list.
-   */
-  // private async getAllChannel(): Promise<void> {
-  //   await this.getChannelList();
-  // }
-
-  /**
    * Get the profile image path for a user.
    *
    * @param {User} user - The user object.
@@ -203,31 +208,6 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Retrieve and update the channel list.
-   * auskommentiert von Klemens --> neueFunktion darunter
-   * @returns {Promise<void>} A Promise that resolves after retrieving the channel list.
-   */
-  // async getChannelList(): Promise<void> {
-  //   this.channels = await this.channelService.getAllChannels();
-  //   console.log('Channels:', this.channels);
-  // }
-
-  /**
-   * hier wird Live-Update der Channels aktiviert
-   * funktion wird im constructor aufgerufen um bei ersten öffnen des workspaces zu laden
-   */
-  async loadChannels() {
-    const queryAllChannels = await query(this.channelService.collectionRef);
-
-    const unsub = onSnapshot(queryAllChannels, (querySnapshot) => {
-      this.channels = [];
-      querySnapshot.forEach((doc: any) => {
-        this.channels.push(doc.data());
-      });
-    });
-  }
-
-  /**
    * Check if the user is logged in as a guest and update user information accordingly.
    */
   checkIsGuestLogin(): void {
@@ -242,12 +222,22 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Handles the click event on selectable elements.
-   * Removes the class "selected" from all other elements
-   * and sets this class to clicked elements
-   *
-   * @param {MouseEvent} event - The click event.
-   * @returns {void}
+   * Retrieve and update the channel list.
+   */
+  async loadChannels() {
+    const queryAllChannels = query(this.channelService.collectionRef);
+
+    onSnapshot(queryAllChannels, (querySnapshot) => {
+      this.channels = [];
+      querySnapshot.forEach((doc: any) => {
+        this.channels.push(doc.data());
+      });
+    });
+  }
+
+  /**
+   * Handles the click event on selectable elements. Removes the class "selected" 
+   * from all other elements and sets this class to clicked elements
    */
   handleClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -259,6 +249,9 @@ export class WorkspaceComponent implements OnInit {
     this.renderer.addClass(selectableElement, 'selected');
   }
 
+  /**
+   * Getting channel name from clicked element and forward to change the selected channel
+   */
   selectedChannel(target: HTMLSpanElement) {
     let selectedChannel = (target as HTMLSpanElement).textContent;
 
@@ -283,9 +276,14 @@ export class WorkspaceComponent implements OnInit {
     return target;
   }
 
+  /**
+   * Highligth the right user in the workspace when selecting direct-message from channel members
+   */
   private highlightUserElement(): void {
     if (this.highlightedUser) {
-      const userElement = this.elRef.nativeElement.querySelector(`[data-username="${this.highlightedUser}"]`);
+      const userElement = this.elRef.nativeElement.querySelector(
+        `[data-username="${this.highlightedUser}"]`
+      );
       if (userElement) {
         userElement.classList.add('selected');
       }
@@ -293,13 +291,13 @@ export class WorkspaceComponent implements OnInit {
   }
 
   /**
-   * Display the channel creation window.
+   * Show/close the channel creation window.
    */
   openChannelCreateWindow() {
     this.isChannelCreateWindow = true;
     this.renderer.setStyle(this.body, 'overflow', 'hidden');
   }
-
+  
   closeChannelCreateWindow() {
     this.isChannelCreateWindow = false;
     this.renderer.setStyle(this.body, 'overflow', 'auto');

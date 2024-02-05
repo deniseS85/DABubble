@@ -256,7 +256,7 @@
     }
 }
 
-.reaction-menu-message, .react-container {
+.reaction-menu-message {
     top: -25px;
     background-color: #ffffff;
     position: absolute;
@@ -305,6 +305,17 @@
             z-index: 2;
         }
     }  
+}
+
+.emoji-below-answer-container {
+    position: relative;
+
+    .emoji-below-answer-selection {
+        position: absolute;
+        top: 25px;
+        z-index: 2;
+
+    }
 }
 
 ::ng-deep emoji-mart .emoji-mart-category .emoji-mart-emoji span {

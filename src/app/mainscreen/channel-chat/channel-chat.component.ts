@@ -287,6 +287,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     });
   }
 
+  toggleEmojiBelowAnswer(event: Event, chatIndex: number): void {
+    this.allMessages.forEach((message, index) => {
+      if (index === chatIndex) {
+        message.isEmojiBelowAnswerOpen = !message.isEmojiBelowAnswerOpen;
+      }
+    });
+  }
+
   /**
    * Handles the selection of an emoji.
    * Adds or removes the selected emoji to/from the selectedEmojis array of the message at the specified chatIndex.
@@ -325,6 +333,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
  */
   closeEmojiContainers(chatIndex: number): void {
     this.allMessages[chatIndex].isEmojiOpen = false;
+    this.allMessages[chatIndex].isEmojiBelowAnswerOpen = false;
   }
 
   /**

@@ -283,8 +283,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   addEmojiToMessage(event: any) {
     this.messagetext += event.emoji.native;
-    console.log(event)
-    console.log(this.messagetext);
   }
 
   /**

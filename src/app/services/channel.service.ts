@@ -159,7 +159,7 @@ export class ChannelService {
     } else {
       const userFirstName = this.authService.getUserFirstName();
       const userLastName = this.authService.getUserLastName();
-      const channelCreator = userFirstName + userLastName;
+      const channelCreator = userFirstName + ' ' + userLastName;
 
       return channelCreator
     }

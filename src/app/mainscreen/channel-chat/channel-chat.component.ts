@@ -12,6 +12,7 @@ import { getDocs, query } from 'firebase/firestore';
 import { MainscreenComponent } from '../mainscreen.component';
 import { ReactionsService } from '../../services/reactions.service';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -140,6 +141,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     private route: ActivatedRoute,
     public channelDataService: ChannelDataService,
     private datePipe: DatePipe,
+    private snackBar: MatSnackBar
   ) {
 
     this.userID = this.route.snapshot.paramMap.get('id');
@@ -386,45 +388,47 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     event.stopPropagation();
   }
 
-
   /**
    * get selected User, check if he/she is allready Member and add him/her
    */
   async addNewMemberToChannelUsers() {
-    let userallreadyInChannel = false;
-    let newUsersArray: any = [];
-    this.selectedUsers.forEach((user) => {
-      const newUser = user.toJson(user);
-      userallreadyInChannel = this.checkIfMemberAllreadyIn(this.channelDataService.channelUsers, newUser);
+      let userallreadyInChannel = false;
+      let newUsersArray: any = [];
+      this.selectedUsers.forEach((user) => {
+          let newUserID = user.id;
+          userallreadyInChannel = this.checkIfMemberAllreadyIn(this.channelDataService.channelUsers, newUserID);
 
-      if (userallreadyInChannel) {
-        console.warn(this.selectedUser.firstname, ' is allready Memeber of this channel')
-      } else {
-        newUsersArray.push(newUser)
-       
-      }
-      this.addUserToChannel(newUsersArray);
-    })
+          if (userallreadyInChannel) {
+              this.openSnackBar(`${user.firstname} is already a member of this channel`);
+          } else {
+              newUsersArray.push(newUserID)
+          
+          }
+          this.addUserToChannel(newUsersArray);
+        })
   }
+
 
   /**
-   * 
-   * @param users array of all channelmembers
-   * @param newUser potential new Member
-   * @returns a boolean if the potential member is allready a member of the channel
-   */
-  checkIfMemberAllreadyIn(users: any, newUser: any) {
-    let allreadyThere = false;
+ * 
+ * @param users array of all channelmembers
+ * @param newUser potential new Member
+ * @returns a boolean if the potential member is allready a member of the channel
+ */
+  checkIfMemberAllreadyIn(users: any[], newUserID: string): boolean {
+      let allreadyThere = false;
 
-    users.forEach((user: any) => {
-      if (user.firstname == newUser.firstname) {
-        allreadyThere = true;
-      } else {
-        return
-      }
-    })
-    return allreadyThere
+      users.forEach((user: any) => {
+          if (user == newUserID) {
+              allreadyThere = true;
+          } else {
+            return
+          }
+        })
+        return allreadyThere  
   }
+
+ 
 
   /**
    * push new Member datas to the userArray and update
@@ -492,10 +496,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     await updateDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID), item);
   }
 
- /*  getSingelChannelRef(docId: string) {
-    return doc(collection(this.firestore, 'channels'), docId);
-  } */
-
  /**
    * Checks if the current user is a guest login.
    * Retrieves user data from Firestore if the user exists, otherwise sets default values for a guest user.
@@ -503,16 +503,16 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
    * @returns {void}
    */
  checkIsGuestLogin(): void {
-  getDoc(this.getUserID()).then((docSnapshot) => {
-    if (docSnapshot.exists()) {
-      // If user exists, retrieve user data
-      this.getUserfromFirebase();
-    } else {
-      // If user does not exist, set default values for a guest user
-      this.userFullName = 'Gast';
-      this.user.profileImg = 'guest-profile.png';
-    }
-  });
+    getDoc(this.getUserID()).then((docSnapshot) => {
+      if (docSnapshot.exists()) {
+        // If user exists, retrieve user data
+        this.getUserfromFirebase();
+      } else {
+        // If user does not exist, set default values for a guest user
+        this.userFullName = 'Gast';
+        this.user.profileImg = 'guest-profile.png';
+      }
+    });
 }
 
   getUserID() {
@@ -550,9 +550,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   setUserProfileView(user: User) {
     this.userProfileView = user;
   }
-
-
-  
 
   // User filter function
 
@@ -824,13 +821,20 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
 
   openThread(messageID: string) {
-
     this.main.threadOpen = false;
     this.channelService.activeMessageID = messageID;
     setTimeout(() => {
       this.main.threadOpen = true
     }, 0.001);
 
+  }
+
+  openSnackBar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
   }
 
 

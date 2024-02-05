@@ -10,8 +10,6 @@
                 </span>
             </div>
 
-
-            <!-- ####### -->
             <div class="header-right" *ngIf="officialChannel">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
                   <div *ngFor="let user of usersData">
@@ -27,7 +25,6 @@
                   <img src="../../../assets/img/person_add.png" alt="" (click)="addUSerOpen = true; openPopup()">
                 </div>
               </div>
-            <!-- ########## -->
         </header>
     </div>
 

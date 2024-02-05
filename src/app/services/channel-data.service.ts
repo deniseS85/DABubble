@@ -16,7 +16,7 @@ export class ChannelDataService {
   channelCreator: string = '';
   channelDescription: string = '';
   channelUsers: any[] = [];
-  channelID: string = 'LulqsvoACegLC7vCdXZo';
+  channelID: string = 'Az0N5yUyehMiDbWscTp2';
   channelMessages: any[] = [];
   private highlightUserSubject = new Subject<string>();
   highlightUser$ = this.highlightUserSubject.asObservable();
@@ -33,7 +33,7 @@ export class ChannelDataService {
   constructor(
     private channelService: ChannelService
   ) {
-   /*  this.loadFirstChannelID(); */
+    this.loadFirstChannelID();
     
     this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
     this.items = this.items$.subscribe((channel) => {
@@ -53,7 +53,7 @@ export class ChannelDataService {
     }
   }
 
-/*   loadFirstChannelID() {
+  loadFirstChannelID() {
     this.channelService.getAllChannels().then((channels => {
       if (channels.length > 0) {
         this.channelID = channels[0]['channelID'];
@@ -61,7 +61,7 @@ export class ChannelDataService {
         console.log('onload channelID:',this.channelID);
       }
     }));
-  } */
+  }
 
   async changeSelectedChannel(selectedChannelName: string) {
       this.channelName = selectedChannelName;

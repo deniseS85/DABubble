@@ -35,8 +35,13 @@ export class ChannelDataService {
     private channelService: ChannelService
   ) {
     this.loadFirstChannelID();
+<<<<<<< HEAD
     
     /* this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
+=======
+
+    this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
+>>>>>>> 679690ed113621247526f98ffa002190220c1b29
     this.items = this.items$.subscribe((channel) => {
       let channelInfo = new Channel(channel);
       this.channelName = channelInfo.channelname;
@@ -44,7 +49,12 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
+<<<<<<< HEAD
     }); */
+=======
+      this.changeSelectedChannel(channelInfo.channelname);
+    });
+>>>>>>> 679690ed113621247526f98ffa002190220c1b29
     
   }
 

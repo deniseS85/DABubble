@@ -103,6 +103,7 @@ export class WorkspaceComponent implements OnInit {
     this.loadChats();
   }
 
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void {
     this.checkScreenSize();
@@ -254,7 +255,13 @@ export class WorkspaceComponent implements OnInit {
       querySnapshot.forEach((doc: any) => {
         this.channels.push(doc.data());
       });
+      
+      this.openChannel(this.channels[0].channelID);
+      this.channelDataService.changeSelectedChannel(this.channels[0].channelname)
     });
+
+    
+    
   }
 
   /**

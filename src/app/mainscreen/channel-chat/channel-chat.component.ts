@@ -138,13 +138,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     private route: ActivatedRoute,
     public channelDataService: ChannelDataService,
     private datePipe: DatePipe,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {
 
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
-
   }
+  
 
   ngOnInit() {
     if (this.userID) {
@@ -507,12 +507,43 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   async deleteCurrentChannel() {
+    
+    this.deleteChannelMessages();    
+    await deleteDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID))
     window.location.reload();
-    await deleteDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID));
+    
     let channel0 = this.channelService.getAllChannels().then((channels => {
       console.log(channels[0]['channelID']);
     }));
   }
+
+  async deleteChannelMessages(){
+    const allMessagesRef = query(collection(this.firestore, 'channels', this.channelDataService.channelID, 'messages'));
+    const allMessagesDocs = await getDocs(allMessagesRef);
+    
+    allMessagesDocs.forEach( message =>{   
+      
+      this.deleteMessagesAnswers(message.id)
+       deleteDoc(message.ref);      
+      console.log('messages gelöscht', message.ref)
+    })
+  }
+
+
+  async deleteMessagesAnswers(messageID: string){
+    const allAnswersRef = query(collection(this.firestore, 'channels', this.channelDataService.channelID, 'messages', messageID, 'answers'));
+    const allAnswersDocs = await getDocs(allAnswersRef);
+    
+    allAnswersDocs.forEach(answer => {
+      deleteDoc(answer.ref)
+      console.log('answers gelöscht', answer.ref);
+    })
+  }
+
+
+ 
+
+
 
   async updateChannel(channelID: string, item: {}) {
     await updateDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID), item);
@@ -830,6 +861,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     if (counter > 0) {
       this.updateAnswerInfoStatus(answerInfos, messageID);
     }
+
+    
   }
 
 

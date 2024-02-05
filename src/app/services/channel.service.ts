@@ -109,11 +109,6 @@ export class ChannelService {
     return channels;
   }
 
-  getMessagesForChannel(channelID: string): Observable<any[]> {
-      const messagesQuery = query(collection(this.firestore, 'channels', channelID, 'messages'));
-      return collectionData(messagesQuery);
-  }
-
   async addNewChannel(newChannel: {}) {
     await addDoc(this.getChannelRef(), newChannel).catch(
       (err) => { console.error(err) });

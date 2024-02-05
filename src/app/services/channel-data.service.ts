@@ -3,7 +3,7 @@ import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { Observable, Subject, map } from "rxjs";
-import { query, getDocs, collection, doc } from 'firebase/firestore';
+import { query, getDocs, collection, doc, where } from 'firebase/firestore';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -18,6 +18,7 @@ export class ChannelDataService {
   channelDescription: string = '';
   channelUsers: any[] = [];
   channelID: string = '';
+  channelMessages: any[] = [];
   private highlightUserSubject = new Subject<string>();
   highlightUser$ = this.highlightUserSubject.asObservable();
 
@@ -33,10 +34,7 @@ export class ChannelDataService {
   constructor(
     private channelService: ChannelService
   ) {
-    this.loadFirstChannel().then(() => {
-      console.log('Die erste channelID wurde erfolgreich geladen:', this.channelID);
-      this.loadMessagesForChannel(this.channelID);
-    });
+    
     
     /* this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
     this.items = this.items$.subscribe((channel) => {
@@ -50,14 +48,17 @@ export class ChannelDataService {
     
   }
   
-  ngOnDestroy() {
+  setChannelID(newChannelID: string): void {
+    this.channelID = newChannelID;
+  }
+ /*  ngOnDestroy() {
     if (this.unsubChannelUser) {
       this.unsubChannelUser();
     }
-  }
+  } */
 
 
-  async loadFirstChannel(): Promise<void> {
+ /*  async loadFirstChannel(): Promise<void> {
     let allChannelsQuery = query(this.channelService.getChannelRef());
     let allChannelsSnapshot = await getDocs(allChannelsQuery);
   
@@ -72,8 +73,8 @@ export class ChannelDataService {
       this.channelDescription = firstChannelData['channelDescription'];
     }
   }
-
-  loadMessagesForChannel(channelID: string): void {
+ */
+  /* loadMessagesForChannel(channelID: string): void {
     this.channelService.getMessagesForChannel(channelID).subscribe((messages) => {
       if (messages.length === 0) {
         console.log('Keine Nachrichten für Kanal', channelID, 'gefunden.');
@@ -81,30 +82,65 @@ export class ChannelDataService {
         // Filtern Sie die Nachrichten, die zum angegebenen Kanal gehören
         const channelMessages = messages.filter(message => message.channelID === channelID);
         
-        console.log('Geladene Nachrichten für Kanal', channelID, channelMessages);
+        // Aktualisieren Sie Ihre lokale Nachrichtenliste mit den gefilterten Nachrichten
+        this.channelMessages = channelMessages;
+  
+        console.log('Geladene Nachrichten für Kanal', channelID, this.channelMessages);
       }
     });
+  } */
+
+ 
+
+
+
+  async changeSelectedChannel(selectedChannelID: string) {
+    this.channelID = selectedChannelID;
+    let unsubChannel = onSnapshot(this.channelService.getChannelRef(), (list) => {
+      list.forEach((channel) => {
+        let currentChannel = new Channel(channel.data());
+        if (currentChannel.channelID === this.channelID) {
+          this.channelName = currentChannel.channelname;
+          this.channelUsers = currentChannel.channelUsers;
+          this.channelCreator = currentChannel.channelCreator;
+          this.channelDescription = currentChannel.channelDescription;
+        } 
+      });
+      unsubChannel();
+    })
   }
 
 
+  /*  async selectedChannel(target: HTMLSpanElement) {
+    let selectedChannel = (target as HTMLSpanElement).textContent;
 
-  async changeSelectedChannel(selectedChannelName: string) {
-      this.channelName = selectedChannelName;
-      let unsubChannel = onSnapshot(this.channelService.getChannelRef(), (list) => {
-        list.forEach((channel) => {
-          let currentChannel = new Channel(channel.data());
-          if (currentChannel.channelname === this.channelName) {
-            this.channelName = currentChannel.channelname;
-            this.channelUsers = currentChannel.channelUsers;
-            this.channelCreator = currentChannel.channelCreator;
-            this.channelDescription = currentChannel.channelDescription;
-            this.channelID = currentChannel.channelID;
-          } 
-        });
-        /* // console.warn(unsubChannel) */
-        unsubChannel;
-      })
+    if (selectedChannel?.includes('#')) {
+      selectedChannel = selectedChannel.substring(1);
+    }
+    if (selectedChannel) {
+      const channelID: string | null = await this.getChannelIDByName(selectedChannel);
+      if (channelID) {
+        console.log(channelID);
+        this.channelDataService.changeSelectedChannel(channelID);
+      } else {
+        console.error('Channel not found');
+      }
+    }
   }
+
+
+  async getChannelIDByName(channelName: string): Promise<string | null> {
+    const channelsRef = collection(this.firestore, 'channels');
+    const querySnapshot = await getDocs(query(channelsRef, where('channelname', '==', channelName)));
+  
+    if (!querySnapshot.empty) {
+      return querySnapshot.docs[0].id;
+    }
+  
+    return null;
+  }
+   */
+  
 
   highlightUserInWorkspace(userFullName: string): void {
     this.highlightUserSubject.next(userFullName);

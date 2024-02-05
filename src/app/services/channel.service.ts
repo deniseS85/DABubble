@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, arrayUnion, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { addDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, query, updateDoc } from 'firebase/firestore';
 import { Channel } from '../models/channel.class';
 import { update } from 'firebase/database';
 import { User } from '../models/user.class';
@@ -107,6 +107,11 @@ export class ChannelService {
       channels.push(doc.data());
     });
     return channels;
+  }
+
+  getMessagesForChannel(channelID: string): Observable<any[]> {
+      const messagesQuery = query(collection(this.firestore, 'channels', channelID, 'messages'));
+      return collectionData(messagesQuery);
   }
 
   async addNewChannel(newChannel: {}) {

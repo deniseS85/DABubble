@@ -367,8 +367,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
      */
     openPopup(): void {
       this.renderer.setStyle(this.body, 'overflow', 'hidden');
-      console.log(this.allUsers);
-      console.log(this.channelDataService.channelID)
     }
   
     /**
@@ -739,7 +737,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       });
      
       this.usersData = await Promise.all(usersDataPromises);
-      console.log(this.usersData)
     }
     this.updateUserData();
   }

@@ -10,28 +10,35 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class ChannelDataService {
-
+  firestore: Firestore = inject(Firestore);
   channel = new Channel;
   channelInfo: Channel[] = [];
   channelName: string = '';
   channelCreator: string = '';
   channelDescription: string = '';
   channelUsers: any[] = [];
+  channelID: string = '';
+  private highlightUserSubject = new Subject<string>();
+  highlightUser$ = this.highlightUserSubject.asObservable();
 
-  newChannelMember: string = '';
-  channelID: string = 'yFsL4j7BFN7t9llcXmHw';
-  firstChannelID: string = '';
+ /*  newChannelMember: string = ''; */
+  
+  /* 
   items$;
-  items;
+  items; */
 
-  firestore: Firestore = inject(Firestore);
+  
   unsubChannelUser: Unsubscribe | undefined;
 
   constructor(
     private channelService: ChannelService
   ) {
-    this.loadFirstChannel();
-    this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
+    this.loadFirstChannel().then(() => {
+      console.log('Die erste channelID wurde erfolgreich geladen:', this.channelID);
+      this.loadMessagesForChannel(this.channelID);
+    });
+    
+    /* this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
     this.items = this.items$.subscribe((channel) => {
       let channelInfo = new Channel(channel);
       this.channelName = channelInfo.channelname;
@@ -39,31 +46,46 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
-     
-    });
+    }); */
     
   }
-
-  ngOnInit() {
-  }
-
+  
   ngOnDestroy() {
-    this.unsubChannelUser;
-    this.items.unsubscribe();
+    if (this.unsubChannelUser) {
+      this.unsubChannelUser();
+    }
   }
 
 
-  async loadFirstChannel() {
+  async loadFirstChannel(): Promise<void> {
     let allChannelsQuery = query(this.channelService.getChannelRef());
     let allChannelsSnapshot = await getDocs(allChannelsQuery);
   
     if (!allChannelsSnapshot.empty) {
       let firstChannelData = allChannelsSnapshot.docs[0].data();
-      let firstChannel = new Channel(firstChannelData);
+      console.log('First Channel Data:', firstChannelData);
   
-      this.firstChannelID = firstChannel.channelID;
+      this.channelID = firstChannelData['channelID'];
+      this.channelName = firstChannelData['channelname'];
+      this.channelUsers = firstChannelData['channelUsers'];
+      this.channelCreator = firstChannelData['channelCreator'];
+      this.channelDescription = firstChannelData['channelDescription'];
     }
   }
+
+  loadMessagesForChannel(channelID: string): void {
+    this.channelService.getMessagesForChannel(channelID).subscribe((messages) => {
+      if (messages.length === 0) {
+        console.log('Keine Nachrichten für Kanal', channelID, 'gefunden.');
+      } else {
+        // Filtern Sie die Nachrichten, die zum angegebenen Kanal gehören
+        const channelMessages = messages.filter(message => message.channelID === channelID);
+        
+        console.log('Geladene Nachrichten für Kanal', channelID, channelMessages);
+      }
+    });
+  }
+
 
 
   async changeSelectedChannel(selectedChannelName: string) {
@@ -83,9 +105,6 @@ export class ChannelDataService {
         unsubChannel;
       })
   }
-
-  private highlightUserSubject = new Subject<string>();
-  highlightUser$ = this.highlightUserSubject.asObservable();
 
   highlightUserInWorkspace(userFullName: string): void {
     this.highlightUserSubject.next(userFullName);

@@ -519,6 +519,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   async deleteCurrentChannel() {
     window.location.reload();
     await deleteDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID));
+    let channel0 = this.channelService.getAllChannels().then((channels => {
+      console.log(channels[0]['channelID']);
+    }));
   }
 
   async updateChannel(channelID: string, item: {}) {

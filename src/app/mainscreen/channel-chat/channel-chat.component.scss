@@ -117,7 +117,7 @@
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 100px 40px 149px 40px;
+    padding: 100px 40px 0 40px;
     scroll-behavior: smooth;
     position: relative;
 }
@@ -240,20 +240,6 @@
     margin: 8px 0;
     height: 21px;
     color: black;
-    .reactions {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        border: 1px solid transparent;
-        height: 34px;
-        .single-emoji {
-            padding: 0.5px 8px 2.5px 8px;
-            border-radius: 20px;
-            border: 1px solid #ADB0D9;
-        }
-    }
 }
 
 .reaction-menu-message {
@@ -291,6 +277,7 @@
   
     .emoji-container {
         position: relative;
+        cursor: pointer;
         
         &:hover {
             img{
@@ -308,12 +295,27 @@
 }
 
 .emoji-below-answer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
+    background-color: white;
+    border-radius: 100%;
+    padding: 10px;
+    width: 20px;
+    height: 20px;
+
+    &:hover {
+        background-color: #ECEEFE;
+        img {
+            filter: invert(27%) sepia(86%) saturate(2544%) hue-rotate(231deg) brightness(100%) contrast(90%); 
+        }
+    }
 
     .emoji-below-answer-selection {
         position: absolute;
         top: 25px;
-        z-index: 2;
+        z-index: 100;
 
     }
 }
@@ -324,9 +326,6 @@
 
 .react-icon {
     cursor: pointer;
-}
-
-.react-icon-hover {
     &:hover {
         img{
             filter: invert(27%) sepia(86%) saturate(2544%) hue-rotate(231deg) brightness(100%) contrast(90%); 
@@ -1140,106 +1139,6 @@ input {
     flex: 1;
 }
 
-.reactionContainer{
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 46px;
-    transform: translateY(-50%) translateX(100%);
-    border-radius: 25px 25px 0 25px;
-    display: none;
-    justify-content: center;
-    align-items: center;    
-    border: 1px solid #ADB0D9;
-    background-color: white;
-    
-    .reactionMenu{
-        margin: 3px 13px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        cursor: pointer;
-        
-
-        .emoji-container{     
-            display: flex !important;
-            position: relative;
-            align-items: center;
-            height: 40px;
-
-            img{
-                width: 24px;
-                height: 24px;
-            }
-
-            .emoji-selection {                                
-                position: absolute;
-                top:20px;
-                z-index: 1000;
-
-                
-            }        
-    }
-
-        .editMessage{
-            position: relative;
-
-            .editMessageBtn{
-                
-                position: absolute;
-                right: 0;
-                top: 0;
-                height: 55px;         
-                transform: translateX(100%);
-                display: none;
-                white-space: nowrap;
-                justify-content: center;
-                align-items: center;
-                font-size: 16px;                
-                font-weight: 600;
-                background-color: white;
-                padding: 5px 10px;
-                border-radius: 0 30px 30px 30px;
-                box-shadow: 0 6px 14px 0 rgba($color: #000000, $alpha: 0.2);
-
-                span{
-                    padding: 5px 10px;
-                    border-radius: 100px;
-                }
-
-                &:hover{
-                    span{
-                        transition: background-color 0.08s ease-in;
-                        background-color: #ECEEFE;
-                        font-weight: 700;
-                        color: #797EF3;
-                    }                    
-                }
-            }
-
-            &:hover{
-
-                .editMessageBtn{
-                    display: flex;
-                }
-            }
-        }
-    }
-
-    svg{
-        width: 24px;
-        height: 24px;
-        padding: 8px;        
-
-        &:hover{
-            background-color: #ECEEFE;
-            border-radius: 100%;
-            fill:#797EF3;                            
-        }
-    }
-}
-
 .absoluteLeft{
     left: 0;
     right: unset;
@@ -1276,26 +1175,6 @@ input {
     gap: 12px;
     position: relative;
     margin-top: 5px;
-
-    .emoji-con{     
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 40px;
-            background-color: white;
-            border-radius: 100%;
-            padding: 10px;
-            width: 15px;
-            height: 15px;
-
-            &:hover {
-                background-color: #ECEEFE;
-                img{
-                    filter: invert(27%) sepia(86%) saturate(2544%) hue-rotate(231deg) brightness(100%) contrast(90%); 
-                }       
-            }
-    }
 
     .threadContainerTextReactionsEmojis{
         position: relative;

@@ -83,10 +83,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
-
-  /*  animationState = 'hidden';
-   animationState1 = 'hidden'; */
-
   addUSerOpen: boolean = false;
   showMembersOpen: boolean = false;
   editChannelOpen: boolean = false;
@@ -154,9 +150,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.checkIsGuestLogin();
     }
     this.getAllUserInfo();
-    this.loadFirstChannel();
-    /* this.loadMessagesOfThisChannel(); */
-    /* this.loadUsersOfThisChannel(); */
+    this.loadMessagesOfThisChannel();
+    this.loadUsersOfThisChannel();
   }
 
   ngAfterViewChecked() {
@@ -203,24 +198,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.isChannelCreator = true;
     } else {
       this.isChannelCreator = false;
-    }
-  }
-
-  async loadFirstChannel(): Promise<void> {
-    const channelsRef = collection(this.firestore, 'channels');
-    const channelsSnapshot = await getDocs(channelsRef);
-  
-    if (!channelsSnapshot.empty) {
-      const firstChannelDoc = channelsSnapshot.docs[0];
-      const firstChannelData = firstChannelDoc.data();
-  
-      this.channelDataService.setChannelID(firstChannelDoc.id); 
-      this.channelDataService.channelName = firstChannelData['channelname'];
-      
-      this.loadMessagesOfThisChannel();
-      this.loadUsersOfThisChannel();
-    } else {
-      console.log('Keine Kanäle gefunden.');
     }
   }
 
@@ -666,8 +643,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         const userData = userDocSnap.data();
 
         const message = {
-          messageUserName: userData['firstname'] + ' ' + userData['lastname'], /* evtl */
-          messageUserProfileImg: userData['profileImg'],
+          messageUserName: userData['firstname'] + ' ' + userData['lastname'], //löschen
+          messageUserProfileImg: userData['profileImg'], //löschen
           messagetext: this.messagetext,
           messageUserID: this.userID,
           messageID: '',

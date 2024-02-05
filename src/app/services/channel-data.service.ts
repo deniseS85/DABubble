@@ -17,7 +17,7 @@ export class ChannelDataService {
   channelCreator: string = '';
   channelDescription: string = '';
   channelUsers: any[] = [];
-  channelID: string = 'LulqsvoACegLC7vCdXZo';
+  channelID: string = '';
   channelMessages: any[] = [];
   private highlightUserSubject = new Subject<string>();
   highlightUser$ = this.highlightUserSubject.asObservable();
@@ -34,7 +34,7 @@ export class ChannelDataService {
   constructor(
     private channelService: ChannelService
   ) {
-    
+    this.loadFirstChannelID();
     
     /* this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
     this.items = this.items$.subscribe((channel) => {
@@ -47,52 +47,21 @@ export class ChannelDataService {
     }); */
     
   }
-  
-  setChannelID(newChannelID: string): void {
-    this.channelID = newChannelID;
-  }
+
  /*  ngOnDestroy() {
     if (this.unsubChannelUser) {
       this.unsubChannelUser();
     }
   } */
 
-
- /*  async loadFirstChannel(): Promise<void> {
-    let allChannelsQuery = query(this.channelService.getChannelRef());
-    let allChannelsSnapshot = await getDocs(allChannelsQuery);
-  
-    if (!allChannelsSnapshot.empty) {
-      let firstChannelData = allChannelsSnapshot.docs[0].data();
-      console.log('First Channel Data:', firstChannelData);
-  
-      this.channelID = firstChannelData['channelID'];
-      this.channelName = firstChannelData['channelname'];
-      this.channelUsers = firstChannelData['channelUsers'];
-      this.channelCreator = firstChannelData['channelCreator'];
-      this.channelDescription = firstChannelData['channelDescription'];
-    }
-  }
- */
-  /* loadMessagesForChannel(channelID: string): void {
-    this.channelService.getMessagesForChannel(channelID).subscribe((messages) => {
-      if (messages.length === 0) {
-        console.log('Keine Nachrichten für Kanal', channelID, 'gefunden.');
-      } else {
-        // Filtern Sie die Nachrichten, die zum angegebenen Kanal gehören
-        const channelMessages = messages.filter(message => message.channelID === channelID);
-        
-        // Aktualisieren Sie Ihre lokale Nachrichtenliste mit den gefilterten Nachrichten
-        this.channelMessages = channelMessages;
-  
-        console.log('Geladene Nachrichten für Kanal', channelID, this.channelMessages);
+  loadFirstChannelID() {
+    this.channelService.getAllChannels().then((channels => {
+      if (channels.length > 0) {
+        this.channelID = channels[0]['channelID'];
+        console.log(this.channelID);
       }
-    });
-  } */
-
- 
-
-
+    }));
+  }
 
   async changeSelectedChannel(selectedChannelName: string) {
       this.channelName = selectedChannelName;
@@ -110,8 +79,6 @@ export class ChannelDataService {
         unsubChannel;
       })
   }
-  
-
   
 
   highlightUserInWorkspace(userFullName: string): void {

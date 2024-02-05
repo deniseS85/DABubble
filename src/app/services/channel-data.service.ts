@@ -34,7 +34,7 @@ export class ChannelDataService {
     private channelService: ChannelService
   ) {
     this.loadFirstChannelID();
-    
+
     this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
     this.items = this.items$.subscribe((channel) => {
       let channelInfo = new Channel(channel);
@@ -43,6 +43,7 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
+      this.changeSelectedChannel(channelInfo.channelname);
     });
     
   }

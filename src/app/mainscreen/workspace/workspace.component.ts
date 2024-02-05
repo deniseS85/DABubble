@@ -259,9 +259,6 @@ export class WorkspaceComponent implements OnInit {
       this.openChannel(this.channels[0].channelID);
       this.channelDataService.changeSelectedChannel(this.channels[0].channelname)
     });
-
-    
-    
   }
 
   /**

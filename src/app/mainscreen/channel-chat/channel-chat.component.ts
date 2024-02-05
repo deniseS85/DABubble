@@ -314,6 +314,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
  */
   closeEmojiContainers(chatIndex: number): void {
     this.allMessages[chatIndex].isEmojiOpen = false;
+    this.allMessages[chatIndex].isEmojiBelowAnswerOpen = false;
   }
 
   /**

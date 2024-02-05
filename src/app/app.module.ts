@@ -42,6 +42,7 @@ import { ThreadsSendMessageComponent } from './mainscreen/thread/threads-send-me
 import { ThreadsHeaderComponent } from './mainscreen/thread/threads-header/threads-header.component';
 import { ThreadQuestionComponent } from './mainscreen/thread/thread-question/thread-question.component';
 import { ThreadAnswerComponent } from './mainscreen/thread/thread-answer/thread-answer.component';
+import { ChatContainerComponent } from './mainscreen/channel-chat/chat-container/chat-container.component';
 
 registerLocaleData(localeDe, 'de');
 
@@ -66,6 +67,7 @@ registerLocaleData(localeDe, 'de');
     ThreadsHeaderComponent,
     ThreadQuestionComponent,
     ThreadAnswerComponent,
+    ChatContainerComponent,
   ],
   imports: [
     BrowserModule,

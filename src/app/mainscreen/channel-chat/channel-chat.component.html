@@ -28,7 +28,10 @@
         </header>
     </div>
 
-    <div class="channel-chat-container" #chatContainer>
+
+
+    <app-chat-container></app-chat-container>
+    <!-- <div class="channel-chat-container" #chatContainer>
         <div *ngFor="let message of allMessages; let chatIndex = index">
             <div class="seperator"></div>
             <div class="date-incoming-message">
@@ -89,7 +92,6 @@
 
                     <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
                         (click)="openThread(message.messageID)">
-                        <!-- <div>{{answer.answertext}}</div> -->
                         <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
                         <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime
                             }}</div>
@@ -119,7 +121,7 @@
                     </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="footer-write-new-message">
         <div>

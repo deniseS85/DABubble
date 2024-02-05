@@ -123,21 +123,26 @@
 
     <div class="footer-write-new-message">
         <div>
-            <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
-                [(ngModel)]="messagetext" (keyup.enter)="addMessage()"></Textarea>
+          <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
+            [(ngModel)]="messagetext" (keyup.enter)="addMessage()"></textarea>
         </div>
         <div class="footer-line-icons">
-            <div class="footer-icons-left">
-                <mat-icon>add</mat-icon>
-                <div class="seperator-vert"></div>
-                <mat-icon>mood</mat-icon>
-                <mat-icon>alternate_email</mat-icon>
+          <div class="footer-icons-left">
+            <mat-icon>add</mat-icon>
+            <div class="seperator-vert"></div>
+            <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
+              <div (mouseleave)="toggleEmojiFooter()" class="emoji-footer-selection" *ngIf="isShowEmojiFooter">
+                <app-emoji-picker (emojiSelect)="addEmojiToMessage($event); toggleEmojiFooter()"></app-emoji-picker>
+              </div>
+              <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
             </div>
-            <div class="footer-icons-right">
-                <mat-icon (click)="addMessage()">send_icon</mat-icon>
-            </div>
+            <mat-icon>alternate_email</mat-icon>
+          </div>
+          <div class="footer-icons-right">
+            <mat-icon (click)="addMessage()">send_icon</mat-icon>
+          </div>
         </div>
-    </div>
+      </div>
 </div>
 
 <!---------------------------------------------- POPUPS ---------------------------------------------->

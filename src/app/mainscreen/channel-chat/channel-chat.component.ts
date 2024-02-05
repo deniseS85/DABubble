@@ -93,6 +93,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   userIsOnline: boolean = false;
   officialChannel: boolean = true;
   isChannelCreator: boolean = true;
+  isShowEmojiFooter: boolean = false;
 
   user: User = new User;
   channel: Channel = new Channel;
@@ -111,7 +112,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   newChannelName: string = '';
   newChannelDescription: string = '';
 
-  messagetext: string = '';
+  messagetext: any = '';
   allMessages: any[] = [];
   userFullName: string = '';
 
@@ -270,6 +271,20 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         message.isEmojiBelowAnswerOpen = !message.isEmojiBelowAnswerOpen;
       }
     });
+  }
+
+  toggleEmojiFooter() {
+    this.isShowEmojiFooter = !this.isShowEmojiFooter;
+  }
+
+  closeEmojiFooter() {
+    this.isShowEmojiFooter = false;
+  }
+
+  addEmojiToMessage(event: any) {
+    this.messagetext += event.emoji.native;
+    console.log(event)
+    console.log(this.messagetext);
   }
 
   /**

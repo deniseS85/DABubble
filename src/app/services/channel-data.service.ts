@@ -24,24 +24,18 @@ export class ChannelDataService {
 
  /*  newChannelMember: string = ''; */
   
-  /* 
-  items$;
-  items; */
 
-  
+/*   items$;
+  items; 
+   */
   unsubChannelUser: Unsubscribe | undefined;
 
   constructor(
     private channelService: ChannelService
   ) {
     this.loadFirstChannelID();
-<<<<<<< HEAD
-    
-    /* this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
-=======
 
-    this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
->>>>>>> 679690ed113621247526f98ffa002190220c1b29
+   /*  this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
     this.items = this.items$.subscribe((channel) => {
       let channelInfo = new Channel(channel);
       this.channelName = channelInfo.channelname;
@@ -49,12 +43,8 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
-<<<<<<< HEAD
-    }); */
-=======
       this.changeSelectedChannel(channelInfo.channelname);
-    });
->>>>>>> 679690ed113621247526f98ffa002190220c1b29
+    }); */
     
   }
 
@@ -68,7 +58,6 @@ export class ChannelDataService {
     this.channelService.getAllChannels().then((channels => {
       if (channels.length > 0) {
         this.channelID = channels[0]['channelID'];
-        console.log(this.channelID);
       }
     }));
   }

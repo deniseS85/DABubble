@@ -1,10 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
-import { Firestore, Unsubscribe, docData, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, docData, onSnapshot, orderBy, query } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
-import { Observable, Subject, map } from "rxjs";
-import { query, getDocs, collection, doc } from 'firebase/firestore';
-import { AuthService } from './auth.service';
+import { Subject } from "rxjs";
+import { Message } from '../models/message.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,16 +16,16 @@ export class ChannelDataService {
   channelCreator: string = '';
   channelDescription: string = '';
   channelUsers: any[] = [];
-  channelID: string = '';
+  channelID: string = 'LulqsvoACegLC7vCdXZo';
   channelMessages: any[] = [];
   private highlightUserSubject = new Subject<string>();
   highlightUser$ = this.highlightUserSubject.asObservable();
 
  /*  newChannelMember: string = ''; */
   
-  /* 
+  
   items$;
-  items; */
+  items;
 
   
   unsubChannelUser: Unsubscribe | undefined;
@@ -34,9 +33,9 @@ export class ChannelDataService {
   constructor(
     private channelService: ChannelService
   ) {
-    this.loadFirstChannelID();
+   /*  this.loadFirstChannelID(); */
     
-    /* this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
+    this.items$ = docData(this.channelService.getSingleChannel(this.channelID));
     this.items = this.items$.subscribe((channel) => {
       let channelInfo = new Channel(channel);
       this.channelName = channelInfo.channelname;
@@ -44,24 +43,25 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
-    }); */
+    });
     
   }
 
- /*  ngOnDestroy() {
+  ngOnDestroy() {
     if (this.unsubChannelUser) {
       this.unsubChannelUser();
     }
-  } */
+  }
 
-  loadFirstChannelID() {
+/*   loadFirstChannelID() {
     this.channelService.getAllChannels().then((channels => {
       if (channels.length > 0) {
         this.channelID = channels[0]['channelID'];
-        console.log(this.channelID);
+
+        console.log('onload channelID:',this.channelID);
       }
     }));
-  }
+  } */
 
   async changeSelectedChannel(selectedChannelName: string) {
       this.channelName = selectedChannelName;
@@ -74,6 +74,7 @@ export class ChannelDataService {
             this.channelCreator = currentChannel.channelCreator;
             this.channelDescription = currentChannel.channelDescription;
             this.channelID = currentChannel.channelID;
+            console.log('select channel:', this.channelID)
           } 
         });
         unsubChannel;
@@ -84,6 +85,8 @@ export class ChannelDataService {
   highlightUserInWorkspace(userFullName: string): void {
     this.highlightUserSubject.next(userFullName);
   }
+
+ 
 
 }
 

@@ -55,16 +55,15 @@
                                 <div class="last-emoji" >{{ emoji }}</div>
                             </div>
                             <div class="emoji-container">
-                                <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png" alt=""
-                                    class="react-icon">
+                                <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png">
                                 <div *ngIf="message.isEmojiOpen"
                                     [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-1' : 'emoji-selection right-43'">
                                     <app-emoji-picker
                                         (emojiSelect)="handleReactionMessage($event, message); closeEmojiContainers(chatIndex)"></app-emoji-picker>
                                 </div>
                             </div>
-                            <div class="react-icon-hover">
-                                <img class="react-icon" src="./assets/img/Answer.png" alt=""
+                            <div class="react-icon">
+                                <img src="./assets/img/Answer.png" alt=""
                                     (click)="openThread(message.messageID)">
                             </div>
                             <div *ngIf="isCurrentUser(chatIndex)">
@@ -110,8 +109,7 @@
                             <div class="threadContainerTextReactionsAmount">{{reaction.user.length}}</div>
                         </div>
                         <div class="emoji-below-answer-container" (mouseleave)="closeEmojiContainers(chatIndex)">
-                            <img (click)="toggleEmojiBelowAnswer($event, chatIndex)" src="./assets/img/add_reaction.png" alt=""
-                                class="react-icon">
+                            <img (click)="toggleEmojiBelowAnswer($event, chatIndex)" src="./assets/img/add_reaction.png">
                             <div *ngIf="message.isEmojiBelowAnswerOpen"
                                 class="emoji-below-answer-selection">
                                 <app-emoji-picker

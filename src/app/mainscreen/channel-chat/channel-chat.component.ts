@@ -13,6 +13,7 @@ import { MainscreenComponent } from '../mainscreen.component';
 import { ReactionsService } from '../../services/reactions.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 
 
 @Component({
@@ -139,6 +140,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     public channelDataService: ChannelDataService,
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
+    private storage: Storage,
   ) {
 
     this.userID = this.route.snapshot.paramMap.get('id');
@@ -698,9 +700,11 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
             counter: 0,
             lastAnswerTime: ""
           },
+          fileToUpload: this.fileToUpload,
         }
         this.messagetext = '';
         this.channelService.sendMessage(this.channelDataService.channelID, message);
+        this.fileToUpload = '';
         setTimeout(() => {
           this.scrollToBottom();
         }, 10);
@@ -899,4 +903,68 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   editMessage() {
 
   }
+
+
+
+  // ----------------------------file upload function-----------------------------------------
+
+  isShowFileUpload: boolean = false;
+  fileToUpload = {};
+
+  toggleFileUpload() {
+    this.isShowFileUpload = !this.isShowFileUpload;
+  }
+
+  deletFileUpload() {
+    this.fileToUpload = {};
+    this.isShowFileUpload = false;
+  }
+
+  async uploadFiles(event: any) {
+    let files = event.target.files;
+    console.log(files);
+  
+    if (!files || files.length === 0) {
+      return;
+    }
+  
+    let file = files[0];
+  
+    if (!(await this.isValidFile(file))) {
+      return;
+    }
+  
+    let timestamp = new Date().getTime();
+    let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
+  
+    uploadBytes(imgRef, file).then(async () => {
+        let url = await getDownloadURL(imgRef);
+        this.fileToUpload = url;
+    });
+}
+
+async isValidFile(file: File): Promise<boolean> {
+    if (file.size > 500000) {
+      this.showSnackbar('Error: Sorry, your file is too large.');
+      return false;
+    }
+  
+    let allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'application/pdf'];
+    if (!allowedFormats.includes(file.type)) {
+      this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG, PDF.');
+      return false;
+    }
+  
+    return true;
+}
+
+showSnackbar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
+}
+
+
+// ------------------------------------file upload function end---------------------------------------
+
 }

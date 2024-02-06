@@ -153,8 +153,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.checkIsGuestLogin();
     }
     this.getAllUserInfo();
-    this.loadMessagesOfThisChannel();
-    this.loadUsersOfThisChannel();
+    if (this.channelDataService.channelID) {
+      this.loadMessagesOfThisChannel();
+      this.loadUsersOfThisChannel();
+    } 
   }
 
   ngAfterViewChecked() {
@@ -716,27 +718,28 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
 
   async loadMessagesOfThisChannel() {
-    const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
+    const channelID = this.channelDataService.channelID;
+    const queryAllAnswers = await query(this.channelService.getMessageRef(channelID));
     onSnapshot(queryAllAnswers, async (querySnapshot) => {
-      this.allMessages = [];
+        this.allMessages = [];
 
-      for (const doc of querySnapshot.docs) {
-        const messageData = doc.data();
-        const userData = await this.loadUserData(messageData['messageUserID']);
+        for (const doc of querySnapshot.docs) {
+            const messageData = doc.data();
+            const userData = await this.loadUserData(messageData['messageUserID']);
 
-        if (userData) {
-          const message = {
-            ...messageData,
-            ...userData,
-          };
-          this.allMessages.push(message);
-          this.loadAnswers(messageData['messageID'], doc);
+            if (userData) {
+                const message = {
+                    ...messageData,
+                    ...userData,
+                };
+                this.allMessages.push(message);
+                this.loadAnswers(messageData['messageID'], doc);
+            }
+            this.sortMessagesByTimeStamp();
         }
-        this.sortMessagesByTimeStamp();
-      }
     });
     this.updateMessagesWithUserData();
-  }
+}
 
   sortMessagesByTimeStamp() {
     this.allMessages.sort((a, b) => {

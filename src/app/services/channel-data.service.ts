@@ -30,7 +30,7 @@ export class ChannelDataService {
   items; 
    */
   unsubChannelUser: Unsubscribe | undefined;
-  unsubChannelMessages: Unsubscribe | undefined;
+
 
   constructor(
     private channelService: ChannelService
@@ -44,9 +44,7 @@ export class ChannelDataService {
     if (this.unsubChannelUser) {
       this.unsubChannelUser();
     }
-    if (this.unsubChannelMessages) {
-      this.unsubChannelMessages();
-    }
+
   }
 
 
@@ -58,28 +56,18 @@ export class ChannelDataService {
   }
 
   private subscribeToChannelUpdates() {
-    console.log('Vor onSnapshot');
-    const channelRef = this.channelService.getChannelRef();
-   
-    if (channelRef instanceof CollectionReference) {
+      const channelRef = this.channelService.getSingleChannel(this.channelID);
+
       this.unsubChannelUser = onSnapshot(channelRef, (snapshot) => {
-        console.log('onSnapshot callback for channels');
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === 'modified') {
-            const modifiedChannel = new Channel(change.doc.data());
-            
-            console.log('Modified Channel:', modifiedChannel);
-            if (modifiedChannel.channelname === this.channelName) {
-              this.channelName = modifiedChannel.channelname;
-              this.channelUsers = modifiedChannel.channelUsers;
-              this.channelCreator = modifiedChannel.channelCreator;
-              this.channelDescription = modifiedChannel.channelDescription;
-              this.channelID = modifiedChannel.channelID;
-            }
-          }
-        });
+          const channel = snapshot.data();
+          let channelInfo = new Channel(channel);
+          this.channelName = channelInfo.channelname;
+          this.channelUsers = channelInfo.channelUsers;
+          this.channelCreator = channelInfo.channelCreator;
+          this.channelDescription = channelInfo.channelDescription;
+          this.channelID = channelInfo.channelID;
+          /* this.changeSelectedChannel(channelInfo.channelname); */
       });
-    }
   }
   
   
@@ -114,33 +102,6 @@ export class ChannelDataService {
 }
 
 /* ################ ursprungs code ########################## 
-
-import { Injectable, inject } from '@angular/core';
-import { Channel } from '../models/channel.class';
-import { Firestore, Unsubscribe, docData, onSnapshot } from '@angular/fire/firestore';
-import { ChannelService } from './channel.service';
-import { Observable, Subject, map } from "rxjs";
-import { query, getDocs, collection, doc } from 'firebase/firestore';
-import { AuthService } from './auth.service';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ChannelDataService {
-  firestore: Firestore = inject(Firestore);
-  channel = new Channel;
-  channelInfo: Channel[] = [];
-  channelName: string = '';
-  channelCreator: string = '';
-  channelDescription: string = '';
-  channelUsers: any[] = [];
-  channelID: string = '';
-  channelMessages: any[] = [];
-  private highlightUserSubject = new Subject<string>();
-  highlightUser$ = this.highlightUserSubject.asObservable();
-
- /*  newChannelMember: string = ''; */
-  
 
 /*   items$;
   items; 

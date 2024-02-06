@@ -152,7 +152,7 @@
 
 
 <div class="popup-background" *ngIf="addUSerOpen" (click)="addUSerOpen = false; closePopup()">
-    <div class="popup-maincontainer smallPopup addUserPopup" (click)="doNotClose($event)">
+    <div class="popup-maincontainer smallPopup" (click)="doNotClose($event)">
         <div class="headline-container">
             <span class="fw-700">Leute hinzufügen</span>
             <div class="close-icon-container" (click)="addUSerOpen = false; closePopup()">
@@ -271,7 +271,7 @@
 
 
 <div class="popup-background" *ngIf="editChannelOpen" (click)="editChannelOpen = false; closePopup()">
-    <div class="popup-maincontainer bigPopup editChannelPopup" (click)="doNotClose($event)">
+    <div class="popup-maincontainer bigPopup" (click)="doNotClose($event)">
         <div class="headline-container">
             <span class="fw-700"><span>#</span><span> {{ this.channelDataService.channelName }}</span></span>
             <div class="close-icon-container" (click)="editChannelOpen = false; closePopup()">

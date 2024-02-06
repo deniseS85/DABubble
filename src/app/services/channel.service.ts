@@ -86,8 +86,6 @@ export class ChannelService {
     setDoc(ref, newMessage);
   }
 
-
-
   getAnswerRef(channelID: string, messageID: string) {
     return collection(this.firestore, "channels", channelID, "messages", messageID, "answers")
   }

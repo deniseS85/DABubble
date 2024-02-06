@@ -26,17 +26,11 @@
                 <div class="reactionContainer" [ngClass]="{'absoluteLeft' : answer.isOnline}">
                     <div class="reactionMenu">
                         <div class="emoji-container">
-                            <img (click)="toggleEmoji(answer.answerID)" src="../../../assets/img/add_reaction.png" alt="">
+                            <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">
                             <div *ngIf="answer.isEmojiOpen" class="emoji-selection">
-                                <emoji-mart class="emoji-mart" 
-                                [style]="{ width: '240px', cursor: 'default' }"
-                                (emojiSelect)="handleReaction($event, answer)" 
-                                color=#535AF1 
-                                set="apple"
-                                [enableSearch]="false" 
-                                [showPreview]="false" 
-                                title="Choose your emoji">
-                                </emoji-mart>
+                                
+                                <app-emoji-picker
+                                (emojiSelect)="handleReactionMessage($event, answer); closeEmojiContainers(chatIndex)"></app-emoji-picker>
                             </div>
                         </div>
                         <div class="editMessage" *ngIf="answer.isOnline">
@@ -57,8 +51,6 @@
                     {{answer.answertext}}
                 </div>
 
-
-<!-- ################################# user wird nicht gespeichert #################################################### -->
                 <div class="threadContainerTextReactions">
                     <div class="threadContainerTextReactionsEmojis" *ngFor="let answer of answer.react">
                         <div class="reactionsInfoContainer">
@@ -73,7 +65,7 @@
                         <div class="threadContainerTextReactionsAmount">{{answer.user.length}}</div>
                     </div>                    
                     <div class="emoji-con">
-                        <img (click)="toggleEmoji(answer.answerID)" src="../../../assets/img/add_reaction.png" alt="">        
+                        <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">        
                     </div>
                 </div>
             </div>

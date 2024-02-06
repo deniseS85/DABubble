@@ -26,8 +26,8 @@ export class ThreadComponent {
   activeChannelName: any = '';
 
   answer: any;
-  answertext: string = '';
-  isAnswertextEmojiOpen = false;
+ /*  answertext: string = ''; */
+ /*  isAnswertextEmojiOpen = false; */
   allAnswers: any[] = [];
   userFullName: string = '';
   userIsOnline: boolean = false;
@@ -36,14 +36,14 @@ export class ThreadComponent {
 
   allUsers: User[] = [];
   userID: any;
-  userImg: string = '';
-  userNameComplete: string = '';
+/*   userImg: string = ''; */
+/*   userNameComplete: string = ''; */
 
   userList;
   unsubUser: Unsubscribe | undefined;
 
 /*   reaction: string = ""; */
-  allReactions: any[] = [];
+  /* allReactions: any[] = []; */
 
   firestore: Firestore = inject(Firestore);
 
@@ -168,6 +168,19 @@ export class ThreadComponent {
         this.allUsers.push(user);
       });
     });
+  }
+
+
+   /**
+ * Closes the emoji containers for a specific message.
+ * Sets the isEmojiOpen property of the message at the specified chatIndex to false.
+ * 
+ * @param {number} chatIndex - The index of the message in the allMessages array.
+ * @returns {void}
+ */
+   closeEmojiContainers(chatIndex: number): void {
+    this.allAnswers[chatIndex].isEmojiOpen = false;
+    this.allAnswers[chatIndex].isEmojiBelowAnswerOpen = false;
   }
 
 
@@ -317,20 +330,18 @@ export class ThreadComponent {
 
   // Emojis
 
-  toggleEmoji(id: string) {
-    this.allAnswers.forEach((answer) => {
-      if (answer.answerID === id) {
+  toggleEmoji(event: Event, chatIndex: number): void {
+    this.allAnswers.forEach((answer, index) => {
+      if (index === chatIndex) {
         answer.isEmojiOpen = !answer.isEmojiOpen;
-      } else {
-        answer.isEmojiOpen = false;
-      }
+      } 
     });
   }
 
 
-  handleReaction(event: any, answer: any){
+  handleReactionMessage(event: any, answer: any){
     const typ = 'threadReaction';
-    this.reactionService.handleReaction(this.channelID, this.messageID, answer.answerID, '', '', event, answer, this.userNameComplete, typ)
+    this.reactionService.handleReaction(this.channelID, this.messageID, answer.answerID, '', '', event, answer, this.userFullName, typ)
   }
 
 

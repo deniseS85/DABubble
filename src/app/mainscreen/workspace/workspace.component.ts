@@ -273,7 +273,36 @@ export class WorkspaceComponent implements OnInit {
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
     this.renderer.addClass(selectableElement, 'selected');
+    this.main.chatOpen = false;
+    this.main.channelOpen = true;    
   }
+
+
+  /**
+   * Handles the click event on selectable elements. Removes the class "selected" 
+   * from all other elements and sets this class to clicked elements
+   */
+  handleClickChat(event: MouseEvent, userID: string): void {
+    this.setChatUserID(userID)
+    console.log("channelwechsel")
+    const target = event.target as HTMLElement;
+    this.selectedChannel(target);
+    const selectableElement = this.findParentElement(target);
+    this.elRef.nativeElement
+      .querySelectorAll('.selectable')
+      .forEach((element: HTMLElement) => element.classList.remove('selected'));
+    this.renderer.addClass(selectableElement, 'selected');
+    this.main.chatOpen = false;
+    this.main.channelOpen = false;
+    setTimeout(() => {
+      this.main.chatOpen = true;
+    }, 0.2);
+    }
+
+    setChatUserID(userID: string){
+      this.chatService.userID = userID;
+    }
+
 
   /**
    * Getting channel name from clicked element and forward to change the selected channel

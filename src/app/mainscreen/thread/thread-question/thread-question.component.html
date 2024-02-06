@@ -1,6 +1,9 @@
 
-<div class="threadContainerQuestion">
-    <img class="profilPic" src="./assets/img/avatarNoah.png" alt="">
+<div class="threadContainerQuestion" *ngIf="messageFullyLoaded">
+    <div class="profile-message-img">
+        <img class="profilPic" [src]="userImg.startsWith('https') ? userImg : './assets/img/' + userImg" alt="">
+        <p class="active-point" *ngIf="isOnline"></p>
+    </div>
     <div class="threadContainerQuestionContainer">
 
         <div class="reactionContainer">
@@ -22,7 +25,7 @@
 
 
         <div class="threadContainerQuestionInfo">
-            <div class="threadContainerInfoPerson">{{loadedMessage.messageUserName}}</div>
+            <div class="threadContainerInfoPerson">{{username}}</div>
             <div class="threadContainerInfoTime">{{loadedMessage.timestamp}} Uhr</div>
         </div>
         <div class="threadContainerTextLeft">

@@ -143,16 +143,6 @@ export class ThreadComponent {
   }
 
 
- /*  async loadCurrentUser() {
-    const data = await getDoc(doc(collection(this.firestore, 'users'), this.userID));
-    const currentUser = data.data();
-    
-    if(currentUser){
-      this.userNameComplete = currentUser['firstname'] + " " + currentUser['lastname'];
-      this.userImg = currentUser['profileImg']
-    }
-  } */
-
    /**
    * Retrieves all user information from the database.
    * Subscribes to changes in the user data and updates the local allUsers array accordingly.
@@ -204,33 +194,12 @@ export class ThreadComponent {
                 isEmojiOpen: false
             };
             this.allAnswers.push(answer);
-            console.log(this.allAnswers)
         }
         this.sortMessagesByTimeStamp();
       }
   });
   this.updateMessagesWithUserData();
 
-
-
-
-
-     /*  querySnapshot.forEach((doc: any) => {
-        this.allReactions = [];
-        
-        if (doc.data().answerUserName === this.userNameComplete) {
-          const newData = doc.data();
-          const nd = ({ ...newData, activeUserAnswers: true })
-          this.allAnswers.push(nd);
-  
-        } else {
-          const newData = doc.data();
-          const nd = ({ ...newData, activeUserAnswers: false })
-          this.allAnswers.push(nd);
-                
-        }       
-      })
-    }) */
   }
 
   sortMessagesByTimeStamp() {
@@ -349,7 +318,7 @@ export class ThreadComponent {
 
 
   /**
-   * worksapce function
+   * worksapce function to give every UserPair an own chat
    */
 
 
@@ -384,21 +353,5 @@ export class ThreadComponent {
   //         );          
   //       });
   // }
-
-  // async loadChannels() {
-  //   const queryAllChannels = query(this.channelService.collectionRef);    
-
-  //   onSnapshot(queryAllChannels, (querySnapshot) => {
-  //     this.channels = [];
-  //     querySnapshot.forEach((doc: any) => {
-  //       doc.data().channelUsers.forEach((user:any) => {
-  //         if(user.id === this.userID){
-  //           this.channels.push(doc.data());
-  //         } else { return }
-  //       })        
-  //     });
-  //   });
-  // }
-
 
 }

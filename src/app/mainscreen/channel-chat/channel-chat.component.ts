@@ -126,6 +126,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   private shouldScrollToBottom: boolean = true;
 
+  isChannelOpen: boolean = false;
+  isChatOpen: boolean = true;
+
 
   private subscriptions: Subscription[] = [];
 
@@ -146,7 +149,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
   }
-  
+
 
   ngOnInit() {
     if (this.userID) {
@@ -156,7 +159,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     if (this.channelDataService.channelID) {
       this.loadMessagesOfThisChannel();
       this.loadUsersOfThisChannel();
-    } 
+    }
   }
 
   ngAfterViewChecked() {
@@ -166,10 +169,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   ngAfterViewInit() {
-    this.subscriptions.push(
-      this.chatContainer.nativeElement.addEventListener('scroll', this.handleScroll.bind(this))
-    );
-    this.scrollToBottom();
+    if (this.chatContainer) {
+      this.subscriptions.push(
+        this.chatContainer.nativeElement.addEventListener('scroll', this.handleScroll.bind(this))
+      );
+      this.scrollToBottom();
+    }
   }
 
   private handleScroll() {
@@ -511,31 +516,31 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   async deleteCurrentChannel() {
-    
-    this.deleteChannelMessages();    
+
+    this.deleteChannelMessages();
     await deleteDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID))
     window.location.reload();
-    
-    
+
+
   }
 
-  async deleteChannelMessages(){
+  async deleteChannelMessages() {
     const allMessagesRef = query(collection(this.firestore, 'channels', this.channelDataService.channelID, 'messages'));
     const allMessagesDocs = await getDocs(allMessagesRef);
-    
-    allMessagesDocs.forEach( message =>{   
-      
+
+    allMessagesDocs.forEach(message => {
+
       this.deleteMessagesAnswers(message.id)
-       deleteDoc(message.ref);      
+      deleteDoc(message.ref);
       console.log('messages gelöscht', message.ref)
     })
   }
 
 
-  async deleteMessagesAnswers(messageID: string){
+  async deleteMessagesAnswers(messageID: string) {
     const allAnswersRef = query(collection(this.firestore, 'channels', this.channelDataService.channelID, 'messages', messageID, 'answers'));
     const allAnswersDocs = await getDocs(allAnswersRef);
-    
+
     allAnswersDocs.forEach(answer => {
       deleteDoc(answer.ref)
       console.log('answers gelöscht', answer.ref);
@@ -543,7 +548,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
 
- 
+
 
 
 
@@ -686,10 +691,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const userDocSnap = await getDoc(userDocRef);
 
       if (userDocSnap.exists()) {
-       /*  const userData = userDocSnap.data(); */
+        /*  const userData = userDocSnap.data(); */
 
         const message = {
-         /*  messageUserName: userData['firstname'] + ' ' + userData['lastname'], */ //löschen
+          /*  messageUserName: userData['firstname'] + ' ' + userData['lastname'], */ //löschen
           /* messageUserProfileImg: userData['profileImg'], */ //löschen
           messagetext: this.messagetext,
           messageUserID: this.userID,
@@ -720,27 +725,27 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   async loadMessagesOfThisChannel() {
     const channelID = this.channelDataService.channelID;
     const queryAllAnswers = await query(this.channelService.getMessageRef(channelID));
-        onSnapshot(queryAllAnswers, async (querySnapshot) => {
-        this.allMessages = [];
+    onSnapshot(queryAllAnswers, async (querySnapshot) => {
+      this.allMessages = [];
 
-        for (const doc of querySnapshot.docs) {
-            const messageData = doc.data();
-            const userData = await this.loadUserData(messageData['messageUserID']);
+      for (const doc of querySnapshot.docs) {
+        const messageData = doc.data();
+        const userData = await this.loadUserData(messageData['messageUserID']);
 
-            if (userData) {
-                const message = {
-                    ...messageData,
-                    ...userData,
-                    isEmojiOpen: false
-                };
-                this.allMessages.push(message);
-                this.loadAnswers(messageData['messageID'], doc);
-            }
-            this.sortMessagesByTimeStamp();
+        if (userData) {
+          const message = {
+            ...messageData,
+            ...userData,
+            isEmojiOpen: false
+          };
+          this.allMessages.push(message);
+          this.loadAnswers(messageData['messageID'], doc);
         }
+        this.sortMessagesByTimeStamp();
+      }
     });
     this.updateMessagesWithUserData();
-}
+  }
 
   sortMessagesByTimeStamp() {
     this.allMessages.sort((a, b) => {
@@ -868,7 +873,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.updateAnswerInfoStatus(answerInfos, messageID);
     }
 
-    
+
   }
 
 
@@ -883,9 +888,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   openThread(messageID: string) {
     this.main.threadOpen = false;
     this.channelService.activeMessageID = messageID;
+    console.warn(this.channelService.activeMessageID)
     setTimeout(() => {
       this.main.threadOpen = true
-    }, 0.001);
+    }, 0.5);
 
   }
 
@@ -926,48 +932,48 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   async uploadFiles(event: any) {
     let files = event.target.files;
     console.log(files);
-  
+
     if (!files || files.length === 0) {
       return;
     }
-  
+
     let file = files[0];
-  
+
     if (!(await this.isValidFile(file))) {
       return;
     }
-  
+
     let timestamp = new Date().getTime();
     let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
-  
-    uploadBytes(imgRef, file).then(async () => {
-        let url = await getDownloadURL(imgRef);
-        this.fileToUpload = url;
-    });
-}
 
-async isValidFile(file: File): Promise<boolean> {
+    uploadBytes(imgRef, file).then(async () => {
+      let url = await getDownloadURL(imgRef);
+      this.fileToUpload = url;
+    });
+  }
+
+  async isValidFile(file: File): Promise<boolean> {
     if (file.size > 500000) {
       this.showSnackbar('Error: Sorry, your file is too large.');
       return false;
     }
-  
+
     let allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'application/pdf'];
     if (!allowedFormats.includes(file.type)) {
       this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG, PDF.');
       return false;
     }
-  
-    return true;
-}
 
-showSnackbar(message: string): void {
+    return true;
+  }
+
+  showSnackbar(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
     });
-}
+  }
 
 
-// ------------------------------------file upload function end---------------------------------------
+  // ------------------------------------file upload function end---------------------------------------
 
 }

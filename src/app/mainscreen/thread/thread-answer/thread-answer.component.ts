@@ -45,15 +45,12 @@ export class ThreadAnswerComponent {
         if (doc.data().answerUserName === this.userNameComplete) {
           const newData = doc.data();
           const nd = ({ ...newData, activeUserAnswers: true })
-          this.allAnswers.push(nd);
-  
+          this.allAnswers.push(nd);  
         } else {
           const newData = doc.data();
           const nd = ({ ...newData, activeUserAnswers: false })
-          this.allAnswers.push(nd);
-                
-        }
-        
+          this.allAnswers.push(nd);                
+        }        
       })
     })
   }
@@ -102,8 +99,5 @@ export class ThreadAnswerComponent {
   }
 
 
-}
-function laodAnswer() {
-  throw new Error('Function not implemented.');
 }
 

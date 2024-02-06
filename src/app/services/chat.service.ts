@@ -7,6 +7,7 @@ import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
 export class ChatService {
 
   firestore: Firestore = inject(Firestore);
+  userID: string = '';
 
   constructor() { }
 

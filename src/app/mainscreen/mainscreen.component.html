@@ -115,6 +115,7 @@
 
     <div class="mainContainerContent">
         <app-workspace></app-workspace>
+        <app-chat-container *ngIf="chatOpen"></app-chat-container>
         <app-channel-chat *ngIf="channelOpen"></app-channel-chat>
         <app-thread *ngIf="threadOpen"></app-thread>        
     </div>

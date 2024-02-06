@@ -116,7 +116,7 @@
           <div
             class="selectable"
             [attr.data-username]="user.firstname + ' ' + user.lastname"
-            (click)="handleClick($event)"
+            (click)="handleClickChat($event, user.id)"
             *ngFor="let user of sortUsers(allUsers, userID)"
           >
             <span class="profile">

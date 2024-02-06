@@ -17,6 +17,7 @@ export class MainscreenComponent implements OnInit {
     user = new User();
     threadOpen: boolean =  false;
     channelOpen: boolean = true;
+    chatOpen: boolean = false;
     userFirstName: String = '';
     userLastName: String = '';
     userFullName: String = '';

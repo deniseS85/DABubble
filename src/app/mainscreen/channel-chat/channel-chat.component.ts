@@ -686,15 +686,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const userDocSnap = await getDoc(userDocRef);
 
       if (userDocSnap.exists()) {
-        const userData = userDocSnap.data();
+       /*  const userData = userDocSnap.data(); */
 
         const message = {
-          messageUserName: userData['firstname'] + ' ' + userData['lastname'], //löschen
-          messageUserProfileImg: userData['profileImg'], //löschen
+         /*  messageUserName: userData['firstname'] + ' ' + userData['lastname'], */ //löschen
+          /* messageUserProfileImg: userData['profileImg'], */ //löschen
           messagetext: this.messagetext,
           messageUserID: this.userID,
           messageID: '',
-          isEmojiOpen: false,
+          /* isEmojiOpen: false, */
           timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
           date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
           react: [],
@@ -720,7 +720,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   async loadMessagesOfThisChannel() {
     const channelID = this.channelDataService.channelID;
     const queryAllAnswers = await query(this.channelService.getMessageRef(channelID));
-    onSnapshot(queryAllAnswers, async (querySnapshot) => {
+        onSnapshot(queryAllAnswers, async (querySnapshot) => {
         this.allMessages = [];
 
         for (const doc of querySnapshot.docs) {

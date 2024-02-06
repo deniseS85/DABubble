@@ -2,8 +2,9 @@ import { Component, inject } from '@angular/core';
 import { ChannelService } from '../../../services/channel.service';
 import { ChannelDataService } from '../../../services/channel-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { Firestore, collection, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc} from '@angular/fire/firestore';
 import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-threads-send-message',
@@ -12,6 +13,7 @@ import { DatePipe } from '@angular/common';
 })
 export class ThreadsSendMessageComponent {
 
+/*   user: User = new User; */
   channelID: string = "";
   messageID: string = '';
 
@@ -19,29 +21,31 @@ export class ThreadsSendMessageComponent {
   answertext: string = '';
   isAnswertextEmojiOpen: boolean = false;
   userID: any ;
-  currentUsername: string = '';
-  currentUserImg: string = '';
+ /*  currentUsername: string = '';
+  currentUserImg: string = ''; */
 
   firestore: Firestore = inject(Firestore);
+
 
 
   constructor(
     public channelService: ChannelService,
     public channelDataService: ChannelDataService,
     private route: ActivatedRoute,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ){
     this.channelID = this.channelDataService.channelID;
     this.messageID = this.channelService.activeMessageID;
     this.userID = this.route.snapshot.paramMap.get('id');
-    this.getUserData()
+  /*   this.getUserData() */
   }
+
 
 
   /**
    * get Username and ProfilImg
    */
-  async getUserData() {
+/*   async getUserData() {
     const data = await getDoc(doc(collection(this.firestore, 'users'), this.userID));
     const currentUser = data.data();
     
@@ -50,6 +54,8 @@ export class ThreadsSendMessageComponent {
       this.currentUserImg = currentUser['profileImg']
     }
   }  
+   */
+
     
  
   /**
@@ -75,20 +81,25 @@ export class ThreadsSendMessageComponent {
   /**
    * collect all metadatas of answer and send/store it through using channelService
    */
-  sendAnswer() {
-    this.answer = {
-      answertext: this.answertext,
-      answerUserName: this.currentUsername,
-      userProfileImg: this.currentUserImg,
-      answerID: '',
-      activeUserAnswers: false,
-      isEmojiOpen: false,
-      react: [],
-      timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
-      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd') // zum Vergkleiche für anzeige "Heute" oder z.B. "21.Januar"
-    }
+  async sendAnswer() {
+    try {
+      const userDocRef = doc(this.firestore, 'users', this.userID);
+      const userDocSnap = await getDoc(userDocRef);
 
-    this.answertext = '';
-    this.channelService.sendAnswer(this.channelID, this.messageID, this.answer)
+      if (userDocSnap.exists()) {
+          this.answer = {
+            answertext: this.answertext,
+            answerUserID: this.userID,
+            answerID: '',
+            timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
+            date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+            react: [],
+          }
+          this.answertext = '';
+          this.channelService.sendAnswer(this.channelID, this.messageID, this.answer);
+      }
+    } catch(error) {
+      console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+    }
   }
 }

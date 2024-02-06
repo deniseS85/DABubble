@@ -912,7 +912,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   // ----------------------------file upload function-----------------------------------------
 
   isShowFileUpload: boolean = false;
-  fileToUpload = {};
+  fileToUpload: any = '';
 
   toggleFileUpload() {
     this.isShowFileUpload = !this.isShowFileUpload;

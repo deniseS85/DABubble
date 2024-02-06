@@ -327,7 +327,7 @@
     .emoji-footer-selection {
         position: absolute;
         z-index: 100;
-        bottom: 35px;
+        bottom: 30px;
     }
 }
 
@@ -1123,4 +1123,22 @@ input {
 
     }
 }
+
+// --------------------------------file upload function----------------------------------
+
+.file-upload-container {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+        padding-bottom: 5px;
+    }
+}
+
+.file-upload-selection {
+    border: none !important;
+    outline: none !important;
+    padding-bottom: 20px;
+}
+
 

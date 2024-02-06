@@ -61,9 +61,7 @@ export class ChannelDataService {
     console.log('Vor onSnapshot');
     const channelRef = this.channelService.getChannelRef();
    
-  
     if (channelRef instanceof CollectionReference) {
-      // Hier können Sie auf Kanalebene abonnieren
       this.unsubChannelUser = onSnapshot(channelRef, (snapshot) => {
         console.log('onSnapshot callback for channels');
         snapshot.docChanges().forEach((change) => {

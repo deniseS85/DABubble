@@ -11,12 +11,19 @@
 
     <!-- Thread Answers -->
     <div class="answersContainer">
-        <div class="threadContainerAnswer" *ngFor="let answer of allAnswers"
-            [ngClass]="{'threadContainerAnswerReverse' : answer.activeUserAnswers}">
-            <img class="profilPic" src="./assets/img/{{answer.userProfileImg}}" alt="">
-            <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : answer.activeUserAnswers}">
+        <div class="threadContainerAnswer" *ngFor="let answer of allAnswers, let chatIndex = index"
+            [ngClass]="{'threadContainerAnswerReverse' : answer.isOnline}"> 
 
-                <div class="reactionContainer" [ngClass]="{'absoluteLeft' : answer.activeUserAnswers}">
+            <div class="profile-message-img">
+                <img class="profile-img"
+                    [src]="answer.profileImg.startsWith('https') ? answer.profileImg : './assets/img/' + answer.profileImg" alt="">
+                    <p class="active-point" *ngIf="answer.isOnline"></p>
+            </div>
+
+
+            <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : answer.isOnline}">
+
+                <div class="reactionContainer" [ngClass]="{'absoluteLeft' : answer.isOnline}">
                     <div class="reactionMenu">
                         <div class="emoji-container">
                             <img (click)="toggleEmoji(answer.answerID)" src="../../../assets/img/add_reaction.png" alt="">
@@ -32,7 +39,7 @@
                                 </emoji-mart>
                             </div>
                         </div>
-                        <div class="editMessage" *ngIf="answer.activeUserAnswers">
+                        <div class="editMessage" *ngIf="answer.isOnline">
                             <mat-icon>more_vert</mat-icon>
                             <div class="editMessageBtn">
                                 <span (click)="editAnswer(answer.answerID)">Nachricht bearbeiten</span>
@@ -42,13 +49,16 @@
                 </div>
 
                 <div class="threadContainerAnswerInfo"
-                    [ngClass]="{'threadContainerAnswerReverse' : answer.activeUserAnswers}">
-                    <div class="threadContainerInfoPerson">{{answer.answerUserName}}</div>
+                    [ngClass]="{'threadContainerAnswerReverse' : answer.isOnline}">
+                    <div class="threadContainerInfoPerson">{{answer.firstname}} {{answer.lastname}}</div>
                     <div class="threadContainerInfoTime">{{answer.timestamp}} Uhr</div>
                 </div>
-                <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : answer.activeUserAnswers}">
+                <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : answer.isOnline}">
                     {{answer.answertext}}
                 </div>
+
+
+<!-- ################################# user wird nicht gespeichert #################################################### -->
                 <div class="threadContainerTextReactions">
                     <div class="threadContainerTextReactionsEmojis" *ngFor="let answer of answer.react">
                         <div class="reactionsInfoContainer">

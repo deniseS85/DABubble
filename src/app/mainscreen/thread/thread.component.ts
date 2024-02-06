@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
-import { Firestore, arrayRemove, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
 import { ChannelService } from '../../services/channel.service';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog} from '@angular/material/dialog';
@@ -8,7 +8,7 @@ import { EditAnswerComponent } from './edit-answer/edit-answer.component';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { ReactionsService } from '../../services/reactions.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { User } from '../../models/user.class';
 
 
 
@@ -19,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ThreadComponent {
 
+  user: User = new User;
   channelID: string = "";
   messageID: string = '';
 
@@ -28,15 +29,20 @@ export class ThreadComponent {
   answertext: string = '';
   isAnswertextEmojiOpen = false;
   allAnswers: any[] = [];
+  userFullName: string = '';
+  userIsOnline: boolean = false;
 
   loadedMessage: any = '';
 
+  allUsers: User[] = [];
   userID: any;
   userImg: string = '';
   userNameComplete: string = '';
-  // activeUserAnswer: boolean = true;
 
-  reaction: string = "";
+  userList;
+  unsubUser: Unsubscribe | undefined;
+
+/*   reaction: string = ""; */
   allReactions: any[] = [];
 
   firestore: Firestore = inject(Firestore);
@@ -48,13 +54,85 @@ export class ThreadComponent {
     private dialog: MatDialog,
     public channelDataService: ChannelDataService,
     private reactionService: ReactionsService,
+    private authservice: AuthService
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
+    this.userList = this.getUserfromFirebase();
     this.channelID = this.channelDataService.channelID;
     this.messageID = this.channelService.activeMessageID;
-    this.loadAnswers();
-    this.loadCurrentUser();
+    
+   /*  this.loadCurrentUser(); */
     this.getChannelName();
+  }
+
+  ngOnInit() {
+    if (this.userID) {
+      this.checkIsGuestLogin();
+    }
+    this.getAllUserInfo();
+    this.loadAnswers();
+  }
+
+  ngOnDestroy() {
+    this.unsubUser;
+  }
+
+  /**
+  * Retrieves user data from Firebase Firestore.
+  * Populates local user data with the fetched user document.
+  * Sets user online status.
+  * 
+  * @returns {Promise<void>} A Promise that resolves when user data retrieval is completed.
+  */
+  async getUserfromFirebase(): Promise<void> {
+    try {
+      const userDocRef = doc(this.firestore, 'users', this.userID);
+      const userDocSnap = await getDoc(userDocRef);
+      if (userDocSnap.exists()) {
+        this.user = new User(userDocSnap.data());
+        this.user.id = this.userID;
+        this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+        this.userIsOnline = await this.authservice.getOnlineStatus(this.userID);
+      }
+    } catch (error) {
+    }
+  }
+
+  getUserID() {
+    return doc(collection(this.firestore, 'users'), this.userID);
+  }
+
+  /**
+    * Checks if the current user is a guest login.
+    * Retrieves user data from Firestore if the user exists, otherwise sets default values for a guest user.
+    * 
+    * @returns {void}
+    */
+  checkIsGuestLogin(): void {
+    getDoc(this.getUserID()).then((docSnapshot) => {
+      if (docSnapshot.exists()) {
+        // If user exists, retrieve user data
+        this.getUserfromFirebase();
+      } else {
+        // If user does not exist, set default values for a guest user
+        this.userFullName = 'Gast';
+        this.user.profileImg = 'guest-profile.png';
+      }
+    });
+  }
+
+   /**
+   * Get the profile image path for a user.
+   *
+   * @param {User} user - The user object.
+   * @returns {string} The profile image path.
+   */
+   getProfileImagePath(user: User): string {
+    if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+      return user.profileImg;
+    } else {
+      return `./assets/img/${user.profileImg}`;
+    }
   }
 
 
@@ -65,7 +143,7 @@ export class ThreadComponent {
   }
 
 
-  async loadCurrentUser() {
+ /*  async loadCurrentUser() {
     const data = await getDoc(doc(collection(this.firestore, 'users'), this.userID));
     const currentUser = data.data();
     
@@ -73,6 +151,23 @@ export class ThreadComponent {
       this.userNameComplete = currentUser['firstname'] + " " + currentUser['lastname'];
       this.userImg = currentUser['profileImg']
     }
+  } */
+
+   /**
+   * Retrieves all user information from the database.
+   * Subscribes to changes in the user data and updates the local allUsers array accordingly.
+   * 
+   * @returns {void}
+   */
+   getAllUserInfo(): void {
+    this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
+      this.allUsers = [];
+      list.forEach(singleUser => {
+        let user = new User(singleUser.data());
+        user.id = singleUser.id;
+        this.allUsers.push(user);
+      });
+    });
   }
 
 
@@ -82,9 +177,32 @@ export class ThreadComponent {
   async loadAnswers() {
     const queryAllAnswers = await query(this.getAllAnswersRef(this.channelID, this.messageID));
 
-    const unsub = onSnapshot(queryAllAnswers, (querySnapshot) => {
+      onSnapshot(queryAllAnswers, async (querySnapshot) => {
       this.allAnswers = [];
-      querySnapshot.forEach((doc: any) => {
+      
+      for (const doc of querySnapshot.docs) {
+        const answerData = doc.data();
+        const userData = await this.loadUserData(answerData['answerUserID']);
+
+        if (userData) {
+            const answer = {
+                ...answerData,
+                ...userData,
+                isEmojiOpen: false
+            };
+            this.allAnswers.push(answer);
+            console.log(this.allAnswers)
+        }
+        this.sortMessagesByTimeStamp();
+      }
+  });
+  this.updateMessagesWithUserData();
+
+
+
+
+
+     /*  querySnapshot.forEach((doc: any) => {
         this.allReactions = [];
         
         if (doc.data().answerUserName === this.userNameComplete) {
@@ -99,7 +217,52 @@ export class ThreadComponent {
                 
         }       
       })
-    })
+    }) */
+  }
+
+  sortMessagesByTimeStamp() {
+    this.allAnswers.sort((a, b) => {
+      const timestampA = new Date(`${a.date} ${a.timestamp}`);
+      const timestampB = new Date(`${b.date} ${b.timestamp}`);
+      return timestampA.getTime() - timestampB.getTime();
+    });
+  }
+
+  updateMessagesWithUserData() {
+    this.channelService.userData$.subscribe((userData) => {
+      this.allAnswers.forEach((answer) => {
+        if (answer.answerUserID === userData.id) {
+          Object.assign(answer, userData);
+        }
+      });
+    });
+  }
+
+  async loadUserData(messageUserID: string): Promise<any> {
+    const user = this.allUsers.find(u => u.id === messageUserID);
+
+    if (user) {
+      const userDocRef = doc(this.firestore, 'users', messageUserID);
+      const unsubscribe = onSnapshot(userDocRef, (doc) => {
+        if (doc.exists()) {
+          const updatedUser = doc.data();
+          Object.assign(user, updatedUser);
+          this.channelService.userDataSubject.next({ ...user });
+        }
+      });
+
+      const userData = await Promise.resolve({
+        firstname: user.firstname,
+        lastname: user.lastname,
+        profileImg: user.profileImg,
+        isOnline: user.isOnline,
+        unsubscribe: unsubscribe
+      });
+
+      return userData;
+    } else {
+      return null;
+    }
   }
 
 

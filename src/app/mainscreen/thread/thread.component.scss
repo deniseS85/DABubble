@@ -245,10 +245,25 @@
 }
 
 
-
-.profilPic {
-    width: 70px;
-    height: 70px;
+.profile-message-img {
+    border-radius: 100%;
+    object-fit: cover;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    .profile-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 100%;
+    }
+    .active-point {
+        position: absolute;
+        bottom: -4px;
+        right: 0;
+        margin: 0;
+        border: 2px solid white;
+    }
 }
 
 .answerFromRight{

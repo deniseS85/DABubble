@@ -702,11 +702,11 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
             counter: 0,
             lastAnswerTime: ""
           },
-          fileToUpload: this.fileToUpload,
+          fileUpload: this.fileToUpload,
         }
         this.messagetext = '';
         this.channelService.sendMessage(this.channelDataService.channelID, message);
-        this.fileToUpload = '';
+        this.closeFileUpload();
         setTimeout(() => {
           this.scrollToBottom();
         }, 10);
@@ -731,6 +731,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
                 const message = {
                     ...messageData,
                     ...userData,
+                    isEmojiOpen: false
                 };
                 this.allMessages.push(message);
                 this.loadAnswers(messageData['messageID'], doc);
@@ -912,14 +913,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   // ----------------------------file upload function-----------------------------------------
 
   isShowFileUpload: boolean = false;
-  fileToUpload = {};
+  fileToUpload: any = '';
 
   toggleFileUpload() {
     this.isShowFileUpload = !this.isShowFileUpload;
   }
 
-  deletFileUpload() {
-    this.fileToUpload = {};
+  closeFileUpload() {
     this.isShowFileUpload = false;
   }
 

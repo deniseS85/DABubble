@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChatService } from '../../services/chat.service';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { getDocs } from 'firebase/firestore';
 
 @Component({
   selector: 'app-chat-container',
@@ -26,7 +27,7 @@ export class ChatContainerComponent {
   isShowEmojiFooter: boolean = false;
   fileToUpload: any;
   userID: any;
-  chatID: any;
+  chatID: string = '';
   userData: any;
 
   chatPartnerName: string = '';
@@ -36,30 +37,8 @@ export class ChatContainerComponent {
   messagesLoaded: boolean = false;
   unsubscribeUserData: Unsubscribe | undefined;
 
-  
-  message = {
-    messageUserName:'Klemens',
-    messageUserProfileImg: 'https://firebasestorage.googleapis.com/v0/b/dabubble-69322.appspot.com/o/images%2F1706965068726_portrait2_edge.png?alt=media&token=c793c2f0-e9ac-43c0-b4a9-0705a51df6e5',
-    messagetext: 'hallo',
-    messageUserID: '',
-    messageid: '',
-    timestamp: '12:11',
-    date: '2021-11-32',
-    isEmojiOpen: false,
-    react: [
-      {emoji: '',
-        user: 'Klemens'}
-    ],
-    answerInfo: {
-            counter: 0,
-            lastAnswerTime: ""
-          },
-    activeUser: true,
-    isOnline: true
-  }
-
   firestore: Firestore = inject(Firestore);
-  
+
   constructor(
     private channelService: ChannelService,
     public channelDataService: ChannelDataService,
@@ -68,30 +47,55 @@ export class ChatContainerComponent {
     private storage: Storage,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
-  ){
+  ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.loadChatID();
-    this.getUserData();    
+    this.getUserData();
+    // this.newDMChat()
   }
 
 
-  async loadChatID(){
+  async loadChatID() {
     const chatPartnerID = this.chatService.userID;
-    const allChatsRef = await query(collection(this.firestore, "chats"));
+    const allChatsRef = await getDocs(collection(this.firestore, "chats"));
+    let chatFound = false;
 
-    const snap = onSnapshot(allChatsRef,(chats) => {
-        chats.forEach(chat =>{
-          let array: any[] = [];
-          const chatData = chat.data();          
-          chatData['chatUsers'].forEach((user: any) =>{
-            array.push(user.id)            
-          })
-          if(array.includes(this.userID) && array.includes(chatPartnerID)){
-            this.chatID = chat.data()['chatID'];
-            this.loadMessagesOfThisChat()
-          }
-        })
-    })    
+    if(!chatFound){
+      for (const chat of allChatsRef.docs) {
+        const chatData = chat.data();
+        const chatUsers = chatData['chatUsers'];
+        
+        let counter= 0;
+  
+        if (chatUsers.includes(chatUsers.id)){
+          counter++
+  
+        }
+        if (chatUsers.includes(chatPartnerID)){
+          counter++
+        }
+  
+        if(counter == 2){
+          console.log(chatData)
+          chatFound = true
+        }
+    }
+    
+
+      // Überprüfen, ob beide Benutzer in diesem Chat vorhanden sind
+      // if (
+      //   (chatUsers.includes(this.userID) && chatUsers.includes(chatPartnerID)) 
+      // ) {
+      //   this.chatID = chatData['chatID'];
+  
+      //   chatFound = true;
+      //   console.log(this.userID, chatPartnerID, this.chatID);
+  
+      //   break; // Schleife abbrechen, wenn der Chat gefunden wurde
+      // }
+    }
+      
+    
   }
 
 
@@ -106,26 +110,24 @@ export class ChatContainerComponent {
         this.isOnline = userData['isOnline'];
         this.channelService.userDataSubject.next({ ...userData });
 
-
-      }      
+      }
     });
     this.unsubscribeUserData = unsubscribe;
-  
+
   }
 
   async loadMessagesOfThisChat() {
-    const queryAllAnswers = await query(collection(this.firestore, "chats", this.chatID, "messages"));
     
-    console.error(queryAllAnswers)
+    const queryAllAnswers = await query(collection(this.firestore, "chats", this.chatID, "messages"));
+
     onSnapshot(queryAllAnswers, (querySnapshot) => {
-      console.error(querySnapshot)
+
       this.allMessages = [];
-      
-      querySnapshot.forEach(async (message) =>{
+      querySnapshot.forEach(async (message) => {
         this.userID = message.data()['messageUserID'];
         const userDatas = await getDoc(doc(this.firestore, 'users', this.userID));
 
-        if(message.data()['messageUserID'] === this.userID){
+        if (message.data()['messageUserID'] === this.userID) {
 
           let updatedMessage = ({
             ...message.data(),
@@ -143,17 +145,10 @@ export class ChatContainerComponent {
             userImg: userDatas.data()!['profileImg'],
             isOnline: userDatas.data()!['isOnline'],
             activeUser: false
-          }) 
+          })
           this.allMessages.push(updatedMessage);
         }
-         
-        
-        
-        
-        
       })
-
-      console.log(this.allMessages)
     });
   }
 
@@ -175,20 +170,22 @@ export class ChatContainerComponent {
 
 
 
-  toggleEmoji(id: string){
+  toggleEmoji(id: string) {
 
   }
 
-  handleReaction($event: any, message: any){
+  handleReaction($event: any, message: any) {
 
   }
 
-  editAnswer(id: string){
+  editAnswer(id: string) {
 
   }
 
 
-  sendMessage(){
+  sendMessage() {
+    console.warn(this.chatID)
+    this.userID = this.route.snapshot.paramMap.get('id');
 
     const message = {
       messagetext: this.messagetext,
@@ -229,47 +226,82 @@ export class ChatContainerComponent {
   async uploadFiles(event: any) {
     let files = event.target.files;
     console.log(files);
-  
+
     if (!files || files.length === 0) {
       return;
     }
-  
+
     let file = files[0];
-  
+
     if (!(await this.isValidFile(file))) {
       return;
     }
-  
+
     let timestamp = new Date().getTime();
     let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
-  
+
     uploadBytes(imgRef, file).then(async () => {
-        let url = await getDownloadURL(imgRef);
-        this.fileToUpload = url;
+      let url = await getDownloadURL(imgRef);
+      this.fileToUpload = url;
     });
-}
-
-async isValidFile(file: File): Promise<boolean> {
-  if (file.size > 500000) {
-    this.showSnackbar('Error: Sorry, your file is too large.');
-    return false;
   }
 
-  let allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'application/pdf'];
-  if (!allowedFormats.includes(file.type)) {
-    this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG, PDF.');
-    return false;
+  async isValidFile(file: File): Promise<boolean> {
+    if (file.size > 500000) {
+      this.showSnackbar('Error: Sorry, your file is too large.');
+      return false;
+    }
+
+    let allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'application/pdf'];
+    if (!allowedFormats.includes(file.type)) {
+      this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG, PDF.');
+      return false;
+    }
+
+    return true;
   }
 
-  return true;
+
+  showSnackbar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
+  }
+
+
+  newDMChat() {
+
+    const allUsersQuery = query(this.channelService.getUsersRef())
+
+    let newPair: any[] = [];
+
+    onSnapshot(allUsersQuery, (querySnapshot) => {
+
+      // build Array with allUsers
+      querySnapshot.forEach((doc: any) => {
+
+        this.allUsers.push(doc.data())
+
+        this.allUsers.forEach((user: any) => {
+
+          newPair = [];
+          newPair.push(user.id, doc.data().id)
+          const chatname = user.firstname + ' & ' + doc.data().firstname;
+          const chatUsers = newPair;
+          this.chatService.createNewChat(chatname, chatUsers)
+
+        })
+
+
+
+      },
+      );
+    });
+  }
+
+
 }
 
-
-showSnackbar(message: string): void {
-  this.snackBar.open(message, 'Close', {
-    duration: 3000,
-  });
-}
-
-
+function unsubscribe() {
+  throw new Error('Function not implemented.');
 }

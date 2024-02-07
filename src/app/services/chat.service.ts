@@ -48,6 +48,7 @@ export class ChatService {
   sendMessage(message: any, chatID: string){
     const ref = doc(collection(this.firestore, "chats", chatID, "messages"));
     const newMessage = ({ ...message, messageID: ref.id });
+    console.log(chatID)
     setDoc(ref, newMessage);
   }
 }

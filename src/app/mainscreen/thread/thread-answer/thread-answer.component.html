@@ -1,5 +1,5 @@
 
-    <div class="threadContainerAnswer" *ngFor="let answer of allAnswers"
+    <div class="threadContainerAnswer" *ngFor="let answer of allAnswers; let chatIndex = index"
         [ngClass]="{'threadContainerAnswerReverse' : answer?.activeUserAnswers}">
 
         <app-thread-answer ></app-thread-answer>

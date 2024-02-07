@@ -166,3 +166,14 @@ export class ChannelService {
 
 
 }
+
+
+// async getAllUsers(): Promise<any[]> {
+//   const querySnapshot = await getDocs(this.collectionRef);
+//   const users: any[] = [];
+//   querySnapshot.forEach((doc) => {
+//     users.push(doc.data());
+//   });
+//   console.log(users);
+//   return users;
+// }

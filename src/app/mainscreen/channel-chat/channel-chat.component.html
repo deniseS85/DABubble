@@ -86,7 +86,8 @@
                     <div
                         [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
                         {{ message.messagetext }}</div>
-                        <img class="uploaded-files" [src]="message.fileUpload">
+                        <img class="uploaded-files" [src]="message.fileUpload" *ngIf="isFileUploaded(chatIndex)">
+                        {{isFileUploaded(chatIndex)}}
 
                     <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
                         (click)="openThread(message.messageID)">
@@ -140,7 +141,7 @@
             </div>
             <mat-icon>alternate_email</mat-icon>
           </div>
-          <div class="file-upload-container"  *ngIf="isShowFileUpload">
+          <div class="file-upload-container" *ngIf="isShowFileUpload">
               <input type="file" (change)="uploadFiles($event)" class="file-upload-selection">
               <mat-icon (click)="closeFileUpload()">delete</mat-icon>
           </div>

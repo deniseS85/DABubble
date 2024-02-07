@@ -131,6 +131,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChatOpen: boolean = true;
 
 
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -691,15 +692,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const userDocSnap = await getDoc(userDocRef);
 
       if (userDocSnap.exists()) {
-        /*  const userData = userDocSnap.data(); */
-
         const message = {
-          /*  messageUserName: userData['firstname'] + ' ' + userData['lastname'], */ //löschen
-          /* messageUserProfileImg: userData['profileImg'], */ //löschen
           messagetext: this.messagetext,
           messageUserID: this.userID,
           messageID: '',
-          /* isEmojiOpen: false, */
           timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
           date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
           react: [],
@@ -971,6 +967,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.snackBar.open(message, 'Close', {
       duration: 3000,
     });
+  }
+
+  isFileUploaded(index: number): boolean {
+    return this.allMessages[index].fileUpload !== '';
   }
 
 

@@ -8,7 +8,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChatService } from '../../services/chat.service';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-chat-container',
@@ -34,10 +33,7 @@ export class ChatContainerComponent {
   isOnline: boolean = false;
 
   messagesLoaded: boolean = false;
-<<<<<<< HEAD
   unsubscribeUserData: Unsubscribe | undefined;
-=======
->>>>>>> 29a48ae18e02ea9136369d3fb59f5e5783f08931
 
   
   message = {
@@ -104,7 +100,6 @@ export class ChatContainerComponent {
       if (doc.exists()) {
         const userData = doc.data();
     
-<<<<<<< HEAD
         this.chatPartnerName = `${userData['firstname']} ${userData['lastname']}`;
         this.chatPartnerImg = userData['profileImg'];
         this.isOnline = userData['isOnline'];
@@ -112,8 +107,7 @@ export class ChatContainerComponent {
       }
     });
     this.unsubscribeUserData = unsubscribe;
-  }
-=======
+  
   }
 
   // async loadMessagesOfThisChat() {
@@ -144,7 +138,6 @@ export class ChatContainerComponent {
   //   });
   //   // this.updateMessagesWithUserData();
   // }
->>>>>>> 29a48ae18e02ea9136369d3fb59f5e5783f08931
 
   // async loadMessagesOfThisChat() {
   //   const queryAllAnswers = query((collection(this.firestore, "chats", this.chatID, "messages")));

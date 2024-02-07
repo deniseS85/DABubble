@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore } from 'firebase/firestore';
+import { Firestore, collection, getDocs } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -13,6 +13,7 @@ export class UserService {
     private userImg: string = '';
     private userDataSubject = new BehaviorSubject<any>({});
     userData$ = this.userDataSubject.asObservable();
+    collectionUserRef = collection(this.firestore, 'users');
 
     constructor(private authservice: AuthService) {}
 
@@ -58,4 +59,14 @@ export class UserService {
         this.userLastName = localStorage.getItem('userLastName') || '';
         this.userImg = localStorage.getItem('userImg') || '';
     }
+
+    async getAllUsers(): Promise<any[]> {
+        const querySnapshot = await getDocs(this.collectionUserRef);
+        const users: any[] = [];
+        querySnapshot.forEach((doc) => {
+          users.push(doc.data());
+        });
+        return users;
+      }
+    
 }

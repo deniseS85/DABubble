@@ -280,10 +280,7 @@ export class MainscreenComponent implements OnInit {
 
     search(): void {
         const matchingChannels = this.searchService.search(this.searchInput);
-        const matchingMessages = this.searchService.searchMessages(this.searchInput);
-
-        console.log(matchingChannels, matchingMessages);
-      
+        console.log(matchingChannels);
       }
             
 

@@ -12,7 +12,7 @@
     <!-- Thread Answers -->
     <div class="answersContainer">
         <div class="threadContainerAnswer" *ngFor="let answer of allAnswers, let chatIndex = index"
-            [ngClass]="{'threadContainerAnswerReverse' : answer.isOnline}"> 
+            [ngClass]="{'threadContainerAnswerReverse' : isCurrentUser(chatIndex)}"> 
 
             <div class="profile-message-img">
                 <img class="profile-img"
@@ -21,9 +21,9 @@
             </div>
 
 
-            <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : answer.isOnline}">
+            <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : isCurrentUser(chatIndex)}">
 
-                <div class="reactionContainer" [ngClass]="{'absoluteLeft' : answer.isOnline}">
+                <div class="reactionContainer" [ngClass]="{'absoluteLeft' : isCurrentUser(chatIndex)}">
                     <div class="reactionMenu">
                         <div class="emoji-container">
                             <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">
@@ -33,7 +33,7 @@
                                 (emojiSelect)="handleReactionMessage($event, answer); closeEmojiContainers(chatIndex)"></app-emoji-picker>
                             </div>
                         </div>
-                        <div class="editMessage" *ngIf="answer.isOnline">
+                        <div class="editMessage" *ngIf="isCurrentUser(chatIndex)">
                             <mat-icon>more_vert</mat-icon>
                             <div class="editMessageBtn">
                                 <span (click)="editAnswer(answer.answerID)">Nachricht bearbeiten</span>
@@ -43,11 +43,11 @@
                 </div>
 
                 <div class="threadContainerAnswerInfo"
-                    [ngClass]="{'threadContainerAnswerReverse' : answer.isOnline}">
+                    [ngClass]="{'threadContainerAnswerReverse' : isCurrentUser(chatIndex)}">
                     <div class="threadContainerInfoPerson">{{answer.firstname}} {{answer.lastname}}</div>
                     <div class="threadContainerInfoTime">{{answer.timestamp}} Uhr</div>
                 </div>
-                <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : answer.isOnline}">
+                <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : isCurrentUser(chatIndex)}">
                     {{answer.answertext}}
                 </div>
 

@@ -1,5 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
-import { Firestore, collection, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
 import { ChannelDataService } from '../../../services/channel-data.service';
 import { ChannelService } from '../../../services/channel.service';
 import { ReactionsService } from '../../../services/reactions.service';
@@ -19,6 +19,7 @@ export class ThreadQuestionComponent {
   userImg: any = '';
   isOnline: boolean = false;
   messageFullyLoaded: boolean = false;
+  unsubscribeUserData: Unsubscribe | undefined;
 
   firestore: Firestore = inject(Firestore);
 
@@ -46,19 +47,20 @@ export class ThreadQuestionComponent {
 
 
   async getUserData(id: string) {
-
-    const ud = await getDoc(doc(collection(this.firestore, 'users'), id));
-    const userData = ud.data()!;
-
-    if (userData) {
-      this.username = userData['firstname'] + " " + userData['lastname'];
-      this.userImg = userData['profileImg'];
-      this.isOnline = userData['isOnline']
-    } else {
-      this.username = 'Gast';
-      this.userImg = 'guest-profile.png';
-    }
-    this.messageFullyLoaded = true;
+    const userDocRef = doc(collection(this.firestore, 'users'), id);
+  
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data()!;
+        this.username = userData['firstname'] + " " + userData['lastname'];
+        this.userImg = userData['profileImg'];
+        this.isOnline = userData['isOnline'];
+        this.messageFullyLoaded = true;
+      }
+    });
+  
+    // Speichern Sie die Abonnement-Funktion für die spätere Aufhebung
+    this.unsubscribeUserData = unsubscribe;
   }
 
 
@@ -68,6 +70,8 @@ export class ThreadQuestionComponent {
   getAnswerRef(channelId: string, messageId: string) {
     return doc(this.firestore, "channels", channelId, "messages", messageId);
   }
+
+  
 
 
   /**

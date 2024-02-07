@@ -202,6 +202,10 @@ export class ThreadComponent {
 
   }
 
+  isCurrentUser(chatIndex: number): boolean {
+    return this.allAnswers[chatIndex].answerUserID === this.userID;
+  }
+
   sortMessagesByTimeStamp() {
     this.allAnswers.sort((a, b) => {
       const timestampA = new Date(`${a.date} ${a.timestamp}`);

@@ -7,7 +7,7 @@
         <header class="channel-chat-header">
             <div class="profile-message-img">
                 <img class="profilPic" [src]="chatPartnerImg.startsWith('https') ? chatPartnerImg : './assets/img/' + chatPartnerImg" alt="">
-                <p class="active-point" *ngIf="message.isOnline"></p>
+                <p class="active-point" *ngIf="isOnline"></p>
             </div>
             <span>{{ chatPartnerName }}</span>                
         </header>

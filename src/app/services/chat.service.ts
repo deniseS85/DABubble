@@ -36,6 +36,17 @@ export class ChatService {
     })
   }
 
+<<<<<<< HEAD
+=======
+  async getAllChats(): Promise<any[]> {
+    const querySnapshot = await getDocs(this.collectionChatRef);
+    const chats: any[] = [];
+    querySnapshot.forEach((doc) => {
+      chats.push(doc.data());
+    });
+    return chats;
+  }
+>>>>>>> e053ebe142ae53e929561d432c4e5267da6d7421
 
   sendMessage(message: any, chatID: string){
     console.warn(chatID)

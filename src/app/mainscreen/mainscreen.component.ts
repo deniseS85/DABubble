@@ -7,6 +7,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchService } from '../services/search-service.service';
+import { Channel } from '../models/channel.class';
 
 
 @Component({
@@ -39,6 +40,11 @@ export class MainscreenComponent implements OnInit {
     isProfileHovered: boolean = false;
     isLogoutHovered: boolean = false;
     searchInput: string = '';
+    isInputFilled: boolean = false;
+    searchResults: { channels: Channel[], users: User[] } = { channels: [], users: [] };
+    selectedUser: User = new User();
+    userProfileView: User = new User();
+
 
     constructor(
         public authService: AuthService, 
@@ -124,6 +130,7 @@ export class MainscreenComponent implements OnInit {
                 this.userFullName = 'Gast';
                 this.user.profileImg = 'guest-profile.png';
                 this.user.email = 'E-Mail-Adresse nicht vorhanden.'
+                this.userIsOnline = true;
             }
         });
     }
@@ -279,9 +286,27 @@ export class MainscreenComponent implements OnInit {
     }
 
     search(): void {
-        const matchingChannels = this.searchService.search(this.searchInput);
-        console.log(matchingChannels);
+        const [matchingChannels, matchingUsers] = this.searchService.search(this.searchInput);
+        this.searchResults.channels = matchingChannels;
+        this.searchResults.users = matchingUsers;
+        this.isInputFilled = this.searchInput !== '';
       }
-            
 
+      searchfieldShowUser(user: User): void {
+        // Übergebe den ausgewählten Benutzer an die Kindkomponente
+        this.setUserProfileView(user);
+      }
+    
+      // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen
+      setUserProfileView(user: User): void {
+        this.userProfileView = user;
+      }
+
+      searchfieldShowChannel(channel: Channel) {
+        console.log(channel);
+      } 
+
+      showUserProfileView(user: User): void {
+        console.log('Benutzerprofil anzeigen:', user);
+      }             
 }

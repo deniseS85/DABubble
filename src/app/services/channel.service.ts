@@ -20,7 +20,6 @@ export class ChannelService {
   public userDataSubject = new BehaviorSubject<any>(null);
   userData$ = this.userDataSubject.asObservable();
   collectionRef = collection(this.firestore, "channels");
-  collectionUserRef = collection(this.firestore, 'users');
   chatObservable$ = collectionData(this.collectionRef);
 
   /* activeChannelID: string = '4w03K0592Ephea3D9fsK'; */
@@ -137,18 +136,6 @@ export class ChannelService {
     return doc(collection(this.firestore, 'channels'), docId);
   }
 
-  getChannelDescription(channelDescription: string) {
-    return doc(collection(this.firestore, 'channels'), channelDescription);
-  }
-
-  getChannelCreator(channelCreator: string) {
-    return doc(collection(this.firestore, 'channels'), channelCreator);
-  }
-
-  getChannelUsers() {
-    return doc(collection(this.firestore, 'channels'));
-  }
-
   async getCreatorsName() {
     this.authService.restoreUserData();
 
@@ -163,17 +150,6 @@ export class ChannelService {
       return channelCreator
     }
   }  
-  
-  async getAllUsers(): Promise<any[]> {
-    const querySnapshot = await getDocs(this.collectionUserRef);
-    const users: any[] = [];
-    querySnapshot.forEach((doc) => {
-      users.push(doc.data());
-    });
-    console.log(users);
-    return users;
-  }
-
 }
 
 

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDocs, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +8,7 @@ export class ChatService {
 
   firestore: Firestore = inject(Firestore);
   userID: string = '';
+  collectionChatRef = collection(this.firestore, 'chats');
 
   constructor() { }
 
@@ -34,5 +35,14 @@ export class ChatService {
       chatname: chatname,
       chatUsers: chatUsers
     })
+  }
+
+  async getAllChats(): Promise<any[]> {
+    const querySnapshot = await getDocs(this.collectionChatRef);
+    const chats: any[] = [];
+    querySnapshot.forEach((doc) => {
+      chats.push(doc.data());
+    });
+    return chats;
   }
 }

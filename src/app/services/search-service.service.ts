@@ -29,7 +29,7 @@ export class SearchService {
   private async loadUsers(): Promise<void> {
     try {
       // Benutzer aus dem UserService abrufen
-      // this.users = await this.userService.getAllUsers();
+      this.users = await this.channelService.getAllUsers();
     } catch (error) {
       console.error('Fehler beim Laden der Benutzer:', error);
     }

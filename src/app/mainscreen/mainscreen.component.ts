@@ -288,5 +288,13 @@ export class MainscreenComponent implements OnInit {
         this.searchResults.users = matchingUsers;
         this.isInputFilled = this.searchInput !== '';
       }
+
+      showUser(user: User) {
+        console.log(user);
+      }
+
+      showChannel(channel: Channel) {
+        console.log(channel);
+      }
       
 }

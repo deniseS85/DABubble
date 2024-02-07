@@ -41,7 +41,8 @@ export class MainscreenComponent implements OnInit {
     isLogoutHovered: boolean = false;
     searchInput: string = '';
     isInputFilled: boolean = false;
-    searchResults: (User | Channel)[] = [];
+    searchResults: { channels: Channel[], users: User[] } = { channels: [], users: [] };
+
 
     constructor(
         public authService: AuthService, 
@@ -282,12 +283,10 @@ export class MainscreenComponent implements OnInit {
     }
 
     search(): void {
-        const matchingResults = this.searchService.search(this.searchInput);
-        this.searchResults = matchingResults;
-        if(this.searchInput !== '') {
-            this.isInputFilled = true;
-        } else {
-            this.isInputFilled = false;
-        }
+        const [matchingChannels, matchingUsers] = this.searchService.search(this.searchInput);
+        this.searchResults.channels = matchingChannels;
+        this.searchResults.users = matchingUsers;
+        this.isInputFilled = this.searchInput !== '';
       }
+      
 }

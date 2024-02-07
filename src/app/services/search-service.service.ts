@@ -48,13 +48,19 @@ export class SearchService {
   //   }
   // }
 
-  search(query: string): (Channel | User)[] {
-    const matchingChannels: Channel[] = this.channels.filter(channel => channel.channelname.toLowerCase().includes(query.toLowerCase()));
+  search(query: string): [Channel[], User[]] {
+    // Kanäle filtern
+    const matchingChannels: Channel[] = this.channels.filter(channel => 
+      channel.channelname.toLowerCase().includes(query.toLowerCase())
+    );
+  
+    // Benutzer filtern
     const matchingUsers: User[] = this.users.filter(user => {
       const fullName = `${user.firstname.toLowerCase()} ${user.lastname.toLowerCase()}`;
       return fullName.includes(query.toLowerCase());
     });
-    const searchResults: (Channel | User)[] = [...matchingChannels, ...matchingUsers];
-    return searchResults;
+  
+    // Tupel zurückgeben
+    return [matchingChannels, matchingUsers];
   }
 }

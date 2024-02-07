@@ -15,8 +15,13 @@
     
     <div class="answersContainer">
         <div class="threadContainerAnswer" 
-            [ngClass]="{'threadContainerAnswerReverse' : message.activeUser}">
-            <img class="profilPic" src="./assets/img/{{message.messageUserProfileImg}}" alt="">
+            [ngClass]="{'threadContainerAnswerReverse' : message.activeUser}"
+            *ngFor="let message of allMessages">
+
+            <div class="profile-message-img">
+                <img class="profilPic" [src]="message.userImg.startsWith('https') ? message.userImg : './assets/img/' + message.userImg" alt="">
+                <p class="active-point" *ngIf="message.isOnline"></p>
+            </div>
             <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : message.activeUser}">
     
                 <div class="reactionContainer" [ngClass]="{'absoluteLeft' : message.activeUser}">
@@ -46,7 +51,7 @@
     
                 <div class="threadContainerAnswerInfo"
                     [ngClass]="{'threadContainerAnswerReverse' : message.activeUser}">
-                    <div class="threadContainerInfoPerson">{{message.messageUserName}}</div>
+                    <div class="threadContainerInfoPerson">{{message.username}}</div>
                     <div class="threadContainerInfoTime">{{message.timestamp}} Uhr</div>
                 </div>
                 <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : message.activeUser}">

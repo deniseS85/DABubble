@@ -7,6 +7,7 @@ import { getDownloadURL, ref, uploadBytes, Storage } from '@angular/fire/storage
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChatService } from '../../services/chat.service';
 import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-chat-container',
@@ -61,10 +62,11 @@ export class ChatContainerComponent {
     private snackBar: MatSnackBar,
     private storage: Storage,
     private route: ActivatedRoute,
+    private datePipe: DatePipe,
   ){
     this.userID = this.route.snapshot.paramMap.get('id');
     this.loadChatID();
-    this.getUserData()
+    this.getUserData();
   }
 
 
@@ -103,28 +105,30 @@ export class ChatContainerComponent {
     
   }
 
-  // async loadMessagesOfThishat() {
-  //   const queryAllAnswers = await query(this.channelService.getMessageRef(this.channelDataService.channelID));
-  //   onSnapshot(queryAllAnswers, async (querySnapshot) => {
-  //     this.allAnswers = [];
+  async loadMessagesOfThishat() {
+    const queryAllAnswers = await query((collection(this.firestore, "chats", this.chatID, "messages")));
+    onSnapshot(queryAllAnswers, async (querySnapshot) => {
+      this.allAnswers = [];
 
-  //     for (const doc of querySnapshot.docs) {
-  //       const messageData = doc.data();
-  //       const userData = await this.loadUserData(messageData['messageUserID']);
 
-  //       if (userData) {
-  //         const message = {
-  //           ...messageData,
-  //           ...userData,
-  //         };
-  //         this.allMessages.push(message);
-  //         this.loadAnswers(messageData['messageID'], doc);
-  //       }
-  //       this.sortMessagesByTimeStamp();
-  //     }
-  //   });
-  //   this.updateMessagesWithUserData();
-  // }
+
+      // for (const doc of querySnapshot.docs) {
+      //   const messageData = doc.data();
+      //   const userData = await this.loadUserData(messageData['messageUserID']);
+
+      //   if (userData) {
+      //     const message = {
+      //       ...messageData,
+      //       ...userData,
+      //     };
+      //     this.allMessages.push(message);
+      //     this.loadAnswers(messageData['messageID'], doc);
+      //   }
+      //   this.sortMessagesByTimeStamp();
+      // }
+    });
+    // this.updateMessagesWithUserData();
+  }
 
 
   // async loadUserData(messageUserID: string): Promise<any> {
@@ -161,16 +165,16 @@ export class ChatContainerComponent {
    * 
    * @returns {void}
    */
-   getAllUserInfo(): void {
-    this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
-      this.allUsers = [];
-      list.forEach(singleUser => {
-        let user = new User(singleUser.data());
-        user.id = singleUser.id;
-        this.allUsers.push(user);
-      });
-    });
-  }
+  //  getAllUserInfo(): void {
+  //   this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
+  //     this.allUsers = [];
+  //     list.forEach(singleUser => {
+  //       let user = new User(singleUser.data());
+  //       user.id = singleUser.id;
+  //       this.allUsers.push(user);
+  //     });
+  //   });
+  // }
 
 
   toggleEmoji(id: string){
@@ -188,7 +192,24 @@ export class ChatContainerComponent {
 
   sendMessage(){
 
+    const message = {
+      messagetext: this.messagetext,
+      messageUserID: this.userID,
+      messageID: '',
+      timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
+      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      react: [],
+      answerInfo: {
+        counter: 0,
+        lastAnswerTime: ""
+      },
+      fileUpload: this.fileToUpload,
+    }
+    this.messagetext = '';
+    this.chatService.sendMessage(message, this.chatID)
+    this.closeFileUpload();
   }
+
 
   toggleFileUpload() {
     this.isShowFileUpload = !this.isShowFileUpload;

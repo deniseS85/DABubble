@@ -21,7 +21,6 @@ export class ChatService {
     return collection(this.firestore, 'chats')
   }
 
-
   /**
    * creates new chats
    * @param chatname says all
@@ -44,5 +43,11 @@ export class ChatService {
       chats.push(doc.data());
     });
     return chats;
+  }
+
+  sendMessage(message: any, chatID: string){
+    const ref = doc(collection(this.firestore, "chats", chatID, "messages"));
+    const newMessage = ({ ...message, messageID: ref.id });
+    setDoc(ref, newMessage);
   }
 }

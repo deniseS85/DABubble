@@ -284,7 +284,6 @@ export class WorkspaceComponent implements OnInit {
    */
   handleClickChat(event: MouseEvent, userID: string): void {
     this.setChatUserID(userID)
-    console.log("channelwechsel")
     const target = event.target as HTMLElement;
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);

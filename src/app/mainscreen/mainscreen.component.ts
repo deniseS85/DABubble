@@ -6,6 +6,8 @@ import { Firestore, Unsubscribe, doc, getDoc, updateDoc } from '@angular/fire/fi
 import { collection, onSnapshot } from 'firebase/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SearchService } from '../services/search-service.service';
+
 
 @Component({
   selector: 'app-mainscreen',
@@ -36,10 +38,17 @@ export class MainscreenComponent implements OnInit {
     screenWidth: number = window.innerWidth;
     isProfileHovered: boolean = false;
     isLogoutHovered: boolean = false;
+    searchInput: string = '';
 
-    constructor(public authService: AuthService, private router: Router, private route: ActivatedRoute, private storage: Storage, private snackBar: MatSnackBar) {
+    constructor(
+        public authService: AuthService, 
+        private router: Router, 
+        private route: ActivatedRoute, 
+        private storage: Storage, 
+        private snackBar: MatSnackBar,
+        private searchService: SearchService) {
             this.userID = this.route.snapshot.paramMap.get('id');
-            this.userList = this.getUserfromFirebase();
+            this.userList = this.getUserfromFirebase();       
     }
 
     ngOnInit(): void {
@@ -269,5 +278,13 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
+    search(): void {
+        const matchingChannels = this.searchService.searchChannels(this.searchInput);
+        const matchingMessages = this.searchService.searchMessages(this.searchInput);
+
+        console.log(matchingChannels, matchingMessages);
+      
+      }
+            
 
 }

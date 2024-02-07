@@ -5,7 +5,7 @@
             <span>DABubble</span>
         </div>
      
-        <input type="text" placeholder="Code learning durchsuchen" id="headerInput">
+        <input type="text" placeholder="Code learning durchsuchen" id="headerInput" [(ngModel)]="searchInput" (input)="search()">
      
         <div class="mainContainerHeaderProfil">
             <span class="mainContainerHeaderProfilName">{{ isEditMode ? editedUserFullName : userFullName  }}</span>

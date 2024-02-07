@@ -79,7 +79,18 @@ import { ChatService } from '../../services/chat.service';
       ]
       )
     ]),
-
+    
+    
+    trigger('leftRightAnimation', [
+      transition(':enter', [
+        style({ width: 0, opacity: 0 }),
+        animate('0.3s ease-in-out', style({ width: '*', opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ width: '*', opacity: 1 }),
+        animate('0.3s ease-in-out', style({ width: 0, opacity: 0 })),
+      ]),
+    ]),
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {

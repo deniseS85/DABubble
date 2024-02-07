@@ -33,6 +33,7 @@ export class ChatContainerComponent {
   isOnline: boolean = false;
 
   messagesLoaded: boolean = false;
+  unsubscribeUserData: Unsubscribe | undefined;
 
   
   message = {
@@ -94,20 +95,49 @@ export class ChatContainerComponent {
 
 
   async getUserData() {
-
-    const ud = await getDoc(doc(collection(this.firestore, 'users'), this.chatService.userID));
-    const userData = ud.data()!;
-
-    if (userData) {
-      this.chatPartnerName = userData['firstname'] + " " + userData['lastname'];
-      this.chatPartnerImg = userData['profileImg'];
-      this.isOnline = userData['isOnline']
-    } else {
-      this.chatPartnerName = 'Gast';
-      this.chatPartnerImg = 'guest-profile.png';
-    }
+    const userDocRef = doc(this.firestore, 'users', this.chatService.userID);
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data();
     
+        this.chatPartnerName = `${userData['firstname']} ${userData['lastname']}`;
+        this.chatPartnerImg = userData['profileImg'];
+        this.isOnline = userData['isOnline'];
+        this.channelService.userDataSubject.next({ ...userData });
+      }
+    });
+    this.unsubscribeUserData = unsubscribe;
+  
   }
+
+  // async loadMessagesOfThisChat() {
+  //   const queryAllAnswers = query((collection(this.firestore, "chats", this.chatID, "messages")));
+  //   onSnapshot(queryAllAnswers, (querySnapshot) => {
+  //     this.allMessages = [];
+  //     console.log(querySnapshot)
+  //     // querySnapshot.forEach((message) => {
+  //     //   console.log(message.data())
+  //     // })
+
+
+
+  //     // for (const doc of querySnapshot.docs) {
+  //     //   const messageData = doc.data();
+  //     //   const userData = await this.loadUserData(messageData['messageUserID']);
+
+  //     //   if (userData) {
+  //     //     const message = {
+  //     //       ...messageData,
+  //     //       ...userData,
+  //     //     };
+  //     //     this.allMessages.push(message);
+  //     //     this.loadAnswers(messageData['messageID'], doc);
+  //     //   }
+  //     //   this.sortMessagesByTimeStamp();
+  //     // }
+  //   });
+  //   // this.updateMessagesWithUserData();
+  // }
 
   // async loadMessagesOfThisChat() {
   //   const queryAllAnswers = query((collection(this.firestore, "chats", this.chatID, "messages")));

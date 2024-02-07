@@ -128,6 +128,7 @@ export class MainscreenComponent implements OnInit {
                 this.userFullName = 'Gast';
                 this.user.profileImg = 'guest-profile.png';
                 this.user.email = 'E-Mail-Adresse nicht vorhanden.'
+                this.userIsOnline = true;
             }
         });
     }

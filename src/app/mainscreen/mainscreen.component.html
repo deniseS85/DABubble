@@ -10,10 +10,10 @@
                 (input)="search()">
             <div class="searchResults" *ngIf="isInputFilled">
                 <ul>
-                    <li *ngFor="let channel of searchResults.channels" (click)="showChannel(channel)">
+                    <li *ngFor="let channel of searchResults.channels" (click)="searchfieldShowChannel(channel)">
                         # {{ channel.channelname }}
                     </li>
-                    <li *ngFor="let user of searchResults.users" (click)="showUser(user)">
+                    <li *ngFor="let user of searchResults.users" (click)="searchfieldShowUser(user)">
                         &commat; {{ user.firstname }} {{ user.lastname }}
                     </li>
                 </ul>
@@ -140,7 +140,7 @@
     <div class="mainContainerContent">
         <app-workspace></app-workspace>
         <app-chat-container *ngIf="chatOpen"></app-chat-container>
-        <app-channel-chat *ngIf="channelOpen"></app-channel-chat>
+        <app-channel-chat *ngIf="channelOpen"  [userProfileView]="userProfileView"></app-channel-chat>
         <app-thread *ngIf="threadOpen"></app-thread>
     </div>
 </div>

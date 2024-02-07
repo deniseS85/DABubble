@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
 import { ChannelService } from '../../services/channel.service';
@@ -9,6 +9,7 @@ import { ChannelDataService } from '../../services/channel-data.service';
 import { ReactionsService } from '../../services/reactions.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
+import { Subscription } from 'rxjs';
 
 
 
@@ -17,7 +18,7 @@ import { User } from '../../models/user.class';
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
-export class ThreadComponent {
+export class ThreadComponent implements AfterViewChecked, AfterViewInit{
 
   user: User = new User;
   channelID: string = "";
@@ -46,6 +47,9 @@ export class ThreadComponent {
   /* allReactions: any[] = []; */
 
   firestore: Firestore = inject(Firestore);
+  @ViewChild('answerContainer') answerContainer!: ElementRef;
+  private shouldScrollToBottom: boolean = true;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private main: MainscreenComponent,
@@ -71,6 +75,41 @@ export class ThreadComponent {
     }
     this.getAllUserInfo();
     this.loadAnswers();
+  }
+
+  ngAfterViewChecked() {
+    if (this.shouldScrollToBottom) {
+      this.scrollToBottom();
+    }
+  }
+
+  ngAfterViewInit() {
+    if (this.answerContainer) {
+      this.subscriptions.push(
+        this.answerContainer.nativeElement.addEventListener('scroll', this.handleScroll.bind(this))
+      );
+      this.scrollToBottom();
+    }
+  }
+
+  private handleScroll() {
+    const element = this.answerContainer.nativeElement;
+    const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+
+    this.shouldScrollToBottom = atBottom;
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.answerContainer.nativeElement.scrollTop = this.answerContainer.nativeElement.scrollHeight;
+    } catch (err) { }
+  }
+
+  @HostListener('scroll', ['$event'])
+  onScroll(event: Event): void {
+    let element = event.target as HTMLElement;
+    let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+    this.shouldScrollToBottom = atBottom;
   }
 
   ngOnDestroy() {

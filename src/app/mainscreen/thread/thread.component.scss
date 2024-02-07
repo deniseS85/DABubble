@@ -58,6 +58,7 @@
             overflow-x: hidden;
             padding-bottom: 40px;
             scroll-behavior: smooth;
+            position: relative;
 
             &:hover{
                 overflow-y: auto;                
@@ -65,16 +66,14 @@
 
 
             .threadContainerAnswer{
-                width: calc(100% - 80px);
-                padding: 10px 40px 10px 40px;
-                margin-top: 18px;                
+                position: relative;
                 display: flex;
                 justify-content: flex-start;
-                gap: 20px;
-                position: relative;
-                overflow: hidden;
-                
-    
+                gap: 30px;
+                padding: 20px 0;
+                padding-left: 45px;
+                padding-right: 45px;
+                cursor: default;
                 &:hover{
                     background-color:#ECEEFE;
     

@@ -4,33 +4,16 @@
     justify-content: space-between;
     border: 1px solid #ADB0D9;
     border-radius: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 45px;
-    min-height: 145px;
-    padding: 20px;
-
-   
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid #ADB0D9;
-    border-radius: 20px;
     margin: 10px 45px 45px 45px;
     min-height: 145px;
     padding: 10px;
+    position: relative;
+    height: 147px;
     
     
 }
 
 .textarea {
-    min-width: 100%;
-    min-height: 100px;
-    border: none;
-    outline: none;
-    resize: none;
-    font-size: 16px;
-
     min-width: 100%;
     min-height: 100px;
     border: none;
@@ -43,12 +26,7 @@
 }
 
 .footer-line-icons {
-    cursor: pointer;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-
+  
     cursor: pointer;
     width: 100%;
     display: flex;
@@ -58,10 +36,6 @@
 }
 
 .footer-icons-left {
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    color: #686868;
 
     display: flex;
     gap: 10px;
@@ -72,13 +46,9 @@
     &:hover {
         color: black;
     }
-
     mat-icon {
-        padding: 8px;
-        width: 24px;
-        height: 24px;
-
-        
+        padding: 5px;
+        cursor: pointer;
 
         &:hover {
             border-radius: 50%;
@@ -113,12 +83,45 @@
     padding: 10px;
     color: #444DF2;
 
-    padding: 10px;
-    color: #444DF2;
-
     &:hover {
         color: #797EF3;
     }
+}
+
+
+
+
+.image-upload>input {
+    display: none;
+}
+
+
+.file-upload-container {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+        padding-bottom: 5px;
+        cursor: pointer;
+        /*    transition: opacity 0.3s ease; */
+           color: #686868;
+          /*  position: absolute;
+           right: -10px;
+           top: -8px; */
+           background: white;
+           border-radius: 100%;
+    }
+}
+
+.file-upload-selection {
+    border: none !important;
+    outline: none !important;
+    padding-bottom: 20px;
+}
+
+.uploaded-files {
+    max-width: 100px;
+    
 }
 
 

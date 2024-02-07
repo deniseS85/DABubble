@@ -10,7 +10,7 @@
     </div>
 
     <!-- Thread Answers -->
-    <div class="answersContainer">
+    <div class="answersContainer" #answerContainer>
         <div class="threadContainerAnswer" *ngFor="let answer of allAnswers, let chatIndex = index"
             [ngClass]="{'threadContainerAnswerReverse' : isCurrentUser(chatIndex)}"> 
 

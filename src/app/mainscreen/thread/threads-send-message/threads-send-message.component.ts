@@ -27,6 +27,7 @@ export class ThreadsSendMessageComponent {
   currentUserImg: string = ''; */
 
   firestore: Firestore = inject(Firestore);
+  
 
 
 
@@ -115,8 +116,10 @@ export class ThreadsSendMessageComponent {
   }
 
 
+
   isShowFileUpload: boolean = false;
   fileToUpload: any = '';
+  /* imagePreview: string = ''; */
 
   toggleFileUpload() {
     this.isShowFileUpload = !this.isShowFileUpload;
@@ -169,4 +172,8 @@ export class ThreadsSendMessageComponent {
       duration: 3000,
     });
   }
+
+
+  
+  
 }

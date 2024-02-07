@@ -36,8 +36,6 @@ export class ChatService {
     })
   }
 
-<<<<<<< HEAD
-=======
   async getAllChats(): Promise<any[]> {
     const querySnapshot = await getDocs(this.collectionChatRef);
     const chats: any[] = [];
@@ -46,10 +44,8 @@ export class ChatService {
     });
     return chats;
   }
->>>>>>> e053ebe142ae53e929561d432c4e5267da6d7421
 
   sendMessage(message: any, chatID: string){
-    console.warn(chatID)
     const ref = doc(collection(this.firestore, "chats", chatID, "messages"));
     const newMessage = ({ ...message, messageID: ref.id });
     setDoc(ref, newMessage);

@@ -27,6 +27,7 @@ export class ChatContainerComponent {
   fileToUpload: any;
   userID: any;
   chatID: any;
+  userData: any;
 
   chatPartnerName: string = '';
   chatPartnerImg: string = '';
@@ -70,14 +71,13 @@ export class ChatContainerComponent {
   ){
     this.userID = this.route.snapshot.paramMap.get('id');
     this.loadChatID();
-    this.getUserData();
-    // this.loadMessagesOfThisChat()
+    this.getUserData();    
   }
 
 
-  loadChatID(){
+  async loadChatID(){
     const chatPartnerID = this.chatService.userID;
-    const allChatsRef = query(collection(this.firestore, "chats"));
+    const allChatsRef = await query(collection(this.firestore, "chats"));
 
     const snap = onSnapshot(allChatsRef,(chats) => {
         chats.forEach(chat =>{
@@ -87,7 +87,8 @@ export class ChatContainerComponent {
             array.push(user.id)            
           })
           if(array.includes(this.userID) && array.includes(chatPartnerID)){
-            this.chatID = chat.data()['chatID']
+            this.chatID = chat.data()['chatID'];
+            this.loadMessagesOfThisChat()
           }
         })
     })    
@@ -99,120 +100,79 @@ export class ChatContainerComponent {
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if (doc.exists()) {
         const userData = doc.data();
-    
+
         this.chatPartnerName = `${userData['firstname']} ${userData['lastname']}`;
         this.chatPartnerImg = userData['profileImg'];
         this.isOnline = userData['isOnline'];
         this.channelService.userDataSubject.next({ ...userData });
-      }
+
+
+      }      
     });
     this.unsubscribeUserData = unsubscribe;
   
   }
 
-  // async loadMessagesOfThisChat() {
-  //   const queryAllAnswers = query((collection(this.firestore, "chats", this.chatID, "messages")));
-  //   onSnapshot(queryAllAnswers, (querySnapshot) => {
-  //     this.allMessages = [];
-  //     console.log(querySnapshot)
-  //     // querySnapshot.forEach((message) => {
-  //     //   console.log(message.data())
-  //     // })
+  async loadMessagesOfThisChat() {
+    const queryAllAnswers = await query(collection(this.firestore, "chats", this.chatID, "messages"));
+    
+    console.error(queryAllAnswers)
+    onSnapshot(queryAllAnswers, (querySnapshot) => {
+      console.error(querySnapshot)
+      this.allMessages = [];
+      
+      querySnapshot.forEach(async (message) =>{
+        this.userID = message.data()['messageUserID'];
+        const userDatas = await getDoc(doc(this.firestore, 'users', this.userID));
 
+        if(message.data()['messageUserID'] === this.userID){
 
+          let updatedMessage = ({
+            ...message.data(),
+            username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
+            userImg: userDatas.data()!['profileImg'],
+            isOnline: userDatas.data()!['isOnline'],
+            activeUser: true
+          })
+          this.allMessages.push(updatedMessage);
+        } else {
 
-  //     // for (const doc of querySnapshot.docs) {
-  //     //   const messageData = doc.data();
-  //     //   const userData = await this.loadUserData(messageData['messageUserID']);
+          let updatedMessage = ({
+            ...message.data(),
+            username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
+            userImg: userDatas.data()!['profileImg'],
+            isOnline: userDatas.data()!['isOnline'],
+            activeUser: false
+          }) 
+          this.allMessages.push(updatedMessage);
+        }
+         
+        
+        
+        
+        
+      })
 
-  //     //   if (userData) {
-  //     //     const message = {
-  //     //       ...messageData,
-  //     //       ...userData,
-  //     //     };
-  //     //     this.allMessages.push(message);
-  //     //     this.loadAnswers(messageData['messageID'], doc);
-  //     //   }
-  //     //   this.sortMessagesByTimeStamp();
-  //     // }
-  //   });
-  //   // this.updateMessagesWithUserData();
-  // }
+      console.log(this.allMessages)
+    });
+  }
 
-  // async loadMessagesOfThisChat() {
-  //   const queryAllAnswers = query((collection(this.firestore, "chats", this.chatID, "messages")));
-  //   onSnapshot(queryAllAnswers, (querySnapshot) => {
-  //     this.allMessages = [];
-  //     console.log(querySnapshot)
-  //     // querySnapshot.forEach((message) => {
-  //     //   console.log(message.data())
-  //     // })
+  //      --> Promise wird zurückgegeben
+  // async getActualUserData(userID: string){
+  //   const userDatas = await getDoc(doc(this.firestore, 'users', userID));
 
-
-
-  //     // for (const doc of querySnapshot.docs) {
-  //     //   const messageData = doc.data();
-  //     //   const userData = await this.loadUserData(messageData['messageUserID']);
-
-  //     //   if (userData) {
-  //     //     const message = {
-  //     //       ...messageData,
-  //     //       ...userData,
-  //     //     };
-  //     //     this.allMessages.push(message);
-  //     //     this.loadAnswers(messageData['messageID'], doc);
-  //     //   }
-  //     //   this.sortMessagesByTimeStamp();
-  //     // }
-  //   });
-  //   // this.updateMessagesWithUserData();
-  // }
-
-
-  // async loadUserData(messageUserID: string): Promise<any> {
-  //   const user = this.allUsers.find(u => u.id === messageUserID);
-
-  //   if (user) {
-  //     const userDocRef = doc(this.firestore, 'users', messageUserID);
-  //     const unsubscribe = onSnapshot(userDocRef, (doc) => {
-  //       if (doc.exists()) {
-  //         const updatedUser = doc.data();
-  //         Object.assign(user, updatedUser);
-  //         this.channelService.userDataSubject.next({ ...user });
-  //       }
-  //     });
-
-  //     const userData = await Promise.resolve({
-  //       firstname: user.firstname,
-  //       lastname: user.lastname,
-  //       profileImg: user.profileImg,
-  //       isOnline: user.isOnline,
-  //       unsubscribe: unsubscribe
-  //     });
-
-  //     return userData;
-  //   } else {
-  //     return null;
+  //   const ud = {
+  //     username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
+  //     userImg: userDatas.data()!['profileImg'],
+  //     isOnline: userDatas.data()!['isOnline']
   //   }
+
+  //   console.warn(ud)
+
+  //   return ud
+
   // }
 
-
-   /**
-   * Retrieves all user information from the database.
-   * Subscribes to changes in the user data and updates the local allUsers array accordingly.
-   * 
-   * @returns {void}
-   */
-  //  getAllUserInfo(): void {
-  //   this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
-  //     this.allUsers = [];
-  //     list.forEach(singleUser => {
-  //       let user = new User(singleUser.data());
-  //       user.id = singleUser.id;
-  //       this.allUsers.push(user);
-  //     });
-  //   });
-  // }
 
 
   toggleEmoji(id: string){
@@ -237,10 +197,6 @@ export class ChatContainerComponent {
       timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       react: [],
-      answerInfo: {
-        counter: 0,
-        lastAnswerTime: ""
-      },
       fileUpload: '',
     }
     this.messagetext = '';

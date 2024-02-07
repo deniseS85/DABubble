@@ -42,31 +42,31 @@
                 &:hover img {
                     filter: invert(41%) sepia(64%) saturate(6974%) hue-rotate(232deg) brightness(100%) contrast(90%);
                 }
-            }
-
-            .profile-message-img {
-                border-radius: 100%;
-                object-fit: cover;
-                position: relative;
-                width: 60px;
-                height: 60px;
-            
-                .profilPic {
-                    width: 60px;
-                    height: 60px;
-                    object-fit: cover;
-                    border-radius: 100%;
-                }
-                .active-point {
-                    position: absolute;
-                    bottom: -4px;
-                    right: 0;
-                    margin: 0;
-                    border: 2px solid white;
-                }
-            }
+            }            
         }
-    } 
+    }
+
+    .profile-message-img {
+        border-radius: 100%;
+        object-fit: cover;
+        position: relative;
+        width: 60px;
+        height: 60px;
+    
+        .profilPic {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 100%;
+        }
+        .active-point {
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            margin: 0;
+            border: 2px solid white;
+        }
+    }
 
 
     .answersContainer{

@@ -13,7 +13,6 @@ import { ChatService } from "../services/chat.service";
 export class SearchService {
   private channels: Channel[] = [];
   private users: User[] = [];
-  private chats: Chat[] = [];
 
   constructor(private channelService: ChannelService, private userService: UserService, private chatService: ChatService) {
     this.loadChannels();
@@ -49,7 +48,7 @@ export class SearchService {
   //   }
   // }
 
-  search(query: string): (Channel | User | Chat)[] {
+  search(query: string): (Channel | User)[] {
     const matchingChannels: Channel[] = this.channels.filter(channel => channel.channelname.toLowerCase().includes(query.toLowerCase()));
     const matchingUsers: User[] = this.users.filter(user => {
       const fullName = `${user.firstname.toLowerCase()} ${user.lastname.toLowerCase()}`;

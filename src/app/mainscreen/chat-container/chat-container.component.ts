@@ -97,24 +97,16 @@ export class ChatContainerComponent {
 
   async getUserData() {
     const userDocRef = doc(this.firestore, 'users', this.chatService.userID);
-  
-    // Abonniere Änderungen an den Benutzerdaten
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if (doc.exists()) {
         const userData = doc.data();
-        console.log(userData);
-  
-        // Aktualisiere die lokalen Daten mit den neuen Benutzerdaten
+    
         this.chatPartnerName = `${userData['firstname']} ${userData['lastname']}`;
         this.chatPartnerImg = userData['profileImg'];
         this.isOnline = userData['isOnline'];
-  
-        // Du kannst auch den Beobachter benachrichtigen, wenn nötig
         this.channelService.userDataSubject.next({ ...userData });
       }
     });
-  
-    // Speichere die Abonnement-Funktion, damit sie bei Bedarf aufgehoben werden kann
     this.unsubscribeUserData = unsubscribe;
   }
 

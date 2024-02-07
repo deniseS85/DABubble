@@ -86,8 +86,7 @@
                     <div
                         [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
                         {{ message.messagetext }}</div>
-                        <img class="uploaded-files" [src]="message.fileUpload" *ngIf="isFileUploaded(chatIndex)">
-                        {{isFileUploaded(chatIndex)}}
+                        <img class="uploaded-files" [src]="message.fileUpload">
 
                     <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
                         (click)="openThread(message.messageID)">
@@ -133,12 +132,15 @@
           <div class="footer-icons-left">
             <mat-icon (click)="toggleFileUpload()">add</mat-icon>
             <div class="seperator-vert"></div>
+
             <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
               <div class="emoji-footer-selection" *ngIf="isShowEmojiFooter">
                 <app-emoji-picker (emojiSelect)="addEmojiToMessage($event); toggleEmojiFooter()"></app-emoji-picker>
               </div>
               <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
             </div>
+
+            
             <mat-icon>alternate_email</mat-icon>
           </div>
           <div class="file-upload-container" *ngIf="isShowFileUpload">

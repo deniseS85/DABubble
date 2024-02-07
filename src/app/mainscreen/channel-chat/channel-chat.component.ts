@@ -969,11 +969,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     });
   }
 
-  isFileUploaded(index: number): boolean {
-    return this.allMessages[index].fileUpload !== '';
-  }
-
-
   // ------------------------------------file upload function end---------------------------------------
 
 }

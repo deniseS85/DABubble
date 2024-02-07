@@ -65,6 +65,9 @@ export class ThreadsSendMessageComponent {
     this.isAnswertextEmojiOpen = !this.isAnswertextEmojiOpen
   }
 
+  addEmojiToMessage(event: any) {
+    this.answertext += event.emoji.native;
+  }
 
   /**
    * 
@@ -75,6 +78,10 @@ export class ThreadsSendMessageComponent {
 
     this.answertext = this.answertext + emoji;
     this.toggleEmojiAnswer();
+  }
+
+  closeEmojiFooter() {
+    this.isAnswertextEmojiOpen = false;
   }
 
 

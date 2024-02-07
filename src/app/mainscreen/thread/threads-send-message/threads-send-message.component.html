@@ -6,20 +6,13 @@
         <div class="footer-icons-left">
             <mat-icon>add</mat-icon>
             <div class="seperator-vert"></div>
-            <div class="emoji-container">
-                <img (click)="toggleEmojiAnswer()" src="../../../assets/img/add_reaction.png" alt="">
-                    <div *ngIf="isAnswertextEmojiOpen" class="emoji-selection">
-                        <emoji-mart class="emoji-mart" 
-                        [style]="{ width: '240px', cursor: 'default' }"
-                        (emojiSelect)="addEmojitoText($event)" 
-                        color=#535AF1 
-                        set="apple"
-                        [enableSearch]="false" 
-                        [showPreview]="false" 
-                        title="Choose your emoji">
-                        </emoji-mart>
-                    </div>
-            </div>
+
+            <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
+                <div class="emoji-footer-selection" *ngIf="isAnswertextEmojiOpen">
+                  <app-emoji-picker (emojiSelect)="addEmojiToMessage($event); toggleEmojiAnswer()"></app-emoji-picker>
+                </div>
+                <mat-icon (click)="toggleEmojiAnswer()">mood</mat-icon>
+              </div>
             <mat-icon>alternate_email</mat-icon>
         </div>
         <div class="footer-icons-right">

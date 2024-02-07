@@ -14,6 +14,7 @@ import { ReactionsService } from '../../services/reactions.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
+import { ChatService } from '../../services/chat.service';
 
 
 @Component({
@@ -139,6 +140,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     private authservice: AuthService,
     private reactionService: ReactionsService,
     public channelService: ChannelService,
+    private chatService: ChatService,
     private route: ActivatedRoute,
     public channelDataService: ChannelDataService,
     private datePipe: DatePipe,
@@ -378,13 +380,11 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
  * 
  * @returns {void}
  */
-  openChannelDirectMessage(): void {
+  openChannelDirectMessage(chatPartnerID: string): void {
     let userFullName = this.userProfileView.firstname + " " + this.userProfileView.lastname;
-    this.addUSerOpen = false;
-    this.showMembersOpen = false;
-    this.showProfil = false;
-    this.officialChannel = false;
-    this.channelDataService.channelName = userFullName;
+    this.chatService.userID = chatPartnerID;
+    this.main.chatOpen = true;
+    this.main.channelOpen = false;
     this.channelDataService.highlightUserInWorkspace(userFullName);
   }
 

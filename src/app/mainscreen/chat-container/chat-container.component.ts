@@ -18,6 +18,7 @@ export class ChatContainerComponent {
 
   allUsers: any[] = [];
   allAnswers: any[] = [];
+  allMessages: any[] = [];
   unsubUser: Unsubscribe | undefined;
   messagetext: string = '';
 
@@ -30,6 +31,8 @@ export class ChatContainerComponent {
   chatPartnerName: string = '';
   chatPartnerImg: string = '';
   isOnline: boolean = false;
+
+  messagesLoaded: boolean = false;
 
   
   message = {
@@ -67,6 +70,7 @@ export class ChatContainerComponent {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.loadChatID();
     this.getUserData();
+    // this.loadMessagesOfThisChat()
   }
 
 
@@ -105,30 +109,34 @@ export class ChatContainerComponent {
     
   }
 
-  async loadMessagesOfThishat() {
-    const queryAllAnswers = await query((collection(this.firestore, "chats", this.chatID, "messages")));
-    onSnapshot(queryAllAnswers, async (querySnapshot) => {
-      this.allAnswers = [];
+  // async loadMessagesOfThisChat() {
+  //   const queryAllAnswers = query((collection(this.firestore, "chats", this.chatID, "messages")));
+  //   onSnapshot(queryAllAnswers, (querySnapshot) => {
+  //     this.allMessages = [];
+  //     console.log(querySnapshot)
+  //     // querySnapshot.forEach((message) => {
+  //     //   console.log(message.data())
+  //     // })
 
 
 
-      // for (const doc of querySnapshot.docs) {
-      //   const messageData = doc.data();
-      //   const userData = await this.loadUserData(messageData['messageUserID']);
+  //     // for (const doc of querySnapshot.docs) {
+  //     //   const messageData = doc.data();
+  //     //   const userData = await this.loadUserData(messageData['messageUserID']);
 
-      //   if (userData) {
-      //     const message = {
-      //       ...messageData,
-      //       ...userData,
-      //     };
-      //     this.allMessages.push(message);
-      //     this.loadAnswers(messageData['messageID'], doc);
-      //   }
-      //   this.sortMessagesByTimeStamp();
-      // }
-    });
-    // this.updateMessagesWithUserData();
-  }
+  //     //   if (userData) {
+  //     //     const message = {
+  //     //       ...messageData,
+  //     //       ...userData,
+  //     //     };
+  //     //     this.allMessages.push(message);
+  //     //     this.loadAnswers(messageData['messageID'], doc);
+  //     //   }
+  //     //   this.sortMessagesByTimeStamp();
+  //     // }
+  //   });
+  //   // this.updateMessagesWithUserData();
+  // }
 
 
   // async loadUserData(messageUserID: string): Promise<any> {
@@ -203,7 +211,7 @@ export class ChatContainerComponent {
         counter: 0,
         lastAnswerTime: ""
       },
-      fileUpload: this.fileToUpload,
+      fileUpload: '',
     }
     this.messagetext = '';
     this.chatService.sendMessage(message, this.chatID)

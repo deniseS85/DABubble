@@ -694,12 +694,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         /*  const userData = userDocSnap.data(); */
 
         const message = {
-          /*  messageUserName: userData['firstname'] + ' ' + userData['lastname'], */ //löschen
-          /* messageUserProfileImg: userData['profileImg'], */ //löschen
           messagetext: this.messagetext,
           messageUserID: this.userID,
           messageID: '',
-          /* isEmojiOpen: false, */
           timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
           date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
           react: [],

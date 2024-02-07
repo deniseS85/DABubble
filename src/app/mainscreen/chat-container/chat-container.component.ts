@@ -34,7 +34,10 @@ export class ChatContainerComponent {
   isOnline: boolean = false;
 
   messagesLoaded: boolean = false;
+<<<<<<< HEAD
   unsubscribeUserData: Unsubscribe | undefined;
+=======
+>>>>>>> 29a48ae18e02ea9136369d3fb59f5e5783f08931
 
   
   message = {
@@ -101,6 +104,7 @@ export class ChatContainerComponent {
       if (doc.exists()) {
         const userData = doc.data();
     
+<<<<<<< HEAD
         this.chatPartnerName = `${userData['firstname']} ${userData['lastname']}`;
         this.chatPartnerImg = userData['profileImg'];
         this.isOnline = userData['isOnline'];
@@ -109,6 +113,38 @@ export class ChatContainerComponent {
     });
     this.unsubscribeUserData = unsubscribe;
   }
+=======
+  }
+
+  // async loadMessagesOfThisChat() {
+  //   const queryAllAnswers = query((collection(this.firestore, "chats", this.chatID, "messages")));
+  //   onSnapshot(queryAllAnswers, (querySnapshot) => {
+  //     this.allMessages = [];
+  //     console.log(querySnapshot)
+  //     // querySnapshot.forEach((message) => {
+  //     //   console.log(message.data())
+  //     // })
+
+
+
+  //     // for (const doc of querySnapshot.docs) {
+  //     //   const messageData = doc.data();
+  //     //   const userData = await this.loadUserData(messageData['messageUserID']);
+
+  //     //   if (userData) {
+  //     //     const message = {
+  //     //       ...messageData,
+  //     //       ...userData,
+  //     //     };
+  //     //     this.allMessages.push(message);
+  //     //     this.loadAnswers(messageData['messageID'], doc);
+  //     //   }
+  //     //   this.sortMessagesByTimeStamp();
+  //     // }
+  //   });
+  //   // this.updateMessagesWithUserData();
+  // }
+>>>>>>> 29a48ae18e02ea9136369d3fb59f5e5783f08931
 
   // async loadMessagesOfThisChat() {
   //   const queryAllAnswers = query((collection(this.firestore, "chats", this.chatID, "messages")));

@@ -7,6 +7,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchService } from '../services/search-service.service';
+import { Channel } from '../models/channel.class';
 
 
 @Component({
@@ -39,6 +40,9 @@ export class MainscreenComponent implements OnInit {
     isProfileHovered: boolean = false;
     isLogoutHovered: boolean = false;
     searchInput: string = '';
+    isInputFilled: boolean = false;
+    searchResults: { channels: Channel[], users: User[] } = { channels: [], users: [] };
+
 
     constructor(
         public authService: AuthService, 
@@ -280,9 +284,10 @@ export class MainscreenComponent implements OnInit {
     }
 
     search(): void {
-        const matchingChannels = this.searchService.search(this.searchInput);
-        console.log(matchingChannels);
+        const [matchingChannels, matchingUsers] = this.searchService.search(this.searchInput);
+        this.searchResults.channels = matchingChannels;
+        this.searchResults.users = matchingUsers;
+        this.isInputFilled = this.searchInput !== '';
       }
-            
-
+      
 }

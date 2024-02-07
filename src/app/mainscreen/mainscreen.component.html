@@ -4,26 +4,49 @@
             <img src="./assets/img/logo.png" alt="">
             <span>DABubble</span>
         </div>
-     
-        <input type="text" placeholder="Code learning durchsuchen" id="headerInput" [(ngModel)]="searchInput" (input)="search()">
-     
+
+        <div class="searchfield-container">
+            <input type="text" placeholder="Code learning durchsuchen" id="headerInput" [(ngModel)]="searchInput"
+                (input)="search()">
+            <div class="searchResults" *ngIf="isInputFilled">
+                <ul>
+                    <li *ngFor="let channel of searchResults.channels">
+                        {{ channel.channelname }}
+                    </li>
+                </ul>
+                <ul>
+                    <li *ngFor="let user of searchResults.users">
+                        {{ user.firstname }} {{ user.lastname }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
         <div class="mainContainerHeaderProfil">
-            <span class="mainContainerHeaderProfilName">{{ isEditMode ? editedUserFullName : userFullName  }}</span>
+            <span class="mainContainerHeaderProfilName">{{ isEditMode ? editedUserFullName : userFullName }}</span>
             <div class="profile" (click)="openUserInfoResponsiv()">
                 <img class="profile-img" [src]="getProfileImagePath()" alt="">
                 <p class="active-point" *ngIf="this.userIsOnline"></p>
             </div>
             <mat-icon (click)="toggleProfileMenu()" class="logout-icon">keyboard_arrow_down</mat-icon>
-            <div class="profil-info-header" *ngIf="isProfileMenuOpen" [ngClass]="{'mobile-view': screenWidth <= 750 && isProfileInfoOpen || isEditMode}">
+            <div class="profil-info-header" *ngIf="isProfileMenuOpen"
+                [ngClass]="{'mobile-view': screenWidth <= 750 && isProfileInfoOpen || isEditMode}">
                 <div *ngIf="screenWidth <= 750" [ngClass]="{'d-none': screenWidth <= 750 && isProfileInfoOpen}">
                     <img src="./assets/img/line-user-info.png">
                 </div>
-                <div (click)="openUserInfo()" class="profile" (mouseover)="isProfileHovered = true" (mouseout)="isProfileHovered = false" [ngClass]="{'d-none': screenWidth <= 750 && isProfileInfoOpen  || isEditMode}">
-                    <img *ngIf="screenWidth <= 750" [src]="isProfileHovered ? './assets/img/account_circle_hover.png' : './assets/img/account_circle.png'">
-                    <span>Profil</span> 
+                <div (click)="openUserInfo()" class="profile" (mouseover)="isProfileHovered = true"
+                    (mouseout)="isProfileHovered = false"
+                    [ngClass]="{'d-none': screenWidth <= 750 && isProfileInfoOpen  || isEditMode}">
+                    <img *ngIf="screenWidth <= 750"
+                        [src]="isProfileHovered ? './assets/img/account_circle_hover.png' : './assets/img/account_circle.png'">
+                    <span>Profil</span>
                 </div>
-                <div (click)="logout(user.id)" class="logout" (mouseover)="isLogoutHovered = true" (mouseout)="isLogoutHovered = false" [ngClass]="{'d-none': screenWidth <= 750 && isProfileInfoOpen  || isEditMode}">
-                    <img *ngIf="screenWidth <= 750" [src]="isLogoutHovered ? './assets/img/logout_hover.png' : './assets/img/logout.png'">
+                <div (click)="logout(user.id)" class="logout" (mouseover)="isLogoutHovered = true"
+                    (mouseout)="isLogoutHovered = false"
+                    [ngClass]="{'d-none': screenWidth <= 750 && isProfileInfoOpen  || isEditMode}">
+                    <img *ngIf="screenWidth <= 750"
+                        [src]="isLogoutHovered ? './assets/img/logout_hover.png' : './assets/img/logout.png'">
                     <span>Log out</span>
                 </div>
 
@@ -35,7 +58,8 @@
                     <img [src]="getProfileImagePath()" alt="">
                     <div class="user-info-name">
                         <p class="username">{{ userFullName }}</p>
-                        <p *ngIf="!authService.isUserAnonymous()" (click)="openEditUser()" class="edit-link">Bearbeiten</p>
+                        <p *ngIf="!authService.isUserAnonymous()" (click)="openEditUser()" class="edit-link">Bearbeiten
+                        </p>
                     </div>
                     <div class="user-info">
                         <p class="active-point"></p>
@@ -57,8 +81,9 @@
                     </div>
                     <div class="edit-profile">
                         <img [src]="getProfileImagePath()" alt="">
-                        <img (click)="toggleChangeImagePopup()" class="edit-image-icon" src="./assets/img/edit-image.png">
-                        
+                        <img (click)="toggleChangeImagePopup()" class="edit-image-icon"
+                            src="./assets/img/edit-image.png">
+
                         <div class="edit-profile-image-popup" *ngIf="isChangeImagePopupOpen">
                             <div (click)="openAvatar()">Avatare auswählen</div>
                             <div>
@@ -81,7 +106,7 @@
                                 <img (click)="selectAvatar(6)" class="avatar-pic" src="./assets/img/avatar6.png">
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="edit-container">
                         <div class="input-fields">
@@ -105,8 +130,9 @@
                     </div>
 
                     <div class="confirm-container" *ngIf="emailChanged">
-                        <div class="confirm-text">E-Mail wurde gesendet. Bitte bestätigen Sie die neue E-Mail-Adresse.</div>
-                    </div>                 
+                        <div class="confirm-text">E-Mail wurde gesendet. Bitte bestätigen Sie die neue E-Mail-Adresse.
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="overlay" *ngIf="isProfileMenuOpen" (click)="toggleProfileMenu()"></div>
@@ -117,6 +143,6 @@
         <app-workspace></app-workspace>
         <app-chat-container *ngIf="chatOpen"></app-chat-container>
         <app-channel-chat *ngIf="channelOpen"></app-channel-chat>
-        <app-thread *ngIf="threadOpen"></app-thread>        
+        <app-thread *ngIf="threadOpen"></app-thread>
     </div>
 </div>

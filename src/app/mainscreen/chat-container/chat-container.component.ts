@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChatService } from '../../services/chat.service';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-chat-container',
@@ -33,6 +34,7 @@ export class ChatContainerComponent {
   isOnline: boolean = false;
 
   messagesLoaded: boolean = false;
+  unsubscribeUserData: Unsubscribe | undefined;
 
   
   message = {
@@ -94,19 +96,26 @@ export class ChatContainerComponent {
 
 
   async getUserData() {
-
-    const ud = await getDoc(doc(collection(this.firestore, 'users'), this.chatService.userID));
-    const userData = ud.data()!;
-
-    if (userData) {
-      this.chatPartnerName = userData['firstname'] + " " + userData['lastname'];
-      this.chatPartnerImg = userData['profileImg'];
-      this.isOnline = userData['isOnline']
-    } else {
-      this.chatPartnerName = 'Gast';
-      this.chatPartnerImg = 'guest-profile.png';
-    }
-    
+    const userDocRef = doc(this.firestore, 'users', this.chatService.userID);
+  
+    // Abonniere Änderungen an den Benutzerdaten
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data();
+        console.log(userData);
+  
+        // Aktualisiere die lokalen Daten mit den neuen Benutzerdaten
+        this.chatPartnerName = `${userData['firstname']} ${userData['lastname']}`;
+        this.chatPartnerImg = userData['profileImg'];
+        this.isOnline = userData['isOnline'];
+  
+        // Du kannst auch den Beobachter benachrichtigen, wenn nötig
+        this.channelService.userDataSubject.next({ ...userData });
+      }
+    });
+  
+    // Speichere die Abonnement-Funktion, damit sie bei Bedarf aufgehoben werden kann
+    this.unsubscribeUserData = unsubscribe;
   }
 
   // async loadMessagesOfThisChat() {

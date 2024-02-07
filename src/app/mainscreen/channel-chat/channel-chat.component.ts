@@ -129,6 +129,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   isChannelOpen: boolean = false;
   isChatOpen: boolean = true;
+  imagePreview: string | null = null;
 
 
 
@@ -939,6 +940,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       return;
     }
 
+    let reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreview = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+
     let timestamp = new Date().getTime();
     let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
 
@@ -961,6 +969,11 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     }
 
     return true;
+  }
+
+  deleteImage() {
+    this.imagePreview = null;
+    this.fileToUpload = null; 
   }
 
   showSnackbar(message: string): void {

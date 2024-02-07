@@ -513,6 +513,7 @@
     margin: 10px 45px 45px 45px;
     min-height: 145px;
     padding: 10px;
+    position: relative;
 }
 
 .textarea {
@@ -539,6 +540,7 @@
     gap: 10px;
     padding: 10px;
     color: #686868;
+    
 
     &:hover {
         color: black;
@@ -546,6 +548,7 @@
 
     mat-icon {
         padding: 5px;
+        cursor: pointer;
 
         &:hover {
             border-radius: 50%;
@@ -671,13 +674,13 @@
         width: 24px;
     }
 }
-
+/* 
 .btn-container {
     display: flex;
     justify-content: flex-end;
-}
+} */
 
-.btn {
+/* .btn {
     font-size: 16px;
     font-weight: 600;
     background-color: #686868;
@@ -690,7 +693,7 @@
     &:hover {
         cursor: pointer;
     }
-}
+} */
 
 .enabled {
     background-color: #444DF2;
@@ -1125,6 +1128,7 @@ input {
 
     mat-icon {
         padding-bottom: 5px;
+        cursor: pointer;
     }
 }
 
@@ -1138,3 +1142,22 @@ input {
     max-width: 300px;
     
 }
+
+.image-preview-overlay {
+    position: absolute;
+    top: 112px;
+    left: 165px;
+}
+
+.file-preview {
+    max-width: 100%;
+    max-height: 50px; /* Adjust the max-height as needed */
+}
+
+.delete-icon {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    cursor: pointer;
+    color: red; /* Farbe des "X" anpassen */
+  }

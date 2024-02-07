@@ -132,7 +132,7 @@
         <div class="footer-line-icons">
           <div class="footer-icons-left">
             <label for="fileUpload" class="upload">
-                <mat-icon (click)="toggleFileUpload()">add</mat-icon>
+                <mat-icon (click)="openFileUpload()">add</mat-icon>
             </label>
             <input type="file" id="fileUpload" style="display:none;" (change)="uploadFiles($event)">
             <div class="seperator-vert"></div>
@@ -148,12 +148,32 @@
             <mat-icon (click)="addMessage()">send_icon</mat-icon>
           </div>
         </div>
-        <div class="image-preview-overlay" *ngIf="imagePreview">
-            <img [src]="imagePreview" alt="Image Preview" class="file-preview">
-            <div class="delete-icon" (click)="deleteImage()">X</div>
+        <div class="image-preview-overlay" *ngIf="isFileSelectionCompleted">
+            <img [src]="imagePreview" alt="" class="file-preview">
+            <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
         </div>
+        {{isFileSelectionCompleted}}
     </div>
 </div>
+
+
+<!-- 
+                    <div class="file-upload-button">
+                        <label for="fileUpload">
+                            <mat-icon class="action-btn-style">add</mat-icon>
+                        </label>
+                        <input type="file" style="display:none;" id="fileUpload" (change)="onUpload($event)">
+                    </div>
+                    <hr>
+                    <mat-icon (click)="toggleEmoji($event)" class="action-btn-style">sentiment_satisfied</mat-icon>
+                    <app-emoji-picker *ngIf="isOpened" (emojiSelectedEvent)="addEmoji($event)" appClickOutside
+                        (clickOutside)="closeEmojiMenu()"></app-emoji-picker>
+                    <mat-icon appClickOutside (clickOutside)="closeTagMenu()" (click)="toggleTagMenu('@')"
+                        class="action-btn-style">alternate_email</mat-icon>
+                    <div *ngIf="fileUpload" class="file-to-upload">
+                        <mat-icon (click)="onDelete(fileUpload.path)" class="delete-btn">close</mat-icon>
+                        <img style="height: 45px;" src="{{fileType}}" alt="">
+                    </div> -->
 
 
 <!---------------------------------------------- POPUPS ---------------------------------------------->

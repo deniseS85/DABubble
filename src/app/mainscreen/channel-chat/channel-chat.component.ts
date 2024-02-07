@@ -129,7 +129,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   isChannelOpen: boolean = false;
   isChatOpen: boolean = true;
-  imagePreview: string | null = null;
+  imagePreview: string = '';
 
 
 
@@ -693,6 +693,11 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const userDocSnap = await getDoc(userDocRef);
 
       if (userDocSnap.exists()) {
+
+        if (this.fileToUpload) {
+          await this.uploadFile(this.fileToUpload);
+        }
+
         const message = {
           messagetext: this.messagetext,
           messageUserID: this.userID,
@@ -707,8 +712,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
           fileUpload: this.fileToUpload,
         }
         this.messagetext = '';
+        this.isFileSelectionCompleted = false;
         this.channelService.sendMessage(this.channelDataService.channelID, message);
-        this.closeFileUpload();
         setTimeout(() => {
           this.scrollToBottom();
         }, 10);
@@ -911,24 +916,25 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   }
 
-
-
   // ----------------------------file upload function-----------------------------------------
 
-  isShowFileUpload: boolean = false;
+  isFileSelectionCompleted: boolean = false;
   fileToUpload: any = '';
 
-  toggleFileUpload() {
-    this.isShowFileUpload = !this.isShowFileUpload;
+
+  openFileUpload() {
+    this.isFileSelectionCompleted = true;
+   
   }
 
-  closeFileUpload() {
-    this.isShowFileUpload = false;
+  deleteFileUpload() {
+    this.isFileSelectionCompleted = false;
+   
   }
+
 
   async uploadFiles(event: any) {
     let files = event.target.files;
-    console.log(files);
 
     if (!files || files.length === 0) {
       return;
@@ -943,17 +949,24 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     let reader = new FileReader();
     reader.onload = (e: any) => {
       this.imagePreview = e.target.result;
+        
     };
 
     reader.readAsDataURL(file);
+    this.isFileSelectionCompleted = true;
 
+    this.fileToUpload = file;
+  }
+
+
+
+  async uploadFile(file: File) {
     let timestamp = new Date().getTime();
     let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
-
-    uploadBytes(imgRef, file).then(async () => {
-      let url = await getDownloadURL(imgRef);
-      this.fileToUpload = url;
-    });
+  
+    await uploadBytes(imgRef, file);
+    let url = await getDownloadURL(imgRef);
+    this.fileToUpload = url;
   }
 
   async isValidFile(file: File): Promise<boolean> {
@@ -971,10 +984,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     return true;
   }
 
-  deleteImage() {
-    this.imagePreview = null;
-    this.fileToUpload = null; 
-  }
 
   showSnackbar(message: string): void {
     this.snackBar.open(message, 'Close', {

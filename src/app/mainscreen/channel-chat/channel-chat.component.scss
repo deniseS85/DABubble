@@ -1139,7 +1139,7 @@ input {
 }
 
 .uploaded-files {
-    max-width: 300px;
+    max-width: 100px;
     
 }
 
@@ -1147,17 +1147,34 @@ input {
     position: absolute;
     top: 112px;
     left: 165px;
+    cursor: pointer; 
+
+    &:hover {
+        mat-icon {
+            opacity: 1;
+        }
+    }
+    mat-icon {
+        opacity: 0;
+        color: #686868;
+        transition: opacity 0.3s ease;
+        color: #686868;
+        position: absolute;
+        right: -10px;
+        top: -8px;
+        background: white;
+        border-radius: 100%;
+    }
 }
 
 .file-preview {
     max-width: 100%;
-    max-height: 50px; /* Adjust the max-height as needed */
+    max-height: 50px; 
+    visibility: visible;
 }
 
-.delete-icon {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    cursor: pointer;
-    color: red; /* Farbe des "X" anpassen */
-  }
+.hidden {
+    visibility: hidden;
+}
+
+

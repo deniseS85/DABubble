@@ -71,6 +71,8 @@ export class ThreadQuestionComponent {
     return doc(this.firestore, "channels", channelId, "messages", messageId);
   }
 
+  
+
 
   /**
    * send Emoji selection to the reactionService

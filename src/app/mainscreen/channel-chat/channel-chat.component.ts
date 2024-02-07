@@ -888,7 +888,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   openThread(messageID: string) {
     this.main.threadOpen = false;
     this.channelService.activeMessageID = messageID;
-    console.warn(this.channelService.activeMessageID)
+   /*  console.warn(this.channelService.activeMessageID) */
     setTimeout(() => {
       this.main.threadOpen = true
     }, 0.5);

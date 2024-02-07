@@ -42,6 +42,8 @@ export class MainscreenComponent implements OnInit {
     searchInput: string = '';
     isInputFilled: boolean = false;
     searchResults: { channels: Channel[], users: User[] } = { channels: [], users: [] };
+    selectedUser: User = new User();
+    userProfileView: User = new User();
 
 
     constructor(
@@ -290,12 +292,21 @@ export class MainscreenComponent implements OnInit {
         this.isInputFilled = this.searchInput !== '';
       }
 
-      showUser(user: User) {
-        console.log(user);
+      searchfieldShowUser(user: User): void {
+        // Übergebe den ausgewählten Benutzer an die Kindkomponente
+        this.setUserProfileView(user);
+      }
+    
+      // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen
+      setUserProfileView(user: User): void {
+        this.userProfileView = user;
       }
 
-      showChannel(channel: Channel) {
+      searchfieldShowChannel(channel: Channel) {
         console.log(channel);
-      }
-      
+      } 
+
+      showUserProfileView(user: User): void {
+        console.log('Benutzerprofil anzeigen:', user);
+      }             
 }

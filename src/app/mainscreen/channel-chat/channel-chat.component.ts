@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild, AfterViewChecked, HostListener, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild, AfterViewChecked, HostListener, AfterViewInit, EventEmitter, Output, Input } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../services/auth.service";
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
@@ -83,6 +83,7 @@ import { ChatService } from '../../services/chat.service';
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
+  @Input() userProfileView: User = new User;
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
   addUSerOpen: boolean = false;
@@ -99,7 +100,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   user: User = new User;
   channel: Channel = new Channel;
-  userProfileView: User = new User();
 
   userID: any;
 
@@ -549,10 +549,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
 
-
-
-
-
   async updateChannel(channelID: string, item: {}) {
     await updateDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID), item);
   }
@@ -610,6 +606,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   setUserProfileView(user: User) {
     this.userProfileView = user;
+  }
+
+  showUserProfile(user: User): void {
+    this.setUserProfileView(user); 
   }
 
   // User filter function

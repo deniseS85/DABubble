@@ -132,15 +132,18 @@
           <div class="footer-icons-left">
             <mat-icon (click)="toggleFileUpload()">add</mat-icon>
             <div class="seperator-vert"></div>
+
             <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
               <div class="emoji-footer-selection" *ngIf="isShowEmojiFooter">
                 <app-emoji-picker (emojiSelect)="addEmojiToMessage($event); toggleEmojiFooter()"></app-emoji-picker>
               </div>
               <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
             </div>
+
+            
             <mat-icon>alternate_email</mat-icon>
           </div>
-          <div class="file-upload-container"  *ngIf="isShowFileUpload">
+          <div class="file-upload-container" *ngIf="isShowFileUpload">
               <input type="file" (change)="uploadFiles($event)" class="file-upload-selection">
               <mat-icon (click)="closeFileUpload()">delete</mat-icon>
           </div>

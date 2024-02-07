@@ -131,6 +131,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChatOpen: boolean = true;
 
 
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -691,8 +692,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const userDocSnap = await getDoc(userDocRef);
 
       if (userDocSnap.exists()) {
-        /*  const userData = userDocSnap.data(); */
-
         const message = {
           messagetext: this.messagetext,
           messageUserID: this.userID,
@@ -969,7 +968,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       duration: 3000,
     });
   }
-
 
   // ------------------------------------file upload function end---------------------------------------
 

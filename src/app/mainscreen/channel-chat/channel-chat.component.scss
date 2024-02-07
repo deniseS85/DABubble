@@ -117,7 +117,7 @@
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 100px 40px 149px 40px;
+    padding: 100px 40px 40px 40px;
     scroll-behavior: smooth;
     position: relative;
 }
@@ -131,7 +131,7 @@
         border-radius: 30px;
         padding: 5px 15px;
         background-color: white;
-        font-size: 16px;
+        font-size: 15px;
     }
 }
 
@@ -363,11 +363,12 @@
     gap: 20px;
 }
 
-.writing-name, .sending-time {
-    font-size: 16px;
+.sending-time {
+    font-size: 14px;
 }
 
 .writing-name {
+    font-size: 16px;
     &:hover {
         color: #444DF2;
         cursor: pointer;

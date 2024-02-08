@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, inject } from '@angular/core';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -288,12 +288,33 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
-    search(): void {
+   /*  search(): void {
         const [matchingChannels, matchingUsers] = this.searchService.search(this.searchInput);
+        console.log(matchingChannels)
         this.searchResults.channels = matchingChannels;
+        console.log(this.searchResults)
         this.searchResults.users = matchingUsers;
         this.isInputFilled = this.searchInput !== '';
-      }
+      } */
+
+      search(): void {
+        if (this.searchInput.startsWith('#')) {
+            // Benutzer hat mit '#' begonnen, alle Kanäle auflisten
+            this.searchResults.channels = this.searchService.channels;
+            this.searchResults.users = []; // Leere die Benutzerergebnisse
+        } else if (this.searchInput.startsWith('@')) {
+            // Benutzer hat mit '@' begonnen, alle Benutzer auflisten
+            this.searchResults.users = this.searchService.users;
+            this.searchResults.channels = []; // Leere die Kanalergebnisse
+        } else {
+            // Normale Suche durchführen
+            const [matchingChannels, matchingUsers] = this.searchService.search(this.searchInput);
+            this.searchResults.channels = matchingChannels;
+            this.searchResults.users = matchingUsers;
+        }
+    
+        this.isInputFilled = this.searchInput !== '';
+    }
 
       searchfieldShowUser(user: User): void {
         // Übergebe den ausgewählten Benutzer an die Kindkomponente

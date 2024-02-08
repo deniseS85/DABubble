@@ -11,8 +11,8 @@ import { ChatService } from "../services/chat.service";
   providedIn: 'root'
 })
 export class SearchService {
-  private channels: Channel[] = [];
-  private users: User[] = [];
+  public channels: Channel[] = [];
+  public users: User[] = [];
 
   constructor(private channelService: ChannelService, private userService: UserService, private chatService: ChatService) {
     this.loadChannels();
@@ -20,7 +20,7 @@ export class SearchService {
     // this.loadChats();
   }
 
-  private async loadChannels(): Promise<void> {
+  async loadChannels(): Promise<void> {
     try {
       const firestoreChannels = await this.channelService.getAllChannels();
       this.channels = firestoreChannels.map((data: any) => new Channel(data));
@@ -29,7 +29,7 @@ export class SearchService {
     }
   }
 
-  private async loadUsers(): Promise<void> {
+  async loadUsers(): Promise<void> {
     try {
       // Benutzer aus dem UserService abrufen
       this.users = await this.userService.getAllUsers();

@@ -592,18 +592,23 @@
 
 .searchResults {
     position: absolute;
-    border-left: 1px solid #797EF3;
-    border-right: 1px solid #797EF3;
-    border-bottom: 1px solid #797EF3;
+    border: 1px solid #797EF3;
     border-radius: 16px;
     background-color: white;
-    padding: 16px;
+    padding: 0 16px;
     z-index: 1001;
-
+    width: clamp(15rem, -12.1143rem + 57.7667vw, 80.3125rem);
+    ul {
+        padding: 0;
+    }
     li {
         padding: 8px;
         border-radius: 8px;
         list-style: none;
+        b {
+            margin-right: 10px;
+            font-size: 18px;
+        }
 
         &:hover {
             cursor: pointer;

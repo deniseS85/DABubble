@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Storage, ref, uploadBytes, getDownloadURL, getMetadata } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class SelectAvatarComponent implements OnInit {
     user = new User();
     isGoogleLogin: boolean = false;
 
-    constructor(public startscreen: StartscreenComponent, private router: Router, private authService: AuthService, private storage: Storage, private snackBar: MatSnackBar) {}
+    constructor(public startscreen: StartscreenComponent, private router: Router, private authService: AuthService, private userservice: UserService, private storage: Storage, private snackBar: MatSnackBar) {}
 
    
     ngOnInit() {
@@ -69,7 +70,7 @@ export class SelectAvatarComponent implements OnInit {
         setTimeout(() => {
             this.showConfirmation = false;
             if (this.isGoogleLogin) {
-                this.authService.setUserDetails(
+                this.userservice.setUserDetails(
                     this.userData.firstname,
                     this.userData.lastname,
                     this.userData.profileImg

@@ -7,6 +7,7 @@ import { Channel } from '../models/channel.class';
 import { update } from 'firebase/database';
 import { User } from '../models/user.class';
 import { AuthService } from './auth.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class ChannelService {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private userservice: UserService) { }
 
   public userDataSubject = new BehaviorSubject<any>(null);
   userData$ = this.userDataSubject.asObservable();
@@ -137,14 +138,14 @@ export class ChannelService {
   }
 
   async getCreatorsName() {
-    this.authService.restoreUserData();
+    this.userservice.restoreUserData();
 
     if (this.authService.isUserAnonymous()) {
       return 'Gast';
 
     } else {
-      const userFirstName = this.authService.getUserFirstName();
-      const userLastName = this.authService.getUserLastName();
+      const userFirstName = this.userservice.getUserFirstName();
+      const userLastName = this.userservice.getUserLastName();
       const channelCreator = userFirstName + ' ' + userLastName;
 
       return channelCreator

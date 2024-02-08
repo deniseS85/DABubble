@@ -1,4 +1,4 @@
-<div class="threadContainer">
+<div class="threadContainer" [@slideInAnimation]="isThreadOpenState">
 
     <app-threads-header [activeChannelName]="activeChannelName"></app-threads-header>
     <app-thread-question></app-thread-question>    

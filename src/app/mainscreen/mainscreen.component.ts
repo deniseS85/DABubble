@@ -8,12 +8,29 @@ import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angula
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchService } from '../services/search-service.service';
 import { Channel } from '../models/channel.class';
+import { UserService } from '../services/user.service';
+import { trigger, style, animate, transition } from '@angular/animations';
 
 
 @Component({
   selector: 'app-mainscreen',
   templateUrl: './mainscreen.component.html',
-  styleUrl: './mainscreen.component.scss'
+  styleUrl: './mainscreen.component.scss',
+
+animations: [
+    trigger('slideInAnimation', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)', opacity: 0 }),
+        animate('0.4s ease-in-out', style({ transform: 'translateX(0)', opacity: 1 })),
+      ]),
+    ]),
+    trigger('slideInChannelChatAnimation', [
+        transition(':enter', [
+          style({ opacity: 0 }),
+          animate('0.4s ease-in-out', style({ opacity: 1 })),
+        ]),
+      ]),
+  ],
 })
 export class MainscreenComponent implements OnInit {
     firestore: Firestore = inject(Firestore);
@@ -44,7 +61,8 @@ export class MainscreenComponent implements OnInit {
     searchResults: { channels: Channel[], users: User[] } = { channels: [], users: [] };
     selectedUser: User = new User();
     userProfileView: User = new User();
-
+    isThreadOpenState: string = 'closed';
+    isChannelChatOpenState: string = 'closed';
 
     constructor(
         public authService: AuthService, 
@@ -52,7 +70,8 @@ export class MainscreenComponent implements OnInit {
         private route: ActivatedRoute, 
         private storage: Storage, 
         private snackBar: MatSnackBar,
-        private searchService: SearchService) {
+        private searchService: SearchService,
+        private userservice: UserService) {
             this.userID = this.route.snapshot.paramMap.get('id');
             this.userList = this.getUserfromFirebase();       
     }
@@ -63,6 +82,15 @@ export class MainscreenComponent implements OnInit {
             this.subscribeToUserChanges(); 
         }
     }
+
+    updateThreadState(threadOpen: boolean) {
+        this.isThreadOpenState = threadOpen ? 'openThread' : 'closed';
+    }
+    
+    updateChannelChatState(channelChatOpen: boolean) {
+        this.isChannelChatOpenState = channelChatOpen ? 'openChannelChat' : 'closed';
+    }
+    
 
     private subscribeToUserChanges(): void {
         const userDocRef = doc(this.firestore, 'users', this.userID);
@@ -213,7 +241,7 @@ export class MainscreenComponent implements OnInit {
        /*  this.authService.updateAndVerifyEmail(this.user.email);
         this.emailChanged = true; */
         await updateDoc(this.getUserID(), updatedData);
-        this.authService.setUserData(updatedData);
+        this.userservice.setUserData(updatedData);
         this.updateUserNameInLocalStorage();
     }
 

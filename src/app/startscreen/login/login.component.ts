@@ -2,8 +2,10 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { signInAnonymously, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { collection, getDocs, query, where, Firestore } from '@angular/fire/firestore';
+import { UserService } from '../../services/user.service';
+
 
 
 interface UserData {
@@ -33,7 +35,7 @@ export class LoginComponent {
     isWrongPassword: boolean = false;
     isSubmitted: boolean = false;
     
-    constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute) { 
+    constructor(private formBuilder: FormBuilder, private authService: AuthService, private userservice: UserService, private router: Router) { 
         this.setLoginForm();
     }
 
@@ -49,7 +51,7 @@ export class LoginComponent {
                 const { firstname, lastname, profileImg } = userExistsResult.userData!;
     
                 if (firstname && lastname && profileImg) {
-                    this.authService.setUserDetails(firstname, lastname, profileImg);
+                    this.userservice.setUserDetails(firstname, lastname, profileImg);
                     
                     await signInWithEmailAndPassword(this.authService.auth, email, this.logInForm.value.password);
                     let userId = await this.getUserIDFromFirebase(email);
@@ -96,7 +98,7 @@ export class LoginComponent {
             let uid = user?.uid;
             if (uid) {
                 this.authService.setAnonymousStatus(true);
-                this.authService.setUserDetails('Gast', '', 'guest-profile.png');
+                this.userservice.setUserDetails('Gast', '', 'guest-profile.png');
                 this.isAnonymous = true;
                 await this.authService.setOnlineStatus(uid, true);
                 this.router.navigate(['/main', uid]);
@@ -118,31 +120,35 @@ export class LoginComponent {
     
             if (displayName && email) {
                 let [firstName, lastName] = displayName.split(' ');
-                
-                let querySnapshot = await getDocs(query(collection(this.firestore, 'users'), where('email', '==', email)));
-                if (querySnapshot.empty) {
-                    this.openSelectAvatar.emit({
-                        firstname: firstName,
-                        lastname: lastName,
-                        email: email,
-                        isOnline: true
-
-                    });
-                } else {
-                    let userDocument = querySnapshot.docs[0].data() as UserData;
-                    this.authService.setUserDetails(userDocument.firstname, userDocument.lastname, userDocument.profileImg);
-                    let userId = await this.getUserIDFromFirebase(email);
-
-                    if (userId) {
-                        await this.authService.setOnlineStatus(userId, true);
-                        this.router.navigate(['/main', userId]);
-                    } 
-                }
+                await this.handleUserDetails(firstName, lastName, email);
             }
         } catch (error: any) {
             this.handleAuthError(error);
         }
     }
+
+    private async handleUserDetails(firstName: string, lastName: string, email: string) {
+        const querySnapshot = await getDocs(query(collection(this.firestore, 'users'), where('email', '==', email)));
+    
+        if (querySnapshot.empty) {
+            this.openSelectAvatar.emit({
+                firstname: firstName,
+                lastname: lastName,
+                email: email,
+                isOnline: true
+            });
+        } else {
+            let userDocument = querySnapshot.docs[0].data() as UserData;
+            this.userservice.setUserDetails(userDocument.firstname, userDocument.lastname, userDocument.profileImg);
+            let userId = await this.getUserIDFromFirebase(email);
+
+            if (userId) {
+                await this.authService.setOnlineStatus(userId, true);
+                this.router.navigate(['/main', userId]);
+            } 
+        } 
+    }
+
 
     async getUserIDFromFirebase(email: string): Promise<string | null> {
         try {

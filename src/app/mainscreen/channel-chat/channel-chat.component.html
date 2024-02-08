@@ -1,5 +1,5 @@
 <!-- *ngIf="this.channelDataService.channelUsers" in class'maincontainer' einfügen zum ausblenden am anfang -->
-<div class="main-container">
+<div class="main-container" [@slideInChannelChatAnimation]="isChannelChatOpenState">
 
     <div class="header-container">
         <header class="channel-chat-header">

@@ -35,7 +35,6 @@ import { ChatService } from '../../services/chat.service';
       transition('hidden => visible', animate('200ms 150ms ease-out')),
       transition('visible => hidden', animate('200ms ease-in')),
     ]),
-
     trigger('slideAndFadeLeft', [
       state('hidden', style({
         transform: 'translateX(-100px)',
@@ -77,18 +76,12 @@ import { ChatService } from '../../services/chat.service';
         animate('0.3s ease-in-out',
           style({ height: 0, opacity: 0 }))
       ]
-      )
+      ),
     ]),
-    
-    
-    trigger('leftRightAnimation', [
+    trigger('slideInChannelChatAnimation', [
       transition(':enter', [
-        style({ width: 0, opacity: 0 }),
-        animate('0.3s ease-in-out', style({ width: '*', opacity: 1 })),
-      ]),
-      transition(':leave', [
-        style({ width: '*', opacity: 1 }),
-        animate('0.3s ease-in-out', style({ width: 0, opacity: 0 })),
+        style({ opacity: 0 }),
+        animate('0.4s ease-in-out', style({ opacity: 1 })),
       ]),
     ]),
   ],
@@ -142,12 +135,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChatOpen: boolean = true;
   imagePreview: string = '';
 
-
+  @Input() isChannelChatOpenState: string = 'closed';
 
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private main: MainscreenComponent,
+    public main: MainscreenComponent,
     private elRef: ElementRef,
     private renderer: Renderer2,
     private authservice: AuthService,
@@ -899,13 +892,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
 
   openThread(messageID: string) {
+    if (this.channelService.activeMessageID === messageID && this.main.threadOpen) {
+      return;
+    }
     this.main.threadOpen = false;
     this.channelService.activeMessageID = messageID;
-   /*  console.warn(this.channelService.activeMessageID) */
     setTimeout(() => {
-      this.main.threadOpen = true
+      this.main.threadOpen = true;
     }, 0.5);
-
   }
 
   openSnackBar(message: string): void {

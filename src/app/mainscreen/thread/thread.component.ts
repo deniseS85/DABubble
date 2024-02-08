@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, Input, ViewChild, inject } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
 import { ChannelService } from '../../services/channel.service';
@@ -10,13 +10,29 @@ import { ReactionsService } from '../../services/reactions.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { Subscription } from 'rxjs';
-
-
+import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-thread',
   templateUrl: './thread.component.html',
-  styleUrl: './thread.component.scss'
+  styleUrl: './thread.component.scss',
+
+  animations: [
+    trigger('slideInAnimation', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)', opacity: 0 }),
+        animate('0.4s ease-in-out', style({ transform: 'translateX(0)', opacity: 1 })),
+      ]),
+    ]),
+  ],
+/* animations: [
+  trigger('slideInAnimation', [
+    transition(':enter', [
+      style({ transform: 'translateX(100%)', opacity: 0 }),
+      animate('0.4s ease-in-out', style({ transform: 'translateX(0)', opacity: 1 })),
+    ]),
+  ]),
+], */
 })
 export class ThreadComponent implements AfterViewChecked, AfterViewInit{
 
@@ -42,6 +58,7 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
 
   userList;
   unsubUser: Unsubscribe | undefined;
+  
 
 /*   reaction: string = ""; */
   /* allReactions: any[] = []; */
@@ -50,6 +67,8 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
   @ViewChild('answerContainer') answerContainer!: ElementRef;
   private shouldScrollToBottom: boolean = true;
   private subscriptions: Subscription[] = [];
+
+  @Input() isThreadOpenState: string = 'closed';
 
   constructor(
     private main: MainscreenComponent,
@@ -313,7 +332,6 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
 
   closeThread() {
     this.main.threadOpen = false;
-    
   }
 
 

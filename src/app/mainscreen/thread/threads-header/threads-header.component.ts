@@ -4,7 +4,8 @@ import { MainscreenComponent } from '../../mainscreen.component';
 @Component({
   selector: 'app-threads-header',
   templateUrl: './threads-header.component.html',
-  styleUrl: './threads-header.component.scss'
+  styleUrl: './threads-header.component.scss',
+  
 })
 export class ThreadsHeaderComponent {
   

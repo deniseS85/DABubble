@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output, HostListener, ElementRef, ViewChild, inject } from '@angular/core';
 import { StartscreenComponent } from '../startscreen.component';
-import { AuthService } from '../../services/auth.service';
 import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
 
 @Component({
@@ -20,7 +19,7 @@ export class ResetPasswordComponent {
     firestore: Firestore = inject(Firestore);
     confirmationMessage: string = '';
     
-    constructor(public startscreen: StartscreenComponent, private authService: AuthService) { }
+    constructor(public startscreen: StartscreenComponent) { }
 
     toggleReset() {
         this.startscreen.toggleView('login');

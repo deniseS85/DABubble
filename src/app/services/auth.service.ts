@@ -109,7 +109,7 @@ export class AuthService {
         }
     }
     
-    setUserData(updatedData: any): void {
+   /*  setUserData(updatedData: any): void {
         const currentData = this.userDataSubject.value;
         const newData = { ...currentData, ...updatedData };
         this.userDataSubject.next(newData);
@@ -151,6 +151,6 @@ export class AuthService {
         this.userFirstName = localStorage.getItem('userFirstName') || '';
         this.userLastName = localStorage.getItem('userLastName') || '';
         this.userImg = localStorage.getItem('userImg') || '';
-    }
+    } */
 
 }

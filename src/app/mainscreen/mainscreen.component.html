@@ -140,7 +140,7 @@
     <div class="mainContainerContent">
         <app-workspace></app-workspace>
         <app-chat-container *ngIf="chatOpen"></app-chat-container>
-        <app-channel-chat *ngIf="channelOpen"  [userProfileView]="userProfileView"></app-channel-chat>
-        <app-thread *ngIf="threadOpen"></app-thread>
+        <app-channel-chat [@slideInChannelChatAnimation]="isThreadOpenState" *ngIf="channelOpen"  [userProfileView]="userProfileView"></app-channel-chat>
+        <app-thread [@slideInAnimation]="isThreadOpenState" *ngIf="threadOpen"></app-thread>
     </div>
 </div>

@@ -99,6 +99,11 @@ export class ThreadsSendMessageComponent {
       const userDocSnap = await getDoc(userDocRef);
 
       if (userDocSnap.exists()) {
+
+        if (this.fileToUpload) {
+          await this.uploadFile(this.fileToUpload);
+        }
+
           this.answer = {
             answertext: this.answertext,
             answerUserID: this.userID,
@@ -106,8 +111,11 @@ export class ThreadsSendMessageComponent {
             timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
             date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
             react: [],
+            fileUpload: this.fileToUpload,
           }
           this.answertext = '';
+          this.isButtonDisabled = true;
+          this.deleteFileUpload();
           this.channelService.sendAnswer(this.channelID, this.messageID, this.answer);
       }
     } catch(error) {
@@ -167,6 +175,7 @@ async uploadFiles(event: any) {
   reader.readAsDataURL(file);
   this.isFiledUploaded = true;
   this.fileToUpload = file;
+  this.onMessageChange();
 }
 
 async uploadFile(file: File) {

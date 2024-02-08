@@ -1125,7 +1125,7 @@ input {
 
 .uploaded-files {
     max-width: 100px;
-    
+
 }
 
 .image-preview-overlay {
@@ -1133,6 +1133,12 @@ input {
     top: 112px;
     left: 165px;
     cursor: pointer; 
+    background-color: white;
+    border: 5px solid #444DF2;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    
 
     &:hover {
         mat-icon {

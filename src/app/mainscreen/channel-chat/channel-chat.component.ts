@@ -293,6 +293,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   addEmojiToMessage(event: any) {
     this.messagetext += event.emoji.native;
+    this.onMessageChange();
   }
 
   /**
@@ -691,6 +692,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.isButtonDisabled = false;
     }
   }
+
+  handleEnterKey() {
+    this.onMessageChange();
+    if (this.messagetext.trim() !== '') {
+        this.addMessage();
+    }
+}
 
   async addMessage() {
     try {

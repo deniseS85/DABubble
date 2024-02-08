@@ -1,5 +1,5 @@
 <!-- *ngIf="this.channelDataService.channelUsers" in class'maincontainer' einfügen zum ausblenden am anfang -->
-<div class="main-container" [@slideInChannelChatAnimation]="isChannelChatOpenState">
+<div class="main-container">
 
     <div class="header-container">
         <header class="channel-chat-header">
@@ -86,12 +86,7 @@
                     <div
                         [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
                         {{ message.messagetext }}</div>
-                        <a *ngIf="!isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
-                            <img class="uploaded-files" [src]="message.fileUpload">
-                        </a>
-                        <a *ngIf="isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
-                            <img class="uploaded-files" src="./assets/img/pdf-icon.png">
-                        </a>
+                        <img class="uploaded-files" [src]="message.fileUpload">
 
                     <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
                         (click)="openThread(message.messageID)">

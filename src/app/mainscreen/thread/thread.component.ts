@@ -25,14 +25,6 @@ import { trigger, style, animate, transition } from '@angular/animations';
       ]),
     ]),
   ],
-/* animations: [
-  trigger('slideInAnimation', [
-    transition(':enter', [
-      style({ transform: 'translateX(100%)', opacity: 0 }),
-      animate('0.4s ease-in-out', style({ transform: 'translateX(0)', opacity: 1 })),
-    ]),
-  ]),
-], */
 })
 export class ThreadComponent implements AfterViewChecked, AfterViewInit{
 

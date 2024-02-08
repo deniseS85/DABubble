@@ -78,12 +78,6 @@ import { ChatService } from '../../services/chat.service';
       ]
       ),
     ]),
-    trigger('slideInChannelChatAnimation', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('0.4s ease-in-out', style({ opacity: 1 })),
-      ]),
-    ]),
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
@@ -995,13 +989,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       duration: 3000,
     });
   }
-
-  isPDFFile(url: string | boolean): boolean {
-    if (typeof url === 'string') {
-        return url.toLowerCase().includes('.pdf');
-    }
-    return false;
-}
 
   // ------------------------------------file upload function end---------------------------------------
 

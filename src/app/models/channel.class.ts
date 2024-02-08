@@ -6,7 +6,6 @@ export class Channel {
     channelname: string;       
     channelUsers: any[];              
     channelCreator: string;
-    users: User[] = [];
     
 
     constructor(obj?: any) {
@@ -15,7 +14,6 @@ export class Channel {
         this.channelname = obj && obj.channelname ? obj.channelname : '';
         this.channelUsers = obj && obj.channelUsers ? obj.channelUsers : '';
         this.channelCreator = obj && obj.channelCreator ? obj.channelCreator : '';
-        this.users = obj && obj.users && Array.isArray(obj.users) ? obj.users.map((user: any) => new User(user)) : [];    
          
     }
 
@@ -26,7 +24,6 @@ export class Channel {
             channelname: this.channelname,
             channelUsers: this.channelUsers,
             channelCreator: this.channelCreator,
-            users: this.users.map(user => user.toUserJson())
         };
     }
 
@@ -37,7 +34,6 @@ export class Channel {
             channelname: obj.channelname || "",
             channelUsers: obj.channelUsers || "",
             channelCreator: obj.channelCreator || "",
-            users: obj.users && Array.isArray(obj.users) ? obj.users.map((user: any) => new User(user)) : []
         });
     } 
 }

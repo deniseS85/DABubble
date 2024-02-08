@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SearchService } from '../services/search-service.service';
 import { Channel } from '../models/channel.class';
 import { UserService } from '../services/user.service';
+import { ChannelDataService } from '../services/channel-data.service';
 
 
 
@@ -55,7 +56,8 @@ export class MainscreenComponent implements OnInit {
         private storage: Storage, 
         private snackBar: MatSnackBar,
         private searchService: SearchService,
-        private userservice: UserService) {
+        private userservice: UserService,
+        private channelDataService: ChannelDataService) {
             this.userID = this.route.snapshot.paramMap.get('id');
             this.userList = this.getUserfromFirebase();       
     }
@@ -299,15 +301,12 @@ export class MainscreenComponent implements OnInit {
 
       search(): void {
         if (this.searchInput.startsWith('#')) {
-            // Benutzer hat mit '#' begonnen, alle Kanäle auflisten
             this.searchResults.channels = this.searchService.channels;
-            this.searchResults.users = []; // Leere die Benutzerergebnisse
+            this.searchResults.users = []; 
         } else if (this.searchInput.startsWith('@')) {
-            // Benutzer hat mit '@' begonnen, alle Benutzer auflisten
             this.searchResults.users = this.searchService.users;
-            this.searchResults.channels = []; // Leere die Kanalergebnisse
+            this.searchResults.channels = []; 
         } else {
-            // Normale Suche durchführen
             const [matchingChannels, matchingUsers] = this.searchService.search(this.searchInput);
             this.searchResults.channels = matchingChannels;
             this.searchResults.users = matchingUsers;
@@ -328,9 +327,23 @@ export class MainscreenComponent implements OnInit {
 
       searchfieldShowChannel(channel: Channel) {
         console.log(channel);
+        this.openChannel(channel.channelID);
+        this.searchInput = '';
+        this.isInputFilled = false;
       } 
 
       showUserProfileView(user: User): void {
         console.log('Benutzerprofil anzeigen:', user);
-      }             
+      }         
+      
+      openChannel(channelID: string): void {
+        this.channelOpen = false;
+        this.threadOpen = false;
+        this.channelDataService.channelID = channelID;
+      
+        setTimeout(() => {
+          this.channelOpen = true;
+        }, 0.02);
+      }
+      
 }

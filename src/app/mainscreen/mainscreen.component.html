@@ -11,10 +11,10 @@
             <div class="searchResults" *ngIf="isInputFilled">
                 <ul>
                     <li *ngFor="let channel of searchResults.channels" (click)="searchfieldShowChannel(channel)">
-                        <b>#</b> {{ channel.channelname }}
+                        <span>#</span> {{ channel.channelname }}
                     </li>
                     <li *ngFor="let user of searchResults.users" (click)="searchfieldShowUser(user)">
-                        <b>&commat;</b> {{ user.firstname }} {{ user.lastname }}
+                        <span>&commat;</span> {{ user.firstname }} {{ user.lastname }}
                     </li>
                 </ul>
             </div>

@@ -506,7 +506,6 @@
 }
 
 .footer-line-icons {
-    cursor: pointer;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -518,7 +517,7 @@
     gap: 10px;
     padding: 10px;
     color: #686868;
-    
+    cursor: pointer;
 
     &:hover {
         color: black;
@@ -546,7 +545,10 @@
 .footer-icons-right {
     padding: 10px;
     color: #444DF2;
-
+    button {
+        border: none;
+        background-color: transparent;
+    }
     &:hover {
         color: #797EF3;
     }

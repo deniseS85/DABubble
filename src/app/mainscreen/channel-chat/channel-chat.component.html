@@ -83,7 +83,7 @@
                             </ng-template>
                         </div>
                     </div>
-                    <div
+                    <div *ngIf="!(messagetext.trim() === '' && isFiledUploaded)"
                         [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
                         {{ message.messagetext }}</div>
                         <img class="uploaded-files" [src]="message.fileUpload">
@@ -125,9 +125,9 @@
 
     <div class="footer-write-new-message">
         <div>
-          <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
-            [(ngModel)]="messagetext" (keyup.enter)="addMessage()">
-        </textarea>
+            <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
+                [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="messagetext.trim() !== '' && addMessage()">
+            </textarea>
         </div>
         <div class="footer-line-icons">
           <div class="footer-icons-left">
@@ -145,13 +145,18 @@
             <mat-icon>alternate_email</mat-icon>
           </div>
           <div class="footer-icons-right">
-            <mat-icon (click)="addMessage()">send_icon</mat-icon>
+            <button mat-icon-button [disabled]="isButtonDisabled" (click)="addMessage()">
+                <mat-icon [ngStyle]="{'color': isButtonDisabled ? 'lightgrey' : '#686868', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
+            </button>
           </div>
         </div>
-        <div class="image-preview-overlay" *ngIf="isFileSelectionCompleted">
+        <div class="image-preview-overlay" *ngIf="isFiledUploaded">
             <img [src]="imagePreview" alt="" class="file-preview">
             <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
         </div>
+        file upload:{{isFiledUploaded}},
+        button disabled:{{isButtonDisabled}},
+        textarea empty:{{this.messagetext.trim() === ''}}
     </div>
 </div>
 

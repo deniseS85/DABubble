@@ -130,7 +130,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   imagePreview: string = '';
 
 
-
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -685,6 +684,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
+  onMessageChange() {
+    this.isButtonDisabled = this.messagetext.trim() === '' && !this.isFiledUploaded;
+  }
+
   async addMessage() {
     try {
       const userDocRef = doc(this.firestore, 'users', this.userID);
@@ -710,7 +713,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
           fileUpload: this.fileToUpload,
         }
         this.messagetext = '';
-        this.isFileSelectionCompleted = false;
+        this.isFiledUploaded = false;
         this.channelService.sendMessage(this.channelDataService.channelID, message);
         setTimeout(() => {
           this.scrollToBottom();
@@ -917,17 +920,17 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   // ----------------------------file upload function-----------------------------------------
 
-  isFileSelectionCompleted: boolean = false;
+  isFiledUploaded: boolean = false;
   fileToUpload: any = '';
 
 
   openFileUpload() {
-    this.isFileSelectionCompleted = true;
+    this.isFiledUploaded = true;
    
   }
 
   deleteFileUpload() {
-    this.isFileSelectionCompleted = false;
+    this.isFiledUploaded = false;
    
   }
 
@@ -952,7 +955,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     };
 
     reader.readAsDataURL(file);
-    this.isFileSelectionCompleted = true;
+    this.isFiledUploaded = true;
 
     this.fileToUpload = file;
   }

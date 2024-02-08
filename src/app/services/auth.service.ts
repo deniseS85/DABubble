@@ -9,9 +9,6 @@ import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';;
 export class AuthService {
     auth: Auth = inject(Auth);
     firestore: Firestore = inject(Firestore);
-    private userFirstName: string = '';
-    private userLastName: string = '';
-    private userImg: string = '';
     private isAnonymous: boolean = false;
     private isGoogleLoginSource = new BehaviorSubject<boolean>(false);
     private userDataSubject = new BehaviorSubject<any>({});

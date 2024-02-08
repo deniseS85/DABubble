@@ -963,7 +963,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
     reader.readAsDataURL(file);
     this.isFiledUploaded = true;
-
     this.fileToUpload = file;
   }
 

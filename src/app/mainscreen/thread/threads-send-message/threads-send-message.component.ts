@@ -116,62 +116,98 @@ export class ThreadsSendMessageComponent {
   }
 
 
+// ----------------------------file upload function-----------------------------------------
 
-  isShowFileUpload: boolean = false;
-  fileToUpload: any = '';
-  /* imagePreview: string = ''; */
 
-  toggleFileUpload() {
-    this.isShowFileUpload = !this.isShowFileUpload;
+isFiledUploaded: boolean = false;
+fileToUpload: any = '';
+isButtonDisabled: boolean = true;
+imagePreview: string = '';
+
+onMessageChange() {
+  this.isButtonDisabled = this.answertext.trim() === '';
+
+  if (this.isButtonDisabled && this.isFiledUploaded) {
+    this.isButtonDisabled = false;
+  }
+}
+
+openFileUpload() {
+  this.isFiledUploaded = true;
+  this.onMessageChange();
+ 
+}
+
+deleteFileUpload() {
+  this.isFiledUploaded = false;
+  this.onMessageChange();
+  this.fileToUpload = '';
+  this.imagePreview = '';
+}
+
+
+async uploadFiles(event: any) {
+  let files = event.target.files;
+
+  if (!files || files.length === 0) {
+    return;
   }
 
-  closeFileUpload() {
-    this.isShowFileUpload = false;
+  let file = files[0];
+
+  if (!(await this.isValidFile(file))) {
+    return;
   }
 
-  async uploadFiles(event: any) {
-    let files = event.target.files;
-    console.log(files);
+  let reader = new FileReader();
+  reader.onload = (e: any) => {
+    this.imagePreview = e.target.result;
+  };
 
-    if (!files || files.length === 0) {
-      return;
-    }
+  reader.readAsDataURL(file);
+  this.isFiledUploaded = true;
+  this.fileToUpload = file;
+}
 
-    let file = files[0];
+async uploadFile(file: File) {
+  let timestamp = new Date().getTime();
+  let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
 
-    if (!(await this.isValidFile(file))) {
-      return;
-    }
+  await uploadBytes(imgRef, file);
+  let url = await getDownloadURL(imgRef);
+  this.fileToUpload = url;
+}
 
-    let timestamp = new Date().getTime();
-    let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
-
-    uploadBytes(imgRef, file).then(async () => {
-      let url = await getDownloadURL(imgRef);
-      this.fileToUpload = url;
-    });
+async isValidFile(file: File): Promise<boolean> {
+  if (file.size > 500000) {
+    this.showSnackbar('Error: Sorry, your file is too large.');
+    return false;
   }
 
-  async isValidFile(file: File): Promise<boolean> {
-    if (file.size > 500000) {
-      this.showSnackbar('Error: Sorry, your file is too large.');
-      return false;
-    }
-
-    let allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'application/pdf'];
-    if (!allowedFormats.includes(file.type)) {
-      this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG, PDF.');
-      return false;
-    }
-
-    return true;
+  let allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'application/pdf'];
+  if (!allowedFormats.includes(file.type)) {
+    this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG, PDF.');
+    return false;
   }
 
-  showSnackbar(message: string): void {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-    });
+  return true;
+}
+
+showSnackbar(message: string): void {
+  this.snackBar.open(message, 'Close', {
+    duration: 3000,
+  });
+}
+
+
+isPDFFile(url: string | boolean): boolean {
+  if (typeof url === 'string') {
+      return url.toLowerCase().includes('.pdf');
   }
+  return false;
+}
+
+// ------------------------------------file upload function end---------------------------------------
 
 
   

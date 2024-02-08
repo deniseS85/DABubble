@@ -150,8 +150,8 @@
             <mat-icon>alternate_email</mat-icon>
           </div>
           <div class="footer-icons-right">
-            <button mat-icon-button [disabled]="isButtonDisabled" (click)="addMessage()">
-                <mat-icon [ngStyle]="{'color': isButtonDisabled ? 'lightgrey' : '#686868', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
+            <button class="add-btn" mat-icon-button [disabled]="isButtonDisabled" (click)="addMessage()">
+                <mat-icon [ngStyle]="{'color': isButtonDisabled ? 'lightgrey' : '#444DF2', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
             </button>
           </div>
         </div>
@@ -164,6 +164,7 @@
             </a>
             <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
         </div>
+        
     </div>
 </div>
 

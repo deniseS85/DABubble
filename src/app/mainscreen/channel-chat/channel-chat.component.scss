@@ -554,6 +554,10 @@
     }
 }
 
+.add-btn:not([disabled]) mat-icon:hover {
+    color: #797EF3 !important;
+}
+
 .hover-function {
     .hover-img {
         display: none;

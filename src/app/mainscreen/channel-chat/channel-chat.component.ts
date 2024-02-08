@@ -718,6 +718,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         }
         this.messagetext = '';
         this.isButtonDisabled = true;
+        this.deleteFileUpload();
         this.channelService.sendMessage(this.channelDataService.channelID, message);
         setTimeout(() => {
           this.scrollToBottom();
@@ -964,7 +965,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.isFiledUploaded = true;
 
     this.fileToUpload = file;
-    console.log(this.fileToUpload)
   }
 
   async uploadFile(file: File) {

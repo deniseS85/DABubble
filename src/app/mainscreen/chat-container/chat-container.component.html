@@ -81,7 +81,7 @@
                 <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : message.activeUser}">
                     {{message.messagetext}}
                 </div>
-                <!-- <div class="threadContainerTextReactions">
+                <div class="threadContainerTextReactions">
                     <div class="threadContainerTextReactionsEmojis" *ngFor="let answer of message.react">
                         <div class="reactionsInfoContainer">
                             <div>{{answer.emoji}}</div>
@@ -97,7 +97,7 @@
                     <div class="emoji-con">
                         <img (click)="toggleEmoji(message.messageid)" src="../../../assets/img/add_reaction.png" alt="">        
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>

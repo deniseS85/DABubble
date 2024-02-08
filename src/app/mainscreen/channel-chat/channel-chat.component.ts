@@ -928,7 +928,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   deleteFileUpload() {
     this.isFileSelectionCompleted = false;
-   
+    this.fileToUpload = '';
+    this.imagePreview = '';
   }
 
 
@@ -948,6 +949,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     let reader = new FileReader();
     reader.onload = (e: any) => {
       this.imagePreview = e.target.result;
+      console.log(this.imagePreview);
         
     };
 
@@ -989,6 +991,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       duration: 3000,
     });
   }
+
+  
+  isPDFFile(url: string | boolean): boolean {
+    if (typeof url === 'string') {
+        return url.toLowerCase().includes('.pdf');
+    }
+    return false;
+}
 
   // ------------------------------------file upload function end---------------------------------------
 

@@ -86,7 +86,12 @@
                     <div
                         [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
                         {{ message.messagetext }}</div>
-                        <img class="uploaded-files" [src]="message.fileUpload">
+                        <a *ngIf="!isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
+                            <img class="uploaded-files" [src]="message.fileUpload">
+                        </a>
+                        <a *ngIf="isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
+                            <img class="uploaded-files" src="./assets/img/pdf-icon.png">
+                        </a>
 
                     <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
                         (click)="openThread(message.messageID)">
@@ -150,6 +155,16 @@
         </div>
         <div class="image-preview-overlay" *ngIf="isFileSelectionCompleted">
             <img [src]="imagePreview" alt="" class="file-preview">
+
+
+            <!-- <a class="file-preview" *ngIf="!isPDFFile(imagePreview)" target="_blank" [href]="imagePreview">
+                <img class="uploaded-files" [src]="imagePreview">
+            </a>
+            <a class="file-preview" *ngIf="isPDFFile(imagePreview)" target="_blank" [href]="imagePreview">
+                <img class="uploaded-files" src="./assets/img/pdf-icon.png">
+            </a> -->
+
+
             <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
         </div>
     </div>

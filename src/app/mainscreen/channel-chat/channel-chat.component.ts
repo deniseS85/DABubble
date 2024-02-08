@@ -996,6 +996,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     });
   }
 
+  isPDFFile(url: string | boolean): boolean {
+    if (typeof url === 'string') {
+        return url.toLowerCase().includes('.pdf');
+    }
+    return false;
+}
+
   // ------------------------------------file upload function end---------------------------------------
 
 }

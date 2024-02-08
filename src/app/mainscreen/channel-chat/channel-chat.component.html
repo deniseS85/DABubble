@@ -86,7 +86,12 @@
                     <div
                         [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
                         {{ message.messagetext }}</div>
-                        <img class="uploaded-files" [src]="message.fileUpload">
+                        <a *ngIf="!isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
+                            <img class="uploaded-files" [src]="message.fileUpload">
+                        </a>
+                        <a *ngIf="isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
+                            <img class="uploaded-files" src="./assets/img/pdf-icon.png">
+                        </a>
 
                     <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
                         (click)="openThread(message.messageID)">

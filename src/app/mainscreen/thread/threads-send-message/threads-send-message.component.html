@@ -4,13 +4,9 @@
     </div>
     <div class="footer-line-icons">
         <div class="footer-icons-left">
-
-            <label for="file-input">
-                <mat-icon (click)="toggleFileUpload()">add</mat-icon>
-              </label>
-
-
-           <!--  <mat-icon (click)="toggleFileUpload()">add</mat-icon> -->
+            <label for="fileUpload" class="upload">
+                <mat-icon (click)="openFileUpload()">add</mat-icon>
+            </label>
             <div class="seperator-vert"></div>
             <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
                 <div class="emoji-footer-selection" *ngIf="isAnswertextEmojiOpen">
@@ -20,9 +16,14 @@
               </div>
             <mat-icon>alternate_email</mat-icon>
         </div>
-        <div class="file-upload-container" *ngIf="isShowFileUpload">
-            <input type="file" (change)="uploadFiles($event)" class="file-upload-selection">
-            <mat-icon (click)="closeFileUpload()">cancel</mat-icon>
+        <div class="image-preview-overlay" *ngIf="fileToUpload">
+            <a class="uploaded-files" *ngIf="fileToUpload.type !== 'application/pdf'" target="_blank" [href]="imagePreview">
+                <img class="uploaded-files" [src]="imagePreview">
+            </a>
+            <a class="uploaded-files" *ngIf="fileToUpload.type === 'application/pdf'" target="_blank" [href]="imagePreview">
+                <img class="uploaded-files" src="./assets/img/pdf-icon.png">
+            </a>
+            <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
         </div>
         <div class="footer-icons-right">
             <mat-icon title="channel" (click)="sendAnswer()">send_icon</mat-icon>

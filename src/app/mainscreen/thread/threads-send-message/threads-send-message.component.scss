@@ -91,39 +91,45 @@
 
 
 
-.image-upload>input {
-    display: none;
+.uploaded-files {
+    max-width: 100px;
+    max-height: 50px;
 }
 
+.image-preview-overlay {
+    position: absolute;
+    top: 112px;
+    left: 165px;
+    cursor: pointer; 
+    
 
-.file-upload-container {
-    display: flex;
-    align-items: center;
-
+    &:hover {
+        mat-icon {
+            opacity: 1;
+        }
+    }
     mat-icon {
-        padding-bottom: 5px;
-        cursor: pointer;
-        /*    transition: opacity 0.3s ease; */
-           color: #686868;
-          /*  position: absolute;
-           right: -10px;
-           top: -8px; */
-           background: white;
-           border-radius: 100%;
+        opacity: 0;
+        color: #686868;
+        transition: opacity 0.3s ease;
+        color: #686868;
+        position: absolute;
+        right: -10px;
+        top: -8px;
+        background: white;
+        border-radius: 100%;
     }
 }
 
-.file-upload-selection {
-    border: none !important;
-    outline: none !important;
-    padding-bottom: 20px;
+.file-preview {
+    max-width: 100%;
+    max-height: 50px; 
+    visibility: visible;
 }
 
-.uploaded-files {
-    max-width: 100px;
-    
+.hidden {
+    visibility: hidden;
 }
-
 
 
 

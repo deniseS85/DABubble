@@ -4,9 +4,10 @@
     </div>
     <div class="footer-line-icons">
         <div class="footer-icons-left">
-            <label for="fileUpload" class="upload">
+            <label for="fileUploadThread" class="upload">
                 <mat-icon (click)="openFileUpload()">add</mat-icon>
             </label>
+            <input type="file" id="fileUploadThread" style="display:none;" (change)="uploadFiles($event)">
             <div class="seperator-vert"></div>
             <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
                 <div class="emoji-footer-selection" *ngIf="isAnswertextEmojiOpen">

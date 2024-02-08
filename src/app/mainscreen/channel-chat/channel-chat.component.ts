@@ -958,17 +958,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     let reader = new FileReader();
     reader.onload = (e: any) => {
       this.imagePreview = e.target.result;
-      console.log(this.imagePreview);
-        
     };
 
     reader.readAsDataURL(file);
     this.isFiledUploaded = true;
 
     this.fileToUpload = file;
+    console.log(this.fileToUpload)
   }
-
-
 
   async uploadFile(file: File) {
     let timestamp = new Date().getTime();
@@ -993,7 +990,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
     return true;
   }
-
 
   showSnackbar(message: string): void {
     this.snackBar.open(message, 'Close', {

@@ -156,17 +156,12 @@
           </div>
         </div>
         <div class="image-preview-overlay" *ngIf="isFiledUploaded">
-            <img [src]="imagePreview" alt="" class="file-preview">
-
-
-            <!-- <a class="file-preview" *ngIf="!isPDFFile(imagePreview)" target="_blank" [href]="imagePreview">
-                <img class="uploaded-files" [src]="imagePreview">
+            <a class="uploaded-files" *ngIf="fileToUpload.type !== 'application/pdf'" target="_blank" [href]="imagePreview">
+                <img [src]="imagePreview">
             </a>
-            <a class="file-preview" *ngIf="isPDFFile(imagePreview)" target="_blank" [href]="imagePreview">
-                <img class="uploaded-files" src="./assets/img/pdf-icon.png">
-            </a> -->
-
-
+            <a class="uploaded-files" *ngIf="fileToUpload.type === 'application/pdf'" target="_blank" [href]="imagePreview">
+                <img src="./assets/img/pdf-icon.png">
+            </a>
             <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
         </div>
     </div>

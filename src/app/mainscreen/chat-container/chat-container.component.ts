@@ -33,6 +33,8 @@ export class ChatContainerComponent {
   chatPartnerName: string = '';
   chatPartnerImg: string = '';
   isOnline: boolean = false;
+  selfChat: boolean = false;
+  chatAllreadyStarted: boolean = false;
 
   messagesLoaded: boolean = false;
   unsubscribeUserData: Unsubscribe | undefined;
@@ -50,7 +52,8 @@ export class ChatContainerComponent {
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.loadChatID();
-    this.getUserData();
+    this.setBooleanForSelfChat();
+    this.getUserData()
     // this.newDMChat()
   }
 
@@ -58,44 +61,48 @@ export class ChatContainerComponent {
   async loadChatID() {
     const chatPartnerID = this.chatService.userID;
     const allChatsRef = await getDocs(collection(this.firestore, "chats"));
-    let chatFound = false;
+    let array: any[] = [];
 
-    if(!chatFound){
-      for (const chat of allChatsRef.docs) {
-        const chatData = chat.data();
-        const chatUsers = chatData['chatUsers'];
-        
-        let counter= 0;
-  
-        if (chatUsers.includes(chatUsers.id)){
-          counter++
-  
-        }
-        if (chatUsers.includes(chatPartnerID)){
-          counter++
-        }
-  
-        if(counter == 2){
-          console.log(chatData)
-          chatFound = true
-        }
-    }
     
 
-      // Überprüfen, ob beide Benutzer in diesem Chat vorhanden sind
-      // if (
-      //   (chatUsers.includes(this.userID) && chatUsers.includes(chatPartnerID)) 
-      // ) {
-      //   this.chatID = chatData['chatID'];
-  
-      //   chatFound = true;
-      //   console.log(this.userID, chatPartnerID, this.chatID);
-  
-      //   break; // Schleife abbrechen, wenn der Chat gefunden wurde
-      // }
-    }
+    allChatsRef.forEach((chat) => {
+      const chatData = chat.data();
+
+      if (chatData['chatUsers'].includes(this.userID)) {
+        array.push(chatData)
+      } else { return }
+    })
+    
+   
+    if(this.userID == chatPartnerID){
+      console.log('same')
+      array.forEach((chat) => {
       
+      if(chat['chatUsers'].length ==1){
+        this.chatID = chat['chatID']
+        } 
+      }
     
+      
+    )} else {
+      array.forEach((chat) => {
+      
+        if(chat['chatUsers'].includes(chatPartnerID)){
+          this.chatID = chat['chatID']
+          } 
+        })
+    }
+
+    
+    this.loadMessagesOfThisChat()
+  }
+
+
+  setBooleanForSelfChat(){
+    const chatPartnerID = this.chatService.userID;
+    if(this.userID == chatPartnerID){
+      this.selfChat = true
+    } 
   }
 
 
@@ -117,7 +124,7 @@ export class ChatContainerComponent {
   }
 
   async loadMessagesOfThisChat() {
-    
+
     const queryAllAnswers = await query(collection(this.firestore, "chats", this.chatID, "messages"));
 
     onSnapshot(queryAllAnswers, (querySnapshot) => {
@@ -148,8 +155,13 @@ export class ChatContainerComponent {
           })
           this.allMessages.push(updatedMessage);
         }
+        if(this.allMessages.length != 0){
+          this.chatAllreadyStarted = true;
+        } 
       })
+      
     });
+    
   }
 
   //      --> Promise wird zurückgegeben
@@ -285,7 +297,13 @@ export class ChatContainerComponent {
         this.allUsers.forEach((user: any) => {
 
           newPair = [];
-          newPair.push(user.id, doc.data().id)
+
+          if (user.id == doc.data().id) {
+            newPair.push(user.id)
+          } else {
+            newPair.push(user.id, doc.data().id)
+          }
+
           const chatname = user.firstname + ' & ' + doc.data().firstname;
           const chatUsers = newPair;
           this.chatService.createNewChat(chatname, chatUsers)

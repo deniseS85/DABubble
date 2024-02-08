@@ -12,8 +12,32 @@
             <span>{{ chatPartnerName }}</span>                
         </header>
     </div>
-    
-    <div class="answersContainer">
+
+
+    <div class="chatInfo" *ngIf="!chatAllreadyStarted && !selfChat">
+        <div class="chatImgAndName">
+            <div class="chatImg">
+                <img class="profilPic" [src]="chatPartnerImg.startsWith('https') ? chatPartnerImg : './assets/img/' + chatPartnerImg" alt="">
+                <p class="active-point" *ngIf="isOnline"></p>
+            </div>
+            <div class="chatName">{{chatPartnerName}}</div>
+        </div>
+        <div class="chatInfoText">Dieser Unterhaltung findet nur zwischen <span class="namePartner">'&#64;'{{chatPartnerName}}</span> und dir statt</div>
+    </div>
+
+    <div class="chatInfo" *ngIf="!chatAllreadyStarted && selfChat">
+        <div class="chatImgAndName">
+            <div class="chatImg">
+                <img class="profilPic" [src]="chatPartnerImg.startsWith('https') ? chatPartnerImg : './assets/img/' + chatPartnerImg" alt="">
+                <p class="active-point" *ngIf="isOnline"></p>
+            </div>
+            <div class="chatName">{{chatPartnerName}} (Du)</div>
+        </div>
+        <div class="chatInfoText"><span class="spanInSelfChat">Dieser Raum ist für dich da.</span> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Datein griffbereit aus. Du kannst auch gerne Dinge mit dir selbst besprechen.</div>
+    </div>
+
+
+    <div class="answersContainer"*ngIf="chatAllreadyStarted">
         <div class="threadContainerAnswer" 
             [ngClass]="{'threadContainerAnswerReverse' : message.activeUser}"
             *ngFor="let message of allMessages">

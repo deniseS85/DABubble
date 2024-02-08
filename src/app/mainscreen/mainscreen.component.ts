@@ -20,8 +20,8 @@ import { UserService } from '../services/user.service';
 export class MainscreenComponent implements OnInit {
     firestore: Firestore = inject(Firestore);
     user = new User();
-    threadOpen: boolean =  false;
     channelOpen: boolean = true;
+    threadOpen: boolean = false;
     chatOpen: boolean = false;
     userFirstName: String = '';
     userLastName: String = '';
@@ -46,6 +46,7 @@ export class MainscreenComponent implements OnInit {
     searchResults: { channels: Channel[], users: User[] } = { channels: [], users: [] };
     selectedUser: User = new User();
     userProfileView: User = new User();
+
 
     constructor(
         public authService: AuthService, 

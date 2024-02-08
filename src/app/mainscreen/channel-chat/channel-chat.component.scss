@@ -851,21 +851,26 @@ input {
     font-weight: 700;
 }
 
-.activ-sign {
+
+.user-info {
+    width: 100%;
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-top: 20px;
+    justify-content: flex-start;
+    gap: 29px;
 
-    img {
-        height: 20px;
-        width: 20px;
+    .active-point {
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        background-color: #92C83E;
     }
-}
-
-.activ-txt {
-    color: #92C83E;
-    font-size: 20px;
+    .inactive-point {
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        background-color: #c83e3e;
+    }
 }
 
 .profile-mail-container {

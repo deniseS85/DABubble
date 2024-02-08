@@ -252,9 +252,9 @@
             </div>
             <div class="profile-info-container">
                 <span class="profile-name">{{ userProfileView.firstname }} {{ userProfileView.lastname }}</span>
-                <div class="activ-sign" *ngIf="userProfileView.isOnline">
-                    <img src="../../../assets/img/online.png" alt="">
-                    <span class="activ-txt" *ngIf="userProfileView.isOnline">Aktiv</span>
+                <div class="user-info">
+                    <p [ngClass]="{'active-point': userProfileView.isOnline, 'inactive-point': !userProfileView.isOnline}"></p>
+                    <p>{{ userProfileView.isOnline ? 'Online' : 'Offline' }}</p>
                 </div>
                 <div class="profile-mail-container">
                     <div class="mail-description">

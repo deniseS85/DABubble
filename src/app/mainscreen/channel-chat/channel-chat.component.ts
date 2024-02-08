@@ -76,7 +76,7 @@ import { ChatService } from '../../services/chat.service';
         animate('0.3s ease-in-out',
           style({ height: 0, opacity: 0 }))
       ]
-      ),
+      )
     ]),
   ],
 })
@@ -129,7 +129,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChatOpen: boolean = true;
   imagePreview: string = '';
 
-  @Input() isChannelChatOpenState: string = 'closed';
+
 
   private subscriptions: Subscription[] = [];
 

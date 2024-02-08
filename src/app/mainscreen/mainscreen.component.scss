@@ -605,8 +605,11 @@
         padding: 8px;
         border-radius: 8px;
         list-style: none;
-        b {
-            margin-right: 10px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        span {
+            font-weight: bold;
             font-size: 18px;
         }
 

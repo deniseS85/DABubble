@@ -685,7 +685,11 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   onMessageChange() {
-    this.isButtonDisabled = this.messagetext.trim() === '' && !this.isFiledUploaded;
+    this.isButtonDisabled = this.messagetext.trim() === '';
+
+    if (this.isButtonDisabled && this.isFiledUploaded) {
+      this.isButtonDisabled = false;
+    }
   }
 
   async addMessage() {
@@ -713,7 +717,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
           fileUpload: this.fileToUpload,
         }
         this.messagetext = '';
-        this.isFiledUploaded = false;
+        this.isButtonDisabled = true;
         this.channelService.sendMessage(this.channelDataService.channelID, message);
         setTimeout(() => {
           this.scrollToBottom();
@@ -926,11 +930,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   openFileUpload() {
     this.isFiledUploaded = true;
+    this.onMessageChange();
    
   }
 
   deleteFileUpload() {
     this.isFiledUploaded = false;
+    this.onMessageChange();
     this.fileToUpload = '';
     this.imagePreview = '';
   }

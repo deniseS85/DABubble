@@ -395,6 +395,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
    */
   openPopup(): void {
     this.renderer.setStyle(this.body, 'overflow', 'hidden');
+
   }
 
 

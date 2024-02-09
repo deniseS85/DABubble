@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, getDocs } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class UserService {
     userData$ = this.userDataSubject.asObservable();
     collectionUserRef = collection(this.firestore, 'users');
 
-    constructor(private authservice: AuthService) {}
+    constructor(private authservice: AuthService, private route: ActivatedRoute) {}
 
     setUserData(updatedData: any): void {
         const currentData = this.userDataSubject.value;
@@ -67,7 +68,5 @@ export class UserService {
           users.push(doc.data());
         });
         return users;
-      }
-    
-
+    }
 }

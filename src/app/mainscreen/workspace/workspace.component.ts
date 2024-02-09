@@ -257,7 +257,7 @@ export class WorkspaceComponent implements OnInit {
       });
       
       this.openChannel(this.channels[0].channelID);
-      this.channelDataService.changeSelectedChannel(this.channels[0].channelname)
+      this.channelDataService.changeSelectedChannel(this.channels[0].channelname, this.channels[0].channelDescription, this.channels[0].channelCreator)
     });
   }
 
@@ -307,13 +307,18 @@ export class WorkspaceComponent implements OnInit {
    * Getting channel name from clicked element and forward to change the selected channel
    */
   selectedChannel(target: HTMLSpanElement) {
-    let selectedChannel = (target as HTMLSpanElement).textContent;
-
-    if (selectedChannel?.includes('#')) {
-      selectedChannel = selectedChannel.substring(1);
-    }
-    if (selectedChannel) {
-      this.channelDataService.changeSelectedChannel(selectedChannel);
+    const selectedChannelName = (target as HTMLSpanElement).textContent;
+  
+    if (selectedChannelName?.includes('#')) {
+      const cleanedChannelName = selectedChannelName.substring(1);
+  
+      // Finde den Kanal anhand des bereinigten Kanalnamens
+      const selectedChannel = this.channels.find(channel => channel.channelname === cleanedChannelName);
+  
+      if (selectedChannel) {
+        // Rufe die Funktion auf, um den ausgewählten Kanal zu aktualisieren
+        this.channelDataService.changeSelectedChannel(selectedChannel.channelname, selectedChannel.channelDescription, selectedChannel.channelCreator);
+      }
     }
   }
 
@@ -460,15 +465,19 @@ export class WorkspaceComponent implements OnInit {
     const channelname = this.createdChannelName;
     const channelDescription = this.createdChannelDescription;
     const channelUsersIDs = this.selectedUsers.map((user) => user.id);
-    const channelCreator = this.channelService.getCreatorsName();
-
-    this.channelService.createChannel(
-      channelname,
-      channelDescription,
-      channelUsersIDs,
-      await channelCreator
-    );
-    this.closeChannelCreateWindow();
+    const channelCreatorUser = this.allUsers.find((user) => user.id === this.userID);
+  
+    if (channelCreatorUser) {
+      const channelCreator = `${channelCreatorUser.firstname} ${channelCreatorUser.lastname}`;
+  
+      this.channelService.createChannel(
+        channelname,
+        channelDescription,
+        channelUsersIDs,
+        channelCreator
+      );
+      this.closeChannelCreateWindow();
+    }
   }
 
 

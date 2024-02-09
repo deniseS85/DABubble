@@ -1,11 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, arrayUnion, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { addDoc, query, updateDoc } from 'firebase/firestore';
-import { Channel } from '../models/channel.class';
-import { update } from 'firebase/database';
-import { User } from '../models/user.class';
+import { addDoc, updateDoc } from 'firebase/firestore';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 
@@ -137,7 +134,7 @@ export class ChannelService {
     return doc(collection(this.firestore, 'channels'), docId);
   }
 
-  async getCreatorsName() {
+  /* async getCreatorsName() {
     this.userservice.restoreUserData();
 
     if (this.authService.isUserAnonymous()) {
@@ -150,7 +147,7 @@ export class ChannelService {
 
       return channelCreator
     }
-  }  
+  }   */
 }
 
 

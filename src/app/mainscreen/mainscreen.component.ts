@@ -322,6 +322,8 @@ export class MainscreenComponent implements OnInit {
         this.searchInput = '';
         this.isInputFilled = false;
     }
+
+    
     
     
 

@@ -623,3 +623,23 @@
     visibility: hidden;
 }
 
+
+
+// --------------------------------footer show/search @ members----------------------------------
+
+.current-channel-member-footer-container {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #68686850;
+    border-radius: 20px;
+    bottom: 40px;
+    left: 110px;
+    text-wrap: nowrap;
+}
+
+.current-channel-member-footer-list {
+    margin: 15px;
+}
+
+// --------------------------------footer show/search @ members end----------------------------------
+

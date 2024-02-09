@@ -126,7 +126,13 @@
               </div>
               <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
             </div>
-            <mat-icon>alternate_email</mat-icon>
+            <mat-icon (click)="initShowChannelMembersFooter()">alternate_email</mat-icon>
+              <div *ngIf="isShowChannelMembersFooter" class="current-channel-member-footer-container" (mouseleave)="closeShowChannelMembersFooter()">
+                  <div class="current-channel-member-footer-list" (click)="addChannelMemberToMessageText(user)"
+                      *ngFor="let user of usersData">
+                      <span>&#64; {{ user.firstname }} {{ user.lastname }}</span>
+                  </div>
+              </div>
           </div>
           <div class="footer-icons-right">
             <button class="add-btn" mat-icon-button [disabled]="isButtonDisabled" (click)="sendMessage()">

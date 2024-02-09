@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { ChannelService } from '../../../services/channel.service';
 import { ChannelDataService } from '../../../services/channel-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { Firestore, collection, doc, getDoc} from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot} from '@angular/fire/firestore';
 import { DatePipe } from '@angular/common';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../../../models/user.class';
 
 
 @Component({
@@ -219,6 +220,96 @@ isPDFFile(url: string | boolean): boolean {
 // ------------------------------------file upload function end---------------------------------------
 
 
-  
+// -------------------------------------footer show/search @ members ---------------------------------
+
+isShowChannelMembersFooter: boolean = false;
+usersData: any[] = [];
+allUsers: User[] = [];
+unsubUser: Unsubscribe | undefined;
+
+initShowChannelMembersFooter() {
+  this.toogleShowChannelMembersFooter();
+  this.loadUsersOfThisChannel();
+  this.getAllUserInfo();
+}
+
+toogleShowChannelMembersFooter() {
+  this.isShowChannelMembersFooter = !this.isShowChannelMembersFooter;
+}
+
+closeShowChannelMembersFooter() {
+  this.isShowChannelMembersFooter = false;
+}
+
+addChannelMemberToMessageText(user: { firstname: string; lastname: string; }) {
+  this.answertext += `@${user.firstname}${user.lastname}`;
+  this.closeShowChannelMembersFooter();
+}
+
+async loadUsersOfThisChannel() {
+  let channelDocRef = doc(this.firestore, 'channels', this.channelDataService.channelID);
+  let channelDoc = await getDoc(channelDocRef);
+
+  if (channelDoc.exists()) {
+    let channelData = channelDoc.data();
+    let usersDataPromises = channelData['channelUsers'].map(async (userID: string) => {
+      return await this.getUserInfo(userID);
+    });
+    this.usersData = await Promise.all(usersDataPromises);
+  }
+  this.updateUserData();
+}
+
+updateUserData() {
+  this.channelService.userData$.subscribe((userData) => {
+    this.usersData.forEach((user) => {
+      if (user && user.id && userData && userData.id && user.id === userData.id) {
+        Object.assign(user, userData);
+      }
+    });
+  });
+}
+
+getAllUserInfo(): void {
+  this.unsubUser = onSnapshot(this.channelService.getUsersRef(), (list) => {
+    this.allUsers = [];
+    list.forEach(singleUser => {
+      let user = new User(singleUser.data());
+      user.id = singleUser.id;
+      this.allUsers.push(user);
+    });
+  });
+}
+
+async getUserInfo(userID: string): Promise<any> {
+  const user = this.allUsers.find(u => u.id === userID);
+
+  if (user) {
+    const userDocRef = doc(this.firestore, 'users', userID);
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        const updateUser = doc.data();
+        Object.assign(user, updateUser);
+        this.channelService.userDataSubject.next({ ...user });
+      }
+    });
+    const userData = await Promise.resolve({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      profileImg: user.profileImg,
+      isOnline: user.isOnline,
+      email: user.email,
+      id: user.id,
+      unsubscribe: unsubscribe
+    });
+    return userData;
+  } else {
+    return null;
+  }
+}
+
+// -------------------------------------footer show/search @ members end---------------------------------
+
+
   
 }

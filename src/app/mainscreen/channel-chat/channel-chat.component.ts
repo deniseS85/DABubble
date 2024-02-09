@@ -951,10 +951,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         channelid: this.channelDataService.channelID,
         messageid: id
       },
-      position: {
-        top: '50%',
-        right: '20px'
-      },
     });
   }
 

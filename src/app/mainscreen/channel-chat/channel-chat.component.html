@@ -71,7 +71,9 @@
                                 <div class="editMessageBtn">
                                     <span (click)="editMessage(message.messageID)">Nachricht bearbeiten</span>
                                 </div>
+                                <!-- <app-edit-channel-chat></app-edit-channel-chat> -->
                             </div>
+                            
                         </div>
                         <div class="writing-name-sending-time">
                             <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">

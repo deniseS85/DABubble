@@ -1,23 +1,15 @@
 <div class="editAnswerContainer">
-    <textarea [(ngModel)]="answertex"></textarea>
+    <textarea></textarea>
     <div class="footer-line-icons">
         <div class="emoji-container">
-            <img (click)="toggleEmojiAnswer()" src="../../../assets/img/add_reaction.png" alt="">
-                <div *ngIf="isAnswertextEmojiOpen" class="emoji-selection">
-                    <emoji-mart class="emoji-mart" 
-                    [style]="{ width: '240px', cursor: 'default' }"
-                    (emojiSelect)="addEmojitoText($event)" 
-                    color=#535AF1 
-                    set="apple"
-                    [enableSearch]="false" 
-                    [showPreview]="false" 
-                    title="Choose your emoji">
-                    </emoji-mart>
+            <img  src="../../../assets/img/add_reaction.png" alt="">
+                <div  class="emoji-selection">
+                  
                 </div>
         </div>
         <div class="footer-icons-right">
-            <div class="buttons" (click)="closeDialog()">Abbrechen</div>
-            <div class="buttons buttonreverse" (click)="updateAnswertext()">Speichern</div>
+            <div class="buttons">Abbrechen</div>
+            <div class="buttons buttonreverse">Speichern</div>
         </div>
     </div>
 </div>

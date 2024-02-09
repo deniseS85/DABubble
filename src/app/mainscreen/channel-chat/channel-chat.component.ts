@@ -912,11 +912,18 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     if (this.channelService.activeMessageID === messageID && this.main.threadOpen) {
       return;
     }
-    this.main.threadOpen = false;
+    // this.main.threadOpen = false;
     this.channelService.activeMessageID = messageID;
-    setTimeout(() => {
+
+
+
+    // setTimeout(() => {
       this.main.threadOpen = true;
-    }, 0.5);
+    // }, 0.5);
+
+
+
+
   }
 
   openSnackBar(message: string): void {

@@ -81,6 +81,12 @@
                 <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : message.activeUser}">
                     {{message.messagetext}}
                 </div>
+                <a *ngIf="!isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
+                    <img class="uploaded-files" [src]="message.fileUpload">
+                </a>
+                <a *ngIf="isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
+                    <img class="uploaded-files" src="./assets/img/pdf-icon.png">
+                </a>
                 <div class="threadContainerTextReactions">
                     <div class="threadContainerTextReactionsEmojis" *ngFor="let answer of message.react">
                         <div class="reactionsInfoContainer">

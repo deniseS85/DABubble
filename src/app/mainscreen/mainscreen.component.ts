@@ -10,13 +10,28 @@ import { SearchService } from '../services/search-service.service';
 import { Channel } from '../models/channel.class';
 import { UserService } from '../services/user.service';
 import { ChannelDataService } from '../services/channel-data.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 
 
 @Component({
   selector: 'app-mainscreen',
   templateUrl: './mainscreen.component.html',
-  styleUrl: './mainscreen.component.scss'
+  styleUrl: './mainscreen.component.scss',
+
+  animations: [
+    trigger('leftRightAnimation', [
+      transition(':enter', [
+        style({ width: 0, opacity: 0 }),
+        animate('0.3s ease-in-out', style({ width: '*', opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ width: '*', opacity: 1 }),
+        animate('0.3s ease-in-out', style({ width: 0, opacity: 0 })),
+      ]),
+    ]),
+    
+  ],
 })
 export class MainscreenComponent implements OnInit {
     firestore: Firestore = inject(Firestore);

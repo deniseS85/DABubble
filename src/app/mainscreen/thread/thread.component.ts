@@ -367,6 +367,13 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
   }
 
 
+  isPDFFile(url: string | boolean): boolean {
+    console.log(url)
+    if (typeof url === 'string') {
+        return url.toLowerCase().includes('.pdf');
+    }
+    return false;
+}
 
 
 

@@ -96,8 +96,7 @@
                     <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
                         (click)="openThread(message.messageID)">
                         <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
-                        <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime
-                            }}</div>
+                        <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime }}</div>
                     </div>
                     
                     <div class="threadContainerTextReactions">
@@ -156,11 +155,11 @@
           </div>
         </div>
         <div class="image-preview-overlay" *ngIf="fileToUpload">
-            <a class="uploaded-files" *ngIf="fileToUpload.type !== 'application/pdf'" target="_blank" [href]="imagePreview">
-                <img class="uploaded-files" [src]="imagePreview">
+            <a class="uploaded-files-preview" *ngIf="fileToUpload.type !== 'application/pdf'" target="_blank" [href]="imagePreview">
+                <img class="uploaded-files-preview" [src]="imagePreview">
             </a>
-            <a class="uploaded-files" *ngIf="fileToUpload.type === 'application/pdf'" target="_blank" [href]="imagePreview">
-                <img class="uploaded-files" src="./assets/img/pdf-icon.png">
+            <a class="uploaded-files-preview" *ngIf="fileToUpload.type === 'application/pdf'" target="_blank" [href]="imagePreview">
+                <img class="uploaded-files-preview" src="./assets/img/pdf-icon.png">
             </a>
             <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
         </div>

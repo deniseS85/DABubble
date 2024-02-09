@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -47,6 +47,7 @@ export class MainscreenComponent implements OnInit {
     searchResults: { channels: Channel[], users: User[] } = { channels: [], users: [] };
     selectedUser: User = new User();
     userProfileView: User = new User();
+    showProfil = false;
 
 
     constructor(
@@ -81,6 +82,7 @@ export class MainscreenComponent implements OnInit {
             }
         });
     }
+    
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
@@ -315,15 +317,19 @@ export class MainscreenComponent implements OnInit {
         this.isInputFilled = this.searchInput !== '';
     }
 
-      searchfieldShowUser(user: User): void {
-        // Übergebe den ausgewählten Benutzer an die Kindkomponente
-        this.setUserProfileView(user);
-      }
-    
-      // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen
-      setUserProfileView(user: User): void {
+    searchfieldShowUser(user: User): void {
         this.userProfileView = user;
-      }
+        this.searchInput = '';
+        this.isInputFilled = false;
+    }
+    
+    
+
+
+      // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen
+     /*  setUserProfileView(user: User): void {
+        this.userProfileView = user;
+      } */
 
       searchfieldShowChannel(channel: Channel) {
         console.log(channel);
@@ -332,9 +338,9 @@ export class MainscreenComponent implements OnInit {
         this.isInputFilled = false;
       } 
 
-      showUserProfileView(user: User): void {
+    /*   showUserProfileView(user: User): void {
         console.log('Benutzerprofil anzeigen:', user);
-      }         
+      }    */      
       
       openChannel(channelID: string): void {
         this.channelOpen = false;

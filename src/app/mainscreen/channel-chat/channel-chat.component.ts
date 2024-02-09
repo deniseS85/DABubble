@@ -81,7 +81,7 @@ import { ChatService } from '../../services/chat.service';
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
-  @Input() userProfileView: User = new User;
+  @Input() userProfileView: User = new User; 
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
   addUSerOpen: boolean = false;
@@ -128,7 +128,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChannelOpen: boolean = false;
   isChatOpen: boolean = true;
   imagePreview: string = '';
-
+  
 
   private subscriptions: Subscription[] = [];
 
@@ -397,6 +397,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.renderer.setStyle(this.body, 'overflow', 'hidden');
   }
 
+
   /**
    * Closes a popup by setting overflow to auto on the body element.
    * Resets search query and selected users.
@@ -607,9 +608,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.userProfileView = user;
   }
 
-  showUserProfile(user: User): void {
+  /* showUserProfile(user: User): void {
     this.setUserProfileView(user); 
-  }
+  } */
 
   // User filter function
 

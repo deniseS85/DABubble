@@ -7,7 +7,7 @@
 
         <div class="searchfield-container">
             <input type="text" placeholder="Code learning durchsuchen" id="headerInput" [(ngModel)]="searchInput"
-                (input)="search()">
+                (input)="search()" autocomplete="off">
             <div class="searchResults" *ngIf="isInputFilled">
                 <ul>
                     <li *ngFor="let channel of searchResults.channels" (click)="searchfieldShowChannel(channel)">

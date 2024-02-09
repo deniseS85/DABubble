@@ -61,7 +61,7 @@
                     </div>
                     <div class="user-info">
                         <p [ngClass]="{'active-point': userIsOnline, 'inactive-point': !userIsOnline}"></p>
-                        <p>{{ userIsOnline ? 'Online' : 'Offline' }}</p>
+                        <p [ngStyle]="{'color': userIsOnline ? '#92C83E' : '#686868'}">{{ userIsOnline ? 'Online' : 'Offline' }}</p>
                     </div>
                     <div class="user-email">
                         <mat-icon>mail_outline</mat-icon>

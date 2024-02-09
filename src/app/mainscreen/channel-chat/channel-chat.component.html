@@ -212,9 +212,8 @@
                 </div>
             </div>
         </div>
-        <div class="btn-container">
-            <button class="btn fw-700 fs-18" [class.enabled]="enabled"
-                (click)="addNewMemberToChannelUsers(); addUSerOpen = false; closePopup()">Hinzufügen</button>
+        <div class="message-btn-container">
+            <button [disabled]="selectedUsers.length === 0" [class.disabled]="selectedUsers.length === 0" class="btn enabled add-member-btn" (click)="addNewMemberToChannelUsers(); addUSerOpen = false; closePopup()">Hinzufügen</button>
         </div>
     </div>
 </div>
@@ -266,9 +265,9 @@
                 <span class="profile-name">{{ userProfileView.firstname }} {{ userProfileView.lastname }}</span>
                 <div class="user-info">
                     <p [ngClass]="{'active-point': userProfileView.isOnline, 'inactive-point': !userProfileView.isOnline}"></p>
-                    <p>{{ userProfileView.isOnline ? 'Online' : 'Offline' }}</p>
+                    <p class="active-text" [ngStyle]="{'color': userProfileView.isOnline ? '#92C83E' : '#686868'}">{{ userProfileView.isOnline ? 'Online' : 'Offline' }}</p>
                 </div>
-                <div class="profile-mail-container">
+                <div>
                     <div class="mail-description">
                         <img src="../../../assets/img/mail.png" alt="">
                         <span>E-Mail-Adresse</span>

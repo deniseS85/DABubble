@@ -344,11 +344,21 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
   // Emojis
 
   toggleEmoji(event: Event, chatIndex: number): void {
+    const emojiContainer = event.target as HTMLElement;
+    const { top, bottom } = emojiContainer.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const spaceBelow = viewportHeight - bottom;
+    
     this.allAnswers.forEach((answer, index) => {
       if (index === chatIndex) {
         answer.isEmojiOpen = !answer.isEmojiOpen;
       } 
     });
+    if (spaceBelow < 600) {
+      setTimeout(() => {
+        this.answerContainer.nativeElement.scrollTop = this.answerContainer.nativeElement.scrollHeight;
+      }, 100);
+    }
   }
 
 

@@ -1015,4 +1015,26 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   // ------------------------------------file upload function end---------------------------------------
 
+
+
+  // -------------------------------------footer show/search @ members ---------------------------------
+
+  isShowChannelMembersFooter: boolean = false;
+
+  toogleShowChannelMembersFooter() {
+    this.isShowChannelMembersFooter = !this.isShowChannelMembersFooter;
+  }
+
+  closeShowChannelMembersFooter() {
+    this.isShowChannelMembersFooter = false;
+  }
+
+  addChannelMemberToMessageText(user: { firstname: string; lastname: string; }) {
+    this.messagetext += `@${user.firstname}${user.lastname}`;
+    this.closeShowChannelMembersFooter();
+  }
+
+  // -------------------------------------footer show/search @ members end---------------------------------
+
+
 }

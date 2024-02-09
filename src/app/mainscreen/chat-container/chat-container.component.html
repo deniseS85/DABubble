@@ -105,11 +105,14 @@
     <div class="footer-write-new-message">
         <div>
           <textarea class="textarea" placeholder="Nachricht an {{ chatPartnerName }}"
-            [(ngModel)]="messagetext" (keyup.enter)="sendMessage()"></textarea>
+            [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="sendMessage()"></textarea>
         </div>
         <div class="footer-line-icons">
           <div class="footer-icons-left">
-            <mat-icon (click)="toggleFileUpload()">add</mat-icon>
+            <label for="fileUpload" class="upload">
+                <mat-icon (click)="openFileUpload()">add</mat-icon>
+            </label>
+            <input type="file" id="fileUpload" style="display:none;" (change)="uploadFiles($event)">
             <div class="seperator-vert"></div>
             <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
               <div class="emoji-footer-selection" *ngIf="isShowEmojiFooter">

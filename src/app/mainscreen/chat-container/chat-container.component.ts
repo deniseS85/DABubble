@@ -25,7 +25,6 @@ export class ChatContainerComponent {
 
   isShowFileUpload: boolean = false;
   isShowEmojiFooter: boolean = false;
-  fileToUpload: any;
   userID: any;
   chatID: string = '';
   userData: any;
@@ -233,10 +232,35 @@ export class ChatContainerComponent {
     this.messagetext += event.emoji.native;
   }
 
+  // ----------------------------file upload function-----------------------------------------
+
+  isFiledUploaded: boolean = false;
+  fileToUpload: any = '';
+  isButtonDisabled: boolean = true;
+  imagePreview: string = '';
+  
+  onMessageChange() {
+    this.isButtonDisabled = this.messagetext.trim() === '';
+
+    if (this.isButtonDisabled && this.fileToUpload != '') {
+      this.isButtonDisabled = false;
+    }
+  }
+
+  openFileUpload() {
+    this.isFiledUploaded = true;
+  }
+
+  deleteFileUpload() {
+    this.isFiledUploaded = false;
+    this.fileToUpload = '';
+    this.onMessageChange();
+    this.imagePreview = '';
+  }
+
 
   async uploadFiles(event: any) {
     let files = event.target.files;
-    console.log(files);
 
     if (!files || files.length === 0) {
       return;
@@ -248,13 +272,24 @@ export class ChatContainerComponent {
       return;
     }
 
+    let reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreview = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+    this.isFiledUploaded = true;
+    this.fileToUpload = file;
+    this.onMessageChange();
+  }
+
+  async uploadFile(file: File) {
     let timestamp = new Date().getTime();
     let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
-
-    uploadBytes(imgRef, file).then(async () => {
-      let url = await getDownloadURL(imgRef);
-      this.fileToUpload = url;
-    });
+  
+    await uploadBytes(imgRef, file);
+    let url = await getDownloadURL(imgRef);
+    this.fileToUpload = url;
   }
 
   async isValidFile(file: File): Promise<boolean> {
@@ -272,12 +307,22 @@ export class ChatContainerComponent {
     return true;
   }
 
-
   showSnackbar(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
     });
   }
+
+  
+  isPDFFile(url: string | boolean): boolean {
+    if (typeof url === 'string') {
+        return url.toLowerCase().includes('.pdf');
+    }
+    return false;
+}
+
+  // ------------------------------------file upload function end---------------------------------------
+
 
 
   // newDMChat() {

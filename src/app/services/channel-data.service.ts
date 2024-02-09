@@ -57,12 +57,12 @@ export class ChannelDataService {
           this.channelCreator = channelInfo.channelCreator;
           this.channelDescription = channelInfo.channelDescription;
           this.channelID = channelInfo.channelID;
-          this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelDescription, channelInfo.channelCreator);
+          this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelCreator, channelInfo.channelDescription);
       });
   }
   
 
-  async changeSelectedChannel(selectedChannelName: string, selectedChannelDescription: string, selectedChannelCreator: string) {
+  async changeSelectedChannel(selectedChannelName: string, selectedChannelCreator: string, selectedChannelDescription: string ) {
     this.channelName = selectedChannelName;
     this.channelDescription = selectedChannelDescription;
     this.channelCreator = selectedChannelCreator;
@@ -74,3 +74,9 @@ export class ChannelDataService {
   }
 
 }
+
+/*  this.channelName = channelInfo.channelname;
+          this.channelUsers = channelInfo.channelUsers;
+          this.channelCreator = channelInfo.channelCreator;
+          this.channelDescription = channelInfo.channelDescription;
+          this.channelID = channelInfo.channelID; */

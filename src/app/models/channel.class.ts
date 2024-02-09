@@ -12,7 +12,7 @@ export class Channel {
         this.channelID = obj && obj.channelID ? obj.channelID : '';
         this.channelDescription = obj && obj.channelDescription ? obj.channelDescription : '';
         this.channelname = obj && obj.channelname ? obj.channelname : '';
-        this.channelUsers = obj && obj.channelUsers ? obj.channelUsers : '';
+        this.channelUsers = obj && obj.channelUsers ? obj.channelUsers : [];
         this.channelCreator = obj && obj.channelCreator ? obj.channelCreator : '';
          
     }

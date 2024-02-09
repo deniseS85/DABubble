@@ -257,7 +257,7 @@ export class WorkspaceComponent implements OnInit {
       });
       
       this.openChannel(this.channels[0].channelID);
-      this.channelDataService.changeSelectedChannel(this.channels[0].channelname, this.channels[0].channelDescription, this.channels[0].channelCreator)
+      this.channelDataService.changeSelectedChannel(this.channels[0].channelname, this.channels[0].channelCreator, this.channels[0].description )
     });
   }
 
@@ -317,7 +317,7 @@ export class WorkspaceComponent implements OnInit {
   
       if (selectedChannel) {
         // Rufe die Funktion auf, um den ausgewählten Kanal zu aktualisieren
-        this.channelDataService.changeSelectedChannel(selectedChannel.channelname, selectedChannel.channelDescription, selectedChannel.channelCreator);
+        this.channelDataService.changeSelectedChannel(selectedChannel.channelname, selectedChannel.channelCreator, selectedChannel.channelDescription);
       }
     }
   }

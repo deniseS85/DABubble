@@ -156,7 +156,7 @@
         </div>
         <div class="image-preview-overlay" *ngIf="fileToUpload">
             <a class="uploaded-files-preview" *ngIf="fileToUpload.type !== 'application/pdf'" target="_blank" [href]="imagePreview">
-                <img class="uploaded-files-preview" [src]="imagePreview">HALLO
+                <img class="uploaded-files-preview" [src]="imagePreview">
             </a>
             <a class="uploaded-files-preview" *ngIf="fileToUpload.type === 'application/pdf'" target="_blank" [href]="imagePreview">
                 <img class="uploaded-files-preview" src="./assets/img/pdf-icon.png">

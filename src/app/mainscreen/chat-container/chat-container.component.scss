@@ -207,6 +207,7 @@
         margin: 10px 45px 45px 45px;
         min-height: 145px;
         padding: 10px;
+        position: relative;
 
         .footer-line-icons {
             cursor: pointer;
@@ -246,9 +247,12 @@
             .footer-icons-right {
                 padding: 10px;
                 color: #444DF2;
-            
+                button {
+                    border: none;
+                    background-color: transparent;
+                }
                 &:hover {
-                    color: #797EF3;
+                    color: #797EF3 !important;
                 }
             }
             
@@ -553,3 +557,69 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #797EF3;    
   }
+
+
+  // --------------------------------file upload function----------------------------------
+
+.file-upload-container {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+        padding-bottom: 5px;
+        cursor: pointer;
+    }
+}
+
+.file-upload-selection {
+    border: none !important;
+    outline: none !important;
+    padding-bottom: 20px;
+}
+
+.uploaded-files {
+    margin-top: 10px;
+    max-width: 200px;
+    max-height: 100px;
+}
+
+.uploaded-files-preview {
+    max-width: 100px;
+    max-height: 50px;
+}
+
+.image-preview-overlay {
+    position: absolute;
+    top: 112px;
+    left: 165px;
+    cursor: pointer; 
+    
+
+    &:hover {
+        mat-icon {
+            opacity: 1;
+        }
+    }
+    mat-icon {
+        opacity: 0;
+        color: #686868;
+        transition: opacity 0.3s ease;
+        color: #686868;
+        position: absolute;
+        right: -10px;
+        top: -8px;
+        background: white;
+        border-radius: 100%;
+    }
+}
+
+.file-preview {
+    max-width: 100%;
+    max-height: 50px; 
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+

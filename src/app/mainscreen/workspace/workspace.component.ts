@@ -308,19 +308,20 @@ export class WorkspaceComponent implements OnInit {
    */
   selectedChannel(target: HTMLSpanElement) {
     const selectedChannelName = (target as HTMLSpanElement).textContent;
-  
-    if (selectedChannelName?.includes('#')) {
-      const cleanedChannelName = selectedChannelName.substring(1);
-  
-      // Finde den Kanal anhand des bereinigten Kanalnamens
-      const selectedChannel = this.channels.find(channel => channel.channelname === cleanedChannelName);
-  
-      if (selectedChannel) {
-        // Rufe die Funktion auf, um den ausgewählten Kanal zu aktualisieren
-        this.channelDataService.changeSelectedChannel(selectedChannel.channelname, selectedChannel.channelCreator, selectedChannel.channelDescription);
-      }
+
+    if (selectedChannelName) {
+        // Entferne das '#' am Anfang, wenn vorhanden
+        const cleanedChannelName = selectedChannelName.startsWith('#') ? selectedChannelName.substring(1) : selectedChannelName;
+
+        // Finde den Kanal anhand des bereinigten Kanalnamens
+        const selectedChannel = this.channels.find(channel => channel.channelname === cleanedChannelName);
+
+        if (selectedChannel) {
+            // Rufe die Funktion auf, um den ausgewählten Kanal zu aktualisieren
+            this.channelDataService.changeSelectedChannel(selectedChannel.channelname, selectedChannel.channelCreator, selectedChannel.channelDescription);
+        }
     }
-  }
+}
 
   /**
    * Find the parent element with the class 'selectable'.

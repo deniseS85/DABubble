@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ChannelService } from '../../services/channel.service';
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
 import { ChannelDataService } from '../../services/channel-data.service';
@@ -22,6 +22,7 @@ export class ChatContainerComponent {
   allMessages: any[] = [];
   unsubUser: Unsubscribe | undefined;
   messagetext: string = '';
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
 
   isShowFileUpload: boolean = false;
   isShowEmojiFooter: boolean = false;
@@ -194,8 +195,12 @@ export class ChatContainerComponent {
   }
 
 
-  sendMessage() {
+  async sendMessage() {
     this.userID = this.route.snapshot.paramMap.get('id');
+
+    if (this.fileToUpload) {
+      await this.uploadFile(this.fileToUpload);
+    }
 
     const message = {
       messagetext: this.messagetext,
@@ -204,13 +209,23 @@ export class ChatContainerComponent {
       timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       react: [],
-      fileUpload: '',
+      fileUpload: this.fileToUpload,
     }
     this.messagetext = '';
+    this.isButtonDisabled = true;
+    this.deleteFileUpload();
     this.chatService.sendMessage(message, this.chatID)
     this.closeFileUpload();
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 10);
   }
 
+  scrollToBottom(): void {
+    try {
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    } catch (err) { }
+  }
 
   toggleFileUpload() {
     this.isShowFileUpload = !this.isShowFileUpload;
@@ -260,6 +275,7 @@ export class ChatContainerComponent {
 
 
   async uploadFiles(event: any) {
+    console.log("uploadFiles")
     let files = event.target.files;
 
     if (!files || files.length === 0) {

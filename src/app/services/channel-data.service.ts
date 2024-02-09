@@ -74,9 +74,3 @@ export class ChannelDataService {
   }
 
 }
-
-/*  this.channelName = channelInfo.channelname;
-          this.channelUsers = channelInfo.channelUsers;
-          this.channelCreator = channelInfo.channelCreator;
-          this.channelDescription = channelInfo.channelDescription;
-          this.channelID = channelInfo.channelID; */

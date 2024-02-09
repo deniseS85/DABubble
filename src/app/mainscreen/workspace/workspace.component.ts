@@ -24,6 +24,7 @@ import { query } from 'firebase/firestore';
 import { MainscreenComponent } from '../mainscreen.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChatService } from '../../services/chat.service';
+import { SearchService } from '../../services/search-service.service';
 
 @Component({
   selector: 'app-workspace',
@@ -95,7 +96,8 @@ export class WorkspaceComponent implements OnInit {
     private route: ActivatedRoute,
     public channelService: ChannelService,
     public chatService: ChatService,
-    public channelDataService: ChannelDataService
+    public channelDataService: ChannelDataService,
+    private searchservice: SearchService
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
@@ -475,6 +477,7 @@ export class WorkspaceComponent implements OnInit {
         channelUsersIDs,
         channelCreator
       );
+      this.searchservice.loadChannels();
       this.closeChannelCreateWindow();
       this.createdChannelName = '';
       this.createdChannelDescription = '';

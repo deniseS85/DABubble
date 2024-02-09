@@ -48,6 +48,7 @@ export class SearchService {
   //   }
   // }
 
+
   search(query: string): [Channel[], User[]] {
     // Kanäle filtern
     const matchingChannels: Channel[] = this.channels.filter(channel => 

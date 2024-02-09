@@ -310,14 +310,10 @@ export class WorkspaceComponent implements OnInit {
     const selectedChannelName = (target as HTMLSpanElement).textContent;
 
     if (selectedChannelName) {
-        // Entferne das '#' am Anfang, wenn vorhanden
         const cleanedChannelName = selectedChannelName.startsWith('#') ? selectedChannelName.substring(1) : selectedChannelName;
-
-        // Finde den Kanal anhand des bereinigten Kanalnamens
         const selectedChannel = this.channels.find(channel => channel.channelname === cleanedChannelName);
 
         if (selectedChannel) {
-            // Rufe die Funktion auf, um den ausgewählten Kanal zu aktualisieren
             this.channelDataService.changeSelectedChannel(selectedChannel.channelname, selectedChannel.channelCreator, selectedChannel.channelDescription);
         }
     }
@@ -366,6 +362,8 @@ export class WorkspaceComponent implements OnInit {
     this.selectedUsers = [];
     this.isFirstScreen = true;
     this.isSecondScreen = false;
+    this.createdChannelName = ''; 
+    this.createdChannelDescription = ''; 
   }
 
   /**
@@ -478,6 +476,8 @@ export class WorkspaceComponent implements OnInit {
         channelCreator
       );
       this.closeChannelCreateWindow();
+      this.createdChannelName = '';
+      this.createdChannelDescription = '';
     }
   }
 

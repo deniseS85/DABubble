@@ -263,6 +263,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     });
   }
 
+  @ViewChild('chatContainer') chatContainerRef!: ElementRef;
 
   /**
    * Toggles the visibility of emojis in a message.
@@ -273,19 +274,41 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
    * @returns {void}
    */
   toggleEmoji(event: Event, chatIndex: number): void {
+    const emojiContainer = event.target as HTMLElement;
+    const { top, bottom } = emojiContainer.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const spaceBelow = viewportHeight - bottom;
+
     this.allMessages.forEach((message, index) => {
       if (index === chatIndex) {
         message.isEmojiOpen = !message.isEmojiOpen;
       }
     });
+  
+    if (spaceBelow < 600) {
+      setTimeout(() => {
+        this.chatContainerRef.nativeElement.scrollTop = this.chatContainerRef.nativeElement.scrollHeight;
+      }, 100);
+    }
   }
 
   toggleEmojiBelowAnswer(event: Event, chatIndex: number): void {
+    const emojiContainer = event.target as HTMLElement;
+    const { top, bottom } = emojiContainer.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const spaceBelow = viewportHeight - bottom;
+
     this.allMessages.forEach((message, index) => {
       if (index === chatIndex) {
         message.isEmojiBelowAnswerOpen = !message.isEmojiBelowAnswerOpen;
       }
     });
+  
+    if (spaceBelow < 600) {
+      setTimeout(() => {
+        this.chatContainerRef.nativeElement.scrollTop = this.chatContainerRef.nativeElement.scrollHeight;
+      }, 100);
+    }
   }
 
   toggleEmojiFooter() {

@@ -295,6 +295,7 @@ export class WorkspaceComponent implements OnInit {
     this.renderer.addClass(selectableElement, 'selected');
     this.main.chatOpen = false;
     this.main.channelOpen = false;
+    this.main.threadOpen = false;
     setTimeout(() => {
       this.main.chatOpen = true;
     }, 50);
@@ -514,8 +515,6 @@ export class WorkspaceComponent implements OnInit {
       this.main.channelOpen = true;
     }, 0.02);
   }
-
-
 
   /**
    * lädt nur die Personen mit denen ich chatte

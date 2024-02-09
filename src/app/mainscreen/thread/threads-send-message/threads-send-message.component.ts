@@ -72,6 +72,7 @@ export class ThreadsSendMessageComponent {
 
   addEmojiToMessage(event: any) {
     this.answertext += event.emoji.native;
+    this.onMessageChange();
   }
 
   /**
@@ -135,21 +136,26 @@ imagePreview: string = '';
 onMessageChange() {
   this.isButtonDisabled = this.answertext.trim() === '';
 
-  if (this.isButtonDisabled && this.isFiledUploaded) {
+  if (this.isButtonDisabled && this.fileToUpload != '') {
     this.isButtonDisabled = false;
   }
 }
 
 openFileUpload() {
   this.isFiledUploaded = true;
+}
+
+handleEnterKey() {
   this.onMessageChange();
- 
+  if (this.answertext.trim() !== '') {
+      this.sendAnswer();
+  }
 }
 
 deleteFileUpload() {
   this.isFiledUploaded = false;
-  this.onMessageChange();
   this.fileToUpload = '';
+  this.onMessageChange();
   this.imagePreview = '';
 }
 

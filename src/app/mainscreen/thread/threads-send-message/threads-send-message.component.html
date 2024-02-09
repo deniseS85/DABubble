@@ -1,6 +1,6 @@
 <div class="footer-write-new-message">
     <div>
-        <textarea class="textarea" [(ngModel)]="answertext" id="answertext" placeholder="Antworten..." (keyup.enter)="sendAnswer()"></textarea>
+        <textarea class="textarea" [(ngModel)]="answertext" id="answertext" placeholder="Antworten..." (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()" ></textarea>
     </div>
     <div class="footer-line-icons">
         <div class="footer-icons-left">
@@ -33,7 +33,12 @@
             <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
         </div>
         <div class="footer-icons-right">
-            <mat-icon title="channel" (click)="sendAnswer()">send_icon</mat-icon>
+            <div class="footer-icons-right">
+                <button class="add-btn" mat-icon-button [disabled]="isButtonDisabled" (click)="sendAnswer()">
+                    <mat-icon [ngStyle]="{'color': isButtonDisabled ? 'lightgrey' : '#444DF2', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
+                </button>
+            </div>
+           <!--  <mat-icon title="channel" (click)="sendAnswer()">send_icon</mat-icon> -->
         </div>
     </div>
 </div>

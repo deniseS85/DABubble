@@ -27,7 +27,6 @@
                         <div class="emoji-container">
                             <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png" alt="">
                             <div *ngIf="answer.isEmojiOpen" class="emoji-selection">
-                                
                                 <app-emoji-picker
                                 (emojiSelect)="handleReactionMessage($event, answer); closeEmojiContainers(chatIndex)"></app-emoji-picker>
                             </div>
@@ -49,10 +48,10 @@
                 <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : isCurrentUser(chatIndex)}">
                     {{answer.answertext}}
                 </div>
-                <a *ngIf="!isPDFFile(answer.fileUpload)" target="_blank" [href]="answer.fileUpload">
+                <a *ngIf="answer.fileUpload && !isPDFFile(answer.fileUpload)" target="_blank" [href]="answer.fileUpload">
                     <img class="uploaded-files" [src]="answer.fileUpload">
                 </a>
-                <a *ngIf="isPDFFile(answer.fileUpload)" target="_blank" [href]="answer.fileUpload">
+                <a *ngIf="answer.fileUpload && isPDFFile(answer.fileUpload)" target="_blank" [href]="answer.fileUpload">
                     <img class="uploaded-files" src="./assets/img/pdf-icon.png">
                 </a>
 

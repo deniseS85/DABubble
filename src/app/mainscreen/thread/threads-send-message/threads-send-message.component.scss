@@ -82,10 +82,17 @@
 .footer-icons-right {
     padding: 10px;
     color: #444DF2;
-
+    button {
+        border: none;
+        background-color: transparent;
+    }
     &:hover {
         color: #797EF3;
     }
+}
+
+.add-btn:not([disabled]) mat-icon:hover {
+    color: #797EF3 !important;
 }
 
 

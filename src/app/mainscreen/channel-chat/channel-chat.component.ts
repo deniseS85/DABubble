@@ -704,7 +704,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     if (this.messagetext.trim() !== '') {
         this.addMessage();
     }
-}
+  }
 
   async addMessage() {
     try {

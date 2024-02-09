@@ -17,6 +17,7 @@ import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage
 import { ChatService } from '../../services/chat.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditAnswerComponent } from '../thread/edit-answer/edit-answer.component';
+import { EditChannelChatComponent } from './edit-channel-chat/edit-channel-chat.component';
 
 
 @Component({
@@ -927,43 +928,21 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
 
-
-  toggleEmojiNew(messageID: string) {
-
-  }
-
-
   async editMessage(id: string) {
     const messageRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), id);
     const docSnap = await getDoc(messageRef);
     this.message = docSnap.data();
-   /*  this.openEditMessageDialog(id); */
-    console.log(this.channelDataService.channelID)
-    console.log(this.message.messageID)
+    this.openEditMessageDialog(id);
+
   }
 
-  /* openEditAnswerDialog(id: string) {
-    this.dialog.open(EditAnswerComponent, {
-      data: {
-        channelid: this.channelID,
-        messageid: this.messageID,
-        answerid: id
-      },
-      position: {
-        top: '50%',
-        right: '20px'
-      },
-    });
-  } */
+  openEditMessageDialog(id: string,) {
+    this.dialog.open(EditChannelChatComponent);
 
-  openEditMessageDialog(id: string) {
-    this.dialog.open(EditAnswerComponent);
-
-    this.dialog.open(EditAnswerComponent, {
+    this.dialog.open(EditChannelChatComponent, {
       data: {
         channelid: this.channelDataService.channelID,
-        messageid: id,
-        answerid: ''
+        messageid: id
       },
       position: {
         top: '50%',
@@ -972,13 +951,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     });
   }
 
-  /*  async editAnswer(id: string) {
-    const docRef = doc(this.getAllAnswersRef(this.channelID, this.messageID), id)   
-  }
-    const docSnap = await getDoc(docRef);
-    this.answer = docSnap.data();
-    this.openEditAnswerDialog(id);
-  } */
 
   // ----------------------------file upload function-----------------------------------------
 

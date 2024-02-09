@@ -43,6 +43,7 @@ import { ThreadsHeaderComponent } from './mainscreen/thread/threads-header/threa
 import { ThreadQuestionComponent } from './mainscreen/thread/thread-question/thread-question.component';
 import { ThreadAnswerComponent } from './mainscreen/thread/thread-answer/thread-answer.component';
 import { ChatContainerComponent } from './mainscreen/chat-container/chat-container.component';
+import { EditChannelChatComponent } from './mainscreen/channel-chat/edit-channel-chat/edit-channel-chat.component';
 
 registerLocaleData(localeDe, 'de');
 
@@ -68,6 +69,7 @@ registerLocaleData(localeDe, 'de');
     ThreadQuestionComponent,
     ThreadAnswerComponent,
     ChatContainerComponent,
+    EditChannelChatComponent,
   ],
   imports: [
     BrowserModule,

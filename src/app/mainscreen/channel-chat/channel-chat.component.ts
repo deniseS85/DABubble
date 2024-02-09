@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild, AfterViewChecked, HostListener, AfterViewInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild, AfterViewChecked, HostListener, AfterViewInit, EventEmitter, Output, Input, Inject } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../services/auth.service";
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { ChatService } from '../../services/chat.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditAnswerComponent } from '../thread/edit-answer/edit-answer.component';
 
 
 @Component({
@@ -113,6 +115,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   newChannelDescription: string = '';
 
   messagetext: any = '';
+  message: any;
   allMessages: any[] = [];
   userFullName: string = '';
 
@@ -145,6 +148,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
     private storage: Storage,
+    public dialog: MatDialog
   ) {
 
     this.userID = this.route.snapshot.paramMap.get('id');
@@ -929,9 +933,52 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
 
-  editMessage() {
-
+  async editMessage(id: string) {
+    const messageRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), id);
+    const docSnap = await getDoc(messageRef);
+    this.message = docSnap.data();
+   /*  this.openEditMessageDialog(id); */
+    console.log(this.channelDataService.channelID)
+    console.log(this.message.messageID)
   }
+
+  /* openEditAnswerDialog(id: string) {
+    this.dialog.open(EditAnswerComponent, {
+      data: {
+        channelid: this.channelID,
+        messageid: this.messageID,
+        answerid: id
+      },
+      position: {
+        top: '50%',
+        right: '20px'
+      },
+    });
+  } */
+
+  openEditMessageDialog(id: string) {
+    this.dialog.open(EditAnswerComponent);
+
+    this.dialog.open(EditAnswerComponent, {
+      data: {
+        channelid: this.channelDataService.channelID,
+        messageid: id,
+        answerid: ''
+      },
+      position: {
+        top: '50%',
+        right: '20px'
+      },
+    });
+  }
+
+  /*  async editAnswer(id: string) {
+    const docRef = doc(this.getAllAnswersRef(this.channelID, this.messageID), id)   
+  }
+    const docSnap = await getDoc(docRef);
+    this.answer = docSnap.data();
+    this.openEditAnswerDialog(id);
+  } */
 
   // ----------------------------file upload function-----------------------------------------
 

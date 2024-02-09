@@ -66,11 +66,12 @@
                                 <img src="./assets/img/Answer.png" alt=""
                                     (click)="openThread(message.messageID)">
                             </div>
-                            <div *ngIf="isCurrentUser(chatIndex)">
-                                <img (click)="editMessage()" class="edit-icon"
-                                    src="./assets/img/edit-message.png" alt="">
+                            <div class="editMessage"  *ngIf="isCurrentUser(chatIndex)">
+                                <mat-icon>more_vert</mat-icon>
+                                <div class="editMessageBtn">
+                                    <span (click)="editMessage(message.messageID)">Nachricht bearbeiten</span>
+                                </div>
                             </div>
-
                         </div>
                         <div class="writing-name-sending-time">
                             <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">

@@ -270,6 +270,47 @@
             z-index: 2;
         }
     }  
+
+    .editMessage{
+        position: relative;
+
+        .editMessageBtn{
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 55px;         
+            transform: translateX(100%);
+            display: none;
+            white-space: nowrap;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;                
+            font-weight: 600;
+            background-color: white;
+            padding: 5px 10px;
+            border-radius: 0 30px 30px 30px;
+            box-shadow: 0 6px 14px 0 rgba(0, 0, 0, 0.2);
+            span{
+                padding: 5px 10px;
+                border-radius: 100px;
+            }
+
+            &:hover{
+                span{
+                    transition: background-color 0.08s ease-in;
+                    background-color: #ECEEFE;
+                    font-weight: 700;
+                    color: #797EF3;
+                }                    
+            }
+        }
+
+        &:hover{
+            .editMessageBtn{
+                display: flex;
+            }
+        }
+    }
 }
 
 .emoji-below-answer-container {
@@ -1185,6 +1226,7 @@ input {
 .hidden {
     visibility: hidden;
 }
+
 
 
 

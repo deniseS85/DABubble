@@ -334,7 +334,6 @@ export class MainscreenComponent implements OnInit {
       } */
 
       searchfieldShowChannel(channel: Channel) {
-        console.log(channel);
         this.openChannel(channel.channelID);
         this.searchInput = '';
         this.isInputFilled = false;

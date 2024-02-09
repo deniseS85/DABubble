@@ -1068,7 +1068,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   isShowChannelMembersFooter: boolean = false;
 
-  toogleShowChannelMembersFooter() {
+  toggleShowChannelMembersFooter() {
     this.isShowChannelMembersFooter = !this.isShowChannelMembersFooter;
   }
 

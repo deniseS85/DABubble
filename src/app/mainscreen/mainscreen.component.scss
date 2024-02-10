@@ -7,6 +7,11 @@
     padding: 25px 20px;
     background-color: #ECEEFE;
 
+    @media(max-width: 750px) {
+        padding: 0;
+        width: none;
+    }
+
     .mainContainerHeader {
         display: flex;
         justify-content: space-between;
@@ -520,6 +525,12 @@
 
         app-chat-container {
             flex: 1
+        }
+
+        app-workspace {
+            @media(max-width: 750px) {
+                width: 100%;
+            }
         }
     }
 }

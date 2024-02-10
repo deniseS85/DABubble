@@ -1,21 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  Renderer2,
-  HostListener,
-  OnInit,
-  inject,
-} from '@angular/core';
-import {
-  Firestore,
-  Unsubscribe,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  setDoc,
-} from '@angular/fire/firestore';
+import { Component, ElementRef, Renderer2, HostListener, OnInit, inject, } from '@angular/core';
+import { Firestore, Unsubscribe, collection, doc, getDoc, getDocs, onSnapshot, setDoc, } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';

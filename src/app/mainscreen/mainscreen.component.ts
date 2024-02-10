@@ -359,8 +359,8 @@ export class MainscreenComponent implements OnInit {
                 this.chatOpen = true;
             }
 
-            if (!result.channelOpen) {
-                this.channelOpen = false;
+            if (result && result.channelOpen !== undefined) {
+                this.channelOpen = result.channelOpen;
             }
         });
     }

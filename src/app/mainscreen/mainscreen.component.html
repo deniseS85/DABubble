@@ -14,7 +14,8 @@
                         <span>#</span> {{ channel.channelname }}
                     </li>
                     <li *ngFor="let user of searchResults.users" (click)="searchfieldShowUser(user)">
-                        <span>&commat;</span> {{ user.firstname }} {{ user.lastname }}
+                        <img class="profile-img-search" [src]="getProfileImagePathSearch(user)">
+                        <span>{{ user.firstname }} {{ user.lastname}}</span>
                     </li>
                 </ul>
             </div>
@@ -138,10 +139,53 @@
     </div>
 
     <div class="mainContainerContent">
-        <app-workspace></app-workspace>
-        <app-chat-container *ngIf="chatOpen"></app-chat-container>
-        <app-channel-chat *ngIf="channelOpen"  [userProfileView]="userProfileView"></app-channel-chat>
-        <app-thread  [@leftRightAnimation] *ngIf="threadOpen"></app-thread>
+        <app-workspace 
+            *ngIf="workspaceOpen"
+            [@leftRightAnimation]
+            >
+        </app-workspace>
+        <app-chat-container 
+            *ngIf="chatOpen"
+            >
+        </app-chat-container>
+        <app-channel-chat 
+            *ngIf="channelOpen" 
+            [userProfileView]="userProfileView"
+            >
+        </app-channel-chat>
+        <app-thread
+            *ngIf="threadOpen"
+            [@leftRightAnimation] 
+            >
+        </app-thread>
     </div>
 </div>
 
+
+<div class="normal-hover-img">
+    <div class="workspace-menu-close-container" (click)="toggleWorkspace()">
+      <div>Workspace-Menü schließen</div>
+      <div class="workspace-menu-close-icon">
+        <img
+          class="normal-img"
+          src="./assets/img/workspace_hide.png"
+          *ngIf="workspaceOpen"
+        />
+        <img
+          class="hover-img"
+          src="./assets/img/workspace_hide_hover.png"
+          *ngIf="workspaceOpen"
+        />
+        <img
+          class="normal-img"
+          src="./assets/img/workspace_show.png"
+          *ngIf="!workspaceOpen"
+        />
+        <img
+          class="hover-img"
+          src="./assets/img/workspace_show_hover.png"
+          *ngIf="!workspaceOpen"
+        />
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,39 @@
+<div class="popup-background profile-background" (click)="closeDialog()">
+    <div class="profile-popup" (click)="doNotClose($event)">
+        <div class="headline-container">
+            <span class="fw-700">Profil</span>
+            <div class="close-icon-container">
+                <mat-icon (click)="closeDialog()">close</mat-icon>
+            </div>
+        </div>
+
+        <div class="profil-detail-view">
+            <div class="profile-img-big-container">
+                <img [src]="getProfileImagePath(data.user)" />
+            </div>
+            <div class="profile-info-container">
+                <span class="profile-name">{{ data.user.firstname }} {{ data.user.lastname }}</span>
+                <div class="user-info">
+                    <p [ngClass]="{'active-point': data.user.isOnline, 'inactive-point': !data.user.isOnline}"></p>
+                    <p class="active-text" [ngStyle]="{'color': data.user.isOnline ? '#92C83E' : '#686868'}">{{ data.user.isOnline ? 'Online' : 'Offline' }}</p>
+                </div>
+                <div>
+                    <div class="mail-description">
+                        <img src="../../../assets/img/mail.png" alt="">
+                        <span>E-Mail-Adresse</span>
+                    </div>
+                    <div class="mail-container">
+                        {{ data.user.email }}
+                    </div>
+                </div>
+            </div>
+            <div class="message-btn-container" (click)="openChannelDirectMessage(data.user.id)">
+                <button class="btn enabled send-message-btn">
+                    <img src="../../../assets/img/mode_comment.png" alt="">
+                    <span>Nachricht</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

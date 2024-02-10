@@ -11,8 +11,8 @@ import { Channel } from '../models/channel.class';
 import { UserService } from '../services/user.service';
 import { ChannelDataService } from '../services/channel-data.service';
 import { animate, style, transition, trigger } from '@angular/animations';
-
-
+import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-mainscreen',
@@ -36,6 +36,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class MainscreenComponent implements OnInit {
     firestore: Firestore = inject(Firestore);
     user = new User();
+    workspaceOpen: boolean = true;
     channelOpen: boolean = true;
     threadOpen: boolean = false;
     chatOpen: boolean = false;
@@ -73,7 +74,8 @@ export class MainscreenComponent implements OnInit {
         private snackBar: MatSnackBar,
         private searchService: SearchService,
         private userservice: UserService,
-        private channelDataService: ChannelDataService) {
+        private channelDataService: ChannelDataService,
+        public dialog: MatDialog) {
             this.userID = this.route.snapshot.paramMap.get('id');
             this.userList = this.getUserfromFirebase();       
     }
@@ -116,6 +118,18 @@ export class MainscreenComponent implements OnInit {
             return this.user.profileImg;
         } else {
             return `./assets/img/${this.user.profileImg}`;
+        }
+    }
+
+    getProfileImagePathSearch(user: any): string {
+        if (user && user.profileImg) {
+            if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+                return user.profileImg; 
+            } else {
+                return `./assets/img/${user.profileImg}`; 
+            }
+        } else {
+            return '';
         }
     }
 
@@ -333,9 +347,22 @@ export class MainscreenComponent implements OnInit {
     }
 
     searchfieldShowUser(user: User): void {
-        this.userProfileView = user;
+        const dialogRef = this.dialog.open(UserProfileCardComponent, {
+            data: { user: user, chatOpen: this.chatOpen, channelOpen: this.channelOpen }
+        });
+
         this.searchInput = '';
         this.isInputFilled = false;
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && result.chatOpen) {
+                this.chatOpen = true;
+            }
+
+            if (result && result.channelOpen !== undefined) {
+                this.channelOpen = result.channelOpen;
+            }
+        });
     }
 
     
@@ -367,5 +394,13 @@ export class MainscreenComponent implements OnInit {
           this.channelOpen = true;
         }, 0.02);
       }
+
+
+   /**
+   * Show/hide the workspace container with the button on the left side
+   */
+  toggleWorkspace() {
+    this.workspaceOpen = !this.workspaceOpen;
+  }
       
 }

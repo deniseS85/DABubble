@@ -1,21 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  Renderer2,
-  HostListener,
-  OnInit,
-  inject,
-} from '@angular/core';
-import {
-  Firestore,
-  Unsubscribe,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  setDoc,
-} from '@angular/fire/firestore';
+import { Component, ElementRef, Renderer2, HostListener, OnInit, inject, } from '@angular/core';
+import { Firestore, Unsubscribe, collection, doc, getDoc, getDocs, onSnapshot, setDoc, } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../services/channel.service';
@@ -69,7 +53,6 @@ export class WorkspaceComponent implements OnInit {
   selectedUsers: User[] = [];
   searchQuery: string = '';
 
-  isWorkspaceContainer: boolean = true;
   isChannelCreateWindow: boolean = false;
   isFirstScreen: boolean = true;
   isSecondScreen: boolean = false;
@@ -134,13 +117,6 @@ export class WorkspaceComponent implements OnInit {
       this.checkIsGuestLogin();
     }
     this.getUserList();
-  }
-
-  /**
-   * Show/hide the workspace container with the button on the left side
-   */
-  toggleWorkspace() {
-    this.isWorkspaceContainer = !this.isWorkspaceContainer;
   }
 
   /**
@@ -267,7 +243,7 @@ export class WorkspaceComponent implements OnInit {
    * Handles the click event on selectable elements. Removes the class "selected" 
    * from all other elements and sets this class to clicked elements
    */
-  handleClick(event: MouseEvent): void {
+  handleClick(event: MouseEvent, channelID: string): void {
     const target = event.target as HTMLElement;
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);

@@ -131,7 +131,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChannelOpen: boolean = false;
   isChatOpen: boolean = true;
   imagePreview: string = '';
-  
+  isFirstTimeEmojiOpen: boolean = true;
 
   private subscriptions: Subscription[] = [];
 
@@ -201,6 +201,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
     this.shouldScrollToBottom = atBottom;
   }
+ 
 
   ngOnDestroy() {
     this.unsubUser;

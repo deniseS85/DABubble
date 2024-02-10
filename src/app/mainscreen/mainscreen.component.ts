@@ -36,7 +36,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class MainscreenComponent implements OnInit {
     firestore: Firestore = inject(Firestore);
     user = new User();
-    isWorkspaceContainer: boolean = true;
+    workspaceOpen: boolean = true;
     channelOpen: boolean = true;
     threadOpen: boolean = false;
     chatOpen: boolean = false;
@@ -400,7 +400,7 @@ export class MainscreenComponent implements OnInit {
    * Show/hide the workspace container with the button on the left side
    */
   toggleWorkspace() {
-    this.isWorkspaceContainer = !this.isWorkspaceContainer;
+    this.workspaceOpen = !this.workspaceOpen;
   }
       
 }

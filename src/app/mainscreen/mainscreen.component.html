@@ -139,11 +139,25 @@
     </div>
 
     <div class="mainContainerContent">
-        <app-workspace *ngIf="isWorkspaceContainer"
-        [@leftRightAnimation]></app-workspace>
-        <app-chat-container *ngIf="chatOpen"></app-chat-container>
-        <app-channel-chat *ngIf="channelOpen" [userProfileView]="userProfileView"></app-channel-chat>
-        <app-thread  [@leftRightAnimation] *ngIf="threadOpen"></app-thread>
+        <app-workspace 
+            *ngIf="workspaceOpen"
+            [@leftRightAnimation]
+            >
+        </app-workspace>
+        <app-chat-container 
+            *ngIf="chatOpen"
+            >
+        </app-chat-container>
+        <app-channel-chat 
+            *ngIf="channelOpen" 
+            [userProfileView]="userProfileView"
+            >
+        </app-channel-chat>
+        <app-thread
+            *ngIf="threadOpen"
+            [@leftRightAnimation] 
+            >
+        </app-thread>
     </div>
 </div>
 
@@ -155,22 +169,22 @@
         <img
           class="normal-img"
           src="./assets/img/workspace_hide.png"
-          *ngIf="isWorkspaceContainer"
+          *ngIf="workspaceOpen"
         />
         <img
           class="hover-img"
           src="./assets/img/workspace_hide_hover.png"
-          *ngIf="isWorkspaceContainer"
+          *ngIf="workspaceOpen"
         />
         <img
           class="normal-img"
           src="./assets/img/workspace_show.png"
-          *ngIf="!isWorkspaceContainer"
+          *ngIf="!workspaceOpen"
         />
         <img
           class="hover-img"
           src="./assets/img/workspace_show_hover.png"
-          *ngIf="!isWorkspaceContainer"
+          *ngIf="!workspaceOpen"
         />
       </div>
     </div>

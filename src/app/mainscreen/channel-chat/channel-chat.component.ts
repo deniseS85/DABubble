@@ -16,7 +16,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { ChatService } from '../../services/chat.service';
 import { MatDialog } from '@angular/material/dialog';
-import { EditAnswerComponent } from '../thread/edit-answer/edit-answer.component';
 import { EditChannelChatComponent } from './edit-channel-chat/edit-channel-chat.component';
 
 
@@ -967,8 +966,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   openEditMessageDialog(id: string,) {
-    this.dialog.open(EditChannelChatComponent);
-
     this.dialog.open(EditChannelChatComponent, {
       data: {
         channelid: this.channelDataService.channelID,

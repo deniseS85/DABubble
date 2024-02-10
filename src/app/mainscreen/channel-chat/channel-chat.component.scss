@@ -270,15 +270,14 @@
             z-index: 2;
         }
     }  
-
     .editMessage{
         position: relative;
-
         .editMessageBtn{
             position: absolute;
             right: 0;
             top: 0;
-            height: 55px;         
+            height: 55px;  
+            width: 200px;       
             transform: translateX(100%);
             display: none;
             white-space: nowrap;
@@ -294,7 +293,6 @@
                 padding: 5px 10px;
                 border-radius: 100px;
             }
-
             &:hover{
                 span{
                     transition: background-color 0.08s ease-in;
@@ -304,7 +302,6 @@
                 }                    
             }
         }
-
         &:hover{
             .editMessageBtn{
                 display: flex;

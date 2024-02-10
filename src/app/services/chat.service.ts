@@ -9,6 +9,7 @@ export class ChatService {
   firestore: Firestore = inject(Firestore);
   userID: string = '';
   collectionChatRef = collection(this.firestore, 'chats');
+  
 
   constructor() { }
 

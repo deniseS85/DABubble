@@ -11,6 +11,8 @@ import { Channel } from '../models/channel.class';
 import { UserService } from '../services/user.service';
 import { ChannelDataService } from '../services/channel-data.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-mainscreen',
@@ -71,7 +73,8 @@ export class MainscreenComponent implements OnInit {
         private snackBar: MatSnackBar,
         private searchService: SearchService,
         private userservice: UserService,
-        private channelDataService: ChannelDataService,) {
+        private channelDataService: ChannelDataService,
+        public dialog: MatDialog) {
             this.userID = this.route.snapshot.paramMap.get('id');
             this.userList = this.getUserfromFirebase();       
     }
@@ -343,9 +346,22 @@ export class MainscreenComponent implements OnInit {
     }
 
     searchfieldShowUser(user: User): void {
-        this.userProfileView = user;
+        const dialogRef = this.dialog.open(UserProfileCardComponent, {
+            data: { user: user, chatOpen: this.chatOpen, channelOpen: this.channelOpen }
+        });
+
         this.searchInput = '';
         this.isInputFilled = false;
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && result.chatOpen) {
+                this.chatOpen = true;
+            }
+
+            if (!result.channelOpen) {
+                this.channelOpen = false;
+            }
+        });
     }
 
     

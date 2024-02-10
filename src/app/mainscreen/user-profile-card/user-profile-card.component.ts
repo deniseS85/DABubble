@@ -1,0 +1,43 @@
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { User } from '../../models/user.class';
+import { ChatService } from '../../services/chat.service';
+import { ChannelDataService } from '../../services/channel-data.service';
+import { ChatContainerComponent } from '../chat-container/chat-container.component';
+
+@Component({
+  selector: 'app-user-profile-card',
+  templateUrl: './user-profile-card.component.html',
+  styleUrl: './user-profile-card.component.scss'
+})
+export class UserProfileCardComponent {
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User, chatOpen: boolean, channelOpen: boolean }, 
+    public dialogRef: MatDialogRef<UserProfileCardComponent>, 
+    private chatService: ChatService, 
+    private channelDataService: ChannelDataService,
+    private chatComponent: ChatContainerComponent) {}
+
+  getProfileImagePath(user: User): string {
+    if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+      return user.profileImg;
+    } else {
+      return `./assets/img/${user.profileImg}`;
+    }
+  }
+
+  doNotClose(event: MouseEvent): void {
+    event.stopPropagation();
+  }
+
+  openChannelDirectMessage(chatPartnerID: string): void {
+      let userFullName = this.data.user.firstname + " " + this.data.user.lastname;
+      this.chatService.userID = chatPartnerID;
+      this.channelDataService.highlightUserInWorkspace(userFullName);
+      this.dialogRef.close({ chatOpen: true, channelOpen: false });
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
+  }
+}

@@ -1,0 +1,162 @@
+.popup-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    overflow: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-popup {
+    bottom: 0;
+    width: 430px;
+    height: max-content;
+    padding: 40px;
+    border-radius: 30px 30px 30px 30px;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    z-index: 110;
+}
+
+.headline-container {
+    font-size: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    padding: 6px;
+
+    &:hover {
+        background-color: #ECEEFE;
+        cursor: pointer;
+
+        &:hover mat-icon {
+            filter: invert(41%) sepia(64%) saturate(6974%) hue-rotate(232deg) brightness(100%) contrast(90%);
+        }
+    }
+}
+
+.profile-img-big-container {
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+}
+
+.profile-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 45px;
+}
+
+.profile-name {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+
+.user-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 29px;
+
+    .active-point {
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        background-color: #92C83E;
+    }
+    .inactive-point {
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        background-color: #686868;
+    }
+    .active-text {
+        font-size: 18px;
+    }
+}
+
+.mail-description {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.mail-container {
+    margin-top: 20px;
+    margin-left: 45px;
+    font-size: 18px;
+    color: #1381FF;
+    cursor: default;
+}
+
+.message-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.enabled {
+    background-color: #444DF2;
+    border: none;
+    transition: 225ms ease-in-out;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px 0px;
+    border-radius: 30px;
+    width: 170px;
+    color: white;
+    font-size: 16px;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        background-color: #797EF3;
+        transition: 225ms ease-in-out;
+    }
+}
+
+.send-message-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 45px;
+    gap: 15px;
+    padding: 15px 0px;
+    border-radius: 30px;
+    width: 170px;
+    color: white;
+    font-size: 16px;
+    align-items: center;
+    cursor: pointer;
+}

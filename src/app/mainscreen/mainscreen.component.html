@@ -139,10 +139,39 @@
     </div>
 
     <div class="mainContainerContent">
-        <app-workspace></app-workspace>
+        <app-workspace *ngIf="isWorkspaceContainer"
+        [@leftRightAnimation]></app-workspace>
         <app-chat-container *ngIf="chatOpen"></app-chat-container>
         <app-channel-chat *ngIf="channelOpen" [userProfileView]="userProfileView"></app-channel-chat>
         <app-thread  [@leftRightAnimation] *ngIf="threadOpen"></app-thread>
     </div>
 </div>
 
+
+<div class="normal-hover-img">
+    <div class="workspace-menu-close-container" (click)="toggleWorkspace()">
+      <div>Workspace-Menü schließen</div>
+      <div class="workspace-menu-close-icon">
+        <img
+          class="normal-img"
+          src="./assets/img/workspace_hide.png"
+          *ngIf="isWorkspaceContainer"
+        />
+        <img
+          class="hover-img"
+          src="./assets/img/workspace_hide_hover.png"
+          *ngIf="isWorkspaceContainer"
+        />
+        <img
+          class="normal-img"
+          src="./assets/img/workspace_show.png"
+          *ngIf="!isWorkspaceContainer"
+        />
+        <img
+          class="hover-img"
+          src="./assets/img/workspace_show_hover.png"
+          *ngIf="!isWorkspaceContainer"
+        />
+      </div>
+    </div>
+  </div>

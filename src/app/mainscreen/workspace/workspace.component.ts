@@ -53,7 +53,6 @@ export class WorkspaceComponent implements OnInit {
   selectedUsers: User[] = [];
   searchQuery: string = '';
 
-  isWorkspaceContainer: boolean = true;
   isChannelCreateWindow: boolean = false;
   isFirstScreen: boolean = true;
   isSecondScreen: boolean = false;
@@ -118,13 +117,6 @@ export class WorkspaceComponent implements OnInit {
       this.checkIsGuestLogin();
     }
     this.getUserList();
-  }
-
-  /**
-   * Show/hide the workspace container with the button on the left side
-   */
-  toggleWorkspace() {
-    this.isWorkspaceContainer = !this.isWorkspaceContainer;
   }
 
   /**

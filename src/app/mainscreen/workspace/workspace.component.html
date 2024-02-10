@@ -1,35 +1,5 @@
-<div class="normal-hover-img">
-  <div class="workspace-menu-close-container" (click)="toggleWorkspace()">
-    <div>Workspace-Menü schließen</div>
-    <div class="workspace-menu-close-icon">
-      <img
-        class="normal-img"
-        src="./assets/img/workspace_hide.png"
-        *ngIf="isWorkspaceContainer"
-      />
-      <img
-        class="hover-img"
-        src="./assets/img/workspace_hide_hover.png"
-        *ngIf="isWorkspaceContainer"
-      />
-      <img
-        class="normal-img"
-        src="./assets/img/workspace_show.png"
-        *ngIf="!isWorkspaceContainer"
-      />
-      <img
-        class="hover-img"
-        src="./assets/img/workspace_show_hover.png"
-        *ngIf="!isWorkspaceContainer"
-      />
-    </div>
-  </div>
-</div>
-
 <div
   class="workspace-container"
-  *ngIf="isWorkspaceContainer"
-  [@leftRightAnimation]
 >
   <div class="server-container">
     <div class="server-logo-name">

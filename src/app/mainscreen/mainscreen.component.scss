@@ -637,3 +637,55 @@
         }
     }
 }
+
+
+.hover-img {
+    display: none;
+  }
+
+.normal-hover-img {
+    :hover {
+      color: #535af1;
+  
+      .normal-img {
+        display: none;
+      }
+  
+      .hover-img {
+        display: block;
+      }
+    }
+}
+
+.workspace-menu-close-container {
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    height: 60px;
+    width: 350px;
+    position: absolute;
+    left: -143px;
+    bottom: 30%;
+    background-color: white;
+    box-shadow: 0px 6px 10px #00000030;
+    border-radius: 0 0 30px 30px;
+    transform: rotate(270deg);
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+  
+    @media (max-width: 750px) {
+      display: none;
+    }
+}
+
+.workspace-menu-close-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(90deg);
+}
+  
+  

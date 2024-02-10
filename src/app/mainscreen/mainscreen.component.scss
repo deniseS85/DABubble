@@ -486,6 +486,14 @@
                 z-index: 199;
             }
         }
+        .searchfield-container {
+            .profile-img-search {
+                width: 30px;
+                height: 30px;
+                border-radius: 100%;
+                object-fit: cover;
+            }
+        }
     }
 
     /* ####################### ende header ########################### */
@@ -603,13 +611,12 @@
     }
     li {
         padding: 8px;
-        border-radius: 8px;
+        border-radius: 16px;
         list-style: none;
         display: flex;
         align-items: center;
         gap: 20px;
         span {
-            font-weight: bold;
             font-size: 18px;
         }
 

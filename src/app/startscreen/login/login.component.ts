@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { collection, getDocs, query, where, Firestore } from '@angular/fire/firestore';
 import { UserService } from '../../services/user.service';
-
+import { SearchService } from '../../services/search-service.service';
 
 
 interface UserData {
@@ -35,7 +35,7 @@ export class LoginComponent {
     isWrongPassword: boolean = false;
     isSubmitted: boolean = false;
     
-    constructor(private formBuilder: FormBuilder, private authService: AuthService, private userservice: UserService, private router: Router) { 
+    constructor(private formBuilder: FormBuilder, private authService: AuthService, private userservice: UserService, private router: Router, private searchservice: SearchService) { 
         this.setLoginForm();
     }
 
@@ -59,6 +59,7 @@ export class LoginComponent {
                     if (userId) {
                         this.authService.setOnlineStatus(userId, true);
                         this.router.navigate(['/main', userId]);
+                        this.searchservice.loadUsers();
                     } 
                 }
             } else {
@@ -121,6 +122,7 @@ export class LoginComponent {
             if (displayName && email) {
                 let [firstName, lastName] = displayName.split(' ');
                 await this.handleUserDetails(firstName, lastName, email);
+                this.searchservice.loadUsers();
             }
         } catch (error: any) {
             this.handleAuthError(error);

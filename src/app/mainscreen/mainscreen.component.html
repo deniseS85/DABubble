@@ -14,7 +14,8 @@
                         <span>#</span> {{ channel.channelname }}
                     </li>
                     <li *ngFor="let user of searchResults.users" (click)="searchfieldShowUser(user)">
-                        <span>&commat;</span> {{ user.firstname }} {{ user.lastname }}
+                        <img class="profile-img-search" [src]="getProfileImagePathSearch(user)">
+                        <span>{{ user.firstname }} {{ user.lastname}}</span>
                     </li>
                 </ul>
             </div>
@@ -140,7 +141,7 @@
     <div class="mainContainerContent">
         <app-workspace></app-workspace>
         <app-chat-container *ngIf="chatOpen"></app-chat-container>
-        <app-channel-chat *ngIf="channelOpen"  [userProfileView]="userProfileView"></app-channel-chat>
+        <app-channel-chat *ngIf="channelOpen" [userProfileView]="userProfileView"></app-channel-chat>
         <app-thread  [@leftRightAnimation] *ngIf="threadOpen"></app-thread>
     </div>
 </div>

@@ -12,8 +12,6 @@ import { UserService } from '../services/user.service';
 import { ChannelDataService } from '../services/channel-data.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 
-
-
 @Component({
   selector: 'app-mainscreen',
   templateUrl: './mainscreen.component.html',
@@ -73,7 +71,7 @@ export class MainscreenComponent implements OnInit {
         private snackBar: MatSnackBar,
         private searchService: SearchService,
         private userservice: UserService,
-        private channelDataService: ChannelDataService) {
+        private channelDataService: ChannelDataService,) {
             this.userID = this.route.snapshot.paramMap.get('id');
             this.userList = this.getUserfromFirebase();       
     }
@@ -116,6 +114,18 @@ export class MainscreenComponent implements OnInit {
             return this.user.profileImg;
         } else {
             return `./assets/img/${this.user.profileImg}`;
+        }
+    }
+
+    getProfileImagePathSearch(user: any): string {
+        if (user && user.profileImg) {
+            if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+                return user.profileImg; 
+            } else {
+                return `./assets/img/${user.profileImg}`; 
+            }
+        } else {
+            return '';
         }
     }
 

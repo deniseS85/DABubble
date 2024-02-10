@@ -148,8 +148,7 @@ export class ChatContainerComponent {
         userIDofThisMessage = message.data()['messageUserID'];        
         const userDatas = await getDoc(doc(this.firestore, 'users', userIDofThisMessage));
         
-        if (message.data()['messageUserID'] === this.userID) {
-          
+        if (message.data()['messageUserID'] === this.userID) {          
           let updatedMessage = ({
             ...message.data(),
             username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
@@ -158,9 +157,8 @@ export class ChatContainerComponent {
             activeUser: true
           })
           this.allMessages.push(updatedMessage);
-          console.warn('new Message User: ', updatedMessage, this.userID)
-        } else {
 
+        } else {
           let updatedMessage = ({
             ...message.data(),
             username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
@@ -169,7 +167,6 @@ export class ChatContainerComponent {
             activeUser: false
           })
           this.allMessages.push(updatedMessage);
-          console.warn('new Message Partner: ', updatedMessage, this.userID)
 
         }
         if(this.allMessages.length != 0){

@@ -9,11 +9,7 @@ export class ChatService {
   firestore: Firestore = inject(Firestore);
   userID: string = '';
   collectionChatRef = collection(this.firestore, 'chats');
-<<<<<<< HEAD
   allUsers: any[] = [];
-=======
-  
->>>>>>> bd4580ae02fbc4b6af175c16929edd595c963d5a
 
   constructor() { }
 
@@ -66,7 +62,7 @@ export class ChatService {
   async createChatsForNewUser(userData: any, userID: string){    
 
     userData = ({...userData, id: userID});
-    const allUsersQuery = await query(this.getUsersRef())
+    const allUsersQuery = query(this.getUsersRef())
 
     onSnapshot(allUsersQuery, (querySnapshot) => {      
       this.buildUserArray(querySnapshot);

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, getDocs, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ export class ChatService {
   firestore: Firestore = inject(Firestore);
   userID: string = '';
   collectionChatRef = collection(this.firestore, 'chats');
+  allUsers: any[] = [];
 
   constructor() { }
 
@@ -19,6 +20,10 @@ export class ChatService {
    */
   getChatsRef(){
     return collection(this.firestore, 'chats')
+  }
+
+  getUsersRef(){
+    return collection(this.firestore, 'users')
   }
 
   /**
@@ -34,6 +39,8 @@ export class ChatService {
       chatname: chatname,
       chatUsers: chatUsers
     })
+
+
   }
 
   async getAllChats(): Promise<any[]> {
@@ -48,7 +55,43 @@ export class ChatService {
   sendMessage(message: any, chatID: string){
     const ref = doc(collection(this.firestore, "chats", chatID, "messages"));
     const newMessage = ({ ...message, messageID: ref.id });
-    console.log(chatID)
     setDoc(ref, newMessage);
   }
+
+
+  async createChatsForNewUser(userData: any, userID: string){    
+
+    userData = ({...userData, id: userID});
+    const allUsersQuery = await query(this.getUsersRef())
+
+    onSnapshot(allUsersQuery, (querySnapshot) => {      
+      this.buildUserArray(querySnapshot);
+      this.allUsers.forEach((user: any) => {
+        this.buildNewChat(user, userData);   
+        })      
+    });
+  }
+
+
+buildUserArray(querySnapshot: any){
+    querySnapshot.forEach((doc: any) => {
+    this.allUsers.push(doc.data())
+  });
+}
+
+buildNewChat(user: any, userData: any){
+  let newChat :any[] = [];
+
+  if (user.id == userData.id) {
+    newChat.push(userData.id)
+  } else {
+    newChat.push(user.id, userData.id)
+  }
+
+  const chatname = user.firstname + ' & ' + userData.firstname;
+  const chatUsers = newChat;
+  this.createNewChat(chatname, chatUsers)
+  console.warn("new Chat createt", chatname)
+}
+
 }

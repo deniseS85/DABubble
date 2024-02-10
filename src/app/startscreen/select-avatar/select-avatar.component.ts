@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { Storage, ref, uploadBytes, getDownloadURL, getMetadata } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../services/user.service';
+import { ChatService } from '../../services/chat.service';
 
 
 @Component({
@@ -28,7 +29,14 @@ export class SelectAvatarComponent implements OnInit {
     user = new User();
     isGoogleLogin: boolean = false;
 
-    constructor(public startscreen: StartscreenComponent, private router: Router, private authService: AuthService, private userservice: UserService, private storage: Storage, private snackBar: MatSnackBar) {}
+    constructor(
+      public startscreen: StartscreenComponent, 
+      private router: Router, 
+      private authService: AuthService, 
+      private userservice: UserService, 
+      private storage: Storage, 
+      private snackBar: MatSnackBar,
+      private chatService: ChatService) {}
 
    
     ngOnInit() {
@@ -57,6 +65,7 @@ export class SelectAvatarComponent implements OnInit {
     }
 
     async addNewUser() {
+      
         this.showConfirmation = true;
        
         let updatedUserData = {
@@ -66,6 +75,8 @@ export class SelectAvatarComponent implements OnInit {
        
         let docRef = await addDoc(this.getUserRef(), updatedUserData);
         await updateDoc(doc(this.getUserRef(), docRef.id), { id: docRef.id });
+
+        this.chatService.createChatsForNewUser(updatedUserData, docRef.id)
 
         setTimeout(() => {
             this.showConfirmation = false;
@@ -78,10 +89,11 @@ export class SelectAvatarComponent implements OnInit {
                 this.router.navigate(['/main', docRef.id]);
                 
             } else {
-                this.startscreen.toggleView('login')
+                this.startscreen.toggleView('login');
+                window.location.reload()
             }
         }, 2000);
-      
+        
     }
 
     getUserRef() {

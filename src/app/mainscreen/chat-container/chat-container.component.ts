@@ -30,6 +30,16 @@ export class ChatContainerComponent {
   chatID: string = '';
   userData: any;
 
+  userTestdata: any = {
+    email: "potter@potter.de",
+    firstname: "Harry",
+    id: "",
+    lastname: "Potter",
+    profileImg: "avatar4.png"
+  }
+
+  userTestID: string = 'sRhaclnKUT1LqIQrCTTF'
+
   chatPartnerName: string = '';
   chatPartnerImg: string = '';
   isOnline: boolean = false;
@@ -53,8 +63,19 @@ export class ChatContainerComponent {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.setBooleanForSelfChat();
     this.loadChatID();    
-    this.getUserData()
+    this.getUserData();
     // this.newDMChat()
+  }
+
+
+ 
+
+
+  setBooleanForSelfChat(){
+    const chatPartnerID = this.chatService.userID;
+    if(this.userID == chatPartnerID){
+      this.selfChat = true
+    } 
   }
 
 
@@ -62,7 +83,6 @@ export class ChatContainerComponent {
     const chatPartnerID = this.chatService.userID;
     const allChatsRef = await getDocs(collection(this.firestore, "chats"));
     let array: any[] = [];
-
     
 
     allChatsRef.forEach((chat) => {
@@ -71,8 +91,7 @@ export class ChatContainerComponent {
       if (chatData['chatUsers'].includes(this.userID)) {
         array.push(chatData)
       } else { return }
-    })
-    
+    })    
    
     if(this.userID == chatPartnerID){
       console.log('same')
@@ -81,8 +100,7 @@ export class ChatContainerComponent {
       if(chat['chatUsers'].length ==1){
         this.chatID = chat['chatID']
         } 
-      }
-    
+      }    
       
     )} else {
       array.forEach((chat) => {
@@ -93,17 +111,11 @@ export class ChatContainerComponent {
         })
     }
 
-    
     this.loadMessagesOfThisChat()
   }
 
 
-  setBooleanForSelfChat(){
-    const chatPartnerID = this.chatService.userID;
-    if(this.userID == chatPartnerID){
-      this.selfChat = true
-    } 
-  }
+  
 
 
   async getUserData() {
@@ -125,17 +137,19 @@ export class ChatContainerComponent {
 
   async loadMessagesOfThisChat() {
 
+    let userIDofThisMessage;
     const queryAllAnswers = await query(collection(this.firestore, "chats", this.chatID, "messages"));
 
     onSnapshot(queryAllAnswers, (querySnapshot) => {
 
       this.allMessages = [];
       querySnapshot.forEach(async (message) => {
-        this.userID = message.data()['messageUserID'];
-        const userDatas = await getDoc(doc(this.firestore, 'users', this.userID));
 
+        userIDofThisMessage = message.data()['messageUserID'];        
+        const userDatas = await getDoc(doc(this.firestore, 'users', userIDofThisMessage));
+        
         if (message.data()['messageUserID'] === this.userID) {
-
+          
           let updatedMessage = ({
             ...message.data(),
             username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
@@ -144,6 +158,7 @@ export class ChatContainerComponent {
             activeUser: true
           })
           this.allMessages.push(updatedMessage);
+          console.warn('new Message User: ', updatedMessage, this.userID)
         } else {
 
           let updatedMessage = ({
@@ -154,32 +169,27 @@ export class ChatContainerComponent {
             activeUser: false
           })
           this.allMessages.push(updatedMessage);
+          console.warn('new Message Partner: ', updatedMessage, this.userID)
+
         }
         if(this.allMessages.length != 0){
           this.chatAllreadyStarted = true;
-        } 
+        }
+
+        this.sortMessagesByTimeStamp();
       })
       
     });
     
   }
 
-  //      --> Promise wird zurückgegeben
-  // async getActualUserData(userID: string){
-  //   const userDatas = await getDoc(doc(this.firestore, 'users', userID));
-
-  //   const ud = {
-  //     username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
-  //     userImg: userDatas.data()!['profileImg'],
-  //     isOnline: userDatas.data()!['isOnline']
-  //   }
-
-  //   console.warn(ud)
-
-  //   return ud
-
-  // }
-
+  sortMessagesByTimeStamp() {
+    this.allMessages.sort((a, b) => {
+      const timestampA = new Date(`${a.date} ${a.timestamp}`);
+      const timestampB = new Date(`${b.date} ${b.timestamp}`);
+      return timestampA.getTime() - timestampB.getTime();
+    });
+  }
 
 
   toggleEmoji(id: string) {
@@ -341,41 +351,43 @@ export class ChatContainerComponent {
 
 
 
-  // newDMChat() {
-
-  //   const allUsersQuery = query(this.channelService.getUsersRef())
-
-  //   let newPair: any[] = [];
-
-  //   onSnapshot(allUsersQuery, (querySnapshot) => {
-
-  //     // build Array with allUsers
-  //     querySnapshot.forEach((doc: any) => {
-
-  //       this.allUsers.push(doc.data())
-
-  //       this.allUsers.forEach((user: any) => {
-
-  //         newPair = [];
-
-  //         if (user.id == doc.data().id) {
-  //           newPair.push(user.id)
-  //         } else {
-  //           newPair.push(user.id, doc.data().id)
-  //         }
-
-  //         const chatname = user.firstname + ' & ' + doc.data().firstname;
-  //         const chatUsers = newPair;
-  //         this.chatService.createNewChat(chatname, chatUsers)
-
-  //       })
 
 
+  newDMChat() {
 
-  //     },
-  //     );
-  //   });
-  // }
+    const allUsersQuery = query(this.channelService.getUsersRef())
+
+    let newPair: any[] = [];
+
+    onSnapshot(allUsersQuery, (querySnapshot) => {
+
+      // build Array with allUsers
+      querySnapshot.forEach((doc: any) => {
+
+        this.allUsers.push(doc.data())
+
+        this.allUsers.forEach((user: any) => {
+
+          newPair = [];
+
+          if (user.id == doc.data().id) {
+            newPair.push(user.id)
+          } else {
+            newPair.push(user.id, doc.data().id)
+          }
+
+          const chatname = user.firstname + ' & ' + doc.data().firstname;
+          const chatUsers = newPair;
+          this.chatService.createNewChat(chatname, chatUsers)
+
+        })
+
+
+
+      },
+      );
+    });
+  }
 
 
   

@@ -94,7 +94,6 @@ export class ChatContainerComponent {
     })    
    
     if(this.userID == chatPartnerID){
-      console.log('same')
       array.forEach((chat) => {
       
       if(chat['chatUsers'].length ==1){

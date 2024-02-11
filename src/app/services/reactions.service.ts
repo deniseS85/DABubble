@@ -42,7 +42,6 @@ export class ReactionsService {
     const reactCollectionRef = this.getRef(typ, channelID, channelMessageID, threadMessageID)
     let allEmojis: any[] = [];
     let allReactions: any[] = [];
-    
 
     message.react.forEach((reac: any) => {
       allEmojis.push(reac.emoji);
@@ -59,16 +58,15 @@ export class ReactionsService {
         // lösche den activen User, da er den Emoji löscht
         existingEmoji.user = this.deleteUserFromReaction(existingEmoji, userName);
         // aktualisiere die User dieses Emojis
-        message.react[emojiIndex].user = existingEmoji.user
-
-        this.updateReactions(message, reactCollectionRef)
+        message.react[emojiIndex].user = existingEmoji.user;
+        
         //wenn Menge der User die den Emoji geklickt haben null ist, lösche den Emoji aus DB
         if (existingEmoji.user.length == 0) {
           const index = message.react.indexOf(existingEmoji);
           message.react.splice(index, 1);
-
-          this.updateReactions(message, reactCollectionRef)
         }
+      
+        this.updateReactions(message, reactCollectionRef)  
 
       } else if (!existingEmoji.user.includes(userName)) {
         existingEmoji.user.push(userName);
@@ -93,7 +91,7 @@ export class ReactionsService {
     } else if ( typ == "messageReaction"){
       return doc(this.firestore, "channels", channelID, "messages", messageID);
     } else if ( typ == "chatReaction"){
-      return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID);
+      return doc(this.firestore, "chats", channelID, "messages", messageID);
     } else {
       return doc(this.firestore, "channels", channelID, "messages", messageID, 'answers', answerID)
     }
@@ -144,11 +142,10 @@ export class ReactionsService {
    * @param answer 
    * @param reactCollectionRef 
    */
-  async updateReactions(answer: any, reactCollectionRef: any) {
+  async updateReactions(message: any, reactCollectionRef: any) {
     await updateDoc(reactCollectionRef, {
-      react: answer.react
+      react: message.react
     });
-    console.warn('new Reaction update')
   }
 
 }

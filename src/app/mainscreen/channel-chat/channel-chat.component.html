@@ -12,47 +12,71 @@
 
             <div class="header-right" *ngIf="officialChannel">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
-                  <div *ngFor="let user of usersData">
-                    <span class="profile">
-                      <img [src]="getProfileImagePath(user)" />
-                      <p class="active-point" *ngIf="user.isOnline"></p>
-                    </span>
-                  </div>
-                  <div class="counter-channel-members">{{ usersData.length }}</div>
+                    <div *ngFor="let user of usersData">
+                        <span class="profile">
+                            <img [src]="getProfileImagePath(user)" />
+                            <p class="active-point" *ngIf="user.isOnline"></p>
+                        </span>
+                    </div>
+                    <div class="counter-channel-members">{{ usersData.length }}</div>
                 </div>
-              
+
                 <div class="person-add-icon-container">
-                  <img src="../../../assets/img/person_add.png" alt="" (click)="addUSerOpen = true; openPopup()">
+                    <img src="../../../assets/img/person_add.png" alt="" (click)="addUSerOpen = true; openPopup()">
                 </div>
-              </div>
+            </div>
         </header>
     </div>
-    
+
     <div class="channel-chat-container" #chatContainer>
         <div *ngFor="let message of allMessages; let chatIndex = index">
             <div class="seperator"></div>
             <div class="date-incoming-message">
                 <span class="fs-18">{{ message.date | date: 'EEEE, dd MMMM' : 'de' }}</span>
             </div>
-
+            
             <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'"
                 style="cursor: default;"
                 (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible', chatIndex) : toggleAnimationState('visible', chatIndex)"
                 (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden', chatIndex) : toggleAnimationState('hidden', chatIndex)"
                 (mouseleave)="message.isEmojiOpen = false">
+
+
+
+                <!-- edit MessageContainer -->
+                <div class="editMessageContainer" *ngIf="editMessages[chatIndex]">
+                    <textarea class="editMessageContainerMessage" [(ngModel)]="editedMessage"
+                        (keyup.enter)="saveEditedMessage(message.messageID, chatIndex)"></textarea>
+                    <div class="editMessageContainerReactAndSend">
+                        <div class="emoji-footer-container" (mouseleave)="closeEmojiFooterEdit()">
+                            <div class="emoji-footer-selection" *ngIf="isShowEmojiFooterEdit">
+                                <app-emoji-picker (emojiSelect)="addEmojiToEditMessage($event)"></app-emoji-picker>
+                            </div>
+                            <mat-icon (click)="toggleEmojiFooterEdit()">mood</mat-icon>
+                        </div>
+                        <div class="editMessageContainerReactAndSendBtns">
+                            <div class="editMessageBtn" (click)="cancelEdit(chatIndex)">Abbrechen</div>
+                            <div class="editMessageBtn saveBtn"
+                                (click)="saveEditedMessage(message.messageID, chatIndex)">Speichern</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="profile-message-img">
                     <img class="profile-img"
-                        [src]="message.profileImg.startsWith('https') ? message.profileImg : './assets/img/' + message.profileImg" alt="">
-                        <p class="active-point" *ngIf="message.isOnline"></p>
+                        [src]="message.profileImg.startsWith('https') ? message.profileImg : './assets/img/' + message.profileImg"
+                        alt="">
+                    <p class="active-point" *ngIf="message.isOnline"></p>
                 </div>
 
                 <div>
-                    <div [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
-                        <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'" 
+                    <div
+                        [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
+                        <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'"
                             [@slideAndFadeLeft]="isCurrentUser(chatIndex) ? (message.animationState1 || 'hidden') : 'hidden'"
                             [@slideAndFade]="isCurrentUser(chatIndex) ? 'hidden' : (message.animationState || 'hidden')">
                             <div *ngFor="let emoji of getEmojis(message)">
-                                <div class="last-emoji" >{{ emoji }}</div>
+                                <div class="last-emoji">{{ emoji }}</div>
                             </div>
                             <div class="emoji-container">
                                 <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png">
@@ -63,24 +87,27 @@
                                 </div>
                             </div>
                             <div class="react-icon">
-                                <img src="./assets/img/Answer.png" alt=""
-                                    (click)="openThread(message.messageID)">
+                                <img src="./assets/img/Answer.png" alt="" (click)="openThread(message.messageID)">
                             </div>
-                            <div class="editMessage"  *ngIf="isCurrentUser(chatIndex)">
+                            <div class="editMessage" *ngIf="isCurrentUser(chatIndex)">
                                 <mat-icon>more_vert</mat-icon>
                                 <div class="editMessageBtn">
-                                    <span (click)="editMessage(message.messageID)">Nachricht bearbeiten</span>
+                                    <span (click)="editMessage(message.messageID, chatIndex)">Nachricht
+                                        bearbeiten</span>
                                 </div>
-                                <!-- <app-edit-channel-chat></app-edit-channel-chat> -->
                             </div>
                         </div>
                         <div class="writing-name-sending-time">
                             <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
                                 <div class="sending-time fs-14 f400">{{ message.timestamp }} Uhr</div>
-                                <span (click)="setUserProfileView(message); showProfil = true; openPopup()" class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}</span>
+                                <span (click)="setUserProfileView(message); showProfil = true; openPopup()"
+                                    class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname
+                                    }}</span>
                             </ng-container>
                             <ng-template #otherUser>
-                                <div (click)="setUserProfileView(message); showProfil = true; openPopup()" class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}</div>
+                                <div (click)="setUserProfileView(message); showProfil = true; openPopup()"
+                                    class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}
+                                </div>
                                 <span class="sending-time fs-14 fw-400">{{ message.timestamp }} Uhr</span>
                             </ng-template>
                         </div>
@@ -88,20 +115,23 @@
                     <div *ngIf="message.messagetext.trim() !== ''"
                         [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
                         {{ message.messagetext }}</div>
-                        <a *ngIf="message.fileUpload && !isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
-                            <img class="uploaded-files" [src]="message.fileUpload">
-                        </a>
-                        <a *ngIf="message.fileUpload && isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">
-                            <img class="uploaded-files" src="./assets/img/pdf-icon.png">
-                        </a>
+                    <a *ngIf="message.fileUpload && !isPDFFile(message.fileUpload)" target="_blank"
+                        [href]="message.fileUpload">
+                        <img class="uploaded-files" [src]="message.fileUpload">
+                    </a>
+                    <a *ngIf="message.fileUpload && isPDFFile(message.fileUpload)" target="_blank"
+                        [href]="message.fileUpload">
+                        <img class="uploaded-files" src="./assets/img/pdf-icon.png">
+                    </a>
 
                     <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
                         (click)="openThread(message.messageID)">
                         <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
-                        <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime }}</div>
+                        <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime
+                            }}</div>
                     </div>
-                    
-                    <div class="threadContainerTextReactions">
+
+                    <div class="threadContainerTextReactions" [ngClass]="{'d-hidden': editMessages[chatIndex]}">
                         <div class="threadContainerTextReactionsEmojis" *ngFor="let reaction of message.react">
                             <div class="reactionsInfoContainer">
                                 <div>{{reaction.emoji}}</div>
@@ -116,9 +146,9 @@
                             <div class="threadContainerTextReactionsAmount">{{reaction.user.length}}</div>
                         </div>
                         <div class="emoji-below-answer-container" (mouseleave)="closeEmojiContainers(chatIndex)">
-                            <img (click)="toggleEmojiBelowAnswer($event, chatIndex)" src="./assets/img/add_reaction.png">
-                            <div *ngIf="message.isEmojiBelowAnswerOpen"
-                                class="emoji-below-answer-selection">
+                            <img (click)="toggleEmojiBelowAnswer($event, chatIndex)"
+                                src="./assets/img/add_reaction.png">
+                            <div *ngIf="message.isEmojiBelowAnswerOpen" class="emoji-below-answer-selection">
                                 <app-emoji-picker
                                     (emojiSelect)="handleReactionMessage($event, message); closeEmojiContainers(chatIndex)"></app-emoji-picker>
                             </div>
@@ -136,37 +166,42 @@
             </textarea>
         </div>
         <div class="footer-line-icons">
-          <div class="footer-icons-left">
-            <label for="fileUpload" class="upload">
-                <mat-icon (click)="openFileUpload()">add</mat-icon>
-            </label>
-            <input type="file" id="fileUpload" style="display:none;" (change)="uploadFiles($event)">
-            <div class="seperator-vert"></div>
-            <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
-              <div class="emoji-footer-selection" *ngIf="isShowEmojiFooter">
-                <app-emoji-picker (emojiSelect)="addEmojiToMessage($event); toggleEmojiFooter()"></app-emoji-picker>
-              </div>
-              <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
-            </div>
-            <mat-icon (click)="toggleShowChannelMembersFooter()">alternate_email</mat-icon>
-            <div *ngIf="isShowChannelMembersFooter" class="current-channel-member-footer-container" (mouseleave)="closeShowChannelMembersFooter()">
-                <div class="current-channel-member-footer-list" (click)="addChannelMemberToMessageText(user)"
-                    *ngFor="let user of usersData">
-                    <span>&#64; {{ user.firstname }} {{ user.lastname }}</span>
+            <div class="footer-icons-left">
+                <label for="fileUpload" class="upload">
+                    <mat-icon (click)="openFileUpload()">add</mat-icon>
+                </label>
+                <input type="file" id="fileUpload" style="display:none;" (change)="uploadFiles($event)">
+                <div class="seperator-vert"></div>
+                <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
+                    <div class="emoji-footer-selection" *ngIf="isShowEmojiFooter">
+                        <app-emoji-picker
+                            (emojiSelect)="addEmojiToMessage($event); toggleEmojiFooter()"></app-emoji-picker>
+                    </div>
+                    <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
+                </div>
+                <mat-icon (click)="toggleShowChannelMembersFooter()">alternate_email</mat-icon>
+                <div *ngIf="isShowChannelMembersFooter" class="current-channel-member-footer-container"
+                    (mouseleave)="closeShowChannelMembersFooter()">
+                    <div class="current-channel-member-footer-list" (click)="addChannelMemberToMessageText(user)"
+                        *ngFor="let user of usersData">
+                        <span>&#64; {{ user.firstname }} {{ user.lastname }}</span>
+                    </div>
                 </div>
             </div>
-          </div>
-          <div class="footer-icons-right">
-            <button class="add-btn" mat-icon-button [disabled]="isButtonDisabled" (click)="addMessage()">
-                <mat-icon [ngStyle]="{'color': isButtonDisabled ? 'lightgrey' : '#444DF2', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
-            </button>
-          </div>
+            <div class="footer-icons-right">
+                <button class="add-btn" mat-icon-button [disabled]="isButtonDisabled" (click)="addMessage()">
+                    <mat-icon
+                        [ngStyle]="{'color': isButtonDisabled ? 'lightgrey' : '#444DF2', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
+                </button>
+            </div>
         </div>
         <div class="image-preview-overlay" *ngIf="fileToUpload">
-            <a class="uploaded-files-preview" *ngIf="fileToUpload.type !== 'application/pdf'" target="_blank" [href]="imagePreview">
+            <a class="uploaded-files-preview" *ngIf="fileToUpload.type !== 'application/pdf'" target="_blank"
+                [href]="imagePreview">
                 <img class="uploaded-files-preview" [src]="imagePreview">
             </a>
-            <a class="uploaded-files-preview" *ngIf="fileToUpload.type === 'application/pdf'" target="_blank" [href]="imagePreview">
+            <a class="uploaded-files-preview" *ngIf="fileToUpload.type === 'application/pdf'" target="_blank"
+                [href]="imagePreview">
                 <img class="uploaded-files-preview" src="./assets/img/pdf-icon.png">
             </a>
             <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
@@ -220,7 +255,9 @@
             </div>
         </div>
         <div class="message-btn-container">
-            <button [disabled]="selectedUsers.length === 0" [class.disabled]="selectedUsers.length === 0" class="btn enabled add-member-btn" (click)="addNewMemberToChannelUsers(); addUSerOpen = false; closePopup()">Hinzufügen</button>
+            <button [disabled]="selectedUsers.length === 0" [class.disabled]="selectedUsers.length === 0"
+                class="btn enabled add-member-btn"
+                (click)="addNewMemberToChannelUsers(); addUSerOpen = false; closePopup()">Hinzufügen</button>
         </div>
     </div>
 </div>
@@ -272,8 +309,11 @@
             <div class="profile-info-container">
                 <span class="profile-name">{{ userProfileView.firstname }} {{ userProfileView.lastname }}</span>
                 <div class="user-info">
-                    <p [ngClass]="{'active-point': userProfileView.isOnline, 'inactive-point': !userProfileView.isOnline}"></p>
-                    <p class="active-text" [ngStyle]="{'color': userProfileView.isOnline ? '#92C83E' : '#686868'}">{{ userProfileView.isOnline ? 'Online' : 'Offline' }}</p>
+                    <p
+                        [ngClass]="{'active-point': userProfileView.isOnline, 'inactive-point': !userProfileView.isOnline}">
+                    </p>
+                    <p class="active-text" [ngStyle]="{'color': userProfileView.isOnline ? '#92C83E' : '#686868'}">{{
+                        userProfileView.isOnline ? 'Online' : 'Offline' }}</p>
                 </div>
                 <div>
                     <div class="mail-description">

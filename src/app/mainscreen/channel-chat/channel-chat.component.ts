@@ -97,6 +97,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   officialChannel: boolean = true;
   isChannelCreator: boolean = true;
   isShowEmojiFooter: boolean = false;
+  isShowEmojiFooterEdit: boolean = false;
 
   user: User = new User;
   channel: Channel = new Channel;
@@ -117,6 +118,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   messagetext: any = '';
   message: any;
   allMessages: any[] = [];
+  editMessages: boolean[] = [];
+  editedMessage: string = '';
   userFullName: string = '';
 
   selectedUsers: User[] = [];
@@ -768,6 +771,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
 
   async loadMessagesOfThisChannel() {
+    this.editMessages = [];
     const channelID = this.channelDataService.channelID;
     const queryAllAnswers = await query(this.channelService.getMessageRef(channelID));
     onSnapshot(queryAllAnswers, async (querySnapshot) => {
@@ -787,7 +791,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
           this.loadAnswers(messageData['messageID'], doc);
         }
         this.sortMessagesByTimeStamp();
+        this.editMessages.push(false)
       }
+      
     });
     this.updateMessagesWithUserData();
   }
@@ -957,21 +963,52 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
 
-  async editMessage(id: string) {
+  /**
+   * Edit Message
+   * @param id 
+   * @param index 
+   */
+  async editMessage(id: string, index: number) {
     const messageRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), id);
     const docSnap = await getDoc(messageRef);
     this.message = docSnap.data();
-    this.openEditMessageDialog(id);
-
+    this.editedMessage = this.message.messagetext;
+    this.editMessages.splice(index, 1, true);    
   }
 
-  openEditMessageDialog(id: string,) {
-    this.dialog.open(EditChannelChatComponent, {
-      data: {
-        channelid: this.channelDataService.channelID,
-        messageid: id
-      },
-    });
+  async cancelEdit(index: number){
+    this.editMessages.splice(index, 1, false)
+  }
+
+
+  closeEmojiFooterEdit() {
+    this.isShowEmojiFooterEdit = false;
+  }
+
+  toggleEmojiFooterEdit() {
+    this.isShowEmojiFooterEdit = !this.isShowEmojiFooterEdit;
+  }
+
+  /**
+   * @param event 
+   */
+  addEmojiToEditMessage(event: any) {
+    this.editedMessage += event.emoji.native;
+  }
+
+  /**
+   * save new Messagetext or delete if String is empty 
+   * @param id 
+   * @param index 
+   */
+  async saveEditedMessage(id: string,index: number){
+    const docRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), id);
+    if(this.editedMessage.length <= 1){
+      await deleteDoc(docRef)      
+    } else{
+      await updateDoc(docRef, {messagetext: this.editedMessage})
+    }
+    this.editMessages.splice(index, 1, false)
   }
 
 

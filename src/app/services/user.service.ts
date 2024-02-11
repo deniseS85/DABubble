@@ -3,6 +3,7 @@ import { Firestore, collection, doc, getDoc, getDocs } from '@angular/fire/fires
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { User } from '../models/user.class';
 
 @Injectable({
   providedIn: 'root'
@@ -69,4 +70,8 @@ export class UserService {
         });
         return users;
     }
+
+    getUserById(users: User[], userId: string): User | undefined {
+        return users.find(user => user.id === userId);
+      }
 }

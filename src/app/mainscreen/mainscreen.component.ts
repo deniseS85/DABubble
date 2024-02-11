@@ -13,6 +13,9 @@ import { ChannelDataService } from '../services/channel-data.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ChannelService } from '../services/channel.service';
+import { Message } from '../models/message.interface';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-mainscreen',
@@ -60,7 +63,7 @@ export class MainscreenComponent implements OnInit {
     isLogoutHovered: boolean = false;
     searchInput: string = '';
     isInputFilled: boolean = false;
-    searchResults: { channels: Channel[], users: User[] } = { channels: [], users: [] };
+    searchResults: { channels: Channel[], users: User[], messages: Message[] } = { channels: [], users: [], messages: [] };
     selectedUser: User = new User();
     userProfileView: User = new User();
     showProfil = false;
@@ -75,7 +78,9 @@ export class MainscreenComponent implements OnInit {
         private searchService: SearchService,
         private userservice: UserService,
         private channelDataService: ChannelDataService,
-        public dialog: MatDialog) {
+        public dialog: MatDialog,
+        private channelservice: ChannelService,
+        private sanitizer: DomSanitizer) {
             this.userID = this.route.snapshot.paramMap.get('id');
             this.userList = this.getUserfromFirebase();       
     }
@@ -330,21 +335,69 @@ export class MainscreenComponent implements OnInit {
         this.isInputFilled = this.searchInput !== '';
       } */
 
-      search(): void {
-        if (this.searchInput.startsWith('#')) {
-            this.searchResults.channels = this.searchService.channels;
-            this.searchResults.users = []; 
-        } else if (this.searchInput.startsWith('@')) {
-            this.searchResults.users = this.searchService.users;
-            this.searchResults.channels = []; 
-        } else {
-            const [matchingChannels, matchingUsers] = this.searchService.search(this.searchInput);
-            this.searchResults.channels = matchingChannels;
-            this.searchResults.users = matchingUsers;
-        }
+
+
+
+
     
-        this.isInputFilled = this.searchInput !== '';
+
+    async search(): Promise<void> {
+        let allMessages = await this.channelservice.getAllMessages();
+        let trimmedInput = this.searchInput.trim();
+        let allUsers = await this.userservice.getAllUsers();
+      
+        this.searchResults.channels = [];
+        this.searchResults.users = [];
+        this.searchResults.messages = [];
+      
+        if (!trimmedInput) {
+          this.isInputFilled = false;
+          return;
+        }
+      
+        if (trimmedInput.startsWith('@')) {
+          this.filterUsers(trimmedInput, allUsers);
+        } else if (trimmedInput.startsWith('#')) {
+          this.filterChannels(trimmedInput);
+        } else if (/^[a-zA-Z]+$/.test(trimmedInput) && trimmedInput.length >= 2) {
+          this.filterMessages(trimmedInput, allMessages, allUsers);
+        }
+      
+        this.isInputFilled = true;
     }
+      
+    private async filterUsers(query: string, allUsers: any[]): Promise<void> {
+        this.searchResults.users = allUsers.filter(user =>
+            user && user.firstname && user.lastname &&
+            (user.firstname.toLowerCase().includes(query.slice(1).toLowerCase()) ||
+            user.lastname.toLowerCase().includes(query.slice(1).toLowerCase()))
+        );
+    }
+      
+    private async filterChannels(query: string): Promise<void> {
+        let allChannels = await this.channelservice.getAllChannels();
+        this.searchResults.channels = allChannels.filter(channel =>
+            channel && channel.channelname && channel.channelname.toLowerCase().includes(query.slice(1).toLowerCase())
+        );
+    }
+      
+    private filterMessages(query: string, allMessages: any[], allUsers: any[]): void {
+        let matchingMessages = allMessages.filter(message =>
+            message && message.messagetext && message.messagetext.toLowerCase().includes(query.toLowerCase())
+        );
+        
+        this.searchResults.messages = matchingMessages.map(message => {
+            let highlightedText = message.messagetext.replace(new RegExp(`(${query})`, 'gi'), (match: string) => `<span style="background-color: lightgrey">${match}</span>`);
+            let user = this.userservice.getUserById(allUsers, message.messageUserID);
+        
+            return { ...message, highlightedText: this.sanitizer.bypassSecurityTrustHtml(highlightedText), user };
+        });
+    }
+      
+
+    
+    
+    
 
     searchfieldShowUser(user: User): void {
         const dialogRef = this.dialog.open(UserProfileCardComponent, {
@@ -352,17 +405,23 @@ export class MainscreenComponent implements OnInit {
         });
 
         this.searchInput = '';
-        this.isInputFilled = false;
+        this.closeSearch();
 
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.chatOpen) {
-                this.chatOpen = true;
+                this.chatOpen = result.chatOpen;
             }
 
             if (result && result.channelOpen !== undefined) {
                 this.channelOpen = result.channelOpen;
             }
         });
+    }
+
+    searchfieldShowMessage(message: any) {}
+
+    closeSearch() {
+        this.isInputFilled = false;
     }
 
     
@@ -378,7 +437,7 @@ export class MainscreenComponent implements OnInit {
       searchfieldShowChannel(channel: Channel) {
         this.openChannel(channel.channelID);
         this.searchInput = '';
-        this.isInputFilled = false;
+        this.closeSearch();
       } 
 
     /*   showUserProfileView(user: User): void {

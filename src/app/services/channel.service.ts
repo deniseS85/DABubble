@@ -23,6 +23,7 @@ export class ChannelService {
   /* activeChannelID: string = '4w03K0592Ephea3D9fsK'; */
   activeMessageID: string = '';
   allAnswers: any[] = [];
+  allMessages: any[] = [];
 
 
   /**
@@ -104,6 +105,23 @@ export class ChannelService {
     });
     return channels;
   }
+
+  async getAllMessages(): Promise<any[]> {
+    const channels = await this.getAllChannels();
+    const allMessages: any[] = [];
+  
+    for (const channel of channels) {
+      const messagesRef = this.getMessageRef(channel.channelID);
+      const querySnapshot = await getDocs(messagesRef);
+  
+      querySnapshot.forEach((doc) => {
+        allMessages.push(doc.data());
+      });
+    }
+  
+    return allMessages;
+  }
+
 
   async addNewChannel(newChannel: {}) {
     await addDoc(this.getChannelRef(), newChannel).catch(

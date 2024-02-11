@@ -1,9 +1,14 @@
 export interface Message {
 
-    senderID: string;
-    senderNamen: string;
-    sendTime: Date;
-    messageText: string;
+    messageUserID: string;
+    date: Date;
+    messagetext: string;
     messageID: string;
+    highlightedText?: string;
+    user?: {
+        firstname: string;
+        lastname: string;
+        profileImg: string;
+      };
 
 }

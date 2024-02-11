@@ -494,6 +494,7 @@
         .searchfield-container {
             .profile-img-search {
                 width: 30px;
+                min-width: 30px;
                 height: 30px;
                 border-radius: 100%;
                 object-fit: cover;
@@ -627,13 +628,29 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        span {
-            font-size: 18px;
+        font-size: 18px;
+        /* span {
+            font-size: 18px; 
+        } */
+        .highlighted {
+            background-color: yellow !important;
+            font-weight: bold;
         }
 
         &:hover {
             cursor: pointer;
             background-color: #ECEEFE;
+        }
+    }
+    .message-container {
+        align-items: flex-start;
+        
+        .message-content {
+            font-size: 16px !important;
+            .message-info {
+                font-size: 14px !important;
+                font-weight: bold;
+            }
         }
     }
 }

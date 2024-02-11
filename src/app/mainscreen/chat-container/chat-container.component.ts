@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ChannelService } from '../../services/channel.service';
-import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, deleteDoc, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { User } from '../../models/user.class';
 import { getDownloadURL, ref, uploadBytes, Storage } from '@angular/fire/storage';
@@ -38,7 +38,7 @@ export class ChatContainerComponent {
   isOnline: boolean = false;
   selfChat: boolean = false;
   chatAllreadyStarted: boolean = false;
-  editMessage: boolean = false;
+  editMessages: boolean[] = [];
   editedMessage: string = '';
 
   messagesLoaded: boolean = false;
@@ -139,7 +139,8 @@ export class ChatContainerComponent {
 
       this.allMessages = [];
       querySnapshot.forEach(async (message) => {
-
+        // let messageData = ({...message.data(), editMessage: false})
+        
         userIDofThisMessage = message.data()['messageUserID'];        
         const userDatas = await getDoc(doc(this.firestore, 'users', userIDofThisMessage));
         
@@ -170,7 +171,7 @@ export class ChatContainerComponent {
 
         this.sortMessagesByTimeStamp();
       })
-      
+      this.editMessages.push(false)
     });
     
   }
@@ -213,22 +214,33 @@ export class ChatContainerComponent {
     this.allMessages[index].isEmojiBelowAnswerOpen = false;
   }
 
-  async editAnswer(id: string) {
+  async editAnswer(id: string, index: number) {
     const docRef = doc(collection(this.firestore, 'chats', this.chatID, 'messages'), id )
     const docSnap = await getDoc(docRef);
     this.message = docSnap.data();
     this.editedMessage = this.message.messagetext;
-    await updateDoc(docRef, {editMessage: true})
+    this.editMessages.splice(index, 1, true)
   }
 
-  async cancelEdit(id: string){
-    const docRef = doc(collection(this.firestore, 'chats', this.chatID, 'messages'), id );
-    await updateDoc(docRef, {editMessage: false})
+  async cancelEdit(index: number){
+    this.editMessages.splice(index, 1, false)
   }
 
-  async saveEditedMessage(id: string){
+
+  addEmojiToEditMessage(event: any) {
+    this.editedMessage += event.emoji.native;
+  }
+
+
+  async saveEditedMessage(id: string,index: number){
     const docRef = doc(collection(this.firestore, 'chats', this.chatID, 'messages'), id );
-    await updateDoc(docRef, {editMessage: false, messagetext: this.editedMessage})
+
+    if(this.editedMessage != ''){
+      await updateDoc(docRef, {messagetext: this.editedMessage})
+    } else{
+      await deleteDoc(docRef)
+    }
+    this.editMessages.splice(index, 1, false)
   }
   
 

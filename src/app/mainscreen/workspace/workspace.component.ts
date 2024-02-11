@@ -270,6 +270,11 @@ export class WorkspaceComponent implements OnInit {
     this.main.chatOpen = false;
     this.main.channelOpen = false;
     this.main.threadOpen = false;
+
+    if(!this.main.allChatSectionsOpen) {
+      this.main.workspaceOpen = false;
+    }
+
     setTimeout(() => {
       this.main.chatOpen = true;
     }, 50);
@@ -485,6 +490,10 @@ export class WorkspaceComponent implements OnInit {
     this.main.threadOpen = false;
     this.main.chatOpen = false;
     this.channelDataService.channelID = channelID;
+
+    if(!this.main.allChatSectionsOpen) {
+      this.main.workspaceOpen = false;
+    }
 
     setTimeout(() => {
       this.main.channelOpen = true;

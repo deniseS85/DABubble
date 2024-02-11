@@ -9,6 +9,7 @@ import { ChatService } from '../../services/chat.service';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { getDocs } from 'firebase/firestore';
+import { ReactionsService } from '../../services/reactions.service';
 
 @Component({
   selector: 'app-chat-container',
@@ -23,22 +24,13 @@ export class ChatContainerComponent {
   unsubUser: Unsubscribe | undefined;
   messagetext: string = '';
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+  @ViewChild('answerContainer') answerContainer!: ElementRef;
 
   isShowFileUpload: boolean = false;
   isShowEmojiFooter: boolean = false;
   userID: any;
   chatID: string = '';
   userData: any;
-
-  userTestdata: any = {
-    email: "potter@potter.de",
-    firstname: "Harry",
-    id: "",
-    lastname: "Potter",
-    profileImg: "avatar4.png"
-  }
-
-  userTestID: string = 'sRhaclnKUT1LqIQrCTTF'
 
   chatPartnerName: string = '';
   chatPartnerImg: string = '';
@@ -59,6 +51,7 @@ export class ChatContainerComponent {
     private storage: Storage,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
+    private reactionService: ReactionsService,
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.setBooleanForSelfChat();
@@ -188,12 +181,33 @@ export class ChatContainerComponent {
   }
 
 
-  toggleEmoji(id: string) {
-
+  toggleEmoji(event: Event, index: number) {
+    const emojiContainer = event.target as HTMLElement;
+    const { top, bottom } = emojiContainer.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const spaceBelow = viewportHeight - bottom;
+    
+    this.allMessages.forEach((answer, index) => {
+      if (index === index) {
+        answer.isEmojiOpen = !answer.isEmojiOpen;
+      } 
+    });
+    if (spaceBelow < 600) {
+      setTimeout(() => {
+        this.answerContainer.nativeElement.scrollTop = this.answerContainer.nativeElement.scrollHeight;
+      }, 100);
+    }
   }
 
-  handleReaction($event: any, message: any) {
+  handleReaction(event: any, message: any) {
 
+    const typ = 'chatReaction';
+    this.reactionService.handleReaction(this.chatID, message.messageID, '', '', '', event, message, '', typ)
+  }
+
+  closeEmojiContainers(index: number): void {
+    this.allMessages[index].isEmojiOpen = false;
+    this.allMessages[index].isEmojiBelowAnswerOpen = false;
   }
 
   editAnswer(id: string) {

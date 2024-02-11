@@ -155,16 +155,16 @@
             >
         </app-workspace>
         <app-chat-container 
-            *ngIf="chatOpen"
+            *ngIf="chatOpen && allChatSectionsOpen || chatOpen && !workspaceOpen"
             >
         </app-chat-container>
         <app-channel-chat 
-            *ngIf="channelOpen" 
+            *ngIf="channelOpen && allChatSectionsOpen || channelOpen && !workspaceOpen" 
             [userProfileView]="userProfileView"
             >
         </app-channel-chat>
         <app-thread
-            *ngIf="threadOpen"
+            *ngIf="threadOpen && allChatSectionsOpen || threadOpen && !workspaceOpen"
             [@leftRightAnimation] 
             >
         </app-thread>

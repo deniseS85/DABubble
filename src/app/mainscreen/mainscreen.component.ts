@@ -43,6 +43,7 @@ export class MainscreenComponent implements OnInit {
     channelOpen: boolean = true;
     threadOpen: boolean = false;
     chatOpen: boolean = false;
+    allChatSectionsOpen: boolean =  true;
     userFirstName: String = '';
     userLastName: String = '';
     userFullName: String = '';
@@ -109,6 +110,11 @@ export class MainscreenComponent implements OnInit {
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
         this.screenWidth = window.innerWidth;
+        if(this.screenWidth < 750) {
+            this.allChatSectionsOpen = false;
+        } else {
+            this.allChatSectionsOpen = true;
+        }
     }
 
 

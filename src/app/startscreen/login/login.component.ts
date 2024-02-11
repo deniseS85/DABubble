@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { collection, getDocs, query, where, Firestore } from '@angular/fire/firestore';
 import { UserService } from '../../services/user.service';
 import { SearchService } from '../../services/search-service.service';
+import { ChannelService } from '../../services/channel.service';
 
 
 interface UserData {
@@ -35,7 +36,7 @@ export class LoginComponent {
     isWrongPassword: boolean = false;
     isSubmitted: boolean = false;
     
-    constructor(private formBuilder: FormBuilder, private authService: AuthService, private userservice: UserService, private router: Router, private searchservice: SearchService) { 
+    constructor(private formBuilder: FormBuilder, private authService: AuthService, private userservice: UserService, private router: Router, private searchservice: SearchService, private channelService: ChannelService) { 
         this.setLoginForm();
     }
 

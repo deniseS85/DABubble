@@ -485,7 +485,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
 
-
   /**
    * push new Member datas to the userArray and update
    * @param newUser new member

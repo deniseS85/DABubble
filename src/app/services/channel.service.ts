@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { addDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 
@@ -152,20 +152,20 @@ export class ChannelService {
     return doc(collection(this.firestore, 'channels'), docId);
   }
 
-  /* async getCreatorsName() {
-    this.userservice.restoreUserData();
-
-    if (this.authService.isUserAnonymous()) {
-      return 'Gast';
-
-    } else {
-      const userFirstName = this.userservice.getUserFirstName();
-      const userLastName = this.userservice.getUserLastName();
-      const channelCreator = userFirstName + ' ' + userLastName;
-
-      return channelCreator
+  async getChannelById(channelId: string): Promise<any | null> {
+    try {
+        const channelDoc = await getDoc(this.getSingleChannel(channelId));
+        if (channelDoc.exists()) {
+            return channelDoc.data();
+        } else {
+            console.error(`Channel with ID ${channelId} not found.`);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error getting channel by ID', error);
+        return null;
     }
-  }   */
+}
 }
 
 

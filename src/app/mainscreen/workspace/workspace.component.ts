@@ -71,6 +71,7 @@ export class WorkspaceComponent implements OnInit {
   unsubUser: Unsubscribe | undefined;
   channels: any[] = [];
   chats: any[] = [];
+  selectedChannelId: string | null = null;
 
   constructor(
     private main: MainscreenComponent,
@@ -210,34 +211,43 @@ export class WorkspaceComponent implements OnInit {
   /**
    * Retrieve and update the channel list and load only channels in which currentUser is member
    */
-  /* async loadChannels() {
-    const queryAllChannels = query(this.channelService.collectionRef);    
-
+  async loadChannels() {
+    const queryAllChannels = query(this.channelService.collectionRef);
+  
     onSnapshot(queryAllChannels, (querySnapshot) => {
       this.channels = [];
       querySnapshot.forEach((doc: any) => {
-        doc.data().channelUsers.forEach((user:any) => {
-          if(user.id === this.userID){
-            this.channels.push(doc.data());
-          } else { return }
-        })        
+        const channelData = doc.data();
+        const channelUsers = channelData.channelUsers;
+        const isUserMember = channelUsers.includes(this.userID);
+    
+        this.channels.push({ ...channelData, isUserMember });
       });
-    });
-  } */
-
-  async loadChannels() {
-    const queryAllChannels = await query(this.channelService.collectionRef);
-
-    const unsub = onSnapshot(queryAllChannels, (querySnapshot) => {
-      this.channels = [];
-      querySnapshot.forEach((doc: any) => {
-        this.channels.push(doc.data());
-      });
-      
-      this.openChannel(this.channels[0].channelID);
-      this.channelDataService.changeSelectedChannel(this.channels[0].channelname, this.channels[0].channelCreator, this.channels[0].description )
+  
+      if (!this.selectedChannelId && this.channels.length > 0) {
+        this.selectedChannelId = this.channels[0].channelID;
+        this.openAndChangeChannel();
+      }
     });
   }
+
+  private openAndChangeChannel(): void {
+    if (this.selectedChannelId) {
+      this.openChannel(this.selectedChannelId);
+      const selectedElement = this.elRef.nativeElement.querySelector(`.selectable[data-channel-id="${this.selectedChannelId}"]`);
+      if (selectedElement) {
+        selectedElement.classList.add('selected');
+      }
+  
+      this.channelDataService.changeSelectedChannel(
+        this.channels.find(channel => channel.channelID === this.selectedChannelId)?.channelname || '',
+        this.channels.find(channel => channel.channelID === this.selectedChannelId)?.channelCreator || '',
+        this.channels.find(channel => channel.channelID === this.selectedChannelId)?.description || ''
+      );
+    }
+  }
+  
+  
 
   /**
    * Handles the click event on selectable elements. Removes the class "selected" 

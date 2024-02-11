@@ -165,7 +165,8 @@
         </app-channel-chat>
         <app-thread
             *ngIf="threadOpen && allChatSectionsOpen || threadOpen && !workspaceOpen"
-            [@leftRightAnimation] 
+            [@leftRightAnimation]
+            [ngClass]="{'biggerContainer': editThread}"
             >
         </app-thread>
     </div>

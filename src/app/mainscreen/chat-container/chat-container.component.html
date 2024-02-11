@@ -47,15 +47,16 @@
                 <p class="active-point" *ngIf="message.isOnline"></p>
             </div>
             <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : message.activeUser}">
-                
+
+                <!-- edit MessageContainer -->
                 <div class="editMessageContainer" *ngIf="editMessages[messageindex]" >
                     <textarea class="editMessageContainerMessage" [(ngModel)]="editedMessage" (keyup.enter)="saveEditedMessage(message.messageID, messageindex)"></textarea>
                     <div class="editMessageContainerReactAndSend">
-                        <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
-                            <div class="emoji-footer-selection" *ngIf="isShowEmojiFooter">
-                              <app-emoji-picker (emojiSelect)="addEmojiToEditMessage($event); toggleEmojiFooter()"></app-emoji-picker>
+                        <div class="emoji-footer-container" (mouseleave)="closeEmojiFooterEdit()">
+                            <div class="emoji-footer-selection" *ngIf="isShowEmojiFooterEdit">
+                              <app-emoji-picker (emojiSelect)="addEmojiToEditMessage($event)"></app-emoji-picker>
                             </div>
-                            <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
+                            <mat-icon (click)="toggleEmojiFooterEdit()">mood</mat-icon>
                         </div>
                         <div class="editMessageContainerReactAndSendBtns">
                             <div class="editMessageBtn" (click)="cancelEdit(messageindex)">Abbrechen</div>
@@ -63,7 +64,8 @@
                         </div>
                     </div>
                 </div>
-
+                
+                <!-- reaction Container -->
                 <div class="reactionContainer" [ngClass]="{'absoluteLeft' : message.activeUser, 'd-hidden': editMessages[messageindex]}" >
                     <div class="reactionMenu">
                         <div class="emoji-container">
@@ -76,7 +78,7 @@
                         <div class="editMessage" *ngIf="message.activeUser">
                             <mat-icon>more_vert</mat-icon>
                             <div class="editMessageBtn">
-                                <span (click)="editAnswer(message.messageID, messageindex)">Nachricht bearbeiten</span>
+                                <span (click)="editMessage(message.messageID, messageindex)">Nachricht bearbeiten</span>
                             </div>
                         </div>
                     </div>

@@ -29,6 +29,7 @@ export class ChatContainerComponent {
 
   isShowFileUpload: boolean = false;
   isShowEmojiFooter: boolean = false;
+  isShowEmojiFooterEdit: boolean = false;
   userID: any;
   chatID: string = '';
   userData: any;
@@ -214,7 +215,13 @@ export class ChatContainerComponent {
     this.allMessages[index].isEmojiBelowAnswerOpen = false;
   }
 
-  async editAnswer(id: string, index: number) {
+  /**
+   * Edit Message
+   * @param id 
+   * @param index 
+   */
+
+  async editMessage(id: string, index: number) {
     const docRef = doc(collection(this.firestore, 'chats', this.chatID, 'messages'), id )
     const docSnap = await getDoc(docRef);
     this.message = docSnap.data();
@@ -227,21 +234,40 @@ export class ChatContainerComponent {
   }
 
 
+  closeEmojiFooterEdit() {
+    this.isShowEmojiFooterEdit = false;
+  }
+
+  toggleEmojiFooterEdit() {
+    this.isShowEmojiFooterEdit = !this.isShowEmojiFooterEdit;
+  }
+
+
+  /**
+   * 
+   * @param event 
+   */
   addEmojiToEditMessage(event: any) {
     this.editedMessage += event.emoji.native;
   }
 
 
+  /**
+   * save new Messagetext or delete if String is empty 
+   * @param id 
+   * @param index 
+   */
   async saveEditedMessage(id: string,index: number){
     const docRef = doc(collection(this.firestore, 'chats', this.chatID, 'messages'), id );
-
-    if(this.editedMessage != ''){
-      await updateDoc(docRef, {messagetext: this.editedMessage})
+    if(this.editedMessage.length <= 1){
+      await deleteDoc(docRef)      
     } else{
-      await deleteDoc(docRef)
+      await updateDoc(docRef, {messagetext: this.editedMessage})
     }
     this.editMessages.splice(index, 1, false)
   }
+
+
   
 
 

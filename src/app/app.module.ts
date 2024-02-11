@@ -41,7 +41,6 @@ import localeDe from '@angular/common/locales/de';
 import { ThreadsSendMessageComponent } from './mainscreen/thread/threads-send-message/threads-send-message.component';
 import { ThreadsHeaderComponent } from './mainscreen/thread/threads-header/threads-header.component';
 import { ThreadQuestionComponent } from './mainscreen/thread/thread-question/thread-question.component';
-import { ThreadAnswerComponent } from './mainscreen/thread/thread-answer/thread-answer.component';
 import { ChatContainerComponent } from './mainscreen/chat-container/chat-container.component';
 import { EditChannelChatComponent } from './mainscreen/channel-chat/edit-channel-chat/edit-channel-chat.component';
 import { UserProfileCardComponent } from './mainscreen/user-profile-card/user-profile-card.component';
@@ -68,7 +67,6 @@ registerLocaleData(localeDe, 'de');
     ThreadsSendMessageComponent,
     ThreadsHeaderComponent,
     ThreadQuestionComponent,
-    ThreadAnswerComponent,
     ChatContainerComponent,
     EditChannelChatComponent,
     UserProfileCardComponent,

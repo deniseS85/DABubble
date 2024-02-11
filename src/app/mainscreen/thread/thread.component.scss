@@ -6,10 +6,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
-        
-
-
+    
         .threadContainerQuestion{
             width: calc(100% - 80px);
             padding: 10px 40px 10px 40px;
@@ -104,6 +101,66 @@
                         justify-content: flex-start;
                         align-items: center;
                         gap: 20px;                    
+                    }
+
+                    .editMessageContainer{
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        height: calc(100% - 40px);
+                        width: calc(100% - 40px);
+                        background-color: white;
+                        border: 1px solid #ADB0D9;
+                        border-radius: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        gap: 16px;
+                        padding: 20px;
+                        font-size: 18px;
+                        font-weight: 400;
+                        line-height: 25px;
+                        color: #686868;
+    
+                        .editMessageContainerMessage{
+                           overflow-y: auto;
+                           font-size: 18px;
+                           line-height: 24px;
+                           color: #686868; 
+                           border: unset;
+                           resize: none;
+                           outline: none; 
+                        }
+    
+                        .editMessageContainerReactAndSend{
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+    
+                            .editMessageContainerReactAndSendBtns{
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                gap: 16px;
+    
+                                .editMessageBtn{
+                                    padding: 12px 25px;
+                                    border: 1px solid #797EF3;
+                                    border-radius: 50px;
+                                    color: #444DF2;
+                                    font-size: 18px;
+                                    font-weight: 700;
+                                    line-height: 25px;
+                                    cursor: pointer;
+                                }
+    
+                                .saveBtn{
+                                    background-color: #444DF2;
+                                    color: white;
+                                }
+                            }
+                        }
+    
                     }
                 }
             }
@@ -266,6 +323,10 @@
         margin: 0;
         border: 2px solid white;
     }
+}
+
+.d-hidden{
+    visibility: hidden;
 }
 
 .answerFromRight{

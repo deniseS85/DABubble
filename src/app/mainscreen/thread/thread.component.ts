@@ -1,10 +1,9 @@
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, Input, ViewChild, inject } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
-import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, deleteDoc, doc, getDoc, onSnapshot, query, updateDoc } from '@angular/fire/firestore';
 import { ChannelService } from '../../services/channel.service';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog} from '@angular/material/dialog';
-import { EditAnswerComponent } from './edit-answer/edit-answer.component';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { ReactionsService } from '../../services/reactions.service';
 import { ActivatedRoute } from '@angular/router';
@@ -26,8 +25,9 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
   activeChannelName: any = '';
 
   answer: any;
- /*  answertext: string = ''; */
- /*  isAnswertextEmojiOpen = false; */
+  editAnswers: boolean[] = [];
+  editedAnswer: string = '';
+  isShowEmojiFooterEdit: boolean = false;
   allAnswers: any[] = [];
   userFullName: string = '';
   userIsOnline: boolean = false;
@@ -238,6 +238,8 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
         }
         this.sortMessagesByTimeStamp();
       }
+      // boolean to open just the answer, that i want to edit
+      this.editAnswers.push(false)
   });
   this.updateMessagesWithUserData();
 
@@ -318,26 +320,54 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
   }
 
 
-  async editAnswer(id: string) {
+  async editAnswer(id: string, index: number) {
     const docRef = doc(this.getAllAnswersRef(this.channelID, this.messageID), id)
     const docSnap = await getDoc(docRef);
     this.answer = docSnap.data();
-    this.openEditAnswerDialog(id);
+    this.editedAnswer = this.answer.answertext;
+    this.editAnswers.splice(index, 1, true)
+    this.main.editThread = true;
   }
 
 
-  openEditAnswerDialog(id: string) {
-    this.dialog.open(EditAnswerComponent, {
-      data: {
-        channelid: this.channelID,
-        messageid: this.messageID,
-        answerid: id
-      },
-      position: {
-        top: '50%',
-        right: '20px'
-      },
-    });
+  async cancelEdit(index: number){
+    this.editAnswers.splice(index, 1, false)
+    this.main.editThread = false;
+  }
+
+
+  closeEmojiFooterEdit() {
+    this.isShowEmojiFooterEdit = false;
+  }
+
+  toggleEmojiFooterEdit() {
+    this.isShowEmojiFooterEdit = !this.isShowEmojiFooterEdit;
+  }
+
+
+  /**
+   * 
+   * @param event 
+   */
+  addEmojiToEditMessage(event: any) {
+    this.editAnswers += event.emoji.native;
+  }
+
+
+  /**
+   * save new Messagetext or delete if String is empty 
+   * @param id 
+   * @param index 
+   */
+  async saveEditedMessage(id: string, index: number){
+    const docRef = doc(collection(this.firestore, 'channels', this.channelID, 'messages', this.messageID, "answers"), id );
+    if(this.editedAnswer.length <= 1){
+      await deleteDoc(docRef)      
+    } else{
+      await updateDoc(docRef, {answertext: this.editedAnswer})
+    }
+    this.main.editThread = false;
+    this.editAnswers.splice(index, 1, false)
   }
 
 

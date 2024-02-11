@@ -67,6 +67,7 @@ export class MainscreenComponent implements OnInit {
     selectedUser: User = new User();
     userProfileView: User = new User();
     showProfil = false;
+    editThread: boolean = false;
 
 
     constructor(

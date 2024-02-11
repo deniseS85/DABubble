@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChatService } from '../../services/chat.service';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { getDocs } from 'firebase/firestore';
+import { getDocs, updateDoc } from 'firebase/firestore';
 import { ReactionsService } from '../../services/reactions.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class ChatContainerComponent {
   allUsers: any[] = [];
   allAnswers: any[] = [];
   allMessages: any[] = [];
+  message: any;
   unsubUser: Unsubscribe | undefined;
   messagetext: string = '';
   @ViewChild('chatContainer') chatContainer!: ElementRef;
@@ -37,6 +38,8 @@ export class ChatContainerComponent {
   isOnline: boolean = false;
   selfChat: boolean = false;
   chatAllreadyStarted: boolean = false;
+  editMessage: boolean = false;
+  editedMessage: string = '';
 
   messagesLoaded: boolean = false;
   unsubscribeUserData: Unsubscribe | undefined;
@@ -146,7 +149,7 @@ export class ChatContainerComponent {
             username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
             userImg: userDatas.data()!['profileImg'],
             isOnline: userDatas.data()!['isOnline'],
-            activeUser: true
+            activeUser: true,
           })
           this.allMessages.push(updatedMessage);
 
@@ -156,7 +159,7 @@ export class ChatContainerComponent {
             username: userDatas.data()!['firstname'] + ' ' + userDatas.data()!['lastname'],
             userImg: userDatas.data()!['profileImg'],
             isOnline: userDatas.data()!['isOnline'],
-            activeUser: false
+            activeUser: false,
           })
           this.allMessages.push(updatedMessage);
 
@@ -210,9 +213,24 @@ export class ChatContainerComponent {
     this.allMessages[index].isEmojiBelowAnswerOpen = false;
   }
 
-  editAnswer(id: string) {
-
+  async editAnswer(id: string) {
+    const docRef = doc(collection(this.firestore, 'chats', this.chatID, 'messages'), id )
+    const docSnap = await getDoc(docRef);
+    this.message = docSnap.data();
+    this.editedMessage = this.message.messagetext;
+    await updateDoc(docRef, {editMessage: true})
   }
+
+  async cancelEdit(id: string){
+    const docRef = doc(collection(this.firestore, 'chats', this.chatID, 'messages'), id );
+    await updateDoc(docRef, {editMessage: false})
+  }
+
+  async saveEditedMessage(id: string){
+    const docRef = doc(collection(this.firestore, 'chats', this.chatID, 'messages'), id );
+    await updateDoc(docRef, {editMessage: false, messagetext: this.editedMessage})
+  }
+  
 
 
   async sendMessage() {
@@ -230,6 +248,7 @@ export class ChatContainerComponent {
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       react: [],
       fileUpload: this.fileToUpload,
+      editMessage: false,
     }
     this.messagetext = '';
     this.isButtonDisabled = true;

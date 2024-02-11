@@ -47,8 +47,24 @@
                 <p class="active-point" *ngIf="message.isOnline"></p>
             </div>
             <div class="threadContainerAnswerContainer" [ngClass]="{'flex-end' : message.activeUser}">
-    
-                <div class="reactionContainer" [ngClass]="{'absoluteLeft' : message.activeUser}">
+                
+                <div class="editMessageContainer" *ngIf="message.editMessage">
+                    <textarea class="editMessageContainerMessage" [(ngModel)]="editedMessage"></textarea>
+                    <div class="editMessageContainerReactAndSend">
+                        <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
+                            <div class="emoji-footer-selection" *ngIf="isShowEmojiFooter">
+                              <app-emoji-picker (emojiSelect)="addEmojiToMessage($event); toggleEmojiFooter()"></app-emoji-picker>
+                            </div>
+                            <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
+                        </div>
+                        <div class="editMessageContainerReactAndSendBtns">
+                            <div class="editMessageBtn" (click)="cancelEdit(message.messageID)">Abbrechen</div>
+                            <div class="editMessageBtn saveBtn" (click)="saveEditedMessage(message.messageID)">Speichern</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reactionContainer" [ngClass]="{'absoluteLeft' : message.activeUser, 'd-hidden': !message.editMessage}" >
                     <div class="reactionMenu">
                         <div class="emoji-container">
                             <img (click)="toggleEmoji($event, messageindex)" src="../../../assets/img/add_reaction.png" alt="">
@@ -60,18 +76,18 @@
                         <div class="editMessage" *ngIf="message.activeUser">
                             <mat-icon>more_vert</mat-icon>
                             <div class="editMessageBtn">
-                                <span (click)="editAnswer(message.messageid)">Nachricht bearbeiten</span>
+                                <span (click)="editAnswer(message.messageID)">Nachricht bearbeiten</span>
                             </div>
                         </div>
                     </div>
                 </div>
     
                 <div class="threadContainerAnswerInfo"
-                    [ngClass]="{'threadContainerAnswerReverse' : message.activeUser}">
+                    [ngClass]="{'threadContainerAnswerReverse' : message.activeUser, 'd-hidden': !message.editMessage}" >
                     <div class="threadContainerInfoPerson">{{message.username}}</div>
                     <div class="threadContainerInfoTime">{{message.timestamp}} Uhr</div>
                 </div>
-                <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : message.activeUser}">
+                <div class="threadContainerTextLeft" [ngClass]="{'answerFromRight' : message.activeUser, 'd-hidden': !editMessage}" >
                     {{message.messagetext}}
                 </div>
                 <a *ngIf="!isPDFFile(message.fileUpload)" target="_blank" [href]="message.fileUpload">

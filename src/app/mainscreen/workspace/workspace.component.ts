@@ -275,7 +275,7 @@ export class WorkspaceComponent implements OnInit {
     setTimeout(() => {
       this.main.chatOpen = true;
     }, 50);
-    }
+  }
 
     setChatUserID(userID: string){
       this.chatService.userID = userID;

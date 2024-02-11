@@ -332,25 +332,11 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
-   /*  search(): void {
-        const [matchingChannels, matchingUsers] = this.searchService.search(this.searchInput);
-        console.log(matchingChannels)
-        this.searchResults.channels = matchingChannels;
-        console.log(this.searchResults)
-        this.searchResults.users = matchingUsers;
-        this.isInputFilled = this.searchInput !== '';
-      } */
-
-
-
-
-
-    
-
     async search(): Promise<void> {
         let allMessages = await this.channelservice.getAllMessages();
-        let trimmedInput = this.searchInput.trim();
+        let allChannels = await this.channelservice.getAllChannels();
         let allUsers = await this.userservice.getAllUsers();
+        let trimmedInput = this.searchInput.trim();
       
         this.searchResults.channels = [];
         this.searchResults.users = [];
@@ -364,11 +350,10 @@ export class MainscreenComponent implements OnInit {
         if (trimmedInput.startsWith('@')) {
           this.filterUsers(trimmedInput, allUsers);
         } else if (trimmedInput.startsWith('#')) {
-          this.filterChannels(trimmedInput);
+          this.filterChannels(trimmedInput, allChannels);
         } else if (/^[a-zA-Z]+$/.test(trimmedInput) && trimmedInput.length >= 2) {
           this.filterMessages(trimmedInput, allMessages, allUsers);
         }
-      
         this.isInputFilled = true;
     }
       
@@ -380,8 +365,7 @@ export class MainscreenComponent implements OnInit {
         );
     }
       
-    private async filterChannels(query: string): Promise<void> {
-        let allChannels = await this.channelservice.getAllChannels();
+    private async filterChannels(query: string, allChannels: any[]): Promise<void> {
         this.searchResults.channels = allChannels.filter(channel =>
             channel && channel.channelname && channel.channelname.toLowerCase().includes(query.slice(1).toLowerCase())
         );
@@ -391,7 +375,6 @@ export class MainscreenComponent implements OnInit {
         let matchingMessages = allMessages.filter(message =>
             message && message.messagetext && message.messagetext.toLowerCase().includes(query.toLowerCase())
         );
-        
         this.searchResults.messages = matchingMessages.map(message => {
             let highlightedText = message.messagetext.replace(new RegExp(`(${query})`, 'gi'), (match: string) => `<span style="background-color: lightgrey">${match}</span>`);
             let user = this.userservice.getUserById(allUsers, message.messageUserID);
@@ -403,8 +386,9 @@ export class MainscreenComponent implements OnInit {
 
     
     
-    
 
+
+    /* erster user directMessage, von chat neuer user suchen, neuer chat öffnet sich nicht */
     searchfieldShowUser(user: User): void {
         const dialogRef = this.dialog.open(UserProfileCardComponent, {
             data: { user: user, chatOpen: this.chatOpen, channelOpen: this.channelOpen }
@@ -416,6 +400,9 @@ export class MainscreenComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.chatOpen) {
                 this.chatOpen = result.chatOpen;
+                setTimeout(() => {
+                    this.chatOpen = true;
+                  }, 50);
             }
 
             if (result && result.channelOpen !== undefined) {
@@ -424,11 +411,12 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
+
+     
+
     searchfieldShowMessage(message: any) {}
 
-    closeSearch() {
-        this.isInputFilled = false;
-    }
+    
 
     
     
@@ -460,6 +448,9 @@ export class MainscreenComponent implements OnInit {
         }, 0.02);
       }
 
+    closeSearch() {
+        this.isInputFilled = false;
+    }
 
    /**
    * Show/hide the workspace container with the button on the left side

@@ -243,7 +243,7 @@ export class WorkspaceComponent implements OnInit {
    * Handles the click event on selectable elements. Removes the class "selected" 
    * from all other elements and sets this class to clicked elements
    */
-  handleClick(event: MouseEvent, channelID: string): void {
+  handleClickChannel(event: MouseEvent, channelID: string): void {
     const target = event.target as HTMLElement;
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
@@ -251,8 +251,6 @@ export class WorkspaceComponent implements OnInit {
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
     this.renderer.addClass(selectableElement, 'selected');
-    this.main.chatOpen = false;
-    this.main.channelOpen = true;    
   }
 
 
@@ -485,11 +483,12 @@ export class WorkspaceComponent implements OnInit {
   openChannel(channelID: string) {
     this.main.channelOpen = false;
     this.main.threadOpen = false;
+    this.main.chatOpen = false;
     this.channelDataService.channelID = channelID;
 
     setTimeout(() => {
       this.main.channelOpen = true;
-    }, 0.02);
+    }, 50);
   }
 
   /**

@@ -9,6 +9,7 @@ import { MainscreenComponent } from '../mainscreen.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChatService } from '../../services/chat.service';
 import { SearchService } from '../../services/search-service.service';
+import { Channel } from '../../models/channel.interface';
 
 @Component({
   selector: 'app-workspace',
@@ -232,6 +233,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   private openAndChangeChannel(): void {
+    
     if (this.selectedChannelId) {
       this.openChannel(this.selectedChannelId);
       const selectedElement = this.elRef.nativeElement.querySelector(`.selectable[data-channel-id="${this.selectedChannelId}"]`);
@@ -247,20 +249,29 @@ export class WorkspaceComponent implements OnInit {
     }
   }
   
-  
 
   /**
    * Handles the click event on selectable elements. Removes the class "selected" 
    * from all other elements and sets this class to clicked elements
    */
-  handleClickChannel(event: MouseEvent, channelID: string): void {
+  handleClickChannel(event: MouseEvent, channel: Channel): void {
     const target = event.target as HTMLElement;
+    const isUserMember = this.channels.find(ch => ch.channelID === channel.channelID)?.isUserMember;
+    console.log(isUserMember)
+
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
     this.elRef.nativeElement
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
     this.renderer.addClass(selectableElement, 'selected');
+  
+  }
+  
+  
+  private openAlternativeWindow(channel: Channel): void {
+   
+    console.log(`User is not a member of the channel: ${channel.channelname}`);
   }
 
 

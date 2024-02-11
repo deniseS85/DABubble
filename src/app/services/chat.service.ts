@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -92,6 +92,18 @@ buildNewChat(user: any, userData: any){
   const chatUsers = newChat;
   this.createNewChat(chatname, chatUsers)
   console.warn("new Chat createt", chatname)
+}
+
+async loadChat(chatID: string): Promise<any> {
+    const chatDocRef = doc(this.firestore, 'chats', chatID);
+    const chatDocSnapshot = await getDoc(chatDocRef);
+
+    if (chatDocSnapshot.exists()) {
+      return chatDocSnapshot.data();
+    } else {
+      console.error(`Chat mit ID ${chatID} nicht gefunden.`);
+      return null;
+    }
 }
 
 }

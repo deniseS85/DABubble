@@ -6,7 +6,6 @@ import { Firestore, Unsubscribe, doc, getDoc, updateDoc } from '@angular/fire/fi
 import { collection, onSnapshot } from 'firebase/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SearchService } from '../services/search-service.service';
 import { Channel } from '../models/channel.class';
 import { UserService } from '../services/user.service';
 import { ChannelDataService } from '../services/channel-data.service';
@@ -76,7 +75,6 @@ export class MainscreenComponent implements OnInit {
         private route: ActivatedRoute, 
         private storage: Storage, 
         private snackBar: MatSnackBar,
-        private searchService: SearchService,
         private userservice: UserService,
         private channelDataService: ChannelDataService,
         public dialog: MatDialog,
@@ -400,9 +398,6 @@ export class MainscreenComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.chatOpen) {
                 this.chatOpen = result.chatOpen;
-                setTimeout(() => {
-                    this.chatOpen = true;
-                  }, 50);
             }
 
             if (result && result.channelOpen !== undefined) {

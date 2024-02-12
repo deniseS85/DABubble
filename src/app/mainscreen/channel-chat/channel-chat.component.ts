@@ -511,7 +511,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         channelUsersUpdated.push(user);
       })
 
-      await this.updateChannelUsers(channelUsersUpdated)
+      await this.updateChannelUsers(channelUsersUpdated);
+      this.userservice.setIsUserMember(true);
+
     }
   }
 
@@ -522,6 +524,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const newUsers = [...this.channelDataService.channelUsers];
       newUsers.splice(currentUserIndex, 1);
       this.updateChannelUsers(newUsers);
+      this.userservice.setIsUserMember(false);
     }
   }
   
@@ -529,6 +532,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.updateChannel(this.channelDataService.channelID, {
       channelUsers: newUsers
     });
+    
   }
  
 

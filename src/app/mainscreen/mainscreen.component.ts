@@ -46,6 +46,7 @@ export class MainscreenComponent implements OnInit {
     threadOpen: boolean = false;
     chatOpen: boolean = false;
     allChatSectionsOpen: boolean = true;
+    isMobileScreen: boolean = false;
     userFirstName: String = '';
     userLastName: String = '';
     userFullName: String = '';
@@ -93,6 +94,7 @@ export class MainscreenComponent implements OnInit {
         if (this.userID) {
             this.checkIsGuestLogin();
             this.subscribeToUserChanges();
+            this.checkMobileScreen();
         }
     }
 
@@ -109,14 +111,24 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
+    checkMobileScreen() {
+            if(window.innerWidth < 750) {
+                this.isMobileScreen = true;
+                this.allChatSectionsOpen = false;
+            } else {
+                this.isMobileScreen = false;
+                this.allChatSectionsOpen = true;
+            }
+    }
+
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
         this.screenWidth = window.innerWidth;
-        if (this.screenWidth < 750) {
-            this.allChatSectionsOpen = false;
+        if(window.innerWidth < 750) {
+            this.isMobileScreen = true;
         } else {
-            this.allChatSectionsOpen = true;
+            this.isMobileScreen = false;
         }
     }
 
@@ -462,6 +474,7 @@ export class MainscreenComponent implements OnInit {
     }
 
     openWorkspaceMobile() {
+        this.allChatSectionsOpen = false;
         this.workspaceOpen = true;
     }
 

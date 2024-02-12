@@ -515,13 +515,13 @@ export class WorkspaceComponent implements OnInit {
     if (channel) {
         const currentIsUserMember = this.userservice.getIsUserMember();
         const isUserMember = channel.isUserMember || false;
+        console.log(isUserMember)
 
         if (isUserMember !== currentIsUserMember) {
             this.userservice.setIsUserMember(isUserMember);
-            console.log(`isUserMember: ${isUserMember} in ${channelID}` );
+          /*   console.log(`isUserMember: ${isUserMember} in ${channelID}` ); */
         }
 
-        // Führe Aktionen aus, wenn sich der Status geändert hat
         if (isUserMember) {
             this.main.channelOpen = false;
             this.main.threadOpen = false;
@@ -538,7 +538,7 @@ export class WorkspaceComponent implements OnInit {
             }, 50);
         }
     }
-}
+  }
 
   /**
    * lädt nur die Personen mit denen ich chatte

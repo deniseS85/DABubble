@@ -78,6 +78,7 @@ export class UserService {
 
     setIsUserMember(status: boolean): void {
         this.isUserMemberSubject.next(status);
+        console.log(status)
     }
     
     getIsUserMember(): BehaviorSubject<boolean | undefined> {

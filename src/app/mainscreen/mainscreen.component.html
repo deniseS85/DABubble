@@ -1,11 +1,11 @@
 <div class="mainContainer">
     <div class="mainContainerHeader" (click)="closeSearch()">
-        <div class="mainContainerHeaderLogo" *ngIf="!allChatSectionsOpen || screenWidth > 750">
+        <div class="mainContainerHeaderLogo" *ngIf="!allChatSectionsOpen || isMobileScreen">
             <img src="./assets/img/logo.png" alt="">
             <span>DABubble</span>
         </div>
 
-        <div (click)="openWorkspaceMobile()" class="server-container" *ngIf="allChatSectionsOpen && screenWidth < 750">
+        <div (click)="openWorkspaceMobile()" class="server-container" *ngIf="allChatSectionsOpen && isMobileScreen">
             <div>
                 <mat-icon>chevron_left</mat-icon>
             </div>
@@ -165,16 +165,16 @@
             >
         </app-workspace>
         <app-chat-container 
-            *ngIf="chatOpen && allChatSectionsOpen || chatOpen && !workspaceOpen"
+            *ngIf="(chatOpen && allChatSectionsOpen) || (chatOpen && !workspaceOpen)"
             >
         </app-chat-container>
         <app-channel-chat 
-            *ngIf="channelOpen && allChatSectionsOpen || channelOpen && !workspaceOpen" 
+            *ngIf="(channelOpen && allChatSectionsOpen) || (channelOpen && !workspaceOpen)" 
             [userProfileView]="userProfileView"
             >
         </app-channel-chat>
         <app-thread
-            *ngIf="threadOpen && allChatSectionsOpen || threadOpen && !workspaceOpen"
+            *ngIf="(threadOpen && allChatSectionsOpen) || (threadOpen && !workspaceOpen)"
             [@leftRightAnimation]
             [ngClass]="{'biggerContainer': editThread}"
             >

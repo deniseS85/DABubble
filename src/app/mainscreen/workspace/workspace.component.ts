@@ -11,6 +11,7 @@ import { ChatService } from '../../services/chat.service';
 import { SearchService } from '../../services/search-service.service';
 import { Channel } from '../../models/channel.interface';
 import { UserService } from '../../services/user.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-workspace',
@@ -223,6 +224,8 @@ export class WorkspaceComponent implements OnInit {
       this.channels = querySnapshot.docs.map((doc: any) => {
         const channelData = doc.data();
         const channelUsers = channelData.channelUsers;
+        console.log('UserID:', this.userID);
+  console.log('ChannelUsers:', channelUsers);
         const isUserMember = channelUsers.includes(this.userID);
   
         return { ...channelData, isUserMember };
@@ -511,24 +514,24 @@ export class WorkspaceComponent implements OnInit {
    */
   openChannel(channelID: string) {
     const channel = this.channels.find(ch => ch.channelID === channelID);
-
+  
     if (channel) {
-        this.userservice.getIsUserMember().subscribe(isUserMember => {
-            if (isUserMember) {
-                this.main.channelOpen = false;
-                this.main.threadOpen = false;
-                this.main.chatOpen = false;
-                this.channelDataService.channelID = channelID;
-
-                if (!this.main.allChatSectionsOpen) {
-                    this.main.workspaceOpen = false;
-                }
-
-                setTimeout(() => {
-                    this.main.channelOpen = true;
-                }, 50);
-            }
-        });
+      this.userservice.getIsUserMember().pipe(take(1)).subscribe(isUserMember => {
+        if (isUserMember) {
+          this.main.channelOpen = false;
+          this.main.threadOpen = false;
+          this.main.chatOpen = false;
+          this.channelDataService.channelID = channelID;
+  
+          if (!this.main.allChatSectionsOpen) {
+            this.main.workspaceOpen = false;
+          }
+  
+          setTimeout(() => {
+            this.main.channelOpen = true;
+          }, 50);
+        }
+      });
     }
   }
 

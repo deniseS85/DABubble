@@ -1,6 +1,6 @@
 <div class="mainContainer">
     <div class="mainContainerHeader" (click)="closeSearch()">
-        <div class="mainContainerHeaderLogo" *ngIf="(isMobileScreen && !allChatSectionsOpen) || (!isMobileScreen && !allChatSectionsOpen)">
+        <div class="mainContainerHeaderLogo" *ngIf="(isMobileScreen && !allChatSectionsOpen) || !isMobileScreen">
             <img src="./assets/img/logo.png" alt="">
             <span>DABubble</span>
         </div>

@@ -60,7 +60,7 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
-      // this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelCreator, channelInfo.channelDescription);
+      this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelCreator, channelInfo.channelDescription);
     });
   }
 

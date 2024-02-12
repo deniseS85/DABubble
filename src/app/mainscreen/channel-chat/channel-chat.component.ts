@@ -162,14 +162,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
     if (this.userID) {
       this.checkIsGuestLogin();
     }
     this.getAllUserInfo();
     if (this.channelDataService.channelID) {
-      this.loadMessagesOfThisChannel();
-      this.loadUsersOfThisChannel();
+      await this.loadMessagesOfThisChannel();
+      await this.loadUsersOfThisChannel();
     }
     this.checkIsUserMember();
   }
@@ -778,6 +778,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       for (const doc of querySnapshot.docs) {
         const messageData = doc.data();
         const userData = await this.loadUserData(messageData['messageUserID']);
+        
 
         if (userData) {
           const message = {
@@ -786,7 +787,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
             isEmojiOpen: false
           };
           this.allMessages.push(message);
-          this.loadAnswers(messageData['messageID'], doc);
+          await this.loadAnswers(messageData['messageID'], doc);
         }
         this.sortMessagesByTimeStamp();
         this.editMessages.push(false)

@@ -88,13 +88,13 @@ export class MainscreenComponent implements OnInit {
         private sanitizer: DomSanitizer) {
         this.userID = this.route.snapshot.paramMap.get('id');
         this.userList = this.getUserfromFirebase();
+        this.checkMobileScreen();
     }
 
     ngOnInit(): void {
         if (this.userID) {
             this.checkIsGuestLogin();
             this.subscribeToUserChanges();
-            this.checkMobileScreen();
         }
     }
 
@@ -125,11 +125,7 @@ export class MainscreenComponent implements OnInit {
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
         this.screenWidth = window.innerWidth;
-        if(window.innerWidth < 750) {
-            this.isMobileScreen = true;
-        } else {
-            this.isMobileScreen = false;
-        }
+        this.checkMobileScreen();
     }
 
 

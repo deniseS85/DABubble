@@ -524,7 +524,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const newUsers = [...this.channelDataService.channelUsers];
       newUsers.splice(currentUserIndex, 1);
       this.updateChannelUsers(newUsers);
-      window.location.reload();
+      this.userservice.setIsUserMember(false);
     }
   }
   

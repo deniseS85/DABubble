@@ -165,12 +165,13 @@
             >
         </app-workspace>
         <app-chat-container 
-            *ngIf="(chatOpen && allChatSectionsOpen) || (chatOpen && !workspaceOpen)"
+            *ngIf="(chatOpen && allChatSectionsOpen) || (chatOpen && !workspaceOpen)"            
             >
         </app-chat-container>
         <app-channel-chat 
             *ngIf="(channelOpen && allChatSectionsOpen) || (channelOpen && !workspaceOpen)" 
             [userProfileView]="userProfileView"
+            [ngClass]="{'d-none': threadOpen && isMobileScreen}"
             >
         </app-channel-chat>
         <app-thread

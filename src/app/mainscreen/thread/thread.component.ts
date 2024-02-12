@@ -9,7 +9,6 @@ import { ReactionsService } from '../../services/reactions.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { Subscription } from 'rxjs';
-import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-thread',
@@ -36,15 +35,11 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
 
   allUsers: User[] = [];
   userID: any;
-/*   userImg: string = ''; */
-/*   userNameComplete: string = ''; */
-
   userList;
   unsubUser: Unsubscribe | undefined;
   
-
-/*   reaction: string = ""; */
-  /* allReactions: any[] = []; */
+  isMobileScreen: boolean = false;
+  allChatSectionsOpen: boolean = true;
 
   firestore: Firestore = inject(Firestore);
   @ViewChild('answerContainer') answerContainer!: ElementRef;
@@ -65,11 +60,25 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
     this.channelID = this.channelDataService.channelID;
-    this.messageID = this.channelService.activeMessageID;
-    
-   /*  this.loadCurrentUser(); */
+    this.messageID = this.channelService.activeMessageID;   
     this.getChannelName();
+    this.checkMobileScreen();
   }
+
+
+  @HostListener('window:resize', ['$event'])
+    onResize(event: Event): void {
+        this.checkMobileScreen();
+    }
+
+  checkMobileScreen() {
+    if(window.innerWidth < 750) {
+        this.main.threadOpen = true;
+        this.allChatSectionsOpen = false;
+    } else {
+        this.allChatSectionsOpen = true;
+    }
+}
 
   ngOnInit() {
     if (this.userID) {

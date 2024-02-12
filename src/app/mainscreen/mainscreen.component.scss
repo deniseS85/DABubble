@@ -539,11 +539,20 @@
             width: 25.8%;
             height: 100%;
 
+            @media(max-width: 750px) {
+                width: 100% !important;
+            }
+        
             //hier noch in-height 100% wenn overflow: hidden aktiv
         }
 
         app-channel-chat {
             flex: 1;
+
+            @media(max-width: 750px) {
+                width: 100% !important;
+            }
+        
         }
 
         app-chat-container {

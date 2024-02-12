@@ -450,7 +450,6 @@ export class MainscreenComponent implements OnInit {
     openChannel(channelID: string): void {
         this.channelOpen = false;
         this.threadOpen = false;
-        // this.channelDataService.channelID = channelID;
         this.channelDataService.updateChannelInfo(channelID);
 
         setTimeout(() => {
@@ -472,6 +471,6 @@ export class MainscreenComponent implements OnInit {
     openWorkspaceMobile() {
         this.allChatSectionsOpen = false;
         this.workspaceOpen = true;
-    }
+    }    
 
 }

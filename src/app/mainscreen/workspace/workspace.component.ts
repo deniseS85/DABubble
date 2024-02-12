@@ -216,22 +216,25 @@ export class WorkspaceComponent implements OnInit {
    */
   async loadChannels() {
     const queryAllChannels = query(this.channelService.collectionRef);
+    
+    try {
+      const querySnapshot = await getDocs(queryAllChannels);
   
-    onSnapshot(queryAllChannels, (querySnapshot) => {
-      this.channels = [];
-      querySnapshot.forEach((doc: any) => {
+      this.channels = querySnapshot.docs.map((doc: any) => {
         const channelData = doc.data();
         const channelUsers = channelData.channelUsers;
         const isUserMember = channelUsers.includes(this.userID);
-    
-        this.channels.push({ ...channelData, isUserMember });
+  
+        return { ...channelData, isUserMember };
       });
   
       if (!this.selectedChannelId && this.channels.length > 0) {
         this.selectedChannelId = this.channels[0].channelID;
         this.openAndChangeChannel();
       }
-    });
+    } catch (error) {
+      console.error('Error loading channels:', error);
+    }
   }
 
   private openAndChangeChannel(): void {
@@ -258,7 +261,7 @@ export class WorkspaceComponent implements OnInit {
    */
   handleClickChannel(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-
+  
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
     this.elRef.nativeElement
@@ -266,6 +269,13 @@ export class WorkspaceComponent implements OnInit {
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
     this.renderer.addClass(selectableElement, 'selected');
   
+    this.channelDataService.changeSelectedChannel(
+      channel.channelname || '',
+      channel.channelCreator || '',
+      channel.channelDescription || ''
+    );
+  
+    this.openChannel(channel.channelID);
   }
 
   /**

@@ -461,4 +461,8 @@ export class MainscreenComponent implements OnInit {
         this.workspaceOpen = !this.workspaceOpen;
     }
 
+    openWorkspaceMobile() {
+        this.workspaceOpen = true;
+    }
+
 }

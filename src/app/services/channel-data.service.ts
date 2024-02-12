@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, OnInit, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
@@ -32,8 +32,9 @@ export class ChannelDataService {
     this.loadFirstChannelID().then(() => {
       this.subscribeToChannelUpdates();
     });
-    this.updateChannelInfo();
   }
+
+  
 
   ngOnDestroy() {
     if (this.unsubChannelUser) {
@@ -59,8 +60,7 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
-      this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelCreator, channelInfo.channelDescription);
-      console.log(channelInfo.channelID);
+      // this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelCreator, channelInfo.channelDescription);
     });
   }
 
@@ -76,15 +76,19 @@ export class ChannelDataService {
     this.highlightUserSubject.next(userFullName);
   }
 
-  async updateChannelInfo() {
+  async updateChannelInfo(channelID: string) {
+    console.log(channelID);
     this.items$ = collectionData(this.channelService.getChannelRef());
     this.items = this.items$.subscribe( (list: any) => {
-      list.forEach( (channelItem: any) => {
-        if(this.channelID == channelItem.channelID) {
-          console.log('item$', channelItem.channelID);
-        }
+      list.forEach( (channel: any) => {
+        if(channel.channelID == channelID)
+        this.channelName = channel.channelname;
+        this.channelDescription = channel.channelDescription;
+        this.channelCreator = channel.channelCreator;
+        this.channelUsers = channel.channelUsers;
       });
     });
+    this.items.unsubscribe;
   }
 
 }

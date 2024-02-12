@@ -276,6 +276,11 @@ export class WorkspaceComponent implements OnInit {
     );
   
     this.openChannel(channel.channelID);
+      
+    if (this.isScreenSmall) {
+      this.main.workspaceOpen = false;
+    }
+
   }
 
   /**
@@ -528,10 +533,6 @@ export class WorkspaceComponent implements OnInit {
             this.main.chatOpen = false;
             this.main.allChatSectionsOpen = true;
             this.channelDataService.channelID = channelID;
-  
-            if (this.isScreenSmall) {
-                this.main.workspaceOpen = false;
-            }
 
             setTimeout(() => {
                 this.main.channelOpen = true;

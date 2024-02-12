@@ -123,6 +123,7 @@ export class WorkspaceComponent implements OnInit {
     this.getUserList();
   }
 
+
   /**
    * Monitoring the width of the screen and set the channel create windows to mobile/desktop view
    */

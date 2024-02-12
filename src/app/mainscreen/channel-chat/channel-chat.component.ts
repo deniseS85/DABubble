@@ -16,7 +16,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { ChatService } from '../../services/chat.service';
 import { MatDialog } from '@angular/material/dialog';
-import { EditChannelChatComponent } from './edit-channel-chat/edit-channel-chat.component';
+import { UserService } from '../../services/user.service';
+
 
 
 @Component({
@@ -135,6 +136,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChatOpen: boolean = true;
   imagePreview: string = '';
   isFirstTimeEmojiOpen: boolean = true;
+  isUserMember: boolean | undefined;
 
   private subscriptions: Subscription[] = [];
 
@@ -151,7 +153,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
     private storage: Storage,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public userservice: UserService
   ) {
 
     this.userID = this.route.snapshot.paramMap.get('id');
@@ -168,6 +171,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.loadMessagesOfThisChannel();
       this.loadUsersOfThisChannel();
     }
+
+    this.checkIsUserMember();
   }
 
   ngAfterViewChecked() {
@@ -218,6 +223,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     } else {
       this.isChannelCreator = false;
     }
+  }
+
+  checkIsUserMember(): void {
+    this.userservice.getIsUserMember().subscribe((value) => {
+      this.isUserMember = value;
+      console.log('channel-chat', this.isUserMember);
+    });
   }
 
   /**
@@ -426,7 +438,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
    */
   openPopup(): void {
     this.renderer.setStyle(this.body, 'overflow', 'hidden');
-
   }
 
 

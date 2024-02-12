@@ -767,7 +767,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   async loadMessagesOfThisChannel() {
     this.editMessages = [];
     const channelID = this.channelDataService.channelID;
-    const queryAllAnswers = await query(this.channelService.getMessageRef(channelID));
+    const queryAllAnswers = query(await this.channelService.getMessageRef(channelID));
     onSnapshot(queryAllAnswers, async (querySnapshot) => {
       this.allMessages = [];
 
@@ -923,7 +923,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
 
   async updateAnswerInfoStatus(answerInfos: any, messageID: string) {
-    const messageRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), messageID);
+    const messageRef = doc(await this.channelService.getMessageRef(this.channelDataService.channelID), messageID);
 
     await updateDoc(messageRef, { answerInfo: answerInfos })
     const a = (await getDoc(messageRef)).data();
@@ -963,7 +963,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
    * @param index 
    */
   async editMessage(id: string, index: number) {
-    const messageRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), id);
+    const messageRef = doc(await this.channelService.getMessageRef(this.channelDataService.channelID), id);
     const docSnap = await getDoc(messageRef);
     this.message = docSnap.data();
     this.editedMessage = this.message.messagetext;
@@ -996,7 +996,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
    * @param index 
    */
   async saveEditedMessage(id: string,index: number){
-    const docRef = doc(this.channelService.getMessageRef(this.channelDataService.channelID), id);
+    const docRef = doc(await this.channelService.getMessageRef(this.channelDataService.channelID), id);
     if(this.editedMessage.length <= 1){
       await deleteDoc(docRef)      
     } else{

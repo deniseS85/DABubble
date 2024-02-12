@@ -299,8 +299,9 @@ export class WorkspaceComponent implements OnInit {
     this.main.chatOpen = false;
     this.main.channelOpen = false;
     this.main.threadOpen = false;
+    this.main.allChatSectionsOpen = true;
 
-    if(!this.main.allChatSectionsOpen) {
+    if (this.isScreenSmall) {
       this.main.workspaceOpen = false;
     }
 

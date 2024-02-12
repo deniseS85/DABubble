@@ -511,27 +511,26 @@ export class WorkspaceComponent implements OnInit {
    */
   openChannel(channelID: string) {
     const channel = this.channels.find(ch => ch.channelID === channelID);
-    
+
     if (channel) {
-        const isUserMember = channel.isUserMember || false;
-        this.userservice.setIsUserMember(isUserMember);
-        
-        if (isUserMember) {
-            this.main.channelOpen = false;
-            this.main.threadOpen = false;
-            this.main.chatOpen = false;
-            this.channelDataService.channelID = channelID;
-  
-            if(!this.main.allChatSectionsOpen) {
-                this.main.workspaceOpen = false;
+        this.userservice.getIsUserMember().subscribe(isUserMember => {
+            if (isUserMember) {
+                this.main.channelOpen = false;
+                this.main.threadOpen = false;
+                this.main.chatOpen = false;
+                this.channelDataService.channelID = channelID;
+
+                if (!this.main.allChatSectionsOpen) {
+                    this.main.workspaceOpen = false;
+                }
+
+                setTimeout(() => {
+                    this.main.channelOpen = true;
+                }, 50);
             }
-  
-            setTimeout(() => {
-                this.main.channelOpen = true;
-            }, 50);
-        } 
+        });
     }
-}
+  }
 
   /**
    * lädt nur die Personen mit denen ich chatte

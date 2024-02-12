@@ -9,7 +9,7 @@ import { MainscreenComponent } from '../mainscreen.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChatService } from '../../services/chat.service';
 import { SearchService } from '../../services/search-service.service';
-import { Channel } from '../../models/channel.interface';
+import { Channel } from '../../models/channel.class';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -261,7 +261,7 @@ export class WorkspaceComponent implements OnInit {
    */
   handleClickChannel(event: MouseEvent, channel: Channel): void {
     const target = event.target as HTMLElement;
-  
+
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
     this.elRef.nativeElement
@@ -272,7 +272,7 @@ export class WorkspaceComponent implements OnInit {
     this.channelDataService.changeSelectedChannel(
       channel.channelname || '',
       channel.channelCreator || '',
-      channel.channelDescription || ''
+      channel.channelDescription || '',
     );
   
     this.openChannel(channel.channelID);

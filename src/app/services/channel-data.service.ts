@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 export class ChannelDataService {
   firestore: Firestore = inject(Firestore);
   channel = new Channel;
-/*   channelInfo: Channel[] = []; */
+  /*   channelInfo: Channel[] = []; */
   channelName: string = '';
   channelCreator: string = '';
   channelDescription: string = '';
@@ -34,7 +34,7 @@ export class ChannelDataService {
     });
   }
 
-  
+
 
   ngOnDestroy() {
     if (this.unsubChannelUser) {
@@ -78,9 +78,9 @@ export class ChannelDataService {
 
   async updateChannelInfo(channelID: string) {
     this.items$ = collectionData(this.channelService.getChannelRef());
-    this.items = this.items$.subscribe( (list: any) => {
-      list.forEach( (channel: any) => {
-        if(channel.channelID === channelID){
+    this.items = this.items$.subscribe((list: any) => {
+      list.forEach((channel: any) => {
+        if (channel.channelID === channelID) {
           this.channelUsers = channel.channelUsers;
           this.channelID = channel.channelID;
           this.channelName = channel.channelname;
@@ -88,7 +88,6 @@ export class ChannelDataService {
           this.channelCreator = channel.channelCreator;
           return;
         }
-        
       });
     });
     this.items.unsubscribe;

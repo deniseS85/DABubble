@@ -49,7 +49,7 @@ export class ChannelService {
       channelDescription: description,
       channelUsers: users,
       channelCreator: creator
-      
+
     });
   }
 
@@ -58,14 +58,14 @@ export class ChannelService {
    * @param dmID id of the channel where the message is send
    * @param message JSON of MessageData combined in component where message is written
    */
-  sendChannelMessage(channelID: string, message: Message) {
-    const ref = doc(this.getMessageRef(channelID));
+  async sendChannelMessage(channelID: string, message: Message) {
+    const ref = doc(await this.getMessageRef(channelID));
 
     setDoc(ref, message)
   }
 
 
-  getMessageRef(channelID: string) {
+  async getMessageRef(channelID: string) {
     return collection(this.firestore, "channels", channelID, "messages");
   }
 
@@ -78,9 +78,9 @@ export class ChannelService {
     setDoc(ref, newAnswer);
   }
 
-  sendMessage(channelID: string, message: any) {
+  async sendMessage(channelID: string, message: any) {
 
-    const ref = doc(this.getMessageRef(channelID));
+    const ref = doc(await this.getMessageRef(channelID));
     const newMessage = ({ ...message, messageID: ref.id });
     setDoc(ref, newMessage);
   }
@@ -109,16 +109,16 @@ export class ChannelService {
   async getAllMessages(): Promise<any[]> {
     const channels = await this.getAllChannels();
     const allMessages: any[] = [];
-  
+
     for (const channel of channels) {
-      const messagesRef = this.getMessageRef(channel.channelID);
+      const messagesRef = await this.getMessageRef(channel.channelID);
       const querySnapshot = await getDocs(messagesRef);
-  
+
       querySnapshot.forEach((doc) => {
         allMessages.push(doc.data());
       });
     }
-  
+
     return allMessages;
   }
 
@@ -129,7 +129,7 @@ export class ChannelService {
   }
 
   async addChannelUser(channelId: string, newChannelUsers: any) {
-   this.updateChannel(channelId, {channelUsersID: newChannelUsers});
+    this.updateChannel(channelId, { channelUsersID: newChannelUsers });
   }
 
   async updateChannel(channelID: string, item: {}) {
@@ -154,18 +154,18 @@ export class ChannelService {
 
   async getChannelById(channelId: string): Promise<any | null> {
     try {
-        const channelDoc = await getDoc(this.getSingleChannel(channelId));
-        if (channelDoc.exists()) {
-            return channelDoc.data();
-        } else {
-            console.error(`Channel with ID ${channelId} not found.`);
-            return null;
-        }
-    } catch (error) {
-        console.error('Error getting channel by ID', error);
+      const channelDoc = await getDoc(this.getSingleChannel(channelId));
+      if (channelDoc.exists()) {
+        return channelDoc.data();
+      } else {
+        console.error(`Channel with ID ${channelId} not found.`);
         return null;
+      }
+    } catch (error) {
+      console.error('Error getting channel by ID', error);
+      return null;
     }
-}
+  }
 }
 
 

@@ -171,8 +171,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.loadMessagesOfThisChannel();
       this.loadUsersOfThisChannel();
     }
-
-    this.checkIsUserMember();
   }
 
   ngAfterViewChecked() {
@@ -223,13 +221,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     } else {
       this.isChannelCreator = false;
     }
-  }
-
-  checkIsUserMember(): void {
-    this.userservice.getIsUserMember().subscribe((value) => {
-      this.isUserMember = value;
-      console.log('channel-chat', this.isUserMember);
-    });
   }
 
   /**
@@ -475,6 +466,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
       }
       this.addUserToChannel(newUsersArray);
+      const isUserMember = newUsersArray.includes(this.userID);
+      this.userservice.setIsUserMember(isUserMember);
     })
   }
 
@@ -524,7 +517,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const newUsers = [...this.channelDataService.channelUsers];
       newUsers.splice(currentUserIndex, 1);
       this.updateChannelUsers(newUsers);
-      this.userservice.setIsUserMember(false);
+      const isUserMember = newUsers.includes(this.userID);
+      this.userservice.setIsUserMember(isUserMember);
     }
   }
   

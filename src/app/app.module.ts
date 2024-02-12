@@ -45,6 +45,7 @@ import { ChatContainerComponent } from './mainscreen/chat-container/chat-contain
 import { EditChannelChatComponent } from './mainscreen/channel-chat/edit-channel-chat/edit-channel-chat.component';
 import { UserProfileCardComponent } from './mainscreen/user-profile-card/user-profile-card.component';
 
+
 registerLocaleData(localeDe, 'de');
 
 @NgModule({

@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 export class ChannelDataService {
   firestore: Firestore = inject(Firestore);
   channel = new Channel;
-  channelInfo: Channel[] = [];
+/*   channelInfo: Channel[] = []; */
   channelName: string = '';
   channelCreator: string = '';
   channelDescription: string = '';

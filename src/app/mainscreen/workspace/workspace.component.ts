@@ -10,6 +10,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ChatService } from '../../services/chat.service';
 import { SearchService } from '../../services/search-service.service';
 import { Channel } from '../../models/channel.interface';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-workspace',
@@ -82,7 +83,8 @@ export class WorkspaceComponent implements OnInit {
     public channelService: ChannelService,
     public chatService: ChatService,
     public channelDataService: ChannelDataService,
-    private searchservice: SearchService
+    private searchservice: SearchService,
+    private userservice: UserService
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
@@ -256,8 +258,6 @@ export class WorkspaceComponent implements OnInit {
    */
   handleClickChannel(event: MouseEvent, channel: Channel): void {
     const target = event.target as HTMLElement;
-    const isUserMember = this.channels.find(ch => ch.channelID === channel.channelID)?.isUserMember;
-    console.log(isUserMember)
 
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
@@ -267,13 +267,6 @@ export class WorkspaceComponent implements OnInit {
     this.renderer.addClass(selectableElement, 'selected');
   
   }
-  
-  
-  private openAlternativeWindow(channel: Channel): void {
-   
-    console.log(`User is not a member of the channel: ${channel.channelname}`);
-  }
-
 
   /**
    * Handles the click event on selectable elements. Removes the class "selected" 
@@ -507,19 +500,28 @@ export class WorkspaceComponent implements OnInit {
    * @param channelID
    */
   openChannel(channelID: string) {
-    this.main.channelOpen = false;
-    this.main.threadOpen = false;
-    this.main.chatOpen = false;
-    this.channelDataService.channelID = channelID;
-
-    if(!this.main.allChatSectionsOpen) {
-      this.main.workspaceOpen = false;
+    const channel = this.channels.find(ch => ch.channelID === channelID);
+    
+    if (channel) {
+        const isUserMember = channel.isUserMember || false;
+        this.userservice.setIsUserMember(isUserMember);
+        
+        if (isUserMember) {
+            this.main.channelOpen = false;
+            this.main.threadOpen = false;
+            this.main.chatOpen = false;
+            this.channelDataService.channelID = channelID;
+  
+            if(!this.main.allChatSectionsOpen) {
+                this.main.workspaceOpen = false;
+            }
+  
+            setTimeout(() => {
+                this.main.channelOpen = true;
+            }, 50);
+        } 
     }
-
-    setTimeout(() => {
-      this.main.channelOpen = true;
-    }, 50);
-  }
+}
 
   /**
    * lädt nur die Personen mit denen ich chatte

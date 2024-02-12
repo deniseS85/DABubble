@@ -10,6 +10,7 @@ export class ChatService {
   userID: string = '';
   collectionChatRef = collection(this.firestore, 'chats');
   allUsers: any[] = [];
+  
 
   constructor() { }
 

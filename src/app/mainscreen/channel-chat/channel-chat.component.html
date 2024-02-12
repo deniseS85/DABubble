@@ -3,14 +3,17 @@
 
     <div class="header-container">
         <header class="channel-chat-header">
-            <div class="header-left" (click)="editChannelOpen = true; openPopup(); checkUserIsCreator();">
+            <div class="header-left" (click)="isUserMember && editChannelOpen = true; openPopup(); checkUserIsCreator();">
                 <span>
-                    <span class="hashtag">#</span> {{ this.channelDataService.channelName }}
-                    <img src="../../../assets/img/keyboard_arrow_down.png" alt="">
+                    <span *ngIf="isUserMember" class="hashtag">#</span> 
+                    <mat-icon *ngIf="!isUserMember">lock_outline</mat-icon>
+                    {{ this.channelDataService.channelName }}
+                    <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span>
+                    <img *ngIf="isUserMember" src="../../../assets/img/keyboard_arrow_down.png" alt="">
                 </span>
             </div>
 
-            <div class="header-right" *ngIf="officialChannel">
+            <div class="header-right" *ngIf="isUserMember">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
                     <div *ngFor="let user of usersData">
                         <span class="profile">
@@ -28,138 +31,146 @@
         </header>
     </div>
 
-    <div class="channel-chat-container" #chatContainer>
-        <div *ngFor="let message of allMessages; let chatIndex = index">
-            <div class="seperator"></div>
-            <div class="date-incoming-message">
-                <span class="fs-18">{{ message.date | date: 'EEEE, dd MMMM' : 'de' }}</span>
-            </div>
-            
-            <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'"
-                style="cursor: default;"
-                (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible', chatIndex) : toggleAnimationState('visible', chatIndex)"
-                (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden', chatIndex) : toggleAnimationState('hidden', chatIndex)"
-                (mouseleave)="message.isEmojiOpen = false">
+    <div class="channel-chat-container" #chatContainer [ngStyle]="{'padding': isUserMember ? '100px 40px 40px 40px' : '40px 40px 40px 40px'}">
+        <div *ngIf="isUserMember">
+            <div *ngFor="let message of allMessages; let chatIndex = index">
+                <div class="seperator"></div>
+                <div class="date-incoming-message">
+                    <span class="fs-18">{{ message.date | date: 'EEEE, dd MMMM' : 'de' }}</span>
+                </div>
+                
+                <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'"
+                    style="cursor: default;"
+                    (mouseenter)="isCurrentUser(chatIndex) ? toggleAnimationState1('visible', chatIndex) : toggleAnimationState('visible', chatIndex)"
+                    (mouseleave)="isCurrentUser(chatIndex) ? toggleAnimationState1('hidden', chatIndex) : toggleAnimationState('hidden', chatIndex)"
+                    (mouseleave)="message.isEmojiOpen = false">
 
 
 
-                <!-- edit MessageContainer -->
-                <div class="editMessageContainer" *ngIf="editMessages[chatIndex]">
-                    <textarea class="editMessageContainerMessage" [(ngModel)]="editedMessage"
-                        (keyup.enter)="saveEditedMessage(message.messageID, chatIndex)"></textarea>
-                    <div class="editMessageContainerReactAndSend">
-                        <div class="emoji-footer-container" (mouseleave)="closeEmojiFooterEdit()">
-                            <div class="emoji-footer-selection" *ngIf="isShowEmojiFooterEdit">
-                                <app-emoji-picker (emojiSelect)="addEmojiToEditMessage($event)"></app-emoji-picker>
+                    <!-- edit MessageContainer -->
+                    <div class="editMessageContainer" *ngIf="editMessages[chatIndex]">
+                        <textarea class="editMessageContainerMessage" [(ngModel)]="editedMessage"
+                            (keyup.enter)="saveEditedMessage(message.messageID, chatIndex)"></textarea>
+                        <div class="editMessageContainerReactAndSend">
+                            <div class="emoji-footer-container" (mouseleave)="closeEmojiFooterEdit()">
+                                <div class="emoji-footer-selection" *ngIf="isShowEmojiFooterEdit">
+                                    <app-emoji-picker (emojiSelect)="addEmojiToEditMessage($event)"></app-emoji-picker>
+                                </div>
+                                <mat-icon (click)="toggleEmojiFooterEdit()">mood</mat-icon>
                             </div>
-                            <mat-icon (click)="toggleEmojiFooterEdit()">mood</mat-icon>
-                        </div>
-                        <div class="editMessageContainerReactAndSendBtns">
-                            <div class="editMessageBtn" (click)="cancelEdit(chatIndex)">Abbrechen</div>
-                            <div class="editMessageBtn saveBtn"
-                                (click)="saveEditedMessage(message.messageID, chatIndex)">Speichern</div>
+                            <div class="editMessageContainerReactAndSendBtns">
+                                <div class="editMessageBtn" (click)="cancelEdit(chatIndex)">Abbrechen</div>
+                                <div class="editMessageBtn saveBtn"
+                                    (click)="saveEditedMessage(message.messageID, chatIndex)">Speichern</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="profile-message-img">
-                    <img class="profile-img"
-                        [src]="message.profileImg.startsWith('https') ? message.profileImg : './assets/img/' + message.profileImg"
-                        alt="">
-                    <p class="active-point" *ngIf="message.isOnline"></p>
-                </div>
+                    <div class="profile-message-img">
+                        <img class="profile-img"
+                            [src]="message.profileImg.startsWith('https') ? message.profileImg : './assets/img/' + message.profileImg"
+                            alt="">
+                        <p class="active-point" *ngIf="message.isOnline"></p>
+                    </div>
 
-                <div>
-                    <div
-                        [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
-                        <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'"
-                            [@slideAndFadeLeft]="isCurrentUser(chatIndex) ? (message.animationState1 || 'hidden') : 'hidden'"
-                            [@slideAndFade]="isCurrentUser(chatIndex) ? 'hidden' : (message.animationState || 'hidden')">
-                            <div *ngFor="let emoji of getEmojis(message)">
-                                <div class="last-emoji">{{ emoji }}</div>
+                    <div>
+                        <div
+                            [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
+                            <div [ngClass]="isCurrentUser(chatIndex) ? 'reaction-menu-message left-87 flex-reverse' : 'reaction-menu-message right-0'"
+                                [@slideAndFadeLeft]="isCurrentUser(chatIndex) ? (message.animationState1 || 'hidden') : 'hidden'"
+                                [@slideAndFade]="isCurrentUser(chatIndex) ? 'hidden' : (message.animationState || 'hidden')">
+                                <div *ngFor="let emoji of getEmojis(message)">
+                                    <div class="last-emoji">{{ emoji }}</div>
+                                </div>
+                                <div class="emoji-container">
+                                    <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png">
+                                    <div *ngIf="message.isEmojiOpen"
+                                        [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-1' : 'emoji-selection right-43'">
+                                        <app-emoji-picker
+                                            (emojiSelect)="handleReactionMessage($event, message); closeEmojiContainers(chatIndex)"></app-emoji-picker>
+                                    </div>
+                                </div>
+                                <div class="react-icon">
+                                    <img src="./assets/img/Answer.png" alt="" (click)="openThread(message.messageID)">
+                                </div>
+                                <div class="editMessage" *ngIf="isCurrentUser(chatIndex)">
+                                    <mat-icon>more_vert</mat-icon>
+                                    <div class="editMessageBtn">
+                                        <span (click)="editMessage(message.messageID, chatIndex)">Nachricht
+                                            bearbeiten</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="emoji-container">
-                                <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png">
-                                <div *ngIf="message.isEmojiOpen"
-                                    [ngClass]="isCurrentUser(chatIndex) ? 'emoji-selection left-1' : 'emoji-selection right-43'">
+                            <div class="writing-name-sending-time">
+                                <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
+                                    <div class="sending-time fs-14 f400">{{ message.timestamp }} Uhr</div>
+                                    <span (click)="setUserProfileView(message); showProfil = true; openPopup()"
+                                        class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname
+                                        }}</span>
+                                </ng-container>
+                                <ng-template #otherUser>
+                                    <div (click)="setUserProfileView(message); showProfil = true; openPopup()"
+                                        class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}
+                                    </div>
+                                    <span class="sending-time fs-14 fw-400">{{ message.timestamp }} Uhr</span>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div *ngIf="message.messagetext.trim() !== ''"
+                            [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
+                            {{ message.messagetext }}</div>
+                        <a *ngIf="message.fileUpload && !isPDFFile(message.fileUpload)" target="_blank"
+                            [href]="message.fileUpload">
+                            <img class="uploaded-files" [src]="message.fileUpload">
+                        </a>
+                        <a *ngIf="message.fileUpload && isPDFFile(message.fileUpload)" target="_blank"
+                            [href]="message.fileUpload">
+                            <img class="uploaded-files" src="./assets/img/pdf-icon.png">
+                        </a>
+
+                        <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
+                            (click)="openThread(message.messageID)">
+                            <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
+                            <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime
+                                }}</div>
+                        </div>
+
+                        <div class="threadContainerTextReactions" [ngClass]="{'d-hidden': editMessages[chatIndex]}">
+                            <div class="threadContainerTextReactionsEmojis" *ngFor="let reaction of message.react">
+                                <div class="reactionsInfoContainer">
+                                    <div>{{reaction.emoji}}</div>
+                                    <div class="reactionsInfoContainerUsers"
+                                        *ngFor="let user of reaction.user; let i = index">
+                                        <div class="user">{{user}}</div>
+                                        <div *ngIf="i < (reaction.user.length - 1)"> &</div>
+                                    </div>
+                                    <span>hat reagiert</span>
+                                </div>
+                                <div>{{reaction.emoji}}</div>
+                                <div class="threadContainerTextReactionsAmount">{{reaction.user.length}}</div>
+                            </div>
+                            <div class="emoji-below-answer-container" (mouseleave)="closeEmojiContainers(chatIndex)">
+                                <img (click)="toggleEmojiBelowAnswer($event, chatIndex)"
+                                    src="./assets/img/add_reaction.png">
+                                <div *ngIf="message.isEmojiBelowAnswerOpen" class="emoji-below-answer-selection">
                                     <app-emoji-picker
                                         (emojiSelect)="handleReactionMessage($event, message); closeEmojiContainers(chatIndex)"></app-emoji-picker>
                                 </div>
-                            </div>
-                            <div class="react-icon">
-                                <img src="./assets/img/Answer.png" alt="" (click)="openThread(message.messageID)">
-                            </div>
-                            <div class="editMessage" *ngIf="isCurrentUser(chatIndex)">
-                                <mat-icon>more_vert</mat-icon>
-                                <div class="editMessageBtn">
-                                    <span (click)="editMessage(message.messageID, chatIndex)">Nachricht
-                                        bearbeiten</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="writing-name-sending-time">
-                            <ng-container *ngIf="isCurrentUser(chatIndex); else otherUser">
-                                <div class="sending-time fs-14 f400">{{ message.timestamp }} Uhr</div>
-                                <span (click)="setUserProfileView(message); showProfil = true; openPopup()"
-                                    class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname
-                                    }}</span>
-                            </ng-container>
-                            <ng-template #otherUser>
-                                <div (click)="setUserProfileView(message); showProfil = true; openPopup()"
-                                    class="writing-name fs-18 fw-700">{{ message.firstname }} {{message.lastname }}
-                                </div>
-                                <span class="sending-time fs-14 fw-400">{{ message.timestamp }} Uhr</span>
-                            </ng-template>
-                        </div>
-                    </div>
-                    <div *ngIf="message.messagetext.trim() !== ''"
-                        [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
-                        {{ message.messagetext }}</div>
-                    <a *ngIf="message.fileUpload && !isPDFFile(message.fileUpload)" target="_blank"
-                        [href]="message.fileUpload">
-                        <img class="uploaded-files" [src]="message.fileUpload">
-                    </a>
-                    <a *ngIf="message.fileUpload && isPDFFile(message.fileUpload)" target="_blank"
-                        [href]="message.fileUpload">
-                        <img class="uploaded-files" src="./assets/img/pdf-icon.png">
-                    </a>
-
-                    <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
-                        (click)="openThread(message.messageID)">
-                        <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
-                        <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime
-                            }}</div>
-                    </div>
-
-                    <div class="threadContainerTextReactions" [ngClass]="{'d-hidden': editMessages[chatIndex]}">
-                        <div class="threadContainerTextReactionsEmojis" *ngFor="let reaction of message.react">
-                            <div class="reactionsInfoContainer">
-                                <div>{{reaction.emoji}}</div>
-                                <div class="reactionsInfoContainerUsers"
-                                    *ngFor="let user of reaction.user; let i = index">
-                                    <div class="user">{{user}}</div>
-                                    <div *ngIf="i < (reaction.user.length - 1)"> &</div>
-                                </div>
-                                <span>hat reagiert</span>
-                            </div>
-                            <div>{{reaction.emoji}}</div>
-                            <div class="threadContainerTextReactionsAmount">{{reaction.user.length}}</div>
-                        </div>
-                        <div class="emoji-below-answer-container" (mouseleave)="closeEmojiContainers(chatIndex)">
-                            <img (click)="toggleEmojiBelowAnswer($event, chatIndex)"
-                                src="./assets/img/add_reaction.png">
-                            <div *ngIf="message.isEmojiBelowAnswerOpen" class="emoji-below-answer-selection">
-                                <app-emoji-picker
-                                    (emojiSelect)="handleReactionMessage($event, message); closeEmojiContainers(chatIndex)"></app-emoji-picker>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div *ngIf="!isUserMember" class="nonmember-content">
+            <h3>Wende dich an den Channelcreator, um dich einzuladen.</h3>
+            <div class="seperator"></div>
+            <div>{{this.channelDataService.channelCreator}}</div>
+           
+        </div>
     </div>
 
-    <div class="footer-write-new-message">
+    <div class="footer-write-new-message" *ngIf="isUserMember">
         <div>
             <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
                 [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()">

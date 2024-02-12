@@ -256,7 +256,7 @@ export class WorkspaceComponent implements OnInit {
    * Handles the click event on selectable elements. Removes the class "selected" 
    * from all other elements and sets this class to clicked elements
    */
-  handleClickChannel(event: MouseEvent, channel: Channel): void {
+  handleClickChannel(event: MouseEvent): void {
     const target = event.target as HTMLElement;
 
     this.selectedChannel(target);
@@ -310,7 +310,7 @@ export class WorkspaceComponent implements OnInit {
         const selectedChannel = this.channels.find(channel => channel.channelname === cleanedChannelName);
 
         if (selectedChannel) {
-            this.channelDataService.changeSelectedChannel(selectedChannel.channelname, selectedChannel.channelCreator, selectedChannel.channelDescription);
+            this.channelDataService.updateChannelInfo(selectedChannel.channelID);
         }
     }
 }

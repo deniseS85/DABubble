@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -15,34 +15,37 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChannelService } from '../services/channel.service';
 import { Message } from '../models/message.interface';
 import { DomSanitizer } from '@angular/platform-browser';
+import { WorkspaceComponent } from './workspace/workspace.component';
 
 @Component({
-  selector: 'app-mainscreen',
-  templateUrl: './mainscreen.component.html',
-  styleUrl: './mainscreen.component.scss',
+    selector: 'app-mainscreen',
+    templateUrl: './mainscreen.component.html',
+    styleUrl: './mainscreen.component.scss',
 
-  animations: [
-    trigger('leftRightAnimation', [
-      transition(':enter', [
-        style({ width: 0, opacity: 0 }),
-        animate('0.3s ease-in-out', style({ width: '*', opacity: 1 })),
-      ]),
-      transition(':leave', [
-        style({ width: '*', opacity: 1 }),
-        animate('0.3s ease-in-out', style({ width: 0, opacity: 0 })),
-      ]),
-    ]),
-    
-  ],
+    animations: [
+        trigger('leftRightAnimation', [
+            transition(':enter', [
+                style({ width: 0, opacity: 0 }),
+                animate('0.3s ease-in-out', style({ width: '*', opacity: 1 })),
+            ]),
+            transition(':leave', [
+                style({ width: '*', opacity: 1 }),
+                animate('0.3s ease-in-out', style({ width: 0, opacity: 0 })),
+            ]),
+        ]),
+
+    ],
 })
 export class MainscreenComponent implements OnInit {
+    @ViewChild(WorkspaceComponent) workspaceComponent!: WorkspaceComponent;
+
     firestore: Firestore = inject(Firestore);
     user = new User();
     workspaceOpen: boolean = true;
     channelOpen: boolean = true;
     threadOpen: boolean = false;
     chatOpen: boolean = false;
-    allChatSectionsOpen: boolean =  true;
+    allChatSectionsOpen: boolean = true;
     userFirstName: String = '';
     userLastName: String = '';
     userFullName: String = '';
@@ -68,33 +71,34 @@ export class MainscreenComponent implements OnInit {
     userProfileView: User = new User();
     showProfil = false;
     editThread: boolean = false;
+    allChannels: Channel[] = [];
 
 
     constructor(
-        public authService: AuthService, 
-        private router: Router, 
-        private route: ActivatedRoute, 
-        private storage: Storage, 
+        public authService: AuthService,
+        private router: Router,
+        private route: ActivatedRoute,
+        private storage: Storage,
         private snackBar: MatSnackBar,
         private userservice: UserService,
         private channelDataService: ChannelDataService,
         public dialog: MatDialog,
         private channelservice: ChannelService,
         private sanitizer: DomSanitizer) {
-            this.userID = this.route.snapshot.paramMap.get('id');
-            this.userList = this.getUserfromFirebase();       
+        this.userID = this.route.snapshot.paramMap.get('id');
+        this.userList = this.getUserfromFirebase();
     }
 
     ngOnInit(): void {
         if (this.userID) {
             this.checkIsGuestLogin();
-            this.subscribeToUserChanges(); 
+            this.subscribeToUserChanges();
         }
     }
 
     private subscribeToUserChanges(): void {
         const userDocRef = doc(this.firestore, 'users', this.userID);
-    
+
         this.unsubscribeSnapshot = onSnapshot(userDocRef, (doc) => {
             if (doc.exists()) {
                 this.user = new User(doc.data());
@@ -104,12 +108,12 @@ export class MainscreenComponent implements OnInit {
             }
         });
     }
-    
+
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
         this.screenWidth = window.innerWidth;
-        if(this.screenWidth < 750) {
+        if (this.screenWidth < 750) {
             this.allChatSectionsOpen = false;
         } else {
             this.allChatSectionsOpen = true;
@@ -134,16 +138,16 @@ export class MainscreenComponent implements OnInit {
     getProfileImagePathSearch(user: any): string {
         if (user && user.profileImg) {
             if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
-                return user.profileImg; 
+                return user.profileImg;
             } else {
-                return `./assets/img/${user.profileImg}`; 
+                return `./assets/img/${user.profileImg}`;
             }
         } else {
             return '';
         }
     }
 
-    ngOnDestroy(){
+    ngOnDestroy() {
         if (this.unsubscribeSnapshot) {
             this.unsubscribeSnapshot();
         }
@@ -155,19 +159,19 @@ export class MainscreenComponent implements OnInit {
 
     async getUserfromFirebase(): Promise<void> {
         try {
-          const userDocRef = doc(this.firestore, 'users', this.userID);
-          const userDocSnap = await getDoc(userDocRef);
-    
-          if (userDocSnap.exists()) {
-            this.user = new User(userDocSnap.data());
-            this.user.id = this.userID;
-            this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
-            this.userIsOnline = this.user.isOnline;
-            
-          }
-        } catch (error) {}
+            const userDocRef = doc(this.firestore, 'users', this.userID);
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (userDocSnap.exists()) {
+                this.user = new User(userDocSnap.data());
+                this.user.id = this.userID;
+                this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
+                this.userIsOnline = this.user.isOnline;
+
+            }
+        } catch (error) { }
     }
-    
+
     checkIsGuestLogin(): void {
         getDoc(this.getUserID()).then((docSnapshot) => {
             if (docSnapshot.exists()) {
@@ -183,7 +187,7 @@ export class MainscreenComponent implements OnInit {
 
     logout(userId: string) {
         this.authService.logout(userId);
-        this.router.navigate(['/']); 
+        this.router.navigate(['/']);
     }
 
     toggleProfileMenu() {
@@ -230,22 +234,22 @@ export class MainscreenComponent implements OnInit {
                 if (this.user.profileImg.startsWith('https')) {
                     let oldImgRef = ref(this.storage, `images/${oldFileName}`);
                     await deleteObject(oldImgRef);
-                  }
+                }
                 this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
             }
         }
         try {
             await this.updateData();
             this.closeEditUser();
-                this.closeUserInfo();
-                this.isProfileMenuOpen = false;
-           /*  setTimeout(() => {
-                this.closeEditUser();
-                this.closeUserInfo();
-                this.isProfileMenuOpen = false;
-                this.emailChanged = false;
-            }, 3000); */
-        } catch (error) {}
+            this.closeUserInfo();
+            this.isProfileMenuOpen = false;
+            /*  setTimeout(() => {
+                 this.closeEditUser();
+                 this.closeUserInfo();
+                 this.isProfileMenuOpen = false;
+                 this.emailChanged = false;
+             }, 3000); */
+        } catch (error) { }
     }
 
     extractFileNameFromPath(path: string): string {
@@ -255,17 +259,17 @@ export class MainscreenComponent implements OnInit {
     }
 
     async updateData() {
-        let updatedData = { ...this.user.toUserJson()};
-       /*  this.authService.updateAndVerifyEmail(this.user.email);
-        this.emailChanged = true; */
+        let updatedData = { ...this.user.toUserJson() };
+        /*  this.authService.updateAndVerifyEmail(this.user.email);
+         this.emailChanged = true; */
         await updateDoc(this.getUserID(), updatedData);
         this.userservice.setUserData(updatedData);
         this.updateUserNameInLocalStorage();
     }
 
     updateUserNameInLocalStorage() {
-          localStorage.setItem('userFirstName', this.user.firstname);
-          localStorage.setItem('userLastName', this.user.lastname);
+        localStorage.setItem('userFirstName', this.user.firstname);
+        localStorage.setItem('userLastName', this.user.lastname);
     }
 
     toggleChangeImagePopup() {
@@ -289,45 +293,45 @@ export class MainscreenComponent implements OnInit {
     async uploadFiles(event: any) {
         this.isChangeImagePopupOpen = false;
         let files = event.target.files;
-      
+
         if (!files || files.length === 0) {
-          return;
+            return;
         }
-      
+
         let file = files[0];
-      
+
         if (!(await this.isValidFile(file))) {
-          return;
+            return;
         }
-      
+
         let timestamp = new Date().getTime();
         let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
 
-      
+
         uploadBytes(imgRef, file).then(async () => {
             let url = await getDownloadURL(imgRef);
             this.selectedAvatarNr = url;
-        
+
         });
     }
 
     async isValidFile(file: File): Promise<boolean> {
         if (file.size > 500000) {
-          this.showSnackbar('Error: Sorry, your file is too large.');
-          return false;
+            this.showSnackbar('Error: Sorry, your file is too large.');
+            return false;
         }
-      
+
         let allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
         if (!allowedFormats.includes(file.type)) {
-          this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG.');
-          return false;
+            this.showSnackbar('Error: Invalid file format. Please upload a JPEG, PNG, GIF, JPG.');
+            return false;
         }
         return true;
     }
 
     showSnackbar(message: string): void {
         this.snackBar.open(message, 'Close', {
-          duration: 3000,
+            duration: 3000,
         });
     }
 
@@ -336,40 +340,41 @@ export class MainscreenComponent implements OnInit {
         let allChannels = await this.channelservice.getAllChannels();
         let allUsers = await this.userservice.getAllUsers();
         let trimmedInput = this.searchInput.trim();
-      
+
+        this.allChannels = allChannels;
         this.searchResults.channels = [];
         this.searchResults.users = [];
         this.searchResults.messages = [];
-      
+
         if (!trimmedInput) {
-          this.isInputFilled = false;
-          return;
+            this.isInputFilled = false;
+            return;
         }
-      
+
         if (trimmedInput.startsWith('@')) {
-          this.filterUsers(trimmedInput, allUsers);
+            this.filterUsers(trimmedInput, allUsers);
         } else if (trimmedInput.startsWith('#')) {
-          this.filterChannels(trimmedInput, allChannels);
+            this.filterChannels(trimmedInput, allChannels);
         } else if (/^[a-zA-Z]+$/.test(trimmedInput) && trimmedInput.length >= 2) {
-          this.filterMessages(trimmedInput, allMessages, allUsers);
+            this.filterMessages(trimmedInput, allMessages, allUsers);
         }
         this.isInputFilled = true;
     }
-      
+
     private async filterUsers(query: string, allUsers: any[]): Promise<void> {
         this.searchResults.users = allUsers.filter(user =>
             user && user.firstname && user.lastname &&
             (user.firstname.toLowerCase().includes(query.slice(1).toLowerCase()) ||
-            user.lastname.toLowerCase().includes(query.slice(1).toLowerCase()))
+                user.lastname.toLowerCase().includes(query.slice(1).toLowerCase()))
         );
     }
-      
+
     private async filterChannels(query: string, allChannels: any[]): Promise<void> {
         this.searchResults.channels = allChannels.filter(channel =>
             channel && channel.channelname && channel.channelname.toLowerCase().includes(query.slice(1).toLowerCase())
         );
     }
-      
+
     private filterMessages(query: string, allMessages: any[], allUsers: any[]): void {
         let matchingMessages = allMessages.filter(message =>
             message && message.messagetext && message.messagetext.toLowerCase().includes(query.toLowerCase())
@@ -377,14 +382,14 @@ export class MainscreenComponent implements OnInit {
         this.searchResults.messages = matchingMessages.map(message => {
             let highlightedText = message.messagetext.replace(new RegExp(`(${query})`, 'gi'), (match: string) => `<span style="background-color: lightgrey">${match}</span>`);
             let user = this.userservice.getUserById(allUsers, message.messageUserID);
-        
+
             return { ...message, highlightedText: this.sanitizer.bypassSecurityTrustHtml(highlightedText), user };
         });
     }
-      
 
-    
-    
+
+
+
 
 
     /* erster user directMessage, von chat neuer user suchen, neuer chat öffnet sich nicht */
@@ -408,52 +413,53 @@ export class MainscreenComponent implements OnInit {
     }
 
 
-     
-
-    searchfieldShowMessage(message: any) {}
-
-    
-
-    
-    
-    
 
 
-      // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen
-     /*  setUserProfileView(user: User): void {
-        this.userProfileView = user;
-      } */
+    searchfieldShowMessage(message: any) { }
 
-      searchfieldShowChannel(channel: Channel) {
+
+
+
+
+
+
+
+    // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen
+    /*  setUserProfileView(user: User): void {
+       this.userProfileView = user;
+     } */
+
+    searchfieldShowChannel(event: MouseEvent, channel: Channel) {
         this.openChannel(channel.channelID);
         this.searchInput = '';
         this.closeSearch();
-      } 
+        this.workspaceComponent.handleClickChannel(event);
+    }
 
     /*   showUserProfileView(user: User): void {
         console.log('Benutzerprofil anzeigen:', user);
-      }    */      
-      
-      openChannel(channelID: string): void {
+      }    */
+
+    openChannel(channelID: string): void {
         this.channelOpen = false;
         this.threadOpen = false;
         // this.channelDataService.channelID = channelID;
         this.channelDataService.updateChannelInfo(channelID);
-      
+
         setTimeout(() => {
-          this.channelOpen = true;
+            this.channelOpen = true;
         }, 0.02);
-      }
+    }
 
     closeSearch() {
         this.isInputFilled = false;
     }
 
-   /**
-   * Show/hide the workspace container with the button on the left side
-   */
-  toggleWorkspace() {
-    this.workspaceOpen = !this.workspaceOpen;
-  }
-      
+    /**
+    * Show/hide the workspace container with the button on the left side
+    */
+    toggleWorkspace() {
+        this.workspaceOpen = !this.workspaceOpen;
+    }
+
 }

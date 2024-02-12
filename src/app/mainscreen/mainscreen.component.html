@@ -21,7 +21,7 @@
 
             <div class="searchResults" [ngStyle]="{'display': isInputFilled ? 'block' : 'none'}" *ngIf="searchResults.channels.length > 0 || searchResults.users.length > 0 || searchResults.messages.length > 0">
                 <ul>
-                    <li *ngFor="let channel of searchResults.channels" (click)="searchfieldShowChannel(channel)">
+                    <li *ngFor="let channel of searchResults.channels" (click)="searchfieldShowChannel($event, channel)">
                         <span>#</span> {{ channel.channelname }}
                     </li>
                     <li *ngFor="let user of searchResults.users" (click)="searchfieldShowUser(user)">

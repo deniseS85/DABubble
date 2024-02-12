@@ -77,15 +77,18 @@ export class ChannelDataService {
   }
 
   async updateChannelInfo(channelID: string) {
-    console.log(channelID);
     this.items$ = collectionData(this.channelService.getChannelRef());
     this.items = this.items$.subscribe( (list: any) => {
       list.forEach( (channel: any) => {
-        if(channel.channelID == channelID)
-        this.channelName = channel.channelname;
-        this.channelDescription = channel.channelDescription;
-        this.channelCreator = channel.channelCreator;
-        this.channelUsers = channel.channelUsers;
+        if(channel.channelID === channelID){
+          this.channelUsers = channel.channelUsers;
+          this.channelID = channel.channelID;
+          this.channelName = channel.channelname;
+          this.channelDescription = channel.channelDescription;
+          this.channelCreator = channel.channelCreator;
+          return;
+        }
+        
       });
     });
     this.items.unsubscribe;

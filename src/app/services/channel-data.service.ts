@@ -1,4 +1,4 @@
-import { Injectable, OnInit, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 export class ChannelDataService {
   firestore: Firestore = inject(Firestore);
   channel = new Channel;
-  /*   channelInfo: Channel[] = []; */
+  channelInfo: Channel[] = [];
   channelName: string = '';
   channelCreator: string = '';
   channelDescription: string = '';
@@ -33,8 +33,6 @@ export class ChannelDataService {
       this.subscribeToChannelUpdates();
     });
   }
-
-
 
   ngOnDestroy() {
     if (this.unsubChannelUser) {
@@ -60,7 +58,8 @@ export class ChannelDataService {
       this.channelCreator = channelInfo.channelCreator;
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
-      // this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelCreator, channelInfo.channelDescription);
+      this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelCreator, channelInfo.channelDescription);
+      console.log(channelInfo.channelID);
     });
   }
 

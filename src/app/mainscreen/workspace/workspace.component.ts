@@ -513,13 +513,12 @@ export class WorkspaceComponent implements OnInit {
     const channel = this.channels.find(ch => ch.channelID === channelID);
     
     if (channel) {
-        const currentIsUserMember = this.userservice.getIsUserMember(); // Aktuellen Status speichern
+        const currentIsUserMember = this.userservice.getIsUserMember();
         const isUserMember = channel.isUserMember || false;
 
-        // Überprüfen, ob der Status geändert wurde und dann aktualisieren
         if (isUserMember !== currentIsUserMember) {
             this.userservice.setIsUserMember(isUserMember);
-            console.log(`Updated isUserMember: ${isUserMember}`);
+            console.log(`isUserMember: ${isUserMember} in ${channelID}` );
         }
 
         // Führe Aktionen aus, wenn sich der Status geändert hat

@@ -192,7 +192,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   checkIsUserMember() {
     this.userservice.getIsUserMember().subscribe((value) => {
       this.isUserMember = value;
-      console.log('channel-chat', this.isUserMember);
     });
   }
 

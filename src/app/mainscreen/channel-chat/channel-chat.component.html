@@ -8,7 +8,7 @@
                     <span *ngIf="isUserMember" class="hashtag">#</span> 
                     <mat-icon *ngIf="!isUserMember">lock_outline</mat-icon>
                     {{ this.channelDataService.channelName }}
-                    <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span>
+                    <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span> {{isUserMember}}
                     <img *ngIf="isUserMember" src="../../../assets/img/keyboard_arrow_down.png" alt="">
                 </span>
             </div>

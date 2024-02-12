@@ -12,6 +12,26 @@
         width: none;
     }
 
+    .server-container {
+        gap: 10px;
+        justify-content: space-between;
+        align-items: center;
+        display: none;
+      
+        @media(max-width: 750px) {
+          display: flex;
+        }
+      }
+      
+      .server-logo-name {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+
     .mainContainerHeader {
         display: flex;
         justify-content: space-between;

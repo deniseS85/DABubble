@@ -527,6 +527,7 @@ export class WorkspaceComponent implements OnInit {
             this.main.channelOpen = false;
             this.main.threadOpen = false;
             this.main.chatOpen = false;
+            this.main.allChatSectionsOpen = true;
             this.channelDataService.channelID = channelID;
   
             if (!this.main.allChatSectionsOpen) {

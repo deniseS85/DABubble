@@ -14,17 +14,32 @@
         border-top-right-radius: 30px;
         box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
 
+        @media(max-width: 750px){
+            border-radius: 0;
+            padding: 10px 16px;
+        }
+
         .channel-chat-header {
+
             display: flex;
             justify-content: flex-start;
             align-items: center;
             gap: 15px;
             padding: 16px 45px;
 
+            @media(max-width: 750px){
+            padding: 4px 0px;
+            }
+
             span {
                 font-size: 24px;
                 font-weight: 700;
                 padding: 6px 10px;
+
+                @media(max-width: 750px){
+                    font-size: 20px;
+                    padding: 0;
+                }
         
                 img {
                     margin-left: 10px;
@@ -51,12 +66,22 @@
         position: relative;
         width: 60px;
         height: 60px;
+
+        @media(max-width: 750px){
+            width: 50px;
+            height: 50px;
+        }
     
         .profilPic {
             width: 60px;
             height: 60px;
             object-fit: cover;
             border-radius: 100%;
+
+            @media(max-width: 750px){
+                width: 50px;
+                height: 50px;
+            }
         }
         .active-point {
             position: absolute;
@@ -75,12 +100,16 @@
         justify-content: flex-end;        
         flex: 1;      
         overflow-y: hidden;
-        margin-bottom: 20px; /* evtl. raus */
+        margin-bottom: 20px; 
         padding: 10px 40px;
         gap: 10px;
     
         &:hover{
             overflow-y: auto;                
+        }
+
+        @media(max-width: 750px){
+            padding: 0 16px
         }
 
         .chatImgAndName{            
@@ -98,7 +127,11 @@
         .chatInfoText{
             font-size: 20px; /* font-size: 16px */
             line-height: 28px;
-           /*  color: #686868; */
+            color: #686868; 
+
+            @media(max-width: 750px){
+                font-size: 16px;
+            }
 
             .namePartner{
                 color: #535AF1
@@ -115,12 +148,22 @@
             position: relative;
             width: 100px;
             height: 100px;
+
+            @media(max-width: 750px){
+                width: 88px;
+                height: 88px;
+            }
     
         .profilPic {
             width: 100px;
             height: 100px;
             object-fit: cover;
             border-radius: 100%;
+
+            @media(max-width: 750px){
+                width: 88px;
+                height: 88px;
+            }
         }
         .active-point {
             position: absolute;
@@ -153,6 +196,11 @@
             gap: 20px;
             position: relative;
             overflow: hidden;
+
+            @media(max-width: 750px){
+                width: calc(100% - 32px);
+                padding: 10px 16px 10px 16px;
+            }
             
     
             &:hover{
@@ -179,6 +227,8 @@
                 justify-content: flex-start;
                 gap: 8px;
                 position: relative;
+
+
     
                 .threadContainerAnswerInfo{
                     display: flex;
@@ -206,6 +256,12 @@
                     line-height: 25px;
                     color: #686868;
 
+                    @media(max-width: 750px){
+                        height: calc(100% - 32px);
+                        width: calc(100% - 32px);
+                        padding: 16px 10px;
+                    }
+
                     .editMessageContainerMessage{
                        overflow-y: auto;
                        font-size: 18px;
@@ -227,6 +283,10 @@
                             align-items: center;
                             gap: 32px;
 
+                            @media(max-width: 750px){
+                                gap: 16px
+                            }
+
                             .editMessageBtn{
                                 padding: 12px 25px;
                                 border: 1px solid #797EF3;
@@ -236,6 +296,18 @@
                                 font-weight: 700;
                                 line-height: 25px;
                                 cursor: pointer;
+
+                                @media(max-width: 750px){
+                                    padding: 8px 16px;
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                }
+
+                                @media(max-width: 450px){
+                                    padding: 4px 8px;
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                }
                             }
 
                             .saveBtn{
@@ -268,6 +340,10 @@
         min-height: 145px;
         padding: 10px;
         position: relative;
+
+        @media(max-width:750px){
+            margin: 10px 16px 45px 16px
+        }
 
         .footer-line-icons {
             cursor: pointer;
@@ -387,11 +463,13 @@
 }
 
 .threadContainerTextLeft{
+    display: inline-block;
     padding: 15px;
     border-radius: 0 20px 20px 20px;
     background-color: #ECEEFE;
     font-size: 18px;
     line-height: 24.5px;
+    word-break: break-word;
 }
 
 .threadContainerTextReactions{

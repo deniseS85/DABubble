@@ -517,34 +517,23 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
-
   leaveChannel() {
-
-    const newusers: any = this.channelDataService.channelUsers;
-    newusers.forEach((user: any) => {
-      if (user.id == this.userID) {
-        const index = newusers.indexOf(user);
-        newusers.splice(index, 1)
-      } else {
-        return
-      }
-    })
-
-    this.updateChannelUsers(newusers);
+    const currentUserIndex = this.channelDataService.channelUsers.indexOf(this.userID);
+  
+    if (currentUserIndex !== -1) {
+      const newUsers = [...this.channelDataService.channelUsers];
+      newUsers.splice(currentUserIndex, 1);
+      this.updateChannelUsers(newUsers);
+      window.location.reload();
+    }
   }
-
-
-  updateChannelUsersIDS(newIDs: string) {
-    this.updateChannel(this.channelDataService.channelID, {
-      channelUsersID: newIDs
-    });
-  }
-
-  updateChannelUsers(newUsers: any) {
+  
+  updateChannelUsers(newUsers: string[]) {
     this.updateChannel(this.channelDataService.channelID, {
       channelUsers: newUsers
     });
   }
+ 
 
   saveNewDescription() {
     this.updateChannel(this.channelDataService.channelID, {

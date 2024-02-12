@@ -9,9 +9,8 @@ import { MainscreenComponent } from '../mainscreen.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChatService } from '../../services/chat.service';
 import { SearchService } from '../../services/search-service.service';
-import { Channel } from '../../models/channel.class';
+import { Channel } from '../../models/channel.interface';
 import { UserService } from '../../services/user.service';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-workspace',
@@ -224,8 +223,6 @@ export class WorkspaceComponent implements OnInit {
       this.channels = querySnapshot.docs.map((doc: any) => {
         const channelData = doc.data();
         const channelUsers = channelData.channelUsers;
-        console.log('UserID:', this.userID);
-  console.log('ChannelUsers:', channelUsers);
         const isUserMember = channelUsers.includes(this.userID);
   
         return { ...channelData, isUserMember };
@@ -264,7 +261,7 @@ export class WorkspaceComponent implements OnInit {
    */
   handleClickChannel(event: MouseEvent, channel: Channel): void {
     const target = event.target as HTMLElement;
-
+  
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
     this.elRef.nativeElement
@@ -275,7 +272,7 @@ export class WorkspaceComponent implements OnInit {
     this.channelDataService.changeSelectedChannel(
       channel.channelname || '',
       channel.channelCreator || '',
-      channel.channelDescription || '',
+      channel.channelDescription || ''
     );
   
     this.openChannel(channel.channelID);
@@ -514,26 +511,34 @@ export class WorkspaceComponent implements OnInit {
    */
   openChannel(channelID: string) {
     const channel = this.channels.find(ch => ch.channelID === channelID);
-  
+    
     if (channel) {
-      this.userservice.getIsUserMember().pipe(take(1)).subscribe(isUserMember => {
-        if (isUserMember) {
-          this.main.channelOpen = false;
-          this.main.threadOpen = false;
-          this.main.chatOpen = false;
-          this.channelDataService.channelID = channelID;
-  
-          if (!this.main.allChatSectionsOpen) {
-            this.main.workspaceOpen = false;
-          }
-  
-          setTimeout(() => {
-            this.main.channelOpen = true;
-          }, 50);
+        const currentIsUserMember = this.userservice.getIsUserMember(); // Aktuellen Status speichern
+        const isUserMember = channel.isUserMember || false;
+
+        // Überprüfen, ob der Status geändert wurde und dann aktualisieren
+        if (isUserMember !== currentIsUserMember) {
+            this.userservice.setIsUserMember(isUserMember);
+            console.log(`Updated isUserMember: ${isUserMember}`);
         }
-      });
+
+        // Führe Aktionen aus, wenn sich der Status geändert hat
+        if (isUserMember) {
+            this.main.channelOpen = false;
+            this.main.threadOpen = false;
+            this.main.chatOpen = false;
+            this.channelDataService.channelID = channelID;
+  
+            if (!this.main.allChatSectionsOpen) {
+                this.main.workspaceOpen = false;
+            }
+
+            setTimeout(() => {
+                this.main.channelOpen = true;
+            }, 50);
+        }
     }
-  }
+}
 
   /**
    * lädt nur die Personen mit denen ich chatte

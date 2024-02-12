@@ -530,7 +530,7 @@ export class WorkspaceComponent implements OnInit {
             this.main.allChatSectionsOpen = true;
             this.channelDataService.channelID = channelID;
   
-            if (!this.main.allChatSectionsOpen) {
+            if (this.isScreenSmall) {
                 this.main.workspaceOpen = false;
             }
 

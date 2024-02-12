@@ -1,11 +1,11 @@
 <div class="mainContainer">
     <div class="mainContainerHeader" (click)="closeSearch()">
-        <div class="mainContainerHeaderLogo">
+        <div class="mainContainerHeaderLogo" *ngIf="!allChatSectionsOpen || screenWidth > 750">
             <img src="./assets/img/logo.png" alt="">
             <span>DABubble</span>
         </div>
 
-        <div class="server-container">
+        <div (click)="openWorkspaceMobile()" class="server-container" *ngIf="allChatSectionsOpen && screenWidth < 750">
             <div>
                 <mat-icon>chevron_left</mat-icon>
             </div>

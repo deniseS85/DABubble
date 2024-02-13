@@ -84,7 +84,7 @@ export class WorkspaceComponent implements OnInit {
     public chatService: ChatService,
     public channelDataService: ChannelDataService,
     private searchservice: SearchService,
-    private userservice: UserService
+    public userservice: UserService
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
@@ -275,6 +275,16 @@ export class WorkspaceComponent implements OnInit {
       channel.channelCreator || '',
       channel.channelDescription || ''
     );
+
+    this.userservice.getIsUserMember().subscribe(isUserMember => {
+      // Hier den Code hinzufügen, um auf Änderungen im isUserMember-Status zu reagieren
+      console.log('Aktueller isUserMember-Status:', isUserMember);
+  
+      // Beispiel: Update der Ansicht basierend auf isUserMember-Status
+      if (!isUserMember) {
+        // Implementiere Logik für den Fall, wenn der Benutzer kein Mitglied ist
+      }
+    });
   
     this.openChannel(channel.channelID);
     this.main.allChatSectionsOpen = true; 
@@ -522,7 +532,7 @@ export class WorkspaceComponent implements OnInit {
     if (channel) {
         const currentIsUserMember = this.userservice.getIsUserMember();
         const isUserMember = channel.isUserMember || false;
-        console.log(isUserMember)
+      /*   console.log(isUserMember); */
 
         if (isUserMember !== currentIsUserMember) {
             this.userservice.setIsUserMember(isUserMember);

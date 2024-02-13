@@ -8,9 +8,11 @@
     min-height: 145px;
     padding: 10px;
     position: relative;
-    height: 147px;
     
-    
+    @media (max-width: 750px) {
+        margin: 10px 20px 20px 20px;
+        height: 100px;
+    }
 }
 
 .textarea {
@@ -20,7 +22,7 @@
     outline: none;
     resize: none;
     padding: 12px 0 12px 25px;
-    font-size: 16px;
+    font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
     box-sizing: border-box;
 
 }

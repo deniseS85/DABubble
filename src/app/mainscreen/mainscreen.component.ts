@@ -112,16 +112,16 @@ export class MainscreenComponent implements OnInit {
     }
 
     checkMobileScreen() {
-            if(window.innerWidth < 750) {
-                this.isMobileScreen = true;
-                this.allChatSectionsOpen = false;
-            } else {
-                this.isMobileScreen = false;
-                this.allChatSectionsOpen = true;
-                if(this.threadOpen) {
-                    this.channelOpen = true;
-                }
+        if (window.innerWidth < 750) {
+            this.isMobileScreen = true;
+            this.allChatSectionsOpen = false;
+        } else {
+            this.isMobileScreen = false;
+            this.allChatSectionsOpen = true;
+            if (this.threadOpen) {
+                this.channelOpen = true;
             }
+        }
     }
 
 
@@ -444,7 +444,9 @@ export class MainscreenComponent implements OnInit {
         this.openChannel(channel.channelID);
         this.searchInput = '';
         this.closeSearch();
-        this.workspaceComponent.handleClickChannel(event, channel);
+        if (this.workspaceComponent) {
+            this.workspaceComponent.handleClickChannel(event, channel);
+        }
     }
 
     /*   showUserProfileView(user: User): void {
@@ -475,6 +477,6 @@ export class MainscreenComponent implements OnInit {
     openWorkspaceMobile() {
         this.allChatSectionsOpen = false;
         this.workspaceOpen = true;
-    }    
+    }
 
 }

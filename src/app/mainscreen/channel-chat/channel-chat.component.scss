@@ -178,11 +178,21 @@
     width: 60px;
     height: 60px;
 
+    @media (max-width: 750px) {
+        width: 40px;
+        height: 40px;
+    }
+
     .profile-img {
         width: 60px;
         height: 60px;
         object-fit: cover;
         border-radius: 100%;
+
+        @media (max-width: 750px) {
+            width: 40px;
+            height: 40px;
+        }
     }
 
     .active-point {

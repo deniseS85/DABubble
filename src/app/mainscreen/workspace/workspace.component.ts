@@ -195,7 +195,7 @@ export class WorkspaceComponent implements OnInit {
         this.user.id = this.userID;
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   /**
@@ -285,16 +285,45 @@ export class WorkspaceComponent implements OnInit {
   // }
 
 
-  handleClickChannel(event: MouseEvent, channel: Channel): void {
+  handleClickChannel(event: MouseEvent, channel: Channel, component: string): void {
     let target = event.target as HTMLElement;
-
     this.selectedChannel(target);
+
+    if (component === 'workspace') {
+      this.markSelectedChannel(target);
+    } else if (component === 'mainscreen') {
+      this.markSelectedChannelByName(channel);
+    }
+
+    this.updateChannelDataAndOpen(channel);
+  }
+
+  markSelectedChannel(target: HTMLElement): void {
     const selectableElement = this.findParentElement(target);
+    this.clearAllSelected();
+    this.renderer.addClass(selectableElement, 'selected');
+  }
+
+  markSelectedChannelByName(channel: Channel): void {
+    if (channel.channelname) {
+      const channelName = channel.channelname.trim();
+      const selectableElements = this.elRef.nativeElement.querySelectorAll('.selectable');
+      selectableElements.forEach((element: HTMLElement) => {
+        if (element.textContent && element.textContent.trim() === channelName) {
+          this.clearAllSelected();
+          this.renderer.addClass(element, 'selected');
+        }
+      });
+    }
+  }
+
+  clearAllSelected(): void {
     this.elRef.nativeElement
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
-    this.renderer.addClass(selectableElement, 'selected');
+  }
 
+  updateChannelDataAndOpen(channel: Channel): void {
     this.channelDataService.changeSelectedChannel(
       channel.channelname || '',
       channel.channelCreator || '',
@@ -306,11 +335,9 @@ export class WorkspaceComponent implements OnInit {
     if (this.isScreenSmall) {
       this.main.workspaceOpen = false;
     }
-
   }
 
 
-  
 
 
   /**

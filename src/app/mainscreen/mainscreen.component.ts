@@ -445,7 +445,7 @@ export class MainscreenComponent implements OnInit {
         this.searchInput = '';
         this.closeSearch();
         if (this.workspaceComponent) {
-            this.workspaceComponent.handleClickChannel(event, channel);
+            this.workspaceComponent.handleClickChannel(event, channel, 'mainscreen');
         }
     }
 

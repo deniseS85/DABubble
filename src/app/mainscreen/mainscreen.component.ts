@@ -491,6 +491,7 @@ export class MainscreenComponent implements OnInit {
         this.channelOpen = false;
         this.threadOpen = false;
         this.channelDataService.updateChannelInfo(channelID);
+
         setTimeout(() => {
             this.channelOpen = true;
         }, 0.02);
@@ -507,7 +508,7 @@ export class MainscreenComponent implements OnInit {
         this.workspaceOpen = !this.workspaceOpen;
         if(this.workspaceOpen && (window.innerWidth < 1050)){
             this.closeChannel = true;
-        } else {this.closeChannel = false}
+        } 
     }
 
     openWorkspaceMobile() {

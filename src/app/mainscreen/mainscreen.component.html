@@ -167,7 +167,7 @@
         <app-workspace 
             *ngIf="workspaceOpen"
             [@leftRightAnimation]
-
+            
             >
         </app-workspace>
         <app-chat-container 
@@ -177,7 +177,7 @@
         <app-channel-chat 
             *ngIf="(channelOpen && allChatSectionsOpen) || (channelOpen && !workspaceOpen)" 
             [userProfileView]="userProfileView"
-            [ngClass]="{'d-none': (threadOpen && isMobileScreen) || (threadOpen && onlyThread) || closeChannel}"
+            [ngClass]="{'d-none': (threadOpen && isMobileScreen) || (threadOpen && onlyThread)}"
             >
         </app-channel-chat>
         <app-thread

@@ -86,6 +86,7 @@ export class WorkspaceComponent implements OnInit {
     private searchservice: SearchService,
     private userservice: UserService
   ) {
+
     this.userID = this.route.snapshot.paramMap.get('id');
     this.userList = this.getUserfromFirebase();
     this.loadChannels();
@@ -519,7 +520,7 @@ export class WorkspaceComponent implements OnInit {
    */
   openChannel(channelID: string) {
     const channel = this.channels.find(ch => ch.channelID === channelID);
-    
+
     if (channel) {
       const currentIsUserMember = this.userservice.getIsUserMember();
       const isUserMember = channel.isUserMember || false;

@@ -548,6 +548,7 @@
             @media(max-width: 1500px) {
                 position: absolute;
                 right: 0;
+                bottom: 0;
                 z-index: 100;
             }
 
@@ -574,6 +575,8 @@
         app-workspace {
             @media(max-width: 1200px) {
                 position: absolute;
+                top: 0;
+                bottom: 0;
                 z-index: 100;
             }
 

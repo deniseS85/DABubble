@@ -79,8 +79,8 @@
             position: absolute;
             width: unset !important;
             top: 120px;
-            left: 30px;
-            right: 30px;
+            left: 20px;
+            right: 20px;
             border: 1px solid #797EF340 !important;
             z-index: 1;
         }
@@ -542,8 +542,12 @@
         /*  flex: 1; */
         // overflow: hidden;
         app-thread {
-            width: 25.8%;
+            // width: 25.8%;
             height: 100%;
+
+            @media(max-width: 1200px) {
+                width: 100% !important;
+            }
 
             @media(max-width: 750px) {
                 width: 100% !important;
@@ -566,6 +570,11 @@
         }
 
         app-workspace {
+            @media(max-width: 1400px) {
+                position: absolute;
+                z-index: 100;
+            }
+
             @media(max-width: 750px) {
                 width: 100% !important;
             }

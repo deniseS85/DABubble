@@ -439,6 +439,7 @@ export class MainscreenComponent implements OnInit {
         const foundChannel: Channel =  allChannels.find((channel: Channel) => channel.channelID === channelID) 
         if (this.workspaceComponent) {
             this.workspaceComponent.handleClickChannel(null, foundChannel);
+            console.log('super');
         } else {
             console.error('Workspace-Komponente ist nicht definiert.');
         }    }

@@ -424,39 +424,36 @@ export class MainscreenComponent implements OnInit {
     async searchfieldShowMessage(message: any): Promise<void> {
         const messageID = message.messageID;
         const allMessages = await this.channelservice.getAllMessages();
-    
+
         const foundMessage = allMessages.find((msg: any) => msg.messageID === messageID);
-    
+
         if (foundMessage && foundMessage.channelID) {
             this.findChannelFromMessage(foundMessage.channelID);
         } else {
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
         }
     }
-    
-   async findChannelFromMessage(channelID: string): Promise<void> {
-        const allChannels = await this.channelservice.getAllChannels();
-        const foundChannel: Channel =  allChannels.find((channel: Channel) => channel.channelID === channelID) 
-        if (this.workspaceComponent) {
-            this.workspaceComponent.handleClickChannel(null, foundChannel);
-            console.log('super');
-        } else {
-            console.error('Workspace-Komponente ist nicht definiert.');
-        }    }
-    
 
+    async findChannelFromMessage(channelID: string): Promise<void> {
+        const allChannels = await this.channelservice.getAllChannels();
+        const foundChannel: Channel = allChannels.find((channel: Channel) => channel.channelID === channelID)
+        this.searchfieldShowChannel(null, foundChannel);
+    }
 
     // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen
     /*  setUserProfileView(user: User): void {
        this.userProfileView = user;
      } */
 
-    searchfieldShowChannel(event: MouseEvent, channel: Channel) {
+    searchfieldShowChannel(event: MouseEvent | null, channel: Channel) {
         this.openChannel(channel.channelID);
         this.searchInput = '';
         this.closeSearch();
         if (this.workspaceComponent) {
             this.workspaceComponent.handleClickChannel(event, channel);
+            console.log('test klappt');
+        } else {
+            console.log('klappt nicht')
         }
     }
 

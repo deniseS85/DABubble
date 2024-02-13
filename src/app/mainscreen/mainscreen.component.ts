@@ -400,9 +400,6 @@ export class MainscreenComponent implements OnInit {
 
 
 
-
-
-
     /* erster user directMessage, von chat neuer user suchen, neuer chat öffnet sich nicht */
     searchfieldShowUser(user: User): void {
         const dialogRef = this.dialog.open(UserProfileCardComponent, {
@@ -426,7 +423,10 @@ export class MainscreenComponent implements OnInit {
 
 
 
-    searchfieldShowMessage(message: any) { }
+    searchfieldShowMessage(message: any) {
+        console.log(message);
+        console.log(message.messageID);
+    }
 
 
 

@@ -305,11 +305,6 @@ export class WorkspaceComponent implements OnInit {
       channel.channelDescription || ''
     );
 
-<<<<<<< HEAD
-    
-  
-=======
->>>>>>> 2624a688baeab636fa8451a7ed1888d6dac41858
     this.openChannel(channel.channelID);
     this.main.allChatSectionsOpen = true;
     if (this.isScreenSmall) {
@@ -558,11 +553,9 @@ export class WorkspaceComponent implements OnInit {
     if (channel) {
       const currentIsUserMember = this.userservice.getIsUserMember();
       const isUserMember = channel.isUserMember || false;
-      console.log(isUserMember)
 
       if (isUserMember !== currentIsUserMember) {
         this.userservice.setIsUserMember(isUserMember);
-        /*   console.log(`isUserMember: ${isUserMember} in ${channelID}` ); */
       }
 
       if (isUserMember) {

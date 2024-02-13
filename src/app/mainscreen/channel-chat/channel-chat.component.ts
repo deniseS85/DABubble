@@ -8,7 +8,7 @@ import { Channel } from "../../models/channel.class";
 import { ActivatedRoute } from '@angular/router';
 import { ChannelDataService } from '../../services/channel-data.service';
 import { DatePipe } from '@angular/common';
-import { deleteDoc, getDocs, query } from 'firebase/firestore';
+import { deleteDoc, getDocs, query, where } from 'firebase/firestore';
 import { MainscreenComponent } from '../mainscreen.component';
 import { ReactionsService } from '../../services/reactions.service';
 import { Subscription } from 'rxjs';
@@ -225,10 +225,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     let userNameWOSpace = this.user.firstname + this.user.lastname;
     if (userFullName == this.channelDataService.channelCreator || userNameWOSpace == this.channelDataService.channelCreator) {
       this.isChannelCreator = true;
+    
     } else {
       this.isChannelCreator = false;
     }
   }
+
+  
 
   /**
    * Retrieves all user information from the database.

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot, Unsubscribe, addDoc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { addDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 
@@ -166,8 +166,4 @@ export class ChannelService {
       return null;
     }
   }
-
-
 }
-
-

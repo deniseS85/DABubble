@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, doc, getDoc, getDocs } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../models/user.class';
@@ -16,7 +16,7 @@ export class UserService {
     private userDataSubject = new BehaviorSubject<any>({});
     userData$ = this.userDataSubject.asObservable();
     collectionUserRef = collection(this.firestore, 'users');
-    private isUserMemberSubject = new BehaviorSubject<boolean>(false);
+    private isUserMemberSubject = new BehaviorSubject<boolean | undefined>(undefined);
 
     constructor(private authservice: AuthService, private route: ActivatedRoute) {}
 
@@ -78,10 +78,10 @@ export class UserService {
 
     setIsUserMember(status: boolean): void {
         this.isUserMemberSubject.next(status);
-        console.log(status);
+        console.log(status)
     }
     
-    getIsUserMember(): Observable<boolean> {
-        return this.isUserMemberSubject.asObservable();
-      }
+    getIsUserMember(): BehaviorSubject<boolean | undefined> {
+        return this.isUserMemberSubject;
+    }
 }

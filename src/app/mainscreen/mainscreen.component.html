@@ -14,13 +14,14 @@
             </div>
           </div>
 
-        <div class="searchfield-container">
+        <div class="searchfield-container" 
+            [ngClass]="{
+                'searchfield-container-mobile-view': isMobileScreen && workspaceOpen, 
+                'd-none': isMobileScreen && !workspaceOpen
+            }">
             <input type="text" placeholder="Code learning durchsuchen" id="headerInput" [(ngModel)]="searchInput"
                 (input)="search()" autocomplete="off"
-                [ngClass]="{
-                    'searchfield-container-mobile-view': isMobileScreen && workspaceOpen, 
-                    'd-none': isMobileScreen && !workspaceOpen
-                    }"
+                
                 >
 
             <div class="searchResults" [ngStyle]="{'display': isInputFilled ? 'block' : 'none'}" *ngIf="searchResults.channels.length > 0 || searchResults.users.length > 0 || searchResults.messages.length > 0">

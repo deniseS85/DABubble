@@ -40,7 +40,7 @@
   padding: 8px;
   margin-right: -10px;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: clamp(1.125rem, 1.0714rem + 0.2679vw, 1.5rem);
   z-index: 10;
   &:hover {
     background-color: #eceefe;
@@ -53,7 +53,7 @@
     color: white;
     position: absolute;
     bottom: 40px;
-    right: 30px;
+    right: 40px;
     &:hover {
       background-color: #797ef3;
       color: white;
@@ -82,13 +82,13 @@ mat-expansion-panel-header {
 
 .channels-title {
   gap: 10px;
-  font-size: 20px;
+  font-size: clamp(1rem, 0.8824rem + 0.5882vw, 1.25rem);
   font-weight: 700;
 }
 
 .channels-list {
   margin-top: 15px;
-  font-size: 18px;
+  font-size: clamp(0.875rem, 0.7574rem + 0.5882vw, 1.125rem);
   font-weight: 400;
 }
 
@@ -111,7 +111,7 @@ mat-expansion-panel-header {
 }
 
 .hashtag {
-  font-size: 24px;
+  font-size: clamp(1.25rem, 1.1324rem + 0.5882vw, 1.5rem);
   font-weight: 600;
   height: 24px;
   width: 24px;
@@ -124,7 +124,7 @@ mat-expansion-panel-header {
   display: flex;
   align-items: center;
   gap: 20px;
-  font-size: 18px;
+  font-size: clamp(0.875rem, 0.7574rem + 0.5882vw, 1.125rem);
   margin: 30px 0 15px 20px;
   cursor: pointer;
 
@@ -148,7 +148,7 @@ mat-expansion-panel-header {
   height: 20px;
   margin-top: 10px;
   margin-right: -5px;
-  font-size: 30px;
+  font-size: clamp(1.625rem, 1.5074rem + 0.5882vw, 1.875rem);
   padding: 5px;
   border-radius: 100%;
 
@@ -191,7 +191,7 @@ mat-expansion-panel-header {
 
 .contacts-list {
   margin-top: 15px;
-  font-size: 18px;
+  font-size: clamp(0.875rem, 0.7574rem + 0.5882vw, 1.125rem);
   font-weight: 400;
   div {
     display: flex;
@@ -237,11 +237,11 @@ mat-expansion-panel-header {
   border-radius: 30px;
   padding: 40px;
   min-width: 600px;
-  font-size: 18px;
+  font-size: clamp(0.875rem, 0.7574rem + 0.5882vw, 1.125rem);
 
   input {
     cursor: pointer;
-    font-size: 18px;
+    font-size: clamp(0.875rem, 0.7574rem + 0.5882vw, 1.125rem);
   }
 
   button {
@@ -273,7 +273,7 @@ mat-expansion-panel-header {
 .channel-create-title {
   display: flex;
   justify-content: space-between;
-  font-size: 24px;
+  font-size: clamp(1.25rem, 1.1324rem + 0.5882vw, 1.5rem);
   font-weight: 700;
 }
 
@@ -326,7 +326,7 @@ mat-expansion-panel-header {
 
 .channel-create-input-hashtag {
   position: absolute;
-  font-size: 23px;
+  font-size: clamp(1.1875rem, 1.0699rem + 0.5882vw, 1.4375rem);
   top: 17px;
   left: 20px;
   color: #686868;
@@ -440,7 +440,7 @@ mat-expansion-panel-header {
   }
 
   mat-icon {
-    font-size: 17px;
+    font-size: clamp(0.8125rem, 0.6949rem + 0.5882vw, 1.0625rem);
     font-weight: 600;
     vertical-align: -webkit-baseline-middle;
     cursor: pointer;
@@ -455,4 +455,8 @@ mat-expansion-panel-header {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.locked-channel-icon {
+  font-size: clamp(1.1875rem, 1.0404rem + 0.7353vw, 1.5rem);
 }

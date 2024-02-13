@@ -14,6 +14,9 @@ export class ThreadsHeaderComponent {
   constructor(private main: MainscreenComponent){}
 
   closeThread() {
-    this.main.threadOpen = false;    
+    this.main.threadOpen = false;
+    if(this.main.isMobileScreen) {
+      this.main.channelOpen = true;
+    }
   }
 }

@@ -421,12 +421,26 @@ export class MainscreenComponent implements OnInit {
     }
 
 
-
-
-    searchfieldShowMessage(message: any) {
+    async searchfieldShowMessage(message: any): Promise<void> {
+        const messageID = message.messageID;
+        const allMessages = await this.channelservice.getAllMessages();
+    
+        const index = (allMessages).findIndex((msg: any) => msg.messageID === messageID);
+    
+        if (index !== -1) {
+            const channelID = allMessages[index].channelID;
+            this.scrollToMessage(channelID, index);
+        } else {
+            // Nachricht nicht gefunden
+            console.error('Nachricht mit der ID ' + messageID + ' wurde nicht gefunden.');
+        }
         console.log(message);
-        console.log(message.messageID);
     }
+    
+    scrollToMessage(channelID: string, messageIndex: number): void {
+       console.log(channelID);
+    }
+    
 
 
 

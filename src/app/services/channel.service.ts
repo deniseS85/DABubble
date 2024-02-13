@@ -118,7 +118,6 @@ export class ChannelService {
         allMessages.push(doc.data());
       });
     }
-
     return allMessages;
   }
 

@@ -521,11 +521,9 @@ export class WorkspaceComponent implements OnInit {
     if (channel) {
       const currentIsUserMember = this.userservice.getIsUserMember();
       const isUserMember = channel.isUserMember || false;
-      console.log(isUserMember)
 
       if (isUserMember !== currentIsUserMember) {
         this.userservice.setIsUserMember(isUserMember);
-        /*   console.log(`isUserMember: ${isUserMember} in ${channelID}` ); */
       }
 
       if (isUserMember) {

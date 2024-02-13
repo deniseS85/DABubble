@@ -8,7 +8,7 @@
                     <span *ngIf="isUserMember" class="hashtag">#</span> 
                     <mat-icon *ngIf="!isUserMember">lock_outline</mat-icon>
                     {{ this.channelDataService.channelName }}
-                    <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span> {{isUserMember}}
+                    <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span>
                     <img *ngIf="isUserMember" src="../../../assets/img/keyboard_arrow_down.png" alt="">
                 </span>
             </div>
@@ -166,6 +166,7 @@
             <h3>Wende dich an den Channelcreator, um dich einzuladen.</h3>
             <div class="seperator"></div>
             <div>{{this.channelDataService.channelCreator}}</div>
+            {{this.channelDataService.channelUsers}}
            
         </div>
     </div>

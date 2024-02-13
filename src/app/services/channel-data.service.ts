@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
-import { Observable, Subject, Subscription, map } from "rxjs";
+import { BehaviorSubject, Observable, Subject, Subscription, map } from "rxjs";
 import { query, getDocs, collection, doc, DocumentReference, DocumentData, QuerySnapshot, CollectionReference } from 'firebase/firestore';
 import { AuthService } from './auth.service';
 
@@ -24,6 +24,8 @@ export class ChannelDataService {
   unsubChannelUser: Unsubscribe | undefined;
   items$: Observable<(DocumentData | (DocumentData & {}))[]> | undefined;
   items: Subscription | undefined;
+  private isUserMemberSubject = new BehaviorSubject<boolean | undefined>(undefined);
+  isUserMember$ = this.isUserMemberSubject.asObservable();
 
 
   constructor(
@@ -91,5 +93,6 @@ export class ChannelDataService {
     });
     this.items.unsubscribe;
   }
+  
 
 }

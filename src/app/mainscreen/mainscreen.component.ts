@@ -425,28 +425,24 @@ export class MainscreenComponent implements OnInit {
         const messageID = message.messageID;
         const allMessages = await this.channelservice.getAllMessages();
     
-        const index = (allMessages).findIndex((msg: any) => msg.messageID === messageID);
+        const foundMessage = allMessages.find((msg: any) => msg.messageID === messageID);
     
-        if (index !== -1) {
-            const channelID = allMessages[index].channelID;
-            this.scrollToMessage(channelID, index);
+        if (foundMessage && foundMessage.channelID) {
+            this.findChannelFromMessage(foundMessage.channelID);
         } else {
-            // Nachricht nicht gefunden
-            console.error('Nachricht mit der ID ' + messageID + ' wurde nicht gefunden.');
+            console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
         }
-        console.log(message);
     }
     
-    scrollToMessage(channelID: string, messageIndex: number): void {
-       console.log(channelID);
-    }
+   async findChannelFromMessage(channelID: string): Promise<void> {
+        const allChannels = await this.channelservice.getAllChannels();
+        const foundChannel: Channel =  allChannels.find((channel: Channel) => channel.channelID === channelID) 
+        if (this.workspaceComponent) {
+            this.workspaceComponent.handleClickChannel(null, foundChannel);
+        } else {
+            console.error('Workspace-Komponente ist nicht definiert.');
+        }    }
     
-
-
-
-
-
-
 
 
     // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen

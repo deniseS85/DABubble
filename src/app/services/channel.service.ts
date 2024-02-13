@@ -115,7 +115,9 @@ export class ChannelService {
       const querySnapshot = await getDocs(messagesRef);
 
       querySnapshot.forEach((doc) => {
-        allMessages.push(doc.data());
+        const messageData = doc.data();
+        messageData['channelID'] = channel.channelID;
+        allMessages.push(messageData);
       });
     }
     return allMessages;

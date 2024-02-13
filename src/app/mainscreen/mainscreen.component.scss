@@ -65,7 +65,7 @@
             padding: 12px 0 12px 25px;
             background-image: url('../../assets/img/search.png');
             background-repeat: no-repeat;
-            background-position-x: 97%;
+            background-position-x: calc(100% - 25px);
             background-position-y: center;
             background-size: clamp(0.9375rem, 0.7559rem + 0.387vw, 1.375rem);
             font-size: clamp(0.9375rem, 0.8078rem + 0.2764vw, 1.25rem);
@@ -73,10 +73,16 @@
             &::placeholder {
                 font-size: clamp(0.9375rem, 0.8078rem + 0.2764vw, 1.25rem);
             }
+        }
 
-            @media only screen and (max-width: 750px) {
-                display: none;
-            }
+        .searchfield-container-mobile-view {
+            position: absolute;
+            width: unset !important;
+            top: 120px;
+            left: 30px;
+            right: 30px;
+            border: 1px solid #797EF340 !important;
+            z-index: 1;
         }
 
         .mainContainerHeaderProfil {

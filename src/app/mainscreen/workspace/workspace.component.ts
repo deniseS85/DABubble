@@ -195,7 +195,7 @@ export class WorkspaceComponent implements OnInit {
         this.user.id = this.userID;
         this.userFullName = `${this.user.firstname} ${this.user.lastname}`;
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   /**
@@ -217,18 +217,18 @@ export class WorkspaceComponent implements OnInit {
    */
   async loadChannels() {
     const queryAllChannels = query(this.channelService.collectionRef);
-    
+
     try {
       const querySnapshot = await getDocs(queryAllChannels);
-  
+
       this.channels = querySnapshot.docs.map((doc: any) => {
         const channelData = doc.data();
         const channelUsers = channelData.channelUsers;
         const isUserMember = channelUsers.includes(this.userID);
-  
+
         return { ...channelData, isUserMember };
       });
-  
+
       if (!this.selectedChannelId && this.channels.length > 0) {
         this.selectedChannelId = this.channels[0].channelID;
         this.openAndChangeChannel();
@@ -239,14 +239,14 @@ export class WorkspaceComponent implements OnInit {
   }
 
   private openAndChangeChannel(): void {
-    
+
     if (this.selectedChannelId) {
       this.openChannel(this.selectedChannelId);
       const selectedElement = this.elRef.nativeElement.querySelector(`.selectable[data-channel-id="${this.selectedChannelId}"]`);
       if (selectedElement) {
         selectedElement.classList.add('selected');
       }
-  
+
       this.channelDataService.changeSelectedChannel(
         this.channels.find(channel => channel.channelID === this.selectedChannelId)?.channelname || '',
         this.channels.find(channel => channel.channelID === this.selectedChannelId)?.channelCreator || '',
@@ -254,52 +254,71 @@ export class WorkspaceComponent implements OnInit {
       );
     }
   }
-  
+
 
   /**
    * Handles the click event on selectable elements. Removes the class "selected" 
    * from all other elements and sets this class to clicked elements
    */
-  handleClickChannel(event: MouseEvent, channel: Channel): void {
+  handleClickChannel(event: MouseEvent, channel: Channel, component: string): void {
     let target = event.target as HTMLElement;
-  
     this.selectedChannel(target);
+
+    if (component === 'workspace') {
+      this.markSelectedChannel(target);
+    } else if (component === 'mainscreen') {
+      this.markSelectedChannelByName(channel);
+    }
+
+    this.updateChannelDataAndOpen(channel);
+  }
+
+  markSelectedChannel(target: HTMLElement): void {
     const selectableElement = this.findParentElement(target);
+    this.clearAllSelected();
+    this.renderer.addClass(selectableElement, 'selected');
+  }
+
+  markSelectedChannelByName(channel: Channel): void {
+    if (channel.channelname) {
+      const channelName = channel.channelname.trim();
+      const selectableElements = this.elRef.nativeElement.querySelectorAll('.selectable');
+      selectableElements.forEach((element: HTMLElement) => {
+        if (element.textContent && element.textContent.trim() === channelName) {
+          this.clearAllSelected();
+          this.renderer.addClass(element, 'selected');
+        }
+      });
+    }
+  }
+
+  clearAllSelected(): void {
     this.elRef.nativeElement
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
-    this.renderer.addClass(selectableElement, 'selected');
-  
+  }
+
+  updateChannelDataAndOpen(channel: Channel): void {
     this.channelDataService.changeSelectedChannel(
       channel.channelname || '',
       channel.channelCreator || '',
       channel.channelDescription || ''
     );
 
+<<<<<<< HEAD
     
   
+=======
+>>>>>>> 2624a688baeab636fa8451a7ed1888d6dac41858
     this.openChannel(channel.channelID);
-    this.main.allChatSectionsOpen = true; 
+    this.main.allChatSectionsOpen = true;
     if (this.isScreenSmall) {
       this.main.workspaceOpen = false;
     }
-
   }
 
 
-  // if (channel.channelname) {
-  //   const selectableElements = this.elRef.nativeElement.querySelectorAll('.selectable');
-  //   selectableElements.forEach((element: HTMLElement) => {
-  //     if (element.textContent && element.textContent.trim() === channel.channelname.trim()) {
-  //       this.selectedChannel(target);
-  //       const selectableElement = this.findParentElement(target);
-  //       this.elRef.nativeElement
-  //         .querySelectorAll('.selectable')
-  //         .forEach((element: HTMLElement) => element.classList.remove('selected'));
-  //       this.renderer.addClass(selectableElement, 'selected');
-  //     }
-  //   });
-  // } 
+
 
   /**
    * Handles the click event on selectable elements. Removes the class "selected" 
@@ -328,9 +347,9 @@ export class WorkspaceComponent implements OnInit {
     }, 50);
   }
 
-    setChatUserID(userID: string){
-      this.chatService.userID = userID;
-    }
+  setChatUserID(userID: string) {
+    this.chatService.userID = userID;
+  }
 
 
   /**
@@ -340,14 +359,14 @@ export class WorkspaceComponent implements OnInit {
     const selectedChannelName = (target as HTMLSpanElement).textContent;
 
     if (selectedChannelName) {
-        const cleanedChannelName = selectedChannelName.startsWith('#') ? selectedChannelName.substring(1) : selectedChannelName;
-        const selectedChannel = this.channels.find(channel => channel.channelname === cleanedChannelName);
+      const cleanedChannelName = selectedChannelName.startsWith('#') ? selectedChannelName.substring(1) : selectedChannelName;
+      const selectedChannel = this.channels.find(channel => channel.channelname === cleanedChannelName);
 
-        if (selectedChannel) {
-            this.channelDataService.updateChannelInfo(selectedChannel.channelID);
-        }
+      if (selectedChannel) {
+        this.channelDataService.updateChannelInfo(selectedChannel.channelID);
+      }
     }
-}
+  }
 
   /**
    * Find the parent element with the class 'selectable'.
@@ -392,8 +411,8 @@ export class WorkspaceComponent implements OnInit {
     this.selectedUsers = [];
     this.isFirstScreen = true;
     this.isSecondScreen = false;
-    this.createdChannelName = ''; 
-    this.createdChannelDescription = ''; 
+    this.createdChannelName = '';
+    this.createdChannelDescription = '';
   }
 
   /**
@@ -495,10 +514,10 @@ export class WorkspaceComponent implements OnInit {
     const channelDescription = this.createdChannelDescription;
     const channelUsersIDs = this.selectedUsers.map((user) => user.id);
     const channelCreatorUser = this.allUsers.find((user) => user.id === this.userID);
-  
+
     if (channelCreatorUser) {
       const channelCreator = `${channelCreatorUser.firstname} ${channelCreatorUser.lastname}`;
-  
+
       this.channelService.createChannel(
         channelname,
         channelDescription,
@@ -535,55 +554,55 @@ export class WorkspaceComponent implements OnInit {
    */
   openChannel(channelID: string) {
     const channel = this.channels.find(ch => ch.channelID === channelID);
-    
+
     if (channel) {
-        const currentIsUserMember = this.userservice.getIsUserMember();
-        const isUserMember = channel.isUserMember || false;
-        console.log(isUserMember)
+      const currentIsUserMember = this.userservice.getIsUserMember();
+      const isUserMember = channel.isUserMember || false;
+      console.log(isUserMember)
 
-        if (isUserMember !== currentIsUserMember) {
-            this.userservice.setIsUserMember(isUserMember);
-          /*   console.log(`isUserMember: ${isUserMember} in ${channelID}` ); */
-        }
+      if (isUserMember !== currentIsUserMember) {
+        this.userservice.setIsUserMember(isUserMember);
+        /*   console.log(`isUserMember: ${isUserMember} in ${channelID}` ); */
+      }
 
-        if (isUserMember) {
-            this.main.channelOpen = false;
-            this.main.threadOpen = false;
-            this.main.chatOpen = false;
-            // this.main.allChatSectionsOpen = true;
-            this.channelDataService.channelID = channelID;
+      if (isUserMember) {
+        this.main.channelOpen = false;
+        this.main.threadOpen = false;
+        this.main.chatOpen = false;
+        // this.main.allChatSectionsOpen = true;
+        this.channelDataService.channelID = channelID;
 
-            setTimeout(() => {
-                this.main.channelOpen = true;
-            }, 50);
-        }
+        setTimeout(() => {
+          this.main.channelOpen = true;
+        }, 50);
+      }
     }
   }
 
   /**
    * lädt nur die Personen mit denen ich chatte
    */
-  async loadChats(){
+  async loadChats() {
     const chatsRef = query(this.chatService.getChatsRef())
 
     onSnapshot(chatsRef, (chats) => {
       chats.forEach((chat: any) => {
-       chat.data().chatUsers.forEach((user: any) =>{
-        if(user.id === this.userID){
-          this.chats.push(chat.data())
-          
-          // hier können sie namen für die DM-Liste gezogen werden
-          // chat.data().chatUsers.forEach((notMe: any) => {
-          //   if (notMe.id != this.userID){
-          //     this.chats.push(notMe)
-          //   }
-          // })
-        } else {
-          return
-        }
-       })
+        chat.data().chatUsers.forEach((user: any) => {
+          if (user.id === this.userID) {
+            this.chats.push(chat.data())
+
+            // hier können sie namen für die DM-Liste gezogen werden
+            // chat.data().chatUsers.forEach((notMe: any) => {
+            //   if (notMe.id != this.userID){
+            //     this.chats.push(notMe)
+            //   }
+            // })
+          } else {
+            return
+          }
+        })
       })
-    })    
+    })
   }
 
 
@@ -595,27 +614,27 @@ export class WorkspaceComponent implements OnInit {
   // async newDMChat(){
 
   //   let newPair: any[] = [];    
-    
+
   //   const allUsersQuery = query(this.channelService.getUsersRef())
-   
+
   //   onSnapshot(allUsersQuery, (querySnapshot) => {          
-          
+
   //         // build Array with allUsers
   //         querySnapshot.forEach((doc: any) => {
-            
+
   //           if(this.allUsersDM.length > 0){
-              
+
   //             this.allUsersDM.forEach((user: any) => {
 
   //               newPair = [];
   //               newPair.push(user, doc.data())
   //               const chatname = user.firstname + ' & ' + doc.data().firstname;
   //               const chatUsers = newPair;
-                
+
 
   //             // this.chatService.createNewChat(chatname, chatUsers)
-                
-                
+
+
   //             })
   //           }
   //            this.allUsersDM.push(doc.data())           

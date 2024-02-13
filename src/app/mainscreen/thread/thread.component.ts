@@ -74,7 +74,8 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
   checkMobileScreen() {
     if(window.innerWidth < 750) {
         this.main.threadOpen = true;
-        this.allChatSectionsOpen = false;
+        this.main.workspaceOpen = false;
+        this.main.channelOpen = false;
     } else {
         this.allChatSectionsOpen = true;
     }

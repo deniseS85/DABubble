@@ -519,7 +519,7 @@ export class WorkspaceComponent implements OnInit {
    */
   openChannel(channelID: string) {
     const channel = this.channels.find(ch => ch.channelID === channelID);
-
+    
     if (channel) {
       const currentIsUserMember = this.userservice.getIsUserMember();
       const isUserMember = channel.isUserMember || false;

@@ -64,6 +64,10 @@
             scroll-behavior: smooth;
             position: relative;
 
+            @media (max-width: 750px) {
+                margin-top: 4px;
+            }
+
             &:hover{
                 overflow-y: auto;                
             }
@@ -74,10 +78,14 @@
                 display: flex;
                 justify-content: flex-start;
                 gap: 30px;
-                padding: 20px 0;
-                padding-left: 45px;
-                padding-right: 45px;
+                padding: 20px 45px;
                 cursor: default;
+
+                @media (max-width: 750px) {
+                    padding: 10px 50px 10px 16px;
+                    margin-top: 15px;
+                }
+
                 &:hover{
                     background-color:#ECEEFE;
     
@@ -128,6 +136,12 @@
                         font-weight: 400;
                         line-height: 25px;
                         color: #686868;
+
+                        @media(max-width: 750px){
+                            height: calc(100% - 32px);
+                            width: calc(100% - 32px);
+                            padding: 16px 10px;
+                        }
     
                         .editMessageContainerMessage{
                            overflow-y: auto;
@@ -149,6 +163,10 @@
                                 justify-content: center;
                                 align-items: center;
                                 gap: 16px;
+
+                                @media(max-width: 750px){
+                                    gap: 16px
+                                }
     
                                 .editMessageBtn{
                                     padding: 12px 25px;
@@ -169,6 +187,18 @@
                                         font-size: 12px;
                                         padding: 6px 12px;
                                     }
+
+                                    @media(max-width: 750px){
+                                        padding: 8px 16px;
+                                        font-size: 16px;
+                                        font-weight: 600;
+                                    }
+    
+                                    @media(max-width: 450px){
+                                        padding: 4px 8px;
+                                        font-size: 14px;
+                                        font-weight: 600;
+                                    }
                                 }
     
                                 .saveBtn{
@@ -183,7 +213,11 @@
             }
     
             .threadContainerAnswerReverse{
-                flex-direction: row-reverse !important;            
+                flex-direction: row-reverse !important;     
+                
+                @media (max-width: 750px) {
+                    padding: 10px 16px 10px 50px;
+                }
             }
     
             .threadHoverRight{
@@ -199,9 +233,14 @@
             width: calc(100% - 66px);
             padding: 0 33px;
 
+            @media (max-width: 750px) {
+                padding: 10px 20px;
+                width: calc(100% - 40px);
+            }
+
             .threadContainerAnswers{
-                font-size: clamp(0.75rem, 0.657rem + 0.4651vw, 0.875rem);
-                /* line-height: 24.5px; */
+                font-size: 18px;
+                line-height: 24.5px; 
                 color: #ADB0D9;
             }
 

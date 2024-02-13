@@ -231,6 +231,10 @@
     &:hover .last-answer-time {
         color: black;
     }
+
+    @media(max-width: 750px){
+        padding: 10px 16px
+    }
 }
 
 .new-message-avatar-container {
@@ -587,7 +591,7 @@
     position: relative;
     
     @media (max-width: 750px) {
-        margin: 10px 20px 20px 20px;
+        margin: 10px 16px 40px 16px;
     }
 }
 
@@ -598,11 +602,12 @@
     outline: none;
     resize: none;
     padding: 12px 0 12px 25px;
-    font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
+    font-size: 18px;
     box-sizing: border-box;
 }
 
 .footer-line-icons {
+    cursor: pointer;
     width: 100%;
     display: flex;
     justify-content: space-between;

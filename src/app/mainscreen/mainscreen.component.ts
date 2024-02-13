@@ -45,6 +45,8 @@ export class MainscreenComponent implements OnInit {
     channelOpen: boolean = true;
     threadOpen: boolean = false;
     chatOpen: boolean = false;
+    onlyThread: boolean = false;
+    closeChannel: boolean = false;
     allChatSectionsOpen: boolean = true;
     isMobileScreen: boolean = false;
     userFirstName: String = '';
@@ -121,14 +123,38 @@ export class MainscreenComponent implements OnInit {
             if (this.threadOpen) {
                 this.channelOpen = true;
             }
+        }        
+    }
+
+    /**
+     * if size <1450px, close channel if thread is open
+     */
+    checkMidSize1450(){
+        if (window.innerWidth < 1450) {
+            this.onlyThread = true;
+        } else {
+            this.onlyThread = false;
         }
     }
+
+    /**
+     * if size <1050px, close workspace if thread is open
+     */
+   checkSmallSize(){
+    if (window.innerWidth < 1050) {
+        this.workspaceOpen = false;
+    } else {
+        this.workspaceOpen = true;
+    }
+   }
 
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
         this.screenWidth = window.innerWidth;
         this.checkMobileScreen();
+        this.checkMidSize1450();
+        this.checkSmallSize();
     }
 
 
@@ -465,7 +491,6 @@ export class MainscreenComponent implements OnInit {
         this.channelOpen = false;
         this.threadOpen = false;
         this.channelDataService.updateChannelInfo(channelID);
-
         setTimeout(() => {
             this.channelOpen = true;
         }, 0.02);
@@ -480,6 +505,9 @@ export class MainscreenComponent implements OnInit {
     */
     toggleWorkspace() {
         this.workspaceOpen = !this.workspaceOpen;
+        if(this.workspaceOpen && (window.innerWidth < 1050)){
+            this.closeChannel = true;
+        } else {this.closeChannel = false}
     }
 
     openWorkspaceMobile() {

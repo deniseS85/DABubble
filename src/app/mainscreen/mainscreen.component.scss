@@ -547,24 +547,31 @@
         display: flex;
         justify-content: space-between;
         gap: 20px;
-
         height: calc(100% - 90px);
-
         /*  flex: 1; */
         // overflow: hidden;
+
         app-thread {
-            width: 550px;
+
+            width: 25.8%;
+            min-width: 375px;
             height: 100%;
 
-            @media(max-width: 1500px) {
-                position: absolute;
-                right: 0;
-                bottom: 0;
-                z-index: 100;
+            // WARUM???
+            // @media(max-width: 1500px) {
+            //     position: absolute;
+            //     right: 0;
+            //     bottom: 0;
+            //     z-index: 100;
+            // }
+
+            @media(max-width: 1450px) {
+                flex: 1;
             }
 
+            
+
             @media(max-width: 750px) {
-                position: unset;
                 width: 100% !important;
             }
         
@@ -585,18 +592,24 @@
         }
 
         app-workspace {
-            @media(max-width: 1200px) {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                z-index: 100;
-            }
+
+            width: 19%;
+            min-width: 350px;
 
             @media(max-width: 750px) {
                 position: unset;
                 z-index: unset;
                 width: 100% !important;
             }
+
+            // @media(max-width: 1200px) {
+            //     position: absolute;
+            //     top: 0;
+            //     bottom: 0;
+            //     z-index: 100;
+            // }
+
+            
         }
     }
 }

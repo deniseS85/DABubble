@@ -177,7 +177,7 @@
         <app-channel-chat 
             *ngIf="(channelOpen && allChatSectionsOpen) || (channelOpen && !workspaceOpen)" 
             [userProfileView]="userProfileView"
-            [ngClass]="{'d-none': threadOpen && isMobileScreen}"
+            [ngClass]="{'d-none': (threadOpen && isMobileScreen) || (threadOpen && onlyThread) || closeChannel}"
             >
         </app-channel-chat>
         <app-thread
@@ -191,7 +191,8 @@
 
 <div class="normal-hover-img">
     <div class="workspace-menu-close-container" (click)="toggleWorkspace()">
-      <div>Workspace-Menü schließen</div>
+      <div *ngIf="workspaceOpen">Workspace-Menü schließen</div>
+      <div *ngIf="!workspaceOpen">Workspace-Menü öffnen</div>
       <div class="workspace-menu-close-icon">
         <img
           class="normal-img"

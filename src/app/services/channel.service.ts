@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { addDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot, Unsubscribe, addDoc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 
@@ -122,6 +122,14 @@ export class ChannelService {
     return allMessages;
   }
 
+  async updateChannelIsUserMember(channelID: string, isUserMember: boolean): Promise<void> {
+    const updateObject = {
+      isUserMember: isUserMember,
+    };
+    console.log('Updating channel isUserMember status:', updateObject);
+    await this.updateChannel(channelID, updateObject);
+  }
+
 
   async addNewChannel(newChannel: {}) {
     await addDoc(this.getChannelRef(), newChannel).catch(
@@ -166,4 +174,8 @@ export class ChannelService {
       return null;
     }
   }
+
+
 }
+
+

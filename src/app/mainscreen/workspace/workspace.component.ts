@@ -275,6 +275,8 @@ export class WorkspaceComponent implements OnInit {
       channel.channelCreator || '',
       channel.channelDescription || ''
     );
+
+    
   
     this.openChannel(channel.channelID);
     this.main.allChatSectionsOpen = true; 

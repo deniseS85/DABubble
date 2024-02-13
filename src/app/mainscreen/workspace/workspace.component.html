@@ -36,7 +36,7 @@
         <div class="channels-list" *ngIf="channels">
           <div *ngFor="let channel of channels"
             class="channels-name selectable"
-            (click)="handleClickChannel($event, channel, 'workspace'); openChannel(channel.channelID)"
+            (click)="handleClickChannel($event, channel); openChannel(channel.channelID)"
             [ngClass]="{'selected': channel.channelID === selectedChannelId}">
             <span *ngIf="channel.isUserMember" class="hashtag">#</span> 
             <mat-icon *ngIf="!channel.isUserMember">lock_outline</mat-icon>

@@ -260,43 +260,13 @@ export class WorkspaceComponent implements OnInit {
    * Handles the click event on selectable elements. Removes the class "selected" 
    * from all other elements and sets this class to clicked elements
    */
-  handleClickChannel(event: MouseEvent, channel: Channel, component: string): void {
+  handleClickChannel(event: MouseEvent, channel: Channel): void {
+    this.selectedChannelId = channel.channelID;
     let target = event.target as HTMLElement;
     this.selectedChannel(target);
-
-    if (component === 'workspace') {
-      this.markSelectedChannel(target);
-    } else if (component === 'mainscreen') {
-      this.markSelectedChannelByName(channel);
-    }
-
     this.updateChannelDataAndOpen(channel);
   }
 
-  markSelectedChannel(target: HTMLElement): void {
-    const selectableElement = this.findParentElement(target);
-    this.clearAllSelected();
-    this.renderer.addClass(selectableElement, 'selected');
-  }
-
-  markSelectedChannelByName(channel: Channel): void {
-    if (channel.channelname) {
-      const channelName = channel.channelname.trim();
-      const selectableElements = this.elRef.nativeElement.querySelectorAll('.selectable');
-      selectableElements.forEach((element: HTMLElement) => {
-        if (element.textContent && element.textContent.trim() === channelName) {
-          this.clearAllSelected();
-          this.renderer.addClass(element, 'selected');
-        }
-      });
-    }
-  }
-
-  clearAllSelected(): void {
-    this.elRef.nativeElement
-      .querySelectorAll('.selectable')
-      .forEach((element: HTMLElement) => element.classList.remove('selected'));
-  }
 
   updateChannelDataAndOpen(channel: Channel): void {
     this.channelDataService.changeSelectedChannel(
@@ -311,8 +281,6 @@ export class WorkspaceComponent implements OnInit {
       this.main.workspaceOpen = false;
     }
   }
-
-
 
 
   /**

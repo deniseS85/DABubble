@@ -553,6 +553,7 @@
             }
 
             @media(max-width: 750px) {
+                position: unset;
                 width: 100% !important;
             }
         
@@ -581,6 +582,8 @@
             }
 
             @media(max-width: 750px) {
+                position: unset;
+                z-index: unset;
                 width: 100% !important;
             }
         }

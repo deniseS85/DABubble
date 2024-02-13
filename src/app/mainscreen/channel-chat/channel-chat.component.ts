@@ -949,6 +949,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
     // setTimeout(() => {
       this.main.threadOpen = true;
+      if(this.main.isMobileScreen) {
+        this.main.channelOpen = false;
+      }
     // }, 0.5);
 
 

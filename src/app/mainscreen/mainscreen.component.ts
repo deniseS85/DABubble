@@ -118,6 +118,9 @@ export class MainscreenComponent implements OnInit {
             } else {
                 this.isMobileScreen = false;
                 this.allChatSectionsOpen = true;
+                if(this.threadOpen) {
+                    this.channelOpen = true;
+                }
             }
     }
 
@@ -441,6 +444,7 @@ export class MainscreenComponent implements OnInit {
         this.openChannel(channel.channelID);
         this.searchInput = '';
         this.closeSearch();
+        this.workspaceComponent.handleClickChannel(event, channel);
     }
 
     /*   showUserProfileView(user: User): void {

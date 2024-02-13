@@ -9,7 +9,7 @@ import { MainscreenComponent } from '../mainscreen.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChatService } from '../../services/chat.service';
 import { SearchService } from '../../services/search-service.service';
-import { Channel } from '../../models/channel.interface';
+import { Channel } from '../../models/channel.class';
 import { UserService } from '../../services/user.service';
 
 @Component({

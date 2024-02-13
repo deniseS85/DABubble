@@ -124,14 +124,14 @@
                         justify-content: center;
                         gap: 16px;
                         padding: 20px;
-                        font-size: 18px;
+                        font-size: clamp(0.9375rem, 0.798rem + 0.6977vw, 1.125rem);
                         font-weight: 400;
                         line-height: 25px;
                         color: #686868;
     
                         .editMessageContainerMessage{
                            overflow-y: auto;
-                           font-size: 18px;
+                           font-size: clamp(0.9375rem, 0.798rem + 0.6977vw, 1.125rem);
                            line-height: 24px;
                            color: #686868; 
                            border: unset;
@@ -155,7 +155,7 @@
                                     border: 1px solid #797EF3;
                                     border-radius: 50px;
                                     color: #444DF2;
-                                    font-size: 18px;
+                                    font-size: clamp(0.9375rem, 0.798rem + 0.6977vw, 1.125rem);
                                     font-weight: 700;
                                     line-height: 25px;
                                     cursor: pointer;
@@ -200,7 +200,7 @@
             padding: 0 33px;
 
             .threadContainerAnswers{
-                font-size: 14px;
+                font-size: clamp(0.75rem, 0.657rem + 0.4651vw, 0.875rem);
                 /* line-height: 24.5px; */
                 color: #ADB0D9;
             }
@@ -230,13 +230,13 @@
 
 
 .threadContainerInfoPerson{
-    font-size: 16px;
+    font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
     font-weight: 700;
     line-height: 24.5px;
 }
 
 .threadContainerInfoTime{
-    font-size: 14px;
+    font-size: clamp(0.75rem, 0.657rem + 0.4651vw, 0.875rem);
     color:#686868;
     line-height: 19.5px;
 }
@@ -245,7 +245,7 @@
     padding: 15px;
     border-radius: 0 20px 20px 20px;
     background-color: #ECEEFE;
-    font-size: 16px;
+    font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
    /*  line-height: 24.5px; */
 }
 
@@ -327,11 +327,22 @@
     position: relative;
     width: 60px;
     height: 60px;
+
+    @media (max-width: 750px) {
+        width: 40px;
+        height: 40px;
+    }
+
     .profile-img {
         width: 60px;
         height: 60px;
         object-fit: cover;
         border-radius: 100%;
+
+        @media (max-width: 750px) {
+            width: 40px;
+            height: 40px;
+        }
     }
     .active-point {
         position: absolute;
@@ -413,7 +424,7 @@
                 white-space: nowrap;
                 justify-content: center;
                 align-items: center;
-                font-size: 16px;                
+                font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);                
                 font-weight: 600;
                 background-color: white;
                 padding: 5px 10px;

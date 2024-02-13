@@ -118,6 +118,9 @@ export class MainscreenComponent implements OnInit {
             } else {
                 this.isMobileScreen = false;
                 this.allChatSectionsOpen = true;
+                if(this.threadOpen) {
+                    this.channelOpen = true;
+                }
             }
     }
 

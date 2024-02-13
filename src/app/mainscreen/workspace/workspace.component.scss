@@ -6,9 +6,10 @@
   height: 100%;
   box-sizing: border-box;
 
-  @media(max-width: 1400px) {
+  @media(max-width: 1200px) {
     border: 1px solid #797ef340;
   }
+
   @media(max-width: 750px) {
     border-radius: 0;
     padding-top: 70px;

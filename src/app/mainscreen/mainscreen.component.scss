@@ -542,11 +542,13 @@
         /*  flex: 1; */
         // overflow: hidden;
         app-thread {
-            // width: 25.8%;
+            width: 550px;
             height: 100%;
 
-            @media(max-width: 1200px) {
-                width: 100% !important;
+            @media(max-width: 1500px) {
+                position: absolute;
+                right: 0;
+                z-index: 100;
             }
 
             @media(max-width: 750px) {
@@ -570,7 +572,7 @@
         }
 
         app-workspace {
-            @media(max-width: 1400px) {
+            @media(max-width: 1200px) {
                 position: absolute;
                 z-index: 100;
             }
@@ -580,10 +582,6 @@
             }
         }
     }
-}
-
-.biggerContainer{
-    width: 35% !important;
 }
 
 .container {

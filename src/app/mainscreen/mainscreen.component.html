@@ -166,6 +166,7 @@
         <app-workspace 
             *ngIf="workspaceOpen"
             [@leftRightAnimation]
+
             >
         </app-workspace>
         <app-chat-container 
@@ -181,7 +182,6 @@
         <app-thread
             *ngIf="(threadOpen && allChatSectionsOpen) || (threadOpen && !workspaceOpen)"
             [@leftRightAnimation]
-            [ngClass]="{'biggerContainer': editThread}"
             >
         </app-thread>
     </div>

@@ -283,7 +283,7 @@ export class MainscreenComponent implements OnInit, AfterViewInit {
                     this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
                 }
             }
-        
+
             await this.authService.updateAndVerifyEmail(this.user.email);
             this.emailChanged = true;
             await this.updateData();
@@ -459,7 +459,7 @@ export class MainscreenComponent implements OnInit, AfterViewInit {
             this.findChannelFromMessage(foundMessage.channelID);
             this.messageID = messageID;
             this.ngAfterViewInit();
-          
+
         } else {
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
         }

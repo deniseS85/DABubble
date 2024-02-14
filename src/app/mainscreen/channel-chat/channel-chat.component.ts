@@ -1126,12 +1126,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     const foundMessageElement = document.getElementById(messageID);
     
     if (foundMessageElement) {
-      const container = foundMessageElement.parentElement;
-      if (container) {
-        container.scrollLeft = foundMessageElement.offsetLeft - (container.clientWidth - foundMessageElement.clientWidth) / 2;
-      }
-    } else {
-    }
+      setTimeout(() => {
+        const container = foundMessageElement.parentElement;
+        if (container) {
+          container.scrollLeft = foundMessageElement.offsetLeft - (container.clientWidth - foundMessageElement.clientWidth) / 2;
+        }
+        console.log(messageID);
+      }, 2000);
+      
+    } 
   }
   
 }

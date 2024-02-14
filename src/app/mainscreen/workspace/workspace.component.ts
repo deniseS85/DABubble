@@ -263,9 +263,11 @@ export class WorkspaceComponent implements OnInit {
    */
   handleClickChannel(event: MouseEvent | null, channel: Channel): void {
     this.selectedChannelId = channel.channelID;
+    const selectableElement = document.getElementById(channel.channelID);
     this.elRef.nativeElement
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
+      this.renderer.addClass(selectableElement, 'selected');
       this.updateChannelDataAndOpen(channel);
   }
 

@@ -34,7 +34,7 @@
         </mat-expansion-panel-header>
 
         <div class="channels-list" *ngIf="channels">
-          <div *ngFor="let channel of channels"
+          <div id="{{ channel.channelID }}" *ngFor="let channel of channels"
             class="channels-name selectable"
             (click)="handleClickChannel($event, channel); openChannel(channel.channelID)"
             [ngClass]="{'selected': channel.channelID === selectedChannelId}">

@@ -16,7 +16,7 @@ export class UserService {
     private userDataSubject = new BehaviorSubject<any>({});
     userData$ = this.userDataSubject.asObservable();
     collectionUserRef = collection(this.firestore, 'users');
-    private isUserMemberSubject = new BehaviorSubject<boolean | undefined>(undefined);
+   /*  private isUserMemberSubject = new BehaviorSubject<boolean | undefined>(undefined); */
 
     constructor(private authservice: AuthService, private route: ActivatedRoute) {}
 
@@ -76,7 +76,7 @@ export class UserService {
         return users.find(user => user.id === userId);
     }
 
-    setIsUserMember(status: boolean): void {
+   /*  setIsUserMember(status: boolean): void {
         this.isUserMemberSubject.next(status);
     }
     
@@ -84,7 +84,7 @@ export class UserService {
         return this.isUserMemberSubject;
     }
 
-   
+    */
 
 
 }

@@ -224,10 +224,10 @@ export class WorkspaceComponent implements OnInit {
 
       this.channels = querySnapshot.docs.map((doc: any) => {
         const channelData = doc.data();
-        const channelUsers = channelData.channelUsers;
-        const isUserMember = channelUsers.includes(this.userID);
+       /*  const channelUsers = channelData.channelUsers;
+        const isUserMember = channelUsers.includes(this.userID); */
 
-        return { ...channelData, isUserMember };
+        return { ...channelData/* , isUserMember  */};
       });
 
       if (!this.selectedChannelId && this.channels.length > 0) {
@@ -523,14 +523,14 @@ export class WorkspaceComponent implements OnInit {
     const channel = this.channels.find(ch => ch.channelID === channelID);
 
     if (channel) {
-      const currentIsUserMember = this.userservice.getIsUserMember();
+    /*   const currentIsUserMember = this.userservice.getIsUserMember();
       const isUserMember = channel.isUserMember || false;
-
-      if (isUserMember !== currentIsUserMember) {
+ */
+    /*   if (isUserMember !== currentIsUserMember) {
         this.userservice.setIsUserMember(isUserMember);
-      }
+      } */
 
-      if (isUserMember) {
+     /*  if (isUserMember) { */
         this.main.channelOpen = false;
         this.main.threadOpen = false;
         this.main.chatOpen = false;
@@ -541,7 +541,7 @@ export class WorkspaceComponent implements OnInit {
           this.main.channelOpen = true;
         }, 50);
       }
-    }
+    /* } */
   }
 
   /**

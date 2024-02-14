@@ -123,13 +123,13 @@ export class MainscreenComponent implements OnInit {
             if (this.threadOpen) {
                 this.channelOpen = true;
             }
-        }        
+        }
     }
 
     /**
      * if size <1450px, close channel if thread is open
      */
-    checkMidSize1450(){
+    checkMidSize1450() {
         if (window.innerWidth < 1450) {
             this.onlyThread = true;
         } else {
@@ -140,13 +140,13 @@ export class MainscreenComponent implements OnInit {
     /**
      * if size <1050px, close workspace if thread is open
      */
-   checkSmallSize(){
-    if (window.innerWidth < 1050) {
-        this.workspaceOpen = false;
-    } else {
-        this.workspaceOpen = true;
+    checkSmallSize() {
+        if (window.innerWidth < 1050) {
+            this.workspaceOpen = false;
+        } else {
+            this.workspaceOpen = true;
+        }
     }
-   }
 
 
     @HostListener('window:resize', ['$event'])
@@ -449,14 +449,14 @@ export class MainscreenComponent implements OnInit {
 
     async searchfieldShowMessage(message: any): Promise<void> {
         const messageID = message.messageID;
+        console.log(message);
         const allMessages = await this.channelservice.getAllMessages();
-
         const foundMessage = await allMessages.find((msg: any) => msg.messageID === messageID);
 
         if (foundMessage && foundMessage.channelID) {
             this.openChannel(foundMessage.channelID);
-
             this.findChannelFromMessage(foundMessage.channelID);
+          
         } else {
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
         }
@@ -479,7 +479,7 @@ export class MainscreenComponent implements OnInit {
         this.closeSearch();
         if (this.workspaceComponent) {
             this.workspaceComponent.handleClickChannel(event, channel);
-        } 
+        }
     }
 
     /*   showUserProfileView(user: User): void {
@@ -505,9 +505,9 @@ export class MainscreenComponent implements OnInit {
     */
     toggleWorkspace() {
         this.workspaceOpen = !this.workspaceOpen;
-        if(this.workspaceOpen && (window.innerWidth < 1050)){
+        if (this.workspaceOpen && (window.innerWidth < 1050)) {
             this.closeChannel = true;
-        } 
+        }
     }
 
     openWorkspaceMobile() {

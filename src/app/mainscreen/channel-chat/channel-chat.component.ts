@@ -83,7 +83,7 @@ import { UserService } from '../../services/user.service';
     ]),
   ],
 })
-export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
+export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChecked, AfterViewInit */ {
   @Input() userProfileView: User = new User; 
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
@@ -130,7 +130,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   userList;
   unsubUser: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
-  private shouldScrollToBottom: boolean = true;
+ /*  private shouldScrollToBottom: boolean = true; */
 
   isChannelOpen: boolean = false;
   isChatOpen: boolean = true;
@@ -173,13 +173,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   /*   this.checkIsUserMember(); */
   }
-
+/* 
   ngAfterViewChecked() {
     if (this.shouldScrollToBottom) {
       this.scrollToBottom();
     }
-  }
-
+  } */
+/* 
   ngAfterViewInit() {
     if (this.chatContainer) {
       this.subscriptions.push(
@@ -187,7 +187,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       );
       this.scrollToBottom();
     }
-  }
+  } */
 /* 
   checkIsUserMember() {
     this.userservice.getIsUserMember().subscribe((value) => {
@@ -195,25 +195,25 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     });
   } */
 
-  private handleScroll() {
+/*   private handleScroll() {
     const element = this.chatContainer.nativeElement;
     const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
 
     this.shouldScrollToBottom = atBottom;
-  }
-
+  } */
+/* 
   scrollToBottom(): void {
     try {
       this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
     } catch (err) { }
-  }
+  } */
 
-  @HostListener('scroll', ['$event'])
+ /*  @HostListener('scroll', ['$event'])
   onScroll(event: Event): void {
     let element = event.target as HTMLElement;
     let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
     this.shouldScrollToBottom = atBottom;
-  }
+  } */
  
 
   ngOnDestroy() {
@@ -763,9 +763,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         this.isButtonDisabled = true;
         this.deleteFileUpload();
         this.channelService.sendMessage(this.channelDataService.channelID, message);
-        setTimeout(() => {
+        /* setTimeout(() => {
           this.scrollToBottom();
-        }, 10);
+        }, 10); */
       }
     } catch (error) {
       console.error('Fehler beim Abrufen der Benutzerdaten:', error);

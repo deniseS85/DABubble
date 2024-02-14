@@ -104,7 +104,7 @@ export class MainscreenComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.channelChatComponent.scrollToMessage(this.messageID);
+        // this.channelChatComponent.scrollToMessage(this.messageID);
     }
 
     private subscribeToUserChanges(): void {
@@ -471,11 +471,6 @@ export class MainscreenComponent implements OnInit, AfterViewInit {
         this.searchfieldShowChannel(null, foundChannel);
     }
 
-    // Funktion, um das Benutzerprofil in der Kindkomponente anzuzeigen
-    /*  setUserProfileView(user: User): void {
-       this.userProfileView = user;
-     } */
-
     searchfieldShowChannel(event: MouseEvent | null, channel: Channel) {
         this.openChannel(channel.channelID);
         this.searchInput = '';
@@ -484,10 +479,6 @@ export class MainscreenComponent implements OnInit, AfterViewInit {
             this.workspaceComponent.handleClickChannel(event, channel);
         }
     }
-
-    /*   showUserProfileView(user: User): void {
-        console.log('Benutzerprofil anzeigen:', user);
-      }    */
 
     openChannel(channelID: string): void {
         this.channelOpen = false;

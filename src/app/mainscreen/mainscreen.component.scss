@@ -557,25 +557,13 @@
             min-width: 375px;
             height: 100%;
 
-            // warum? Div ragt über andere z.T. drüber
-            // @media(max-width: 1500px) {
-            //     position: absolute;
-            //     right: 0;
-            //     bottom: 0;
-            //     z-index: 100;
-            // }
-
             @media(max-width: 1450px) {
                 flex: 1;
-            }
-
-            
+            }            
 
             @media(max-width: 750px) {
                 width: 100% !important;
-            }
-        
-            //hier noch in-height 100% wenn overflow: hidden aktiv
+            }        
         }
 
         app-channel-chat {
@@ -597,18 +585,8 @@
             min-width: 350px;
 
             @media(max-width: 750px) {
-                position: unset;
-                z-index: unset;
                 width: 100% !important;
-            }
-
-            // div würde über andere drüberragen
-            // @media(max-width: 1200px) {
-            //     position: absolute;
-            //     top: 0;
-            //     bottom: 0;
-            //     z-index: 100;
-            // }            
+            }           
         }
     }
 }

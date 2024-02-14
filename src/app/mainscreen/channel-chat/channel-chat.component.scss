@@ -1314,6 +1314,7 @@ input {
     position: absolute;
     right: 120px;
     top: 10px;
+    left: 20px;
     height: calc(100% - 60px);
     width: calc(80%);
     background-color: white;
@@ -1328,6 +1329,30 @@ input {
     font-weight: 400;
     line-height: 25px;
     color: #686868;
+
+    @media(max-width: 1300px){
+        width: 75%;
+    }
+
+    @media(max-width: 1100px){
+        width: 70%;
+    }
+
+    @media(max-width: 1050px){
+        width: 80%;
+    }
+
+    @media(max-width: 750px){
+        width: 70%;
+    }
+
+    @media(max-width: 550px){
+        width: 65%
+    }
+
+    @media(max-width: 450px){
+        width: 58%
+    }
 
     .editMessageContainerMessage {
         overflow-y: auto;
@@ -1350,6 +1375,10 @@ input {
             align-items: center;
             gap: 32px;
 
+            @media(max-width: 750px){
+                gap: 16px
+            }
+
             .editMessageBtn {
                 padding: 12px 25px;
                 border: 1px solid #797EF3;
@@ -1359,6 +1388,18 @@ input {
                 font-weight: 700;
                 line-height: 25px;
                 cursor: pointer;
+
+                @media(max-width: 750px){
+                    padding: 8px 16px;
+                    font-size: 16px;
+                    font-weight: 600;
+                }
+
+                @media(max-width: 450px){
+                    padding: 4px 8px;
+                    font-size: 14px;
+                    font-weight: 600;
+                }
             }
 
             .saveBtn {

@@ -539,7 +539,7 @@ export class WorkspaceComponent implements OnInit {
       this.main.chatOpen = false;
       // this.main.allChatSectionsOpen = true;
       this.channelDataService.channelID = channelID;
-
+      
       setTimeout(() => {
         this.main.channelOpen = true;
       }, 50);

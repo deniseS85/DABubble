@@ -84,7 +84,7 @@ import { UserService } from '../../services/user.service';
   ],
 })
 export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChecked, AfterViewInit */ {
-  @Input() userProfileView: User = new User; 
+  @Input() userProfileView: User = new User;
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
   addUSerOpen: boolean = false;
@@ -130,7 +130,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   userList;
   unsubUser: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
- /*  private shouldScrollToBottom: boolean = true; */
+  /*  private shouldScrollToBottom: boolean = true; */
 
   isChannelOpen: boolean = false;
   isChatOpen: boolean = true;
@@ -171,50 +171,50 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
       await this.loadMessagesOfThisChannel();
       await this.loadUsersOfThisChannel();
     }
-  /*   this.checkIsUserMember(); */
+    /*   this.checkIsUserMember(); */
   }
-/* 
-  ngAfterViewChecked() {
-    if (this.shouldScrollToBottom) {
-      this.scrollToBottom();
-    }
-  } */
-/* 
-  ngAfterViewInit() {
-    if (this.chatContainer) {
-      this.subscriptions.push(
-        this.chatContainer.nativeElement.addEventListener('scroll', this.handleScroll.bind(this))
-      );
-      this.scrollToBottom();
-    }
-  } */
-/* 
-  checkIsUserMember() {
-    this.userservice.getIsUserMember().subscribe((value) => {
-      this.isUserMember = value;
-    });
-  } */
+  /* 
+    ngAfterViewChecked() {
+      if (this.shouldScrollToBottom) {
+        this.scrollToBottom();
+      }
+    } */
+  /* 
+    ngAfterViewInit() {
+      if (this.chatContainer) {
+        this.subscriptions.push(
+          this.chatContainer.nativeElement.addEventListener('scroll', this.handleScroll.bind(this))
+        );
+        this.scrollToBottom();
+      }
+    } */
+  /* 
+    checkIsUserMember() {
+      this.userservice.getIsUserMember().subscribe((value) => {
+        this.isUserMember = value;
+      });
+    } */
 
-/*   private handleScroll() {
-    const element = this.chatContainer.nativeElement;
-    const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+  /*   private handleScroll() {
+      const element = this.chatContainer.nativeElement;
+      const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+  
+      this.shouldScrollToBottom = atBottom;
+    } */
+  /* 
+    scrollToBottom(): void {
+      try {
+        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      } catch (err) { }
+    } */
 
-    this.shouldScrollToBottom = atBottom;
-  } */
-/* 
-  scrollToBottom(): void {
-    try {
-      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
-    } catch (err) { }
-  } */
+  /*  @HostListener('scroll', ['$event'])
+   onScroll(event: Event): void {
+     let element = event.target as HTMLElement;
+     let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+     this.shouldScrollToBottom = atBottom;
+   } */
 
- /*  @HostListener('scroll', ['$event'])
-  onScroll(event: Event): void {
-    let element = event.target as HTMLElement;
-    let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-    this.shouldScrollToBottom = atBottom;
-  } */
- 
 
   ngOnDestroy() {
     this.unsubUser;
@@ -297,7 +297,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
         message.isEmojiOpen = !message.isEmojiOpen;
       }
     });
-  
+
     if (spaceBelow < 600) {
       setTimeout(() => {
         this.chatContainerRef.nativeElement.scrollTop = this.chatContainerRef.nativeElement.scrollHeight;
@@ -316,7 +316,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
         message.isEmojiBelowAnswerOpen = !message.isEmojiBelowAnswerOpen;
       }
     });
-  
+
     if (spaceBelow < 600) {
       setTimeout(() => {
         this.chatContainerRef.nativeElement.scrollTop = this.chatContainerRef.nativeElement.scrollHeight;
@@ -512,15 +512,15 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
       })
 
       await this.updateChannelUsers(channelUsersUpdated);
-    /*   this.userservice.setIsUserMember(true);
-      window.location.reload(); */
+      /*   this.userservice.setIsUserMember(true);
+        window.location.reload(); */
 
     }
   }
 
   leaveChannel() {
     const currentUserIndex = this.channelDataService.channelUsers.indexOf(this.userID);
-  
+
     if (currentUserIndex !== -1) {
       const newUsers = [...this.channelDataService.channelUsers];
       newUsers.splice(currentUserIndex, 1);
@@ -529,14 +529,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
       window.location.reload(); */
     }
   }
-  
+
   updateChannelUsers(newUsers: string[]) {
     this.updateChannel(this.channelDataService.channelID, {
       channelUsers: newUsers
     });
-    
+
   }
- 
+
 
   saveNewDescription() {
     this.updateChannel(this.channelDataService.channelID, {
@@ -731,7 +731,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   handleEnterKey() {
     this.onMessageChange();
     if (this.messagetext.trim() !== '') {
-        this.addMessage();
+      this.addMessage();
     }
   }
 
@@ -783,7 +783,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
       for (const doc of querySnapshot.docs) {
         const messageData = doc.data();
         const userData = await this.loadUserData(messageData['messageUserID']);
-        
+
 
         if (userData) {
           const message = {
@@ -797,7 +797,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
         this.sortMessagesByTimeStamp();
         this.editMessages.push(false)
       }
-      
+
     });
     this.updateMessagesWithUserData();
   }
@@ -910,25 +910,27 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
     let counter = 0;
     let answersTimes: any[] = [];
 
-    //for each Answer count 1+ and push time in timearray
-    const snap = await getDocs(answerRef);
-    snap.forEach((doc: any) => {
-      counter++;
-      answersTimes.push(doc.data().timestamp)
-    });
+    const subs = onSnapshot(answerRef, (answersDoc) => {
+      counter = 0;
+      answersDoc.forEach((answer) => {
+        counter++;
+        answersTimes.push(answer.data()['timestamp'])
+        console.warn(counter)
+      });
 
-    //create JSON with counter and lastElement of the Timearray
-    const answerInfos = {
-      counter: counter,
-      lastAnswerTime: answersTimes.pop()
-    }
+      console.warn(counter)
+      //create JSON with counter and lastElement of the Timearray
+      const answerInfos = {
+        counter: counter,
+        lastAnswerTime: answersTimes.pop()
+      }
 
-    //if there are no answers, no update
-    if (counter > 0) {
-      this.updateAnswerInfoStatus(answerInfos, messageID);
-    }
+      //if there are no answers, no update
+      if (counter > 0) {
+        this.updateAnswerInfoStatus(answerInfos, messageID);
+      }
 
-
+    })
   }
 
 
@@ -947,17 +949,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
     // this.main.threadOpen = false;
     this.channelService.activeMessageID = messageID;
 
-
-
     // setTimeout(() => {
-      this.main.threadOpen = true;
-      if(this.main.isMobileScreen) {
-        this.main.channelOpen = false;
-      }
+    this.main.threadOpen = true;
+    if (this.main.isMobileScreen) {
+      this.main.channelOpen = false;
+    }
     // }, 0.5);
-
-
-
 
   }
 
@@ -980,10 +977,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
     const docSnap = await getDoc(messageRef);
     this.message = docSnap.data();
     this.editedMessage = this.message.messagetext;
-    this.editMessages.splice(index, 1, true);    
+    this.editMessages.splice(index, 1, true);
   }
 
-  async cancelEdit(index: number){
+  async cancelEdit(index: number) {
     this.editMessages.splice(index, 1, false)
   }
 
@@ -1008,12 +1005,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
    * @param id 
    * @param index 
    */
-  async saveEditedMessage(id: string,index: number){
+  async saveEditedMessage(id: string, index: number) {
     const docRef = doc(await this.channelService.getMessageRef(this.channelDataService.channelID), id);
-    if(this.editedMessage.length <= 1){
-      await deleteDoc(docRef)      
-    } else{
-      await updateDoc(docRef, {messagetext: this.editedMessage})
+    if (this.editedMessage.length <= 1) {
+      await deleteDoc(docRef)
+    } else {
+      await updateDoc(docRef, { messagetext: this.editedMessage })
     }
     this.editMessages.splice(index, 1, false)
   }
@@ -1064,7 +1061,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   async uploadFile(file: File) {
     let timestamp = new Date().getTime();
     let imgRef = ref(this.storage, `images/${timestamp}_${file.name}`);
-  
+
     await uploadBytes(imgRef, file);
     let url = await getDownloadURL(imgRef);
     this.fileToUpload = url;
@@ -1091,13 +1088,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
     });
   }
 
-  
+
   isPDFFile(url: string | boolean): boolean {
     if (typeof url === 'string') {
-        return url.toLowerCase().includes('.pdf');
+      return url.toLowerCase().includes('.pdf');
     }
     return false;
-}
+  }
 
   // ------------------------------------file upload function end---------------------------------------
 
@@ -1121,10 +1118,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   }
 
   // -------------------------------------footer show/search @ members end---------------------------------
- 
+
   // scrollToMessage(messageID: string) {
   //   const foundMessageElement = document.getElementById(messageID);
-  
+
   //   if (foundMessageElement) {
   //     foundMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center'});
   //   } else {

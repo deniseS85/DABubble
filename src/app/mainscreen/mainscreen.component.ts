@@ -502,9 +502,6 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
     */
     toggleWorkspace() {
         this.workspaceOpen = !this.workspaceOpen;
-        if (this.workspaceOpen && (window.innerWidth < 1050)) {
-            this.closeChannel = true;
-        }
     }
 
     openWorkspaceMobile() {

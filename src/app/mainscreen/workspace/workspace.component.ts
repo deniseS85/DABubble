@@ -224,10 +224,10 @@ export class WorkspaceComponent implements OnInit {
 
       this.channels = querySnapshot.docs.map((doc: any) => {
         const channelData = doc.data();
-       /*  const channelUsers = channelData.channelUsers;
-        const isUserMember = channelUsers.includes(this.userID); */
+        /*  const channelUsers = channelData.channelUsers;
+         const isUserMember = channelUsers.includes(this.userID); */
 
-        return { ...channelData/* , isUserMember  */};
+        return { ...channelData/* , isUserMember  */ };
       });
 
       if (!this.selectedChannelId && this.channels.length > 0) {
@@ -264,13 +264,16 @@ export class WorkspaceComponent implements OnInit {
   handleClickChannel(event: MouseEvent | null, channel: Channel): void {
     this.selectedChannelId = channel.channelID;
     const selectableElement = document.getElementById(channel.channelID);
+    this.removeSelectedChannels();
+    this.renderer.addClass(selectableElement, 'selected');
+    this.updateChannelDataAndOpen(channel);
+  }
+
+  removeSelectedChannels() {
     this.elRef.nativeElement
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
-      this.renderer.addClass(selectableElement, 'selected');
-      this.updateChannelDataAndOpen(channel);
   }
-
 
   updateChannelDataAndOpen(channel: Channel): void {
     this.channelDataService.changeSelectedChannel(
@@ -523,24 +526,24 @@ export class WorkspaceComponent implements OnInit {
     const channel = this.channels.find(ch => ch.channelID === channelID);
 
     if (channel) {
-    /*   const currentIsUserMember = this.userservice.getIsUserMember();
-      const isUserMember = channel.isUserMember || false;
- */
-    /*   if (isUserMember !== currentIsUserMember) {
-        this.userservice.setIsUserMember(isUserMember);
-      } */
+      /*   const currentIsUserMember = this.userservice.getIsUserMember();
+        const isUserMember = channel.isUserMember || false;
+   */
+      /*   if (isUserMember !== currentIsUserMember) {
+          this.userservice.setIsUserMember(isUserMember);
+        } */
 
-     /*  if (isUserMember) { */
-        this.main.channelOpen = false;
-        this.main.threadOpen = false;
-        this.main.chatOpen = false;
-        // this.main.allChatSectionsOpen = true;
-        this.channelDataService.channelID = channelID;
+      /*  if (isUserMember) { */
+      this.main.channelOpen = false;
+      this.main.threadOpen = false;
+      this.main.chatOpen = false;
+      // this.main.allChatSectionsOpen = true;
+      this.channelDataService.channelID = channelID;
 
-        setTimeout(() => {
-          this.main.channelOpen = true;
-        }, 50);
-      }
+      setTimeout(() => {
+        this.main.channelOpen = true;
+      }, 50);
+    }
     /* } */
   }
 

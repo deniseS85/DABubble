@@ -437,6 +437,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
 
         this.searchInput = '';
         this.closeSearch();
+        this.workspaceComponent.removeSelectedChannels();
 
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.chatOpen) {
@@ -446,9 +447,8 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
             if (result && result.channelOpen !== undefined) {
                 this.channelOpen = result.channelOpen;
             }
+
         });
-
-
     }
 
     async searchfieldShowMessage(message: any): Promise<void> {

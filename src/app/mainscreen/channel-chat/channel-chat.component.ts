@@ -810,6 +810,17 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   }
 
 
+  checkActualDate(messageDate){
+    const today = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
+    if (today == messageDate){
+      return true
+    } else {
+      return false
+    }
+    
+  }
+
+
   /**
    * checks message for duplicated dates
    * @param message 

@@ -38,7 +38,8 @@
         <div *ngFor="let message of allMessages; let chatIndex = index">
             <div class="seperator" *ngIf="!message.dateAllreadyThere"></div>
             <div class="date-incoming-message" *ngIf="!message.dateAllreadyThere">
-                <span class="fs-18">{{ message.date | date: 'EEEE, dd MMMM' : 'de' }}</span>
+                <span class="fs-18" *ngIf="!checkActualDate(message.date)">{{ message.date | date: 'EEEE, dd MMMM' : 'de' }}</span>
+                <span class="fs-18" *ngIf="checkActualDate(message.date)">Heute</span>
             </div>
 
             <div [ngClass]="isCurrentUser(chatIndex) ? 'new-message-avatar-container' : 'new-message-somebody-container'"

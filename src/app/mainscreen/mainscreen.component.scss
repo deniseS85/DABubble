@@ -637,6 +637,7 @@
     background: rgba(0, 0, 0, 0.5);
     height: 505px;
     width: 350px;
+   
     position: absolute;
     top: 50%;
     left: 50%;
@@ -654,7 +655,7 @@
         padding: 10px;
         background-color: #444DF2;
         height: clamp(7.1875rem, 6.6964rem + 2.4554vw, 10.625rem);
-        /*  width: clamp(16.25rem, 14.1071rem + 10.7143vw, 31.25rem); */
+        width: clamp(16.25rem, 14.1071rem + 10.7143vw, 31.25rem);
         text-align: center;
         color: white;
         display: flex;

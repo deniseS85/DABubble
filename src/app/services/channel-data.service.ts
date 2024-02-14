@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Channel } from '../models/channel.class';
-import { Firestore, Unsubscribe, collectionData, docData, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collectionData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
-import { BehaviorSubject, Observable, Subject, Subscription, map } from "rxjs";
-import { query, getDocs, collection, doc, DocumentReference, DocumentData, QuerySnapshot, CollectionReference } from 'firebase/firestore';
-import { AuthService } from './auth.service';
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs";
+import {  DocumentData } from 'firebase/firestore';
+
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +61,7 @@ export class ChannelDataService {
       this.channelDescription = channelInfo.channelDescription;
       this.channelID = channelInfo.channelID;
       this.changeSelectedChannel(channelInfo.channelname, channelInfo.channelCreator, channelInfo.channelDescription);
-      console.log(channelInfo.channelID);
+
     });
   }
 

@@ -447,6 +447,8 @@ export class MainscreenComponent implements OnInit, AfterViewInit {
                 this.channelOpen = result.channelOpen;
             }
         });
+
+
     }
 
     async searchfieldShowMessage(message: any): Promise<void> {

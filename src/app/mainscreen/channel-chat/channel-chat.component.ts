@@ -1122,19 +1122,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   // -------------------------------------footer show/search @ members end---------------------------------
 
+
   // scrollToMessage(messageID: string) {
   //   const foundMessageElement = document.getElementById(messageID);
-    
-  //   if (foundMessageElement) {
-  //     setTimeout(() => {
-  //       const container = foundMessageElement.parentElement;
-  //       if (container) {
-  //         container.scrollLeft = foundMessageElement.offsetLeft - (container.clientWidth - foundMessageElement.clientWidth) / 2;
-  //       }
-  //       console.log(messageID);
-  //     }, 2000);
-      
-  //   } 
-  // }
   
+  //   if (foundMessageElement) {
+  //     foundMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center'});
+  //   } else {
+  //   }
+  // }
+
 }

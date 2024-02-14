@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, reauthenticateWithCredential, verifyBeforeUpdateEmail, getAuth, updateEmail, updateProfile, User, sendEmailVerification } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, reauthenticateWithCredential, verifyBeforeUpdateEmail, getAuth, updateEmail, AuthCredential, EmailAuthProvider, reauthenticateWithPopup } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';;
 
@@ -59,27 +59,20 @@ export class AuthService {
         }
     }
 
-    async updateAndVerifyEmail(newEmail: any): Promise<void> {
-       
-
-       
-          
-     /*    updateEmail(auth.currentUser, "user@example.com").then(() => {
-            // Email updated!
-            // ...
-          }).catch((error) => {
-            // An error occurred
-            // ...
-          }); */
-        /* if (user) {
-            verifyBeforeUpdateEmail(user, newEmail).then(() => {
-                console.log('email gesendet')
-              }).catch((error) => {
-                // An error happened.
-              });
-            
-        }  */
+    updateAndVerifyEmail(newEmail: any) {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user) {
+        verifyBeforeUpdateEmail(user, newEmail).then(() => {
+          console.log('Eine Verifikations-Email wurde an ihre neue Adresse gesendet');
+        }).catch((error) => {
+          console.log('Die Änderung der Email war nicht erfolgreich');
+        });
+      } else {
+        console.log('Es ist kein Benutzer eingeloggt');
+      }
     }
+
 
     async setOnlineStatus(userId: string, isOnline: boolean): Promise<void> {
         try {

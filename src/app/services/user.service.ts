@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, getDoc, getDocs } from '@angular/fire/firestore';
+import { DocumentData, DocumentSnapshot, Firestore, collection, doc, getDoc, getDocs, query, where } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ActivatedRoute } from '@angular/router';
@@ -83,6 +83,8 @@ export class UserService {
     getIsUserMember(): BehaviorSubject<boolean | undefined> {
         return this.isUserMemberSubject;
     }
+
+   
 
 
 }

@@ -259,49 +259,47 @@ export class MainscreenComponent implements OnInit {
     }
 
     async saveUserChange() {
-        let [firstName, lastName] = this.userFullName.split(' ');
-        this.user.firstname = firstName;
-        this.user.lastname = lastName;
-
-        if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
-            if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {
-                this.user.profileImg = this.selectedAvatarNr;
-            } else {
-                let oldFileName = this.extractFileNameFromPath(this.user.profileImg);
-                if (this.user.profileImg.startsWith('https')) {
-                    let oldImgRef = ref(this.storage, `images/${oldFileName}`);
-                    await deleteObject(oldImgRef);
-                }
-                this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
-            }
-        }
         try {
+            let [firstName, lastName] = this.userFullName.split(' ');
+            this.user.firstname = firstName;
+            this.user.lastname = lastName;
+
+            if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
+                if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {
+                    this.user.profileImg = this.selectedAvatarNr;
+                } else {
+                    let oldFileName = this.extractFileNameFromPath(this.user.profileImg);
+                    if (this.user.profileImg.startsWith('https')) {
+                        let oldImgRef = ref(this.storage, `images/${oldFileName}`);
+                        await deleteObject(oldImgRef);
+                    }
+                    this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
+                }
+            }
+        
+            await this.authService.updateAndVerifyEmail(this.user.email);
+            this.emailChanged = true;
             await this.updateData();
-            this.closeEditUser();
-            this.closeUserInfo();
-            this.isProfileMenuOpen = false;
-            /*  setTimeout(() => {
-                 this.closeEditUser();
-                 this.closeUserInfo();
-                 this.isProfileMenuOpen = false;
-                 this.emailChanged = false;
-             }, 3000); */
+            setTimeout(() => {
+                this.closeEditUser();
+                this.closeUserInfo();
+                this.isProfileMenuOpen = false;
+                this.emailChanged = false;
+            }, 3000);
         } catch (error) { }
+    }
+
+    async updateData() {
+        let updatedData = { ...this.user.toUserJson() };
+        await updateDoc(this.getUserID(), updatedData);
+        this.userservice.setUserData(updatedData);
+        this.updateUserNameInLocalStorage();
     }
 
     extractFileNameFromPath(path: string): string {
         let pathArray = path.split('%2F');
         let fileNameWithToken = pathArray[pathArray.length - 1];
         return fileNameWithToken.split('?')[0];
-    }
-
-    async updateData() {
-        let updatedData = { ...this.user.toUserJson() };
-        /*  this.authService.updateAndVerifyEmail(this.user.email);
-         this.emailChanged = true; */
-        await updateDoc(this.getUserID(), updatedData);
-        this.userservice.setUserData(updatedData);
-        this.updateUserNameInLocalStorage();
     }
 
     updateUserNameInLocalStorage() {

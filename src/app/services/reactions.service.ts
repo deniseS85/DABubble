@@ -143,6 +143,9 @@ export class ReactionsService {
    * @param reactCollectionRef 
    */
   async updateReactions(message: any, reactCollectionRef: any) {
+
+    console.warn(reactCollectionRef, message.react)
+
     await updateDoc(reactCollectionRef, {
       react: message.react
     });

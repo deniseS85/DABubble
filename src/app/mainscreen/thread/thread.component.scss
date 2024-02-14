@@ -284,8 +284,10 @@
     padding: 15px;
     border-radius: 0 20px 20px 20px;
     background-color: #ECEEFE;
-    font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
-   /*  line-height: 24.5px; */
+    font-size: 18px;
+    line-height: 24.5px;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
 }
 
 .threadContainerTextReactions{
@@ -294,6 +296,7 @@
     align-items: center;
     gap: 12px;
     position: relative;
+    overflow-x: auto;
 
     .emoji-con{     
             

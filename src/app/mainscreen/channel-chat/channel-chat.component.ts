@@ -777,8 +777,31 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
     this.editMessages = [];
     const channelID = this.channelDataService.channelID;
     const queryAllAnswers = query(await this.channelService.getMessageRef(channelID));
-    onSnapshot(queryAllAnswers, async (querySnapshot) => {
-      this.allMessages = [];
+    this.allMessages = [];
+
+    onSnapshot(queryAllAnswers, async (querySnapshot) => {      
+
+      // querySnapshot.forEach(async (message) => {
+
+      //   const messageData = message.data();
+      //   const userData = await this.loadUserData(messageData['messageUserID']) 
+  
+      //     if (userData) {
+      //       const message = {
+      //         ...messageData,
+      //         ...userData,
+      //         isEmojiOpen: false
+      //       };
+      //       this.allMessages.push(message);
+      //       await this.loadAnswers(messageData['messageID'], doc);
+      //     }
+      //     this.sortMessagesByTimeStamp();
+      //     this.editMessages.push(false)
+        
+
+      // })
+
+
 
       for (const doc of querySnapshot.docs) {
         const messageData = doc.data();
@@ -915,10 +938,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
       answersDoc.forEach((answer) => {
         counter++;
         answersTimes.push(answer.data()['timestamp'])
-        console.warn(counter)
       });
 
-      console.warn(counter)
       //create JSON with counter and lastElement of the Timearray
       const answerInfos = {
         counter: counter,
@@ -929,7 +950,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
       if (counter > 0) {
         this.updateAnswerInfoStatus(answerInfos, messageID);
       }
-
     })
   }
 
@@ -941,20 +961,24 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
     const a = (await getDoc(messageRef)).data();
   }
 
-
+  /**
+   * timeout because, the thread must be closed and opened again to open anotzer thread with other datas
+   * @param messageID 
+   * @returns 
+   */
   openThread(messageID: string) {
     if (this.channelService.activeMessageID === messageID && this.main.threadOpen) {
       return;
     }
-    // this.main.threadOpen = false;
+    this.main.threadOpen = false;
     this.channelService.activeMessageID = messageID;
 
-    // setTimeout(() => {
-    this.main.threadOpen = true;
-    if (this.main.isMobileScreen) {
-      this.main.channelOpen = false;
-    }
-    // }, 0.5);
+    setTimeout(() => {
+      this.main.threadOpen = true;
+      if (this.main.isMobileScreen) {
+        this.main.channelOpen = false;
+      }
+    }, 0.5);
 
   }
 

@@ -39,10 +39,12 @@ export class ThreadQuestionComponent {
    * get Message, about which the thread is about
    */
   async loadMessage() {
-    const docRef = await getDoc(this.getAnswerRef(this.channelID, this.messageID));
-    this.loadedMessage = docRef.data();
-    this.getUserData(this.loadedMessage.messageUserID);
+    const docRef = this.getAnswerRef(this.channelID, this.messageID);
 
+    const onsnap = onSnapshot(docRef, (message) => {      
+      this.loadedMessage = message.data();
+      this.getUserData(this.loadedMessage.messageUserID);
+    })
   }
 
 

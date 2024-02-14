@@ -490,7 +490,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
 
         setTimeout(() => {
             this.channelOpen = true;
-        }, 0.02);
+        }, 20);
     }
 
     closeSearch() {

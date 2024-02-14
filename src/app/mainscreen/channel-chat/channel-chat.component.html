@@ -36,8 +36,8 @@
         <!-- [ngStyle]="{'padding': isUserMember ? '100px 40px 40px 40px' : '40px 40px 40px 40px'}" -->
         <!--    <div *ngIf="isUserMember"> -->
         <div *ngFor="let message of allMessages; let chatIndex = index">
-            <div class="seperator"></div>
-            <div class="date-incoming-message">
+            <div class="seperator" *ngIf="!message.dateAllreadyThere"></div>
+            <div class="date-incoming-message" *ngIf="!message.dateAllreadyThere">
                 <span class="fs-18">{{ message.date | date: 'EEEE, dd MMMM' : 'de' }}</span>
             </div>
 

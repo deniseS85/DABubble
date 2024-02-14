@@ -29,10 +29,9 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
   isShowEmojiFooterEdit: boolean = false;
   allAnswers: any[] = [];
   userFullName: string = '';
-  userIsOnline: boolean = false;
+  userIsOnline: boolean = false;  
 
   loadedMessage: any = '';
-
   allUsers: User[] = [];
   userID: any;
   userList;
@@ -242,7 +241,7 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
             const answer = {
                 ...answerData,
                 ...userData,
-                isEmojiOpen: false
+                isEmojiOpen: false,
             };
             this.allAnswers.push(answer);
         }
@@ -251,9 +250,9 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
       // boolean to open just the answer, that i want to edit
       this.editAnswers.push(false)
   });
-  this.updateMessagesWithUserData();
-
+  // this.updateMessagesWithUserData();
   }
+
 
   isCurrentUser(chatIndex: number): boolean {
     return this.allAnswers[chatIndex].answerUserID === this.userID;

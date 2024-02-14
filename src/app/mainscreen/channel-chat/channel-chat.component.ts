@@ -99,6 +99,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   isChannelCreator: boolean = true;
   isShowEmojiFooter: boolean = false;
   isShowEmojiFooterEdit: boolean = false;
+  isDateAllreadyThere: boolean = false;
 
   user: User = new User;
   channel: Channel = new Channel;
@@ -112,6 +113,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   channelCreator: string = '';
   channelDescription: string = '';
   usersData: any[] = [];
+  DateCheck: any[] = [];
 
   newChannelName: string = '';
   newChannelDescription: string = '';
@@ -781,48 +783,45 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
 
     onSnapshot(queryAllAnswers, async (querySnapshot) => {      
 
-      // querySnapshot.forEach(async (message) => {
-
-      //   const messageData = message.data();
-      //   const userData = await this.loadUserData(messageData['messageUserID']) 
-  
-      //     if (userData) {
-      //       const message = {
-      //         ...messageData,
-      //         ...userData,
-      //         isEmojiOpen: false
-      //       };
-      //       this.allMessages.push(message);
-      //       await this.loadAnswers(messageData['messageID'], doc);
-      //     }
-      //     this.sortMessagesByTimeStamp();
-      //     this.editMessages.push(false)
-        
-
-      // })
-
-
-
       for (const doc of querySnapshot.docs) {
         const messageData = doc.data();
         const userData = await this.loadUserData(messageData['messageUserID']);
 
-
+        this.isDateAllreadyThere = this.checkDateDuplicate(messageData);
+        
         if (userData) {
           const message = {
             ...messageData,
             ...userData,
-            isEmojiOpen: false
+            isEmojiOpen: false,
+            dateAllreadyThere: this.isDateAllreadyThere
           };
+
           this.allMessages.push(message);
           await this.loadAnswers(messageData['messageID'], doc);
+          
         }
         this.sortMessagesByTimeStamp();
         this.editMessages.push(false)
       }
 
     });
-    this.updateMessagesWithUserData();
+    // this.updateMessagesWithUserData();
+  }
+
+
+  /**
+   * checks message for duplicated dates
+   * @param message 
+   * @returns 
+   */
+  checkDateDuplicate(message){
+    if(this.DateCheck.includes(message.date)){
+      return true
+    } else {
+      this.DateCheck.push(message.date)
+      return false
+    }
   }
 
   sortMessagesByTimeStamp() {

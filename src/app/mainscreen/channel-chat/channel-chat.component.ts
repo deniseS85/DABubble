@@ -136,7 +136,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChatOpen: boolean = true;
   imagePreview: string = '';
   isFirstTimeEmojiOpen: boolean = true;
-  isUserMember: boolean | undefined;
+  /* isUserMember: boolean | undefined; */
 
   private subscriptions: Subscription[] = [];
 
@@ -171,7 +171,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       await this.loadMessagesOfThisChannel();
       await this.loadUsersOfThisChannel();
     }
-    this.checkIsUserMember();
+  /*   this.checkIsUserMember(); */
   }
 
   ngAfterViewChecked() {
@@ -188,12 +188,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.scrollToBottom();
     }
   }
-
+/* 
   checkIsUserMember() {
     this.userservice.getIsUserMember().subscribe((value) => {
       this.isUserMember = value;
     });
-  }
+  } */
 
   private handleScroll() {
     const element = this.chatContainer.nativeElement;
@@ -512,8 +512,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       })
 
       await this.updateChannelUsers(channelUsersUpdated);
-      this.userservice.setIsUserMember(true);
-      window.location.reload();
+    /*   this.userservice.setIsUserMember(true);
+      window.location.reload(); */
 
     }
   }
@@ -525,8 +525,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       const newUsers = [...this.channelDataService.channelUsers];
       newUsers.splice(currentUserIndex, 1);
       this.updateChannelUsers(newUsers);
-      this.userservice.setIsUserMember(false);
-      window.location.reload();
+      /* this.userservice.setIsUserMember(false);
+      window.location.reload(); */
     }
   }
   

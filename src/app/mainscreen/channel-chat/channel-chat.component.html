@@ -3,17 +3,17 @@
 
     <div class="header-container">
         <header class="channel-chat-header">
-            <div class="header-left" (click)="isUserMember && editChannelOpen = true; openPopup(); checkUserIsCreator();">
+            <div class="header-left" (click)=" editChannelOpen = true; openPopup(); checkUserIsCreator();"> <!-- isUserMember && -->
                 <span>
-                    <span *ngIf="isUserMember" class="hashtag">#</span> 
-                    <mat-icon *ngIf="!isUserMember">lock_outline</mat-icon>
+                    <span class="hashtag">#</span> <!--  *ngIf="isUserMember" -->
+                  <!--   <mat-icon *ngIf="!isUserMember">lock_outline</mat-icon> -->
                     {{ this.channelDataService.channelName }}
-                    <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span>
-                    <img *ngIf="isUserMember" src="../../../assets/img/keyboard_arrow_down.png" alt="">
+                   <!--  <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span> -->
+                    <img src="../../../assets/img/keyboard_arrow_down.png" alt=""> <!-- *ngIf="isUserMember"  -->
                 </span>
             </div>
 
-            <div class="header-right" *ngIf="isUserMember">
+            <div class="header-right" > <!-- *ngIf="isUserMember" -->
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
                     <div *ngFor="let user of usersData">
                         <span class="profile">
@@ -31,8 +31,8 @@
         </header>
     </div>
 
-    <div class="channel-chat-container" #chatContainer [ngStyle]="{'padding': isUserMember ? '100px 40px 40px 40px' : '40px 40px 40px 40px'}">
-        <div *ngIf="isUserMember">
+    <div class="channel-chat-container" #chatContainer > <!-- [ngStyle]="{'padding': isUserMember ? '100px 40px 40px 40px' : '40px 40px 40px 40px'}" -->
+     <!--    <div *ngIf="isUserMember"> -->
             <div *ngFor="let message of allMessages; let chatIndex = index">
                 <div class="seperator"></div>
                 <div class="date-incoming-message">
@@ -161,17 +161,17 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div *ngIf="!isUserMember" class="nonmember-content">
+     <!--    </div> -->
+       <!--  <div *ngIf="!isUserMember" class="nonmember-content">
             <h3>Wende dich an den Channelcreator, um dich einzuladen.</h3>
             <div class="seperator"></div>
             <div>{{this.channelDataService.channelCreator}}</div>
             {{this.channelDataService.channelUsers}}
            
-        </div>
+        </div> -->
     </div>
 
-    <div class="footer-write-new-message" *ngIf="isUserMember">
+    <div class="footer-write-new-message" > <!-- *ngIf="isUserMember" -->
         <div>
             <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
                 [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()">

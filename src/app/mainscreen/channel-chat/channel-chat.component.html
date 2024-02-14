@@ -118,7 +118,8 @@
                         </div>
                         <div id="{{ message.messageID }}" *ngIf="message.messagetext.trim() !== ''"
                             [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
-                            {{ message.messagetext }}</div>
+                            {{ message.messagetext }}
+                     </div>
                         <a *ngIf="message.fileUpload && !isPDFFile(message.fileUpload)" target="_blank"
                             [href]="message.fileUpload">
                             <img class="uploaded-files" [src]="message.fileUpload">

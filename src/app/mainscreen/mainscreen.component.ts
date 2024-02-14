@@ -37,7 +37,7 @@ import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 
     ],
 })
-export class MainscreenComponent implements OnInit, AfterViewInit {
+export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
     @ViewChild(WorkspaceComponent) workspaceComponent!: WorkspaceComponent;
     @ViewChild(ChannelChatComponent) channelChatComponent!: ChannelChatComponent;
 
@@ -102,10 +102,10 @@ export class MainscreenComponent implements OnInit, AfterViewInit {
             this.subscribeToUserChanges();
         }
     }
-
+/* 
     ngAfterViewInit(): void {
-        // this.channelChatComponent.scrollToMessage(this.messageID);
-    }
+        this.channelChatComponent.scrollToMessage(this.messageID);
+    } */
 
     private subscribeToUserChanges(): void {
         const userDocRef = doc(this.firestore, 'users', this.userID);
@@ -460,7 +460,8 @@ export class MainscreenComponent implements OnInit, AfterViewInit {
             this.openChannel(foundMessage.channelID);
             this.findChannelFromMessage(foundMessage.channelID);
             this.messageID = messageID;
-            this.ngAfterViewInit();
+           /*  this.channelChatComponent.scrollToMessage(this.messageID); */
+            /* this.ngAfterViewInit(); */
 
         } else {
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');

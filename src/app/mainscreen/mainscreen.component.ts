@@ -449,9 +449,11 @@ export class MainscreenComponent implements OnInit {
         const messageID = message.messageID;
         const allMessages = await this.channelservice.getAllMessages();
 
-        const foundMessage = allMessages.find((msg: any) => msg.messageID === messageID);
+        const foundMessage = await allMessages.find((msg: any) => msg.messageID === messageID);
 
         if (foundMessage && foundMessage.channelID) {
+            this.openChannel(foundMessage.channelID);
+
             this.findChannelFromMessage(foundMessage.channelID);
         } else {
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
@@ -460,7 +462,7 @@ export class MainscreenComponent implements OnInit {
 
     async findChannelFromMessage(channelID: string): Promise<void> {
         const allChannels = await this.channelservice.getAllChannels();
-        const foundChannel: Channel = allChannels.find((channel: Channel) => channel.channelID === channelID)
+        const foundChannel: Channel = await allChannels.find((channel: Channel) => channel.channelID === channelID)
         this.searchfieldShowChannel(null, foundChannel);
     }
 
@@ -475,10 +477,7 @@ export class MainscreenComponent implements OnInit {
         this.closeSearch();
         if (this.workspaceComponent) {
             this.workspaceComponent.handleClickChannel(event, channel);
-            console.log('test klappt');
-        } else {
-            console.log('klappt nicht')
-        }
+        } 
     }
 
     /*   showUserProfileView(user: User): void {

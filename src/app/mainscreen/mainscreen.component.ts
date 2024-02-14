@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -16,6 +16,7 @@ import { ChannelService } from '../services/channel.service';
 import { Message } from '../models/message.interface';
 import { DomSanitizer } from '@angular/platform-browser';
 import { WorkspaceComponent } from './workspace/workspace.component';
+import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 
 @Component({
     selector: 'app-mainscreen',
@@ -36,8 +37,9 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 
     ],
 })
-export class MainscreenComponent implements OnInit {
+export class MainscreenComponent implements OnInit, AfterViewInit {
     @ViewChild(WorkspaceComponent) workspaceComponent!: WorkspaceComponent;
+    @ViewChild(ChannelChatComponent) channelChatComponent!: ChannelChatComponent;
 
     firestore: Firestore = inject(Firestore);
     user = new User();
@@ -75,6 +77,7 @@ export class MainscreenComponent implements OnInit {
     showProfil = false;
     editThread: boolean = false;
     allChannels: Channel[] = [];
+    messageID: string = '';
 
 
     constructor(
@@ -98,6 +101,10 @@ export class MainscreenComponent implements OnInit {
             this.checkIsGuestLogin();
             this.subscribeToUserChanges();
         }
+    }
+
+    ngAfterViewInit(): void {
+        this.channelChatComponent.scrollToMessage(this.messageID);
     }
 
     private subscribeToUserChanges(): void {
@@ -422,8 +429,6 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
-
-
     /* erster user directMessage, von chat neuer user suchen, neuer chat öffnet sich nicht */
     searchfieldShowUser(user: User): void {
         const dialogRef = this.dialog.open(UserProfileCardComponent, {
@@ -444,16 +449,16 @@ export class MainscreenComponent implements OnInit {
         });
     }
 
-
     async searchfieldShowMessage(message: any): Promise<void> {
         const messageID = message.messageID;
-        console.log(message);
         const allMessages = await this.channelservice.getAllMessages();
         const foundMessage = await allMessages.find((msg: any) => msg.messageID === messageID);
 
         if (foundMessage && foundMessage.channelID) {
             this.openChannel(foundMessage.channelID);
             this.findChannelFromMessage(foundMessage.channelID);
+            this.messageID = messageID;
+            this.ngAfterViewInit();
           
         } else {
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
@@ -512,5 +517,4 @@ export class MainscreenComponent implements OnInit {
         this.allChatSectionsOpen = false;
         this.workspaceOpen = true;
     }
-
 }

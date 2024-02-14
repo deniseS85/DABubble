@@ -116,7 +116,7 @@
                                 </ng-template>
                             </div>
                         </div>
-                        <div *ngIf="message.messagetext.trim() !== ''"
+                        <div id="{{ message.messageID }}" *ngIf="message.messagetext.trim() !== ''"
                             [ngClass]="isCurrentUser(chatIndex) ? 'message-avatar fs-18 fw-400' : 'message-somebody fs-18 fw-400'">
                             {{ message.messagetext }}</div>
                         <a *ngIf="message.fileUpload && !isPDFFile(message.fileUpload)" target="_blank"

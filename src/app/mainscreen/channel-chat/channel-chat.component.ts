@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild, AfterViewChecked, HostListener, AfterViewInit, EventEmitter, Output, Input, Inject } from '@angular/core';
+import { Component, ElementRef, Renderer2, inject, OnInit, OnDestroy, ViewChild, AfterViewChecked, HostListener, AfterViewInit, Input } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from "../../services/auth.service";
 import { Firestore, Unsubscribe, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
@@ -1122,5 +1122,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   // -------------------------------------footer show/search @ members end---------------------------------
 
+
+  scrollToMessage(messageID: string) {
+    const foundMessageElement = document.getElementById(messageID);
+  
+    if (foundMessageElement) {
+      foundMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    } else {
+    }
+  }
 
 }

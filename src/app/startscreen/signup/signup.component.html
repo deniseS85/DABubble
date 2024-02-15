@@ -6,28 +6,28 @@
     <p>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
 
     <div class="input-container">
-        <input formControlName="firstname" type="text" name="firstname" placeholder="Vorname" pattern="[A-Za-zÄäÖöÜüß\s]+"
+        <input formControlName="firstname" type="text" maxlength="15"  name="firstname" placeholder="Vorname" pattern="[A-Za-zÄäÖöÜüß\s]+"
         [class.red-border]="signUpForm.get('firstname')?.invalid && signUpForm.get('firstname')?.touched" required>
         <mat-icon>person_outline</mat-icon>
         <p *ngIf="signUpForm.get('firstname')?.invalid && signUpForm.get('firstname')?.touched">Bitte schreiben Sie einen Namen.</p>
     </div>
 
     <div class="input-container">
-        <input formControlName="lastname" type="text" name="lastname" placeholder="Nachname" pattern="[A-Za-zÄäÖöÜüß\s]+"
+        <input formControlName="lastname" type="text" maxlength="15" name="lastname" placeholder="Nachname" pattern="[A-Za-zÄäÖöÜüß\s]+"
         [class.red-border]="signUpForm.get('lastname')?.invalid && signUpForm.get('lastname')?.touched" required>
         <mat-icon>person_outline</mat-icon>
         <p *ngIf="signUpForm.get('lastname')?.invalid && signUpForm.get('lastname')?.touched">Bitte schreiben Sie einen Namen.</p>
     </div>
 
     <div class="input-container">
-        <input formControlName="email" type="email" name="email" placeholder="beispielname@email.com"
+        <input formControlName="email" type="email" name="email" maxlength="25" placeholder="beispielname@email.com"
         [class.red-border]="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" required>
         <mat-icon>mail_outline</mat-icon>
         <p *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">Diese E-Mail-Adresse ist leider ungültig.</p>
     </div>
 
     <div class="input-container">
-        <input formControlName="password" type="password" name="password" placeholder="Passwort"
+        <input formControlName="password" type="password" name="password" maxlength="20" placeholder="Passwort"
         [class.red-border]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" required>
         <mat-icon>lock_outline</mat-icon>
         <p *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">Bitte geben Sie ein Passwort ein.</p>

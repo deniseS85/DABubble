@@ -250,7 +250,7 @@
                         <span (click)="removeUser(user)"><mat-icon>close</mat-icon></span>
                     </div>
                     <div class="relative">
-                        <input placeholder="Name eingeben" type="text"
+                        <input placeholder="Name eingeben" maxlength="25" type="text"
                             class="channel-create-input channel-create-description-input"
                             (input)="onSearchInputChange($event)" [(ngModel)]="searchQuery" />
                         <div class="contacts-list-pop-up" *ngIf="searchQuery.trim()" [@rollOutInAnimation]>
@@ -376,7 +376,7 @@
                         }}</span>
                 </div>
                 <div>
-                    <input type="text" [(ngModel)]="newChannelName" autofocus
+                    <input type="text" [(ngModel)]="newChannelName" autofocus maxlength="20"
                         placeholder="{{  this.channelDataService.channelName }}" *ngIf="channelNameChange"
                         class="input-change-channel-name">
                 </div>
@@ -395,7 +395,7 @@
                     <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{
                         this.channelDataService.channelDescription }}</span>
                     <input type="text" [(ngModel)]="newChannelDescription" autofocus *ngIf="channelDescriptionChange"
-                        placeholder="Dein Text hier">
+                        placeholder="Dein Text hier" maxlength="70">
                     <div class="seperator"></div>
                     <span class="fw-700">Erstellt von</span>
                     <div class="channel-creator-container">

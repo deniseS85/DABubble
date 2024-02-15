@@ -309,14 +309,15 @@ export class WorkspaceComponent implements OnInit {
    * from all other elements and sets this class to clicked elements
    */
   handleClickChat(event: MouseEvent, userID: string): void {
-    this.setChatUserID(userID)
+    this.setChatUserID(userID);
     const target = event.target as HTMLElement;
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
-    this.elRef.nativeElement
-      .querySelectorAll('.selectable')
-      .forEach((element: HTMLElement) => element.classList.remove('selected'));
+    this.removeSelectedChannels();
     this.renderer.addClass(selectableElement, 'selected');
+  }
+
+  setAllChatSectionsOpen() {
     this.main.chatOpen = false;
     this.main.channelOpen = false;
     this.main.threadOpen = false;

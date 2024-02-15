@@ -1,7 +1,7 @@
 <div class="threadContainer">
 
     <app-threads-header [activeChannelName]="activeChannelName"></app-threads-header>
-    <app-thread-question></app-thread-question>
+    <app-thread-question [usernameCurrentUser]="userFullName"></app-thread-question>
 
     <!-- Stroke between -->
     <div class="threadContainerAnswersStroke">

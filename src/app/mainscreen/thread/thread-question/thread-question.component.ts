@@ -11,14 +11,15 @@ import { ReactionsService } from '../../../services/reactions.service';
 })
 export class ThreadQuestionComponent {
 
+  @Input() usernameCurrentUser: string = '';
   channelID: string;
   messageID: string;
   loadedMessage: any = '';
   isEmojiOpen: boolean = false;
-  username: any = '';;
+  username: any = '';
   userImg: any = '';
   isOnline: boolean = false;
-  messageFullyLoaded: boolean = false;
+  messageFullyLoaded: boolean = false; 
   unsubscribeUserData: Unsubscribe | undefined;
 
   firestore: Firestore = inject(Firestore);
@@ -73,8 +74,6 @@ export class ThreadQuestionComponent {
     return doc(this.firestore, "channels", channelId, "messages", messageId);
   }
 
-  
-
 
   /**
    * send Emoji selection to the reactionService
@@ -83,7 +82,7 @@ export class ThreadQuestionComponent {
    */
   handleReactionMessage(event: any, message: any) {
     const typ = 'messageReaction';
-    this.reactionService.handleReaction(this.channelID, this.messageID, '', '', '', event, message, this.loadedMessage.messageUserName, typ)
+    this.reactionService.handleReaction(this.channelID, this.messageID, '', '', '', event, message, this.usernameCurrentUser, typ)
     this.toggleEmojiMessage()
   }
 

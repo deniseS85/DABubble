@@ -65,10 +65,11 @@
 
 .threadContainerTextReactions{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 12px;
     position: relative;
+    width: 100%;
 
     .emoji-con{     
             
@@ -87,28 +88,37 @@
             }       
     }
 
-    .threadContainerTextReactionsEmojis{
-        position: relative;
-        padding: 5px 10px;
+    .threadContainerTextReactionsAllEmojis{
         display: flex;
+        justify-content: center;
         align-items: center;
-        gap: 10px;
-        border: 1px solid #ADB0D9;
-        border-radius: 20px;
-        background-color: white;
-        cursor: pointer;
-    
-        img{
-            width: 24px;
-            height: 24px;
-        }
+        gap: 12px;
 
-        &:hover{
-            .reactionsInfoContainer{
-                display: flex !important;
+        .threadContainerTextReactionsEmojis{
+            position: relative;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #ADB0D9;
+            border-radius: 20px;
+            background-color: white;
+            cursor: pointer;
+        
+            img{
+                width: 24px;
+                height: 24px;
+            }
+    
+            &:hover{
+                .reactionsInfoContainer{
+                    display: flex !important;
+                }
             }
         }
     }
+
+    
 
     .reactionsInfoContainer{
         position: absolute;

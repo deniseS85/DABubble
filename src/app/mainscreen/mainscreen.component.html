@@ -167,16 +167,6 @@
     </div>
 
     <div class="mainContainerContent">
-<<<<<<< HEAD
-        <app-workspace *ngIf="workspaceOpen" [@leftRightAnimation]></app-workspace>
-        <app-chat-container *ngIf="(chatOpen && allChatSectionsOpen) || (chatOpen && !workspaceOpen)"></app-chat-container>
-        <app-channel-chat 
-            *ngIf="(channelOpen && allChatSectionsOpen) || (channelOpen && !workspaceOpen)" 
-            [userProfileView]="userProfileView"
-            [ngClass]="{'d-none': (threadOpen && isMobileScreen) || (threadOpen && onlyThread)}">
-        </app-channel-chat>
-        <app-thread *ngIf="(threadOpen && allChatSectionsOpen) || (threadOpen && !workspaceOpen)" [@leftRightAnimation]></app-thread>
-=======
         <app-workspace *ngIf="workspaceOpen" [@leftRightAnimation]>
         </app-workspace>
         <app-chat-container *ngIf="(chatOpen && allChatSectionsOpen) || (chatOpen && !workspaceOpen)">
@@ -187,7 +177,6 @@
         </app-channel-chat>
         <app-thread *ngIf="(threadOpen && allChatSectionsOpen) || (threadOpen && !workspaceOpen)" [@leftRightAnimation]>
         </app-thread>
->>>>>>> 89fc21e03889c6c91b0e441743339143b5a24920
     </div>
 </div>
 
@@ -197,17 +186,10 @@
         <div *ngIf="workspaceOpen">Workspace-Menü schließen</div>
         <div *ngIf="!workspaceOpen">Workspace-Menü öffnen</div>
         <div class="workspace-menu-close-icon">
-<<<<<<< HEAD
-            <img class="normal-img" src="./assets/img/workspace_hide.png" *ngIf="workspaceOpen"/>
-            <img class="hover-img" src="./assets/img/workspace_hide_hover.png" *ngIf="workspaceOpen"/>
-            <img class="normal-img" src="./assets/img/workspace_show.png" *ngIf="!workspaceOpen"/>
-            <img class="hover-img" src="./assets/img/workspace_show_hover.png" *ngIf="!workspaceOpen"/>
-=======
             <img class="normal-img" src="./assets/img/workspace_hide.png" *ngIf="workspaceOpen" />
             <img class="hover-img" src="./assets/img/workspace_hide_hover.png" *ngIf="workspaceOpen" />
             <img class="normal-img" src="./assets/img/workspace_show.png" *ngIf="!workspaceOpen" />
             <img class="hover-img" src="./assets/img/workspace_show_hover.png" *ngIf="!workspaceOpen" />
->>>>>>> 89fc21e03889c6c91b0e441743339143b5a24920
         </div>
     </div>
 </div>

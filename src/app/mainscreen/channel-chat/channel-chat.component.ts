@@ -644,13 +644,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     this.userProfileView = user;
   }
 
-  /* showUserProfile(user: User): void {
-    this.setUserProfileView(user); 
-  } */
-
-  // User filter function
-
-
 
   /**
    * Search input change event handler.

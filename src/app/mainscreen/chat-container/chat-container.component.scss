@@ -494,28 +494,36 @@
             }       
     }
 
-    .threadContainerTextReactionsEmojis{
-        position: relative;
-        padding: 5px 10px;
+    .threadContainerTextReactionsEmojisWrapper{
         display: flex;
+        justify-content: center;
         align-items: center;
-        gap: 10px;
-        border: 1px solid #ADB0D9;
-        border-radius: 20px;
-        background-color: white;
-        cursor: pointer;
-    
-        img{
-            width: 24px;
-            height: 24px;
-        }
+        gap: 12px;
+        flex-wrap: wrap;
 
-        &:hover{
-            .reactionsInfoContainer{
-                display: flex !important;
+        .threadContainerTextReactionsEmojis{
+            position: relative;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #ADB0D9;
+            border-radius: 20px;
+            background-color: white;
+            cursor: pointer;
+        
+            img{
+                width: 24px;
+                height: 24px;
+            }
+    
+            &:hover{
+                .reactionsInfoContainer{
+                    display: flex !important;
+                }
             }
         }
-    }
+    }    
 
     .reactionsInfoContainer{
         position: absolute;

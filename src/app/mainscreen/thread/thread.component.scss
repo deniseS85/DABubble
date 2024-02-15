@@ -296,6 +296,7 @@
     font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
     font-weight: 700;
     line-height: 24.5px;
+    text-align: end;
 }
 
 .threadContainerInfoTime{
@@ -316,11 +317,10 @@
 
 .threadContainerTextReactions{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 12px;
     position: relative;
-    overflow-x: auto;
 
     .emoji-con{     
             
@@ -335,6 +335,14 @@
                 cursor: pointer;
             }       
     }
+
+    .threadContainerTextReactionsEmojisWrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }   
 
     .threadContainerTextReactionsEmojis{
         position: relative;

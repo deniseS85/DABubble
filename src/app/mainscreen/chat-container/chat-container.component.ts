@@ -61,7 +61,6 @@ export class ChatContainerComponent {
     this.setBooleanForSelfChat();
     this.loadChatID();    
     this.getUserData();
-    // this.newDMChat()
   }
 
 
@@ -108,10 +107,7 @@ export class ChatContainerComponent {
     }
 
     this.loadMessagesOfThisChat()
-  }
-
-
-  
+  } 
 
 
   async getUserData() {
@@ -273,10 +269,7 @@ export class ChatContainerComponent {
       await updateDoc(docRef, {messagetext: this.editedMessage})
     }
     this.editMessages.splice(index, 1, false)
-  }
-
-
-  
+  }  
 
 
   async sendMessage() {
@@ -305,6 +298,7 @@ export class ChatContainerComponent {
       this.scrollToBottom();
     }, 10);
   }
+
 
   scrollToBottom(): void {
     try {

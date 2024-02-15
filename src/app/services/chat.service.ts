@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,7 @@ export class ChatService {
   userID: string = '';
   collectionChatRef = collection(this.firestore, 'chats');
   allUsers: any[] = [];
+/*   chatID: string | null = null; */
   
 
   constructor() { }
@@ -105,6 +106,26 @@ async loadChat(chatID: string): Promise<any> {
       console.error(`Chat mit ID ${chatID} nicht gefunden.`);
       return null;
     }
+}
+
+async getChatIDByUserIDs(user1ID: string, user2ID: string): Promise<string | null> {
+  const querySnapshot1 = await getDocs(
+    query(collection(this.firestore, 'chats'), where('chatUsers', 'array-contains', user1ID))
+  );
+
+  const querySnapshot2 = await getDocs(
+    query(collection(this.firestore, 'chats'), where('chatUsers', 'array-contains', user2ID))
+  );
+
+  const matchingChats = querySnapshot1.docs.filter(doc1 =>
+    querySnapshot2.docs.some(doc2 => doc1.id === doc2.id)
+  );
+
+  if (matchingChats.length > 0) {
+    return matchingChats[0].data()['chatID'];
+  }
+
+  return null;
 }
 
 }

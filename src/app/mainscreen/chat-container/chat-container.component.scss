@@ -181,23 +181,21 @@
         max-height: 100%;      
         overflow-y: hidden;
         margin-bottom: 20px;
-        padding-right: 5px;
     
         &:hover{
             overflow-y: auto;
-            padding-right: 0px;
         }
     
     
         .threadContainerAnswer{
             width: calc(100% - 80px);
             padding: 10px 40px 10px 40px;
-            margin-top: 18px;                
+            margin-top: 28px;                
             display: flex;
             justify-content: flex-start;
             gap: 20px;
             position: relative;
-            overflow: hidden;
+            // overflow: hidden;
 
             @media(max-width: 750px){
                 width: calc(100% - 66px);

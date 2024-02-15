@@ -494,7 +494,7 @@ export class WorkspaceComponent implements OnInit {
         channelUsersIDs,
         channelCreator
       );
-      this.searchservice.loadChannels();
+      this.loadChannels();
       this.closeChannelCreateWindow();
       this.createdChannelName = '';
       this.createdChannelDescription = '';

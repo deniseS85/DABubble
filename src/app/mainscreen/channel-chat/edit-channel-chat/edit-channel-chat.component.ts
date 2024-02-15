@@ -17,7 +17,12 @@ export class EditChannelChatComponent {
   firestore: Firestore = inject(Firestore);
   isMessageEmojiOpen = false;
 
-  constructor(public dialog: MatDialog, public dialogRef: MatDialogRef<EditChannelChatComponent>, @Inject(MAT_DIALOG_DATA) public messageData: {channelid: string, messageid: string}, public dialogModalRef: MatDialogRef<any>) {
+  constructor(
+    public dialog: MatDialog, 
+    public dialogRef: MatDialogRef<EditChannelChatComponent>, 
+    @Inject(MAT_DIALOG_DATA) public messageData: {channelid: string, messageid: string}, 
+    public dialogModalRef: MatDialogRef<any>) 
+    {
     this.getMessageData();
   }
   

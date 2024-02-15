@@ -133,7 +133,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   unsubUser: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
 
-  /*  private shouldScrollToBottom: boolean = true; */
+   private shouldScrollToBottom: boolean = true;
 
   isChannelOpen: boolean = false;
   isChatOpen: boolean = true;
@@ -178,13 +178,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   }
 
 
-  /* 
+  
     ngAfterViewChecked() {
       if (this.shouldScrollToBottom) {
         this.scrollToBottom();
       }
-    } */
-  /* 
+    }
+
     ngAfterViewInit() {
       if (this.chatContainer) {
         this.subscriptions.push(
@@ -192,7 +192,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
         );
         this.scrollToBottom();
       }
-    } */
+    } 
   /* 
     checkIsUserMember() {
       this.userservice.getIsUserMember().subscribe((value) => {
@@ -200,25 +200,25 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
       });
     } */
 
-  /*   private handleScroll() {
+    private handleScroll() {
       const element = this.chatContainer.nativeElement;
       const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
   
       this.shouldScrollToBottom = atBottom;
-    } */
-  /* 
+    }
+  
     scrollToBottom(): void {
       try {
         this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
       } catch (err) { }
-    } */
+    }
 
-  /*  @HostListener('scroll', ['$event'])
+   @HostListener('scroll', ['$event'])
    onScroll(event: Event): void {
      let element = event.target as HTMLElement;
      let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
      this.shouldScrollToBottom = atBottom;
-   } */
+   }
 
 
   ngOnDestroy() {
@@ -768,9 +768,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
         this.isButtonDisabled = true;
         this.deleteFileUpload();
         this.channelService.sendMessage(this.channelDataService.channelID, message);
-        /* setTimeout(() => {
+        setTimeout(() => {
           this.scrollToBottom();
-        }, 10); */
+        }, 10);
       }
     } catch (error) {
       console.error('Fehler beim Abrufen der Benutzerdaten:', error);
@@ -1157,21 +1157,19 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   // -------------------------------------footer show/search @ members end---------------------------------
 
   
-    scrollToMessage(messageID: string): void {
-      const foundMessageElement = document.getElementById(messageID);
+  scrollToMessage(messageID: string): void {
+    const foundMessageElement = document.getElementById(messageID);
 
-      if (foundMessageElement) {
-        const parentContainer = foundMessageElement.closest('.new-message-avatar-container, .new-message-somebody-container');
-        if (parentContainer) {
-          parentContainer.classList.add('highlighted-message');
-        }
-        foundMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => {
-          if (parentContainer) {
-            parentContainer.classList.remove('highlighted-message');
-          }
-        }, 2500);
-      }
+    if (foundMessageElement) {
+      const parentContainer = foundMessageElement.closest('.new-message-avatar-container, .new-message-somebody-container');
+     
+      parentContainer?.classList.add('highlighted-message-container');
+      
+      foundMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+          parentContainer?.classList.remove('highlighted-message-container');
+      }, 1500);
     }
+  }
 
 }

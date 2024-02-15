@@ -1411,10 +1411,9 @@ input {
 
 }
 
-.highlighted-message {
-    background-color: #ECEEFE;
-    opacity: 0.8;
-    transition: background-color 0.2s ease, opacity 0.2s ease;
+.highlighted-message-container {
+    background-color: rgb(255, 191, 73);
+    transition: background-color 1s ease;
 }
 
 

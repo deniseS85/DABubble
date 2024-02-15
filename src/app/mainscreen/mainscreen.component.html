@@ -9,35 +9,42 @@
                 <mat-icon>chevron_left</mat-icon>
             </div>
             <div class="server-logo-name">
-              <img src="./assets/img/workspace_logo.png" />
-              <span>Code learning</span>
+                <img src="./assets/img/workspace_logo.png" />
+                <span>Code learning</span>
             </div>
-          </div>
+        </div>
 
-        <div class="searchfield-container" 
-            [ngClass]="{
+        <div class="searchfield-container" [ngClass]="{
                 'searchfield-container-mobile-view': isMobileScreen && workspaceOpen, 
                 'd-none': isMobileScreen && !workspaceOpen
             }">
             <input type="text" placeholder="Code learning durchsuchen" id="headerInput" [(ngModel)]="searchInput"
+<<<<<<< HEAD
                 (input)="search()" autocomplete="off">
+=======
+                (input)="search()" maxlength="20" autocomplete="off">
+>>>>>>> 89fc21e03889c6c91b0e441743339143b5a24920
 
-            <div class="searchResults" [ngStyle]="{'display': isInputFilled ? 'block' : 'none'}" *ngIf="searchResults.channels.length > 0 || searchResults.users.length > 0 || searchResults.messages.length > 0">
+            <div class="searchResults" [ngStyle]="{'display': isInputFilled ? 'block' : 'none'}"
+                *ngIf="searchResults.channels.length > 0 || searchResults.users.length > 0 || searchResults.messages.length > 0">
                 <ul>
-                    <li *ngFor="let channel of searchResults.channels" (click)="searchfieldShowChannel($event, channel)">
+                    <li *ngFor="let channel of searchResults.channels"
+                        (click)="searchfieldShowChannel($event, channel)">
                         <span>#</span> {{ channel.channelname }}
                     </li>
                     <li *ngFor="let user of searchResults.users" (click)="searchfieldShowUser(user)">
                         <img class="profile-img-search" [src]="getProfileImagePathSearch(user)">
                         <span>{{ user.firstname }} {{ user.lastname}}</span>
                     </li>
-                    <li class="message-container" *ngFor="let message of searchResults.messages" (click)="searchfieldShowMessage(message)">
-                        <img class="profile-img-search" [src]="message.user?.profileImg ? getProfileImagePathSearch(message.user) : ''">
+                    <li class="message-container" *ngFor="let message of searchResults.messages"
+                        (click)="searchfieldShowMessage(message)">
+                        <img class="profile-img-search"
+                            [src]="message.user?.profileImg ? getProfileImagePathSearch(message.user) : ''">
                         <div class="message-content">
                             <span [innerHTML]="message.highlightedText"></span>
                             <div class="message-info">
                                 <span>{{ message.user?.firstname }} {{ message.user?.lastname}} </span>•
-                                <span> {{ message.date | date: 'd. MMM'  }}</span>
+                                <span> {{ message.date | date: 'd. MMM' }}</span>
                             </div>
                         </div>
                     </li>
@@ -85,7 +92,8 @@
                     </div>
                     <div class="user-info">
                         <p [ngClass]="{'active-point': userIsOnline, 'inactive-point': !userIsOnline}"></p>
-                        <p [ngStyle]="{'color': userIsOnline ? '#92C83E' : '#686868'}">{{ userIsOnline ? 'Online' : 'Offline' }}</p>
+                        <p [ngStyle]="{'color': userIsOnline ? '#92C83E' : '#686868'}">{{ userIsOnline ? 'Online' :
+                            'Offline' }}</p>
                     </div>
                     <div class="user-email">
                         <mat-icon>mail_outline</mat-icon>
@@ -136,14 +144,14 @@
                                 <img src="./assets/img/account_circle.png">
                                 <p>Vollständiger Name</p>
                             </div>
-                            <input [(ngModel)]="userFullName" name="fullName" placeholder="Vor- und Nachname">
+                            <input [(ngModel)]="userFullName" name="fullName" placeholder="Vor- und Nachname" maxlength="30">
                         </div>
                         <div class="input-fields">
                             <div class="title-input">
                                 <mat-icon>mail_outline</mat-icon>
                                 <p>E-Mail-Adresse</p>
                             </div>
-                            <input [(ngModel)]="user.email" name="email" placeholder="E-Mail-Adresse">
+                            <input [(ngModel)]="user.email" name="email" placeholder="E-Mail-Adresse" maxlength="25">
                         </div>
                     </div>
                     <div class="button-container">
@@ -152,7 +160,8 @@
                     </div>
 
                     <div class="confirm-container" *ngIf="emailChanged">
-                        <div class="confirm-text">E-Mail wurde gesendet.<br> Bitte bestätigen Sie<br> die neue E-Mail-Adresse.
+                        <div class="confirm-text">E-Mail wurde gesendet.<br> Bitte bestätigen Sie<br> die neue
+                            E-Mail-Adresse.
                         </div>
                     </div>
                 </div>
@@ -162,6 +171,7 @@
     </div>
 
     <div class="mainContainerContent">
+<<<<<<< HEAD
         <app-workspace *ngIf="workspaceOpen" [@leftRightAnimation]></app-workspace>
         <app-chat-container *ngIf="(chatOpen && allChatSectionsOpen) || (chatOpen && !workspaceOpen)"></app-chat-container>
         <app-channel-chat 
@@ -170,6 +180,18 @@
             [ngClass]="{'d-none': (threadOpen && isMobileScreen) || (threadOpen && onlyThread)}">
         </app-channel-chat>
         <app-thread *ngIf="(threadOpen && allChatSectionsOpen) || (threadOpen && !workspaceOpen)" [@leftRightAnimation]></app-thread>
+=======
+        <app-workspace *ngIf="workspaceOpen" [@leftRightAnimation]>
+        </app-workspace>
+        <app-chat-container *ngIf="(chatOpen && allChatSectionsOpen) || (chatOpen && !workspaceOpen)">
+        </app-chat-container>
+        <app-channel-chat *ngIf="(channelOpen && allChatSectionsOpen) || (channelOpen && !workspaceOpen)"
+            [userProfileView]="userProfileView"
+            [ngClass]="{'d-none': (threadOpen && isMobileScreen) || (threadOpen && onlyThread)}">
+        </app-channel-chat>
+        <app-thread *ngIf="(threadOpen && allChatSectionsOpen) || (threadOpen && !workspaceOpen)" [@leftRightAnimation]>
+        </app-thread>
+>>>>>>> 89fc21e03889c6c91b0e441743339143b5a24920
     </div>
 </div>
 
@@ -179,10 +201,17 @@
         <div *ngIf="workspaceOpen">Workspace-Menü schließen</div>
         <div *ngIf="!workspaceOpen">Workspace-Menü öffnen</div>
         <div class="workspace-menu-close-icon">
+<<<<<<< HEAD
             <img class="normal-img" src="./assets/img/workspace_hide.png" *ngIf="workspaceOpen"/>
             <img class="hover-img" src="./assets/img/workspace_hide_hover.png" *ngIf="workspaceOpen"/>
             <img class="normal-img" src="./assets/img/workspace_show.png" *ngIf="!workspaceOpen"/>
             <img class="hover-img" src="./assets/img/workspace_show_hover.png" *ngIf="!workspaceOpen"/>
+=======
+            <img class="normal-img" src="./assets/img/workspace_hide.png" *ngIf="workspaceOpen" />
+            <img class="hover-img" src="./assets/img/workspace_hide_hover.png" *ngIf="workspaceOpen" />
+            <img class="normal-img" src="./assets/img/workspace_show.png" *ngIf="!workspaceOpen" />
+            <img class="hover-img" src="./assets/img/workspace_show_hover.png" *ngIf="!workspaceOpen" />
+>>>>>>> 89fc21e03889c6c91b0e441743339143b5a24920
         </div>
     </div>
 </div>

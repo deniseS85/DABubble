@@ -1,6 +1,6 @@
 <div class="footer-write-new-message">
     <div>
-        <textarea class="textarea" [(ngModel)]="answertext" id="answertext" placeholder="Antworten..." (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()" ></textarea>
+        <textarea class="textarea" [(ngModel)]="answertext" id="answertext" placeholder="Antworten..." rows="5" cols="20" maxlength="150" (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()" ></textarea>
     </div>
     <div class="footer-line-icons">
         <div class="footer-icons-left">

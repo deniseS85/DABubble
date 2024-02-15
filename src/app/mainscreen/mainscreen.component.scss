@@ -252,8 +252,11 @@
                     gap: 20px;
 
                     @media only screen and (max-width: 750px) {
-                        position: relative;
-                        transform: translate(0%, -175%);
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: clamp(16.5625rem, 10.2834rem + 31.3953vw, 25rem);
                     }
 
                     .title {

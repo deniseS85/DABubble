@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, Output, Renderer2 } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../models/user.class';
 import { ChatService } from '../../services/chat.service';
@@ -6,14 +6,14 @@ import { ChannelDataService } from '../../services/channel-data.service';
 import { ChannelService } from '../../services/channel.service';
 import { WorkspaceComponent } from "../workspace/workspace.component";
 
+
 @Component({
   selector: 'app-user-profile-card',
   templateUrl: './user-profile-card.component.html',
   styleUrl: './user-profile-card.component.scss'
 })
 export class UserProfileCardComponent {
-
-
+  
   constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User, chatOpen: boolean, channelOpen: boolean }, 
     public dialogRef: MatDialogRef<UserProfileCardComponent>, 
     private chatService: ChatService, 

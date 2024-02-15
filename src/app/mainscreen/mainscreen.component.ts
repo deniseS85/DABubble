@@ -428,7 +428,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
     /* erster user directMessage, von chat neuer user suchen, neuer chat öffnet sich nicht */
     searchfieldShowUser(user: User): void {
         const dialogRef = this.dialog.open(UserProfileCardComponent, {
-            data: { user: user, chatOpen: this.chatOpen, channelOpen: this.channelOpen, userID: this.userID }
+            data: { user: user, chatOpen: { chatID: null, isOpen: false }, channelOpen: this.channelOpen, userID: this.userID }
         });
 
         this.searchInput = '';
@@ -438,11 +438,11 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.chatOpen) {
                 this.chatOpen = result.chatOpen;
-            }
-
-            if (result && result.channelOpen !== undefined) {
+              }
+          
+              if (result && result.channelOpen !== undefined) {
                 this.channelOpen = result.channelOpen;
-            }
+              }
         });
     }
 

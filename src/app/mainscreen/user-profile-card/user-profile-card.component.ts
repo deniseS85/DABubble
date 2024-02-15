@@ -14,51 +14,56 @@ import { Firestore } from '@angular/fire/firestore';
   styleUrl: './user-profile-card.component.scss'
 })
 export class UserProfileCardComponent {
-  firestore: Firestore = inject(Firestore);
-  userID: any;
+    firestore: Firestore = inject(Firestore);
+    userID: any;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User, chatOpen: boolean, channelOpen: boolean, userID: any  }, 
-    public dialogRef: MatDialogRef<UserProfileCardComponent>, 
-    private chatService: ChatService, 
-    private channelDataService: ChannelDataService) {}
 
-  getProfileImagePath(user: User): string {
-    if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
-      return user.profileImg;
-    } else {
-      return `./assets/img/${user.profileImg}`;
+    constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User, chatOpen: boolean, channelOpen: boolean, userID: any  }, 
+      public dialogRef: MatDialogRef<UserProfileCardComponent>, 
+      private chatService: ChatService, 
+      private channelDataService: ChannelDataService) {}
+
+    getProfileImagePath(user: User): string {
+        if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {
+            return user.profileImg;
+        } else {
+            return `./assets/img/${user.profileImg}`;
+        }
     }
-  }
 
-  doNotClose(event: MouseEvent): void {
-    event.stopPropagation();
-  }
-
-  openDirectMessage(chatPartnerID: string): void {
-  const userFullName = this.data.user.firstname + " " + this.data.user.lastname;
-  this.userID = this.data.userID;
-
-  
-  this.chatService.getChatIDByUserIDs(this.userID, chatPartnerID).then(chatID => {
-    if (chatID) {
-      /* this.chatService.chatID = chatID; */
-      console.log('chatID',chatID)
-      console.log('currentUser', this.userID);
-      console.log('chatpartner', chatPartnerID);
-
-      this.channelDataService.highlightUserInWorkspace(userFullName);
-      this.dialogRef.close({ chatOpen: true, channelOpen: false });
-    } else {
-      console.error('Chat nicht gefunden');
+    doNotClose(event: MouseEvent): void {
+      event.stopPropagation();
     }
-  });
-}
 
-  closeDialog(){
-    this.dialogRef.close();
-  }
+    openDirectMessage(chatPartnerID: string): void {
+        const userFullName = this.data.user.firstname + " " + this.data.user.lastname;
+        this.userID = this.data.userID;
+        this.chatService.getChatIDByUserIDs(this.userID, chatPartnerID).then(chatID => {
+            if (chatID) {
+                console.log('chatID',chatID)
+                console.log('currentUser', this.userID);
+                console.log('chatpartner', chatPartnerID);
+                this.chatService.userID = chatPartnerID;
 
- 
+                this.openChat(chatID, userFullName);
+                
+            }
+        });
+    }
 
+    openChat(chatID: string, userFullName: string): void {
+        this.chatService.loadChat(chatID).then(chatData => {
+          console.log(chatData)
+          this.channelDataService.highlightUserInWorkspace(userFullName);
+          this.dialogRef.close({ chatOpen: { chatID: chatID, isOpen: true }, channelOpen: false });
+        }).catch(error => {
+          console.error('Fehler beim Laden des Chats:', error);
+        });
+    }
 
+    
+
+    closeDialog(){
+        this.dialogRef.close();
+    }
 }

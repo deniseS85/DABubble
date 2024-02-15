@@ -51,7 +51,7 @@
                 <!-- edit MessageContainer -->
                 <div class="editMessageContainer" *ngIf="editMessages[chatIndex]">
                     <textarea class="editMessageContainerMessage" [(ngModel)]="editedMessage"
-                        (keyup.enter)="saveEditedMessage(message.messageID, chatIndex)"></textarea>
+                        (keyup.enter)="saveEditedMessage(message.messageID, chatIndex)"  cols="20" rows="5" maxlength="150"></textarea>
                     <div class="editMessageContainerReactAndSend">
                         <div class="emoji-footer-container" (mouseleave)="closeEmojiFooterEdit()">
                             <div class="emoji-footer-selection" *ngIf="isShowEmojiFooterEdit">
@@ -176,7 +176,7 @@
     <div class="footer-write-new-message"> <!-- *ngIf="isUserMember" -->
         <div>
             <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
-                [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()">
+                [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()"  cols="20" rows="5" maxlength="150">
             </textarea>
         </div>
         <div class="footer-line-icons">

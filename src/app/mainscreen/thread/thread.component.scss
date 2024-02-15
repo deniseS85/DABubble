@@ -1,6 +1,6 @@
 .threadContainer{
     height: 100%;
-    // width: 100%;
+    width: 100%;
     border-radius: 30px;
     background-color: white;
     display: flex;
@@ -78,6 +78,7 @@
                 display: flex;
                 justify-content: flex-start;
                 gap: 30px;
+                margin-top: 28px;  
                 padding: 20px 45px;
                 cursor: default;
 
@@ -173,22 +174,23 @@
                                     border: 1px solid #797EF3;
                                     border-radius: 50px;
                                     color: #444DF2;
-                                    font-size: clamp(0.9375rem, 0.798rem + 0.6977vw, 1.125rem);
+                                    font-size: 16px;
                                     font-weight: 700;
                                     line-height: 25px;
                                     cursor: pointer;
 
-                                    @media(max-width: 1800px){
+                                    @media(max-width: 2100px){
                                         font-size: 14px;
                                         padding: 8px 15px;
                                     }
 
-                                    @media(max-width: 1600px){
+
+                                    @media(max-width: 1850px){
                                         font-size: 12px;
-                                        padding: 6px 12px;
+                                        padding: 5px 10px;
                                     }
 
-                                    @media(max-width: 750px){
+                                    @media(max-width: 1449px){
                                         padding: 8px 16px;
                                         font-size: 16px;
                                         font-weight: 600;
@@ -200,10 +202,32 @@
                                         font-weight: 600;
                                     }
                                 }
+
+                                .editMessageBtnMidSize{
+                                    padding: 10px;
+                                    border-radius: 100%;
+                                    border: 1px solid #797EF3;
+                                    color: #444DF2;
+                                    font-size: 16px;
+                                    font-weight: 700;
+                                    line-height: 25px;
+                                    cursor: pointer;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+
+                                    svg{
+                                        fill:#444DF2
+                                    }
+                                }
     
                                 .saveBtn{
                                     background-color: #444DF2;
                                     color: white;
+
+                                    svg{
+                                        fill:white;
+                                    }
                                 }
                             }
                         }
@@ -415,7 +439,7 @@
     top: 0;
     right: 0;
     height: 46px;
-    transform: translateY(-50%) translateX(100%);
+    transform: translateY(-75%) translateX(100%);
     border-radius: 25px 25px 0 25px;
     display: none;
     justify-content: center;
@@ -513,14 +537,14 @@
 .absoluteLeft{
     left: 0;
     right: unset;
-    transform: translateY(-50%)
+    transform: translateY(-75%)
 }
 
 
 @keyframes slidein {
     
     to {
-      transform: translateX(0%) translateY(-50%);
+      transform: translateX(0%) translateY(-75%);
     }
 }
 

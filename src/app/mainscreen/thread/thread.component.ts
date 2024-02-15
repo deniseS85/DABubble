@@ -62,13 +62,21 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
     this.messageID = this.channelService.activeMessageID;   
     this.getChannelName();
     this.checkMobileScreen();
+    this.checkMidSize();
   }
 
 
   @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
         this.checkMobileScreen();
-    }
+        this.checkMidSize()
+  }
+
+  checkMidSize(){
+    if(window.innerWidth < 1700 && window.innerWidth > 1450){
+      return true
+    } else { return false}
+  }
 
   checkMobileScreen() {
     if(window.innerWidth < 750) {
@@ -78,7 +86,7 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
     } else {
         this.allChatSectionsOpen = true;
     }
-}
+  }
 
   ngOnInit() {
     if (this.userID) {

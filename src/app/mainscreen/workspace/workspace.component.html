@@ -126,6 +126,7 @@
     <div class="relative">
       <input
         placeholder="z.B. Kooperationsprojekte"
+        maxlength="20"
         type="text"
         class="channel-create-input channel-create-input-name"
         (input)="onInputChange($event)"
@@ -139,6 +140,7 @@
     </div>
     <input
       placeholder="Dein Text hier"
+      maxlength="70"
       type="text"
       class="channel-create-input channel-create-input-description"
       [(ngModel)]="createdChannelDescription"

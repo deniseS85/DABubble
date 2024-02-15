@@ -3,8 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../models/user.class';
 import { ChatService } from '../../services/chat.service';
 import { ChannelDataService } from '../../services/channel-data.service';
-import { ChannelService } from '../../services/channel.service';
-import { WorkspaceComponent } from "../workspace/workspace.component";
+
 
 
 @Component({
@@ -17,8 +16,7 @@ export class UserProfileCardComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User, chatOpen: boolean, channelOpen: boolean }, 
     public dialogRef: MatDialogRef<UserProfileCardComponent>, 
     private chatService: ChatService, 
-    private channelDataService: ChannelDataService,
-    private workspace: WorkspaceComponent) {}
+    private channelDataService: ChannelDataService) {}
 
   getProfileImagePath(user: User): string {
     if (user.profileImg.startsWith('https://firebasestorage.googleapis.com')) {

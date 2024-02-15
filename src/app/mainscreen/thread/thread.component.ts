@@ -257,6 +257,7 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
       }
       // boolean to open just the answer, that i want to edit
       this.editAnswers.push(false)
+      
   });
   // this.updateMessagesWithUserData();
   }

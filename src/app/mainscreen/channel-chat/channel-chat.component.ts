@@ -759,7 +759,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
           react: [],
           answerInfo: {
             counter: 0,
-            lastAnswerTime: ""
+            lastAnswerTime: ''
           },
           fileUpload: this.fileToUpload,
         }
@@ -943,12 +943,14 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
    */
   async loadAnswers(messageID: string, message: any) {
 
-    const answerRef = this.channelService.getAnswerRef(this.channelDataService.channelID, messageID);
+    const answerRef = query(this.channelService.getAnswerRef(this.channelDataService.channelID, messageID));
+    
     let counter = 0;
     let answersTimes: any[] = [];
 
     const subs = onSnapshot(answerRef, (answersDoc) => {
-      counter = 0;
+      answersTimes = [];
+      counter = 0;      
       answersDoc.forEach((answer) => {
         counter++;
         answersTimes.push(answer.data()['timestamp'])
@@ -957,11 +959,11 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       //create JSON with counter and lastElement of the Timearray
       const answerInfos = {
         counter: counter,
-        lastAnswerTime: answersTimes.pop()
+        lastAnswerTime: answersTimes.pop() || ''
       }
 
       //if there are no answers, no update
-      if (counter > 0) {
+      if (counter >= 0) {
         this.updateAnswerInfoStatus(answerInfos, messageID);
       }
     })
@@ -969,10 +971,16 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
 
   async updateAnswerInfoStatus(answerInfos: any, messageID: string) {
-    const messageRef = doc(await this.channelService.getMessageRef(this.channelDataService.channelID), messageID);
+    const messageRef = doc(await this.channelService.getMessageRef(this.channelDataService.channelID), messageID);    
 
     await updateDoc(messageRef, { answerInfo: answerInfos })
+
     const a = (await getDoc(messageRef)).data();
+  }
+
+
+  askForCounter(){
+
   }
 
   /**

@@ -130,7 +130,7 @@
                         <img class="uploaded-files" src="./assets/img/pdf-icon.png">
                     </a>
 
-                    <div class="answer-container" *ngIf="message.answerInfo.counter > 0"
+                    <div class="answer-container" *ngIf="message.answerInfo.counter != 0"
                         (click)="openThread(message.messageID)">
                         <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
                         <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime

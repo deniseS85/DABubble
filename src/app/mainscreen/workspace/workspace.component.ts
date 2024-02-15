@@ -315,6 +315,7 @@ export class WorkspaceComponent implements OnInit {
     const selectableElement = this.findParentElement(target);
     this.removeSelectedChannels();
     this.renderer.addClass(selectableElement, 'selected');
+    this.setAllChatSectionsOpen();
   }
 
   setAllChatSectionsOpen() {

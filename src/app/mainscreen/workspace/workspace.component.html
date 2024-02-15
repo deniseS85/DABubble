@@ -187,7 +187,7 @@
         type="radio"
         name="channel-user-selection"
         id="selectedUsers"
-        (click)="onShowClick()"
+        (click)="onShowClick(); selectUser(user)"
         class="user-group-radio-button"
       />
       <label class="user-group-radio-button-label" for="selectedUsers"

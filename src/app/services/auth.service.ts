@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail, getAuth} from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail, getAuth, updateEmail, sendEmailVerification, onAuthStateChanged} from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';;
 
@@ -59,19 +59,17 @@ export class AuthService {
         }
     }
 
-    updateAndVerifyEmail(newEmail: any) {
+    async updateAndVerifyEmail(newEmail: string) {
       const auth = getAuth();
       const user = auth.currentUser;
       if (user) {
-        verifyBeforeUpdateEmail(user, newEmail).then(() => {
+          verifyBeforeUpdateEmail(user, newEmail).then(() => {
           console.log('Eine Verifikations-Email wurde an ihre neue Adresse gesendet');
         }).catch((error) => {
-          console.log('Die Änderung der Email war nicht erfolgreich');
-        });
-      } else {
-        console.log('Es ist kein Benutzer eingeloggt');
+          console.error('Fehler bei der Änderung der E-Mail:', error);
+      });
       }
-    }
+  }
 
 
     async setOnlineStatus(userId: string, isOnline: boolean): Promise<void> {

@@ -83,7 +83,7 @@ import { UserService } from '../../services/user.service';
     ]),
   ],
 })
-export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChecked, AfterViewInit */ {
+export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
   @Input() userProfileView: User = new User;
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
@@ -165,18 +165,17 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   }
 
 
-  async ngOnInit() {
-    if (this.userID) {
-      this.checkIsGuestLogin();
+    async ngOnInit() {
+      if (this.userID) {
+        this.checkIsGuestLogin();
+      }
+      this.getAllUserInfo();
+      if (this.channelDataService.channelID) {
+        await this.loadMessagesOfThisChannel();
+        await this.loadUsersOfThisChannel();
+      }
+      /*   this.checkIsUserMember(); */
     }
-    this.getAllUserInfo();
-    if (this.channelDataService.channelID) {
-      await this.loadMessagesOfThisChannel();
-      await this.loadUsersOfThisChannel();
-    }
-    /*   this.checkIsUserMember(); */
-  }
-
 
   
     ngAfterViewChecked() {
@@ -281,8 +280,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
     });
   }
 
-  @ViewChild('chatContainer') chatContainerRef!: ElementRef;
-
   /**
    * Toggles the visibility of emojis in a message.
    * Sets the isEmojiOpen property of the message at the specified chatIndex.
@@ -305,7 +302,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
 
     if (spaceBelow < 600) {
       setTimeout(() => {
-        this.chatContainerRef.nativeElement.scrollTop = this.chatContainerRef.nativeElement.scrollHeight;
+        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
       }, 100);
     }
   }
@@ -324,7 +321,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
 
     if (spaceBelow < 600) {
       setTimeout(() => {
-        this.chatContainerRef.nativeElement.scrollTop = this.chatContainerRef.nativeElement.scrollHeight;
+        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
       }, 100);
     }
   }

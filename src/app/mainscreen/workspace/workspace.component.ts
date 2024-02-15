@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, HostListener, OnInit, inject, } from '@angular/core';
+import { Component, ElementRef, Renderer2, HostListener, OnInit, inject } from '@angular/core';
 import { Firestore, Unsubscribe, collection, doc, getDoc, getDocs, onSnapshot, setDoc, } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -46,6 +46,7 @@ export class WorkspaceComponent implements OnInit {
   panelOpenState2 = false;
 
   user = new User();
+  newCreatedChannel: Channel = new Channel();
   userID: any;
   allUsers: User[] = [];
   allUsersDM: User[] = [];
@@ -92,7 +93,7 @@ export class WorkspaceComponent implements OnInit {
     this.loadChannels();
     this.loadChats();
   }
-
+  
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void {
@@ -264,8 +265,8 @@ export class WorkspaceComponent implements OnInit {
   handleClickChannel(event: MouseEvent | null, channel: Channel): void {
     this.selectedChannelId = channel.channelID;
     const selectableElement = document.getElementById(channel.channelID);
-    this.removeSelectedChannels();
     this.renderer.addClass(selectableElement, 'selected');
+    this.removeSelectedChannels();
     this.updateChannelDataAndOpen(channel);
   }
 
@@ -273,6 +274,19 @@ export class WorkspaceComponent implements OnInit {
     this.elRef.nativeElement
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
+  }
+
+  async getChannelIdByName(channelname: string): Promise<Channel | null> {
+    const channels = await this.channelService.getAllChannels();
+    for (const channel of channels) {
+      if (channel.channelname === channelname) {
+        setTimeout(() => {
+          this.handleClickChannel(null, channel);
+        }, 500)
+        return channel;
+      }
+    }
+    return null; 
   }
 
   updateChannelDataAndOpen(channel: Channel): void {
@@ -494,6 +508,7 @@ export class WorkspaceComponent implements OnInit {
         channelUsersIDs,
         channelCreator
       );
+      this.getChannelIdByName(channelname);
       this.loadChannels();
       this.closeChannelCreateWindow();
       this.createdChannelName = '';
@@ -539,7 +554,7 @@ export class WorkspaceComponent implements OnInit {
       this.main.chatOpen = false;
       // this.main.allChatSectionsOpen = true;
       this.channelDataService.channelID = channelID;
-      
+
       setTimeout(() => {
         this.main.channelOpen = true;
       }, 50);

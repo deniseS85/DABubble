@@ -142,7 +142,7 @@
     overflow-x: hidden;
     padding: 40px;
     position: relative;
-    
+    scroll-behavior: smooth;
 
     &:hover{
         overflow-y: auto;

@@ -185,6 +185,10 @@ export class ChatContainerComponent {
     });
   }
 
+  isCurrentUser(chatIndex: number): boolean {
+    return this.allMessages[chatIndex].messageUserID === this.userID;
+  }
+
 
   toggleEmoji(event: Event, index: number) {
     const emojiContainer = event.target as HTMLElement;
@@ -204,8 +208,12 @@ export class ChatContainerComponent {
     }
   }
 
-  handleReaction(event: any, message: any) {
+  // handleReaction(event: any, message: any) {
+  //   const typ = 'chatReaction';
+  //   this.reactionService.handleReaction(this.chatID, message.messageID, '', '', '', event, message, '', typ)
+  // }
 
+  handleReactionMessage(event: any, message: any) {
     const typ = 'chatReaction';
     this.reactionService.handleReaction(this.chatID, message.messageID, '', '', '', event, message, '', typ)
   }

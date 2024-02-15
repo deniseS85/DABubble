@@ -33,7 +33,7 @@
                         <img class="profile-img-search" [src]="getProfileImagePathSearch(user)">
                         <span>{{ user.firstname }} {{ user.lastname}}</span>
                     </li>
-                    <li class="message-container" *ngFor="let message of searchResults.messages"> <!--  (click)="searchfieldShowMessage(message)" -->
+                    <li class="message-container" *ngFor="let message of searchResults.messages" (click)="searchfieldShowMessage(message)">
                         <img class="profile-img-search" [src]="message.user?.profileImg ? getProfileImagePathSearch(message.user) : ''">
                         <div class="message-content">
                             <span [innerHTML]="message.highlightedText"></span>

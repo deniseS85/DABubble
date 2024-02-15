@@ -102,10 +102,6 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
             this.subscribeToUserChanges();
         }
     }
-/* 
-    ngAfterViewInit(): void {
-        this.channelChatComponent.scrollToMessage(this.messageID);
-    } */
 
     private subscribeToUserChanges(): void {
         const userDocRef = doc(this.firestore, 'users', this.userID);
@@ -460,13 +456,14 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
             this.openChannel(foundMessage.channelID);
             this.findChannelFromMessage(foundMessage.channelID);
             this.messageID = messageID;
-           /*  this.channelChatComponent.scrollToMessage(this.messageID); */
-            /* this.ngAfterViewInit(); */
-
+            setTimeout(() => {
+                this.channelChatComponent.scrollToMessage(this.messageID)
+            }, 400);
         } else {
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
         }
     }
+    
 
     async findChannelFromMessage(channelID: string): Promise<void> {
         const allChannels = await this.channelservice.getAllChannels();

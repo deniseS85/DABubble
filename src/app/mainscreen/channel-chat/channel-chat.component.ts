@@ -132,6 +132,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
   userList;
   unsubUser: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+
   /*  private shouldScrollToBottom: boolean = true; */
 
   isChannelOpen: boolean = false;
@@ -175,6 +176,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
     }
     /*   this.checkIsUserMember(); */
   }
+
+
   /* 
     ngAfterViewChecked() {
       if (this.shouldScrollToBottom) {
@@ -1153,13 +1156,22 @@ export class ChannelChatComponent implements OnInit, OnDestroy/* , AfterViewChec
 
   // -------------------------------------footer show/search @ members end---------------------------------
 
-  // scrollToMessage(messageID: string) {
-  //   const foundMessageElement = document.getElementById(messageID);
+  
+    scrollToMessage(messageID: string): void {
+      const foundMessageElement = document.getElementById(messageID);
 
-  //   if (foundMessageElement) {
-  //     foundMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center'});
-  //   } else {
-  //   }
-  // }
+      if (foundMessageElement) {
+        const parentContainer = foundMessageElement.closest('.new-message-avatar-container, .new-message-somebody-container');
+        if (parentContainer) {
+          parentContainer.classList.add('highlighted-message');
+        }
+        foundMessageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          if (parentContainer) {
+            parentContainer.classList.remove('highlighted-message');
+          }
+        }, 2500);
+      }
+    }
 
 }

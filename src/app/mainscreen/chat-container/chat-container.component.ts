@@ -186,14 +186,14 @@ export class ChatContainerComponent {
   }
 
 
-  toggleEmoji(event: Event, index: number) {
+  toggleEmoji(event: Event, messageindex: number) {
     const emojiContainer = event.target as HTMLElement;
     const { top, bottom } = emojiContainer.getBoundingClientRect();
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
     const spaceBelow = viewportHeight - bottom;
     
     this.allMessages.forEach((answer, index) => {
-      if (index === index) {
+      if (index === messageindex) {
         answer.isEmojiOpen = !answer.isEmojiOpen;
       } 
     });
@@ -204,10 +204,24 @@ export class ChatContainerComponent {
     }
   }
 
-  // handleReaction(event: any, message: any) {
-  //   const typ = 'chatReaction';
-  //   this.reactionService.handleReaction(this.chatID, message.messageID, '', '', '', event, message, '', typ)
-  // }
+  toggleEmojiBelowAnswer(event: Event, messageindex: number): void {
+    const emojiContainer = event.target as HTMLElement;
+    const { top, bottom } = emojiContainer.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const spaceBelow = viewportHeight - bottom;
+
+    this.allMessages.forEach((answer, index) => {
+      if (index === messageindex) {
+        answer.isEmojiBelowAnswerOpen = !answer.isEmojiBelowAnswerOpen;
+      }
+    });
+
+    if (spaceBelow < 600) {
+      setTimeout(() => {
+        this.answerContainer.nativeElement.scrollTop = this.answerContainer.nativeElement.scrollHeight;
+      }, 100);
+    }
+  }
 
   handleReactionMessage(event: any, message: any) {
     const typ = 'chatReaction';

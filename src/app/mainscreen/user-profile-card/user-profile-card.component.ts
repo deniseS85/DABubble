@@ -38,22 +38,28 @@ export class UserProfileCardComponent {
     openDirectMessage(chatPartnerID: string): void {
         const userFullName = this.data.user.firstname + " " + this.data.user.lastname;
         this.userID = this.data.userID;
-        this.chatService.getChatIDByUserIDs(this.userID, chatPartnerID).then(chatID => {
-            if (chatID) {
-                console.log('chatID',chatID)
-                console.log('currentUser', this.userID);
-                console.log('chatpartner', chatPartnerID);
-                this.chatService.userID = chatPartnerID;
-
-                this.openChat(chatID, userFullName);
-                
-            }
-        });
-    }
+    
+        if (this.userID === chatPartnerID) {
+            this.chatService.getChatIDForSameUser(this.userID, chatPartnerID).then(chatID => {
+                this.handleChatID(chatID, userFullName, chatPartnerID);
+            });
+        } else {
+            this.chatService.getChatIDForDifferentUsers(this.userID, chatPartnerID).then(chatID => {
+                this.handleChatID(chatID, userFullName, chatPartnerID);
+            });
+        }
+  }
+  
+  handleChatID(chatID: string | null, userFullName: string, chatPartnerID: string): void {
+      if (chatID) {
+          this.chatService.userID = chatPartnerID;
+          this.openChat(chatID, userFullName);
+      }
+  }
 
     openChat(chatID: string, userFullName: string): void {
         this.chatService.loadChat(chatID).then(chatData => {
-          console.log(chatData)
+        /*   console.log(chatData) */
           this.channelDataService.highlightUserInWorkspace(userFullName);
           this.dialogRef.close({ chatOpen: { chatID: chatID, isOpen: true }, channelOpen: false });
         }).catch(error => {

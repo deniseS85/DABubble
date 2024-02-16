@@ -446,6 +446,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             }
         });
     }
+    
 
     async searchfieldShowMessage(message: any): Promise<void> {
         const messageID = message.messageID;

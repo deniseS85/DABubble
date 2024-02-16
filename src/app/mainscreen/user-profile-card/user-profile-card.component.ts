@@ -18,7 +18,7 @@ export class UserProfileCardComponent {
     userID: any;
 
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User, chatOpen: boolean, channelOpen: boolean, userID: any  }, 
+    constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User; chatOpen: { chatID: string; isOpen: boolean; }; channelOpen: boolean; userID: any; }, 
       public dialogRef: MatDialogRef<UserProfileCardComponent>, 
       private chatService: ChatService, 
       private channelDataService: ChannelDataService) {}
@@ -52,6 +52,7 @@ export class UserProfileCardComponent {
   
     handleChatID(chatID: string | null, userFullName: string, chatPartnerID: string): void {
         if (chatID) {
+            this.data.chatOpen = { chatID: chatID, isOpen: true };
             this.chatService.userID = chatPartnerID;
             this.openChat(chatID, userFullName);
         }
@@ -59,14 +60,11 @@ export class UserProfileCardComponent {
 
 
     openChat(chatID: string, userFullName: string): void {
-          this.chatService.loadChat(chatID).then(chatData => {
-          this.channelDataService.highlightUserInWorkspace(userFullName);
-          this.dialogRef.close({ chatOpen: { chatID: chatID, isOpen: true }, channelOpen: false });
-        }).catch(error => {
-          console.error('Fehler beim Laden des Chats:', error);
-        });
+        this.chatService.loadChat(chatID).then(chatData => {  
+            this.channelDataService.highlightUserInWorkspace(userFullName);
+            this.dialogRef.close({ chatOpen: this.data.chatOpen, channelOpen: false });
+        })
     }
-
     
 
     closeDialog(){

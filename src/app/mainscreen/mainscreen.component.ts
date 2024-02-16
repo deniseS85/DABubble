@@ -283,21 +283,9 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
                 }
             }
 
-<<<<<<< HEAD
-            this.emailChanged = this.user.email !== oldEmail;
-            console.log(this.user.email)
-            console.log(oldEmail)
-
-            if (this.emailChanged) {
-                await this.authService.updateAndVerifyEmail(this.user.email);
-            }
-          
-            this.emailChanged = true;
-=======
         
           /*   await this.authService.updateAndVerifyEmail(this.user.email);
             this.emailChanged = true; */
->>>>>>> 68cb4891d7a59b0666354ec41cbd1e4936aec7fc
             await this.updateData();
             setTimeout(() => {
                 this.closeEditUser();

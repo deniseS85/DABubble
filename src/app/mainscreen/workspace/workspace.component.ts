@@ -62,6 +62,7 @@ export class WorkspaceComponent implements OnInit {
   isShowInputNames: boolean = false;
   isButtonDisabled: boolean = true;
   isScreenSmall: boolean = false;
+  gastOnline: boolean = false;
 
   createdChannelName: string = '';
   createdChannelDescription: string = '';
@@ -574,15 +575,21 @@ export class WorkspaceComponent implements OnInit {
     onSnapshot(chatsRef, (chats) => {
       chats.forEach((chat: any) => {
         chat.data().chatUsers.forEach((user: any) => {
-          if (user.id === this.userID) {
+          console.log(user)
+          if (user === this.userID) {
             this.chats.push(chat.data())
-
+            if(chat.data()['chatname'].includes('Gast')){
+              console.log('gastOnline')
+            } else {
+              console.warn('kein gastOnline')
+            }
             // hier können sie namen für die DM-Liste gezogen werden
             // chat.data().chatUsers.forEach((notMe: any) => {
             //   if (notMe.id != this.userID){
             //     this.chats.push(notMe)
             //   }
             // })
+            
           } else {
             return
           }

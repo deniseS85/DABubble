@@ -9,14 +9,14 @@
         <input formControlName="firstname" type="text" maxlength="15"  name="firstname" placeholder="Vorname" pattern="[A-Za-zÄäÖöÜüß\s]+"
         [class.red-border]="signUpForm.get('firstname')?.invalid && signUpForm.get('firstname')?.touched" required>
         <mat-icon>person_outline</mat-icon>
-        <p *ngIf="signUpForm.get('firstname')?.invalid && signUpForm.get('firstname')?.touched">Bitte schreiben Sie einen Namen.</p>
+        <p *ngIf="signUpForm.get('firstname')?.invalid && signUpForm.get('firstname')?.touched">Bitte geben Sie einen Vornamen ein.</p>
     </div>
 
     <div class="input-container">
         <input formControlName="lastname" type="text" maxlength="15" name="lastname" placeholder="Nachname" pattern="[A-Za-zÄäÖöÜüß\s]+"
         [class.red-border]="signUpForm.get('lastname')?.invalid && signUpForm.get('lastname')?.touched" required>
         <mat-icon>person_outline</mat-icon>
-        <p *ngIf="signUpForm.get('lastname')?.invalid && signUpForm.get('lastname')?.touched">Bitte schreiben Sie einen Namen.</p>
+        <p *ngIf="signUpForm.get('lastname')?.invalid && signUpForm.get('lastname')?.touched">Bitte geben Sie einen Nachnamen ein.</p>
     </div>
 
     <div class="input-container">
@@ -27,10 +27,10 @@
     </div>
 
     <div class="input-container">
-        <input formControlName="password" type="password" name="password" maxlength="20" placeholder="Passwort"
+        <input formControlName="password" type="password" name="password" maxlength="20" placeholder="Passwort ( Aa, 0-9, @$!%*#?&-)"
         [class.red-border]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" required>
         <mat-icon>lock_outline</mat-icon>
-        <p *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">Bitte geben Sie ein Passwort ein.</p>
+        <p *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">Bitte geben Sie ein Passwort mit mindestens 8 Zeichen ein.</p>
     </div>
 
     <div class="checkbox-privacy-policy">

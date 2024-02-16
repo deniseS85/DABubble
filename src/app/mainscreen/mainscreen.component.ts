@@ -80,7 +80,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
     allChannels: Channel[] = [];
     messageID: string = '';
     newMessageOpen: boolean = false;
-
+    loading = false;
 
     constructor(
         public authService: AuthService,
@@ -268,7 +268,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             let [firstName, lastName] = this.userFullName.split(' ');
             this.user.firstname = firstName;
             this.user.lastname = lastName;
-            const oldEmail = this.user.email;
+            this.loading = true;
 
             if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
                 if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {
@@ -283,6 +283,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
                 }
             }
 
+<<<<<<< HEAD
             this.emailChanged = this.user.email !== oldEmail;
             console.log(this.user.email)
             console.log(oldEmail)
@@ -292,12 +293,18 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             }
           
             this.emailChanged = true;
+=======
+        
+          /*   await this.authService.updateAndVerifyEmail(this.user.email);
+            this.emailChanged = true; */
+>>>>>>> 68cb4891d7a59b0666354ec41cbd1e4936aec7fc
             await this.updateData();
             setTimeout(() => {
                 this.closeEditUser();
                 this.closeUserInfo();
                 this.isProfileMenuOpen = false;
                 this.emailChanged = false;
+                this.loading = false;
             }, 3000);
         } catch (error) { }
     }

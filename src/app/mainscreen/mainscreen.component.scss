@@ -231,6 +231,14 @@
 
                 .user-edit {
                     height: 505px;
+                    position: relative;
+                    mat-progress-bar {
+                        position: absolute;
+                        top: 0;
+                        width: 97%;
+                        right: 0;
+                        border-radius: 30px 
+                    }
                 }
 
                 .user-info-details,
@@ -456,7 +464,7 @@
                     gap: 15px;
                     display: flex;
                     flex-direction: column;
-
+                    position: relative;
                     .title-input {
                         display: flex;
                         gap: 15px;
@@ -477,6 +485,7 @@
                         font-size: 18px;
                         color: #686868;
                     }
+                    
                 }
 
                 .button-container {

@@ -71,16 +71,16 @@ export class AuthService {
     }
 
     async updateAndVerifyEmail(newEmail: string) {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (user) {
-          verifyBeforeUpdateEmail(user, newEmail).then(() => {
-          console.log('Eine Verifikations-Email wurde an ihre neue Adresse gesendet');
-        }).catch((error) => {
-          console.error('Fehler bei der Änderung der E-Mail:', error);
-      });
-      }
-  }
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user) {
+            verifyBeforeUpdateEmail(user, newEmail).then(() => {
+                console.log('Eine Verifikations-Email wurde an ihre neue Adresse gesendet');
+              }).catch((error) => {
+                console.error('Fehler bei der Änderung der E-Mail:', error);
+            });
+        }
+    }
 
 
     async setOnlineStatus(userId: string, isOnline: boolean): Promise<void> {

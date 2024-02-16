@@ -409,6 +409,25 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
     }
   }
 
+  toggleEmojiBelowAnswer(event: Event, chatIndex: number): void {
+    const emojiContainer = event.target as HTMLElement;
+    const { top, bottom } = emojiContainer.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const spaceBelow = viewportHeight - bottom;
+
+    this.allAnswers.forEach((message, index) => {
+      if (index === chatIndex) {
+        message.isEmojiBelowAnswerOpen = !message.isEmojiBelowAnswerOpen;
+      }
+    });
+
+    if (spaceBelow < 600) {
+      setTimeout(() => {
+        this.answerContainer.nativeElement.scrollTop = this.answerContainer.nativeElement.scrollHeight;
+      }, 100);
+    }
+  }
+
 
   handleReactionMessage(event: any, answer: any){
     const typ = 'threadReaction';

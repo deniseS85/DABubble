@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail, getAuth, updateEmail, sendEmailVerification, onAuthStateChanged} from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail, getAuth, updateEmail, sendEmailVerification, onAuthStateChanged, user} from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';;
 
@@ -7,6 +7,7 @@ import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';;
   providedIn: 'root'
 })
 export class AuthService {
+
     auth: Auth = inject(Auth);
     firestore: Firestore = inject(Firestore);
     private isAnonymous: boolean = false;
@@ -14,7 +15,16 @@ export class AuthService {
     private userDataSubject = new BehaviorSubject<any>({});
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
     userData$ = this.userDataSubject.asObservable();
- 
+    session: any;
+
+    constructor(){
+      let newSession: any = localStorage.getItem('session');
+      if(newSession){
+        newSession = JSON.parse(newSession)
+      }
+
+      this.session = newSession;
+    }
 
     setAnonymousStatus(isAnonymous: boolean): void {
         this.isAnonymous = isAnonymous;
@@ -54,6 +64,7 @@ export class AuthService {
             localStorage.removeItem('userFirstName');
             localStorage.removeItem('userLastName');
             localStorage.removeItem('userImg');
+            this.deleteSession()
         } catch (error) {
             console.error('Fehler beim Ausloggen:', error);
         }
@@ -96,6 +107,21 @@ export class AuthService {
           return false;
         }
     }
+
+
+    setSession(userID: string){
+      this.session = userID;
+      localStorage.setItem('session', JSON.stringify(this.session))
+    }
+
+
+    deleteSession(){
+      this.session = undefined;
+      localStorage.removeItem('session');
+    }
+
+
+    
 
 
 }

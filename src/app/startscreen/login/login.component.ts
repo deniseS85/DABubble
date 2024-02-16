@@ -61,6 +61,7 @@ export class LoginComponent {
                         this.authService.setOnlineStatus(userId, true);
                         this.router.navigate(['/main', userId]);
                         this.searchservice.loadUsers();
+                        this.authService.setSession(userId)
                     } 
                 }
             } else {
@@ -103,6 +104,7 @@ export class LoginComponent {
                 this.userservice.setUserDetails('Gast', '', 'guest-profile.png');
                 this.isAnonymous = true;
                 await this.authService.setOnlineStatus(uid, true);
+                this.authService.setSession(uid)
                 this.router.navigate(['/main', uid]);
             }
         } catch (error: any) {

@@ -728,6 +728,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @media only screen and (max-width: 750px) {
+        width: 100%;
+    }
 }
 
 
@@ -787,6 +790,9 @@
     &:hover {
         background-color: #797EF3;
         transition: 225ms ease-in-out;
+    }
+    @media only screen and (max-width: 750px) {
+        width: clamp(8.75rem, 7.3547rem + 6.9767vw, 10.625rem);
     }
 }
 
@@ -911,7 +917,7 @@ input {
 }
 
 .edited-by-name {
-    font-size: clamp(1.25rem, 1.064rem + 0.9302vw, 1.5rem);
+    font-size: clamp(1rem, 0.9286rem + 0.3571vw, 1.5rem);
     color: #535AF1;
 }
 

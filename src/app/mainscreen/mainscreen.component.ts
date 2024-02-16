@@ -268,6 +268,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             let [firstName, lastName] = this.userFullName.split(' ');
             this.user.firstname = firstName;
             this.user.lastname = lastName;
+            const oldEmail = this.user.email;
 
             if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
                 if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {
@@ -282,7 +283,14 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
                 }
             }
 
-            await this.authService.updateAndVerifyEmail(this.user.email);
+            this.emailChanged = this.user.email !== oldEmail;
+            console.log(this.user.email)
+            console.log(oldEmail)
+
+            if (this.emailChanged) {
+                await this.authService.updateAndVerifyEmail(this.user.email);
+            }
+          
             this.emailChanged = true;
             await this.updateData();
             setTimeout(() => {

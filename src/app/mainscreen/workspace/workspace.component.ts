@@ -592,6 +592,7 @@ export class WorkspaceComponent implements OnInit {
 
   OpenNewMessage() {
     this.main.newMessageOpen = true;
+    this.channelDataService.channelName = '';
   }
 
 

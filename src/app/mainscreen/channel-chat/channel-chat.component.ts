@@ -280,8 +280,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     });
   }
 
-  @ViewChild('chatContainer') chatContainerRef!: ElementRef;
-
   /**
    * Toggles the visibility of emojis in a message.
    * Sets the isEmojiOpen property of the message at the specified chatIndex.
@@ -644,14 +642,13 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   setUserProfileView(user: User) {
     this.userProfileView = user;
+    this.removeChannels();
+    console.log(this.userProfileView)
   }
 
-  /* showUserProfile(user: User): void {
-    this.setUserProfileView(user); 
-  } */
-
-  // User filter function
-
+  removeChannels(): void {
+    this.channelService.removeSelectedChannelsHighlight();
+  }
 
 
   /**

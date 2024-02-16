@@ -1,4 +1,3 @@
-import { User } from "./user.class";
 
 export class Channel {
     channelID: string;

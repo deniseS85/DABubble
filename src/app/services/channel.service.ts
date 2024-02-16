@@ -176,6 +176,11 @@ export class ChannelService {
     }
   }
 
+  removeSelectedChannelsHighlight(): void {
+    const selectableElements = document.querySelectorAll('.selectable');
+    selectableElements.forEach((element: HTMLElement) => element.classList.remove('selected'));
+  }
+
 
 }
 

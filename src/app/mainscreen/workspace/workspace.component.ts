@@ -270,10 +270,14 @@ export class WorkspaceComponent implements OnInit {
     this.updateChannelDataAndOpen(channel);
   }
 
-  removeSelectedChannels() {
+  /* removeSelectedChannels() {
     this.elRef.nativeElement
       .querySelectorAll('.selectable')
       .forEach((element: HTMLElement) => element.classList.remove('selected'));
+  } */
+
+  removeSelectedChannels(): void {
+    this.channelService.removeSelectedChannelsHighlight();
   }
 
   async getChannelIdByName(channelname: string): Promise<Channel | null> {

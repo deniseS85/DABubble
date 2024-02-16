@@ -37,7 +37,7 @@ import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 
     ],
 })
-export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
+export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
     @ViewChild(WorkspaceComponent) workspaceComponent!: WorkspaceComponent;
     @ViewChild(ChannelChatComponent) channelChatComponent!: ChannelChatComponent;
 
@@ -78,6 +78,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
     editThread: boolean = false;
     allChannels: Channel[] = [];
     messageID: string = '';
+    newMessageOpen: boolean = false;
 
 
     constructor(
@@ -438,11 +439,11 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.chatOpen) {
                 this.chatOpen = result.chatOpen;
-              }
-          
-              if (result && result.channelOpen !== undefined) {
+            }
+
+            if (result && result.channelOpen !== undefined) {
                 this.channelOpen = result.channelOpen;
-              }
+            }
         });
     }
 
@@ -462,7 +463,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
         }
     }
-    
+
 
     async findChannelFromMessage(channelID: string): Promise<void> {
         const allChannels = await this.channelservice.getAllChannels();

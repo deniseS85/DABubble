@@ -592,6 +592,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   OpenNewMessage() {
+    this.main.searchChannel = '';
     this.main.newMessageOpen = true;
     this.main.channelOpen = true;
     this.main.chatOpen = false;

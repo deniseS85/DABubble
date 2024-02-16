@@ -270,6 +270,7 @@ export class WorkspaceComponent implements OnInit {
       return;
     }
     this.selectedChannelId = channel.channelID;
+    this.main.newMessageOpen = false;
     this.renderer.addClass(selectableElement, 'selected');
     this.channelService.removeSelectedChannels();
     this.updateChannelDataAndOpen(channel);
@@ -592,7 +593,7 @@ export class WorkspaceComponent implements OnInit {
 
   OpenNewMessage() {
     this.main.newMessageOpen = true;
-    this.main.channelOpen = false;
+    this.main.channelOpen = true;
     this.main.chatOpen = false;
     this.channelDataService.channelName = '';
   }

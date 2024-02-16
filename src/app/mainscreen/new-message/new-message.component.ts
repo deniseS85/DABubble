@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MainscreenComponent } from '../mainscreen.component';
-// import { ChannelChatComponent } from "../channel-chat/channel-chat.component";
+import { ChannelChatComponent } from "../channel-chat/channel-chat.component";
 
 @Component({
   selector: 'app-new-message',
@@ -12,8 +12,6 @@ export class NewMessageComponent {
 
   constructor(
     public main: MainscreenComponent,
-    // public chat: ChannelChatComponent
+    public chat: ChannelChatComponent
   ) { }
-
-
 }

@@ -3,9 +3,10 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
- 
+  
+  const currentSessionID = inject(AuthService).session
 
-  if(inject(AuthService).session == route.url[1].path){
+  if(currentSessionID == route.url[1].path){
     return true
   } else {
     inject(Router).navigateByUrl('/');

@@ -442,43 +442,4 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
     return false;
 }
 
-
-
-  /**
-   * worksapce function to give every UserPair an own chat
-   */
-
-
-
-  // newDMChat(){
-
-  //   const allUsersQuery = query(this.channelService.getUsersRef())
-
-  //   let newPair: any[] = [];
-
-  //   console.log(allUsersQuery)
-  //   onSnapshot(allUsersQuery, (querySnapshot) => {          
-          
-  //         // build Array with allUsers
-  //         querySnapshot.forEach((doc: any) => {
-            
-  //           if(this.allUsers.length > 0){
-              
-  //             this.allUsers.forEach((user: any) => {
-
-  //               newPair = [];
-  //               newPair.push(user, doc.data())
-  //               const chatname = user.firstname + ' & ' + doc.data().firstname;
-  //               const chatUsers = newPair;
-  //               this.chatService.createNewChat(chatname, chatUsers)
-                
-  //             })
-  //           }
-  //            this.allUsers.push(doc.data())           
-
-  //         },
-  //         );          
-  //       });
-  // }
-
 }

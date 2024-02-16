@@ -7,6 +7,7 @@ import { collection, getDocs, query, where, Firestore } from '@angular/fire/fire
 import { UserService } from '../../services/user.service';
 import { SearchService } from '../../services/search-service.service';
 import { ChannelService } from '../../services/channel.service';
+import { ChatService } from '../../services/chat.service';
 
 
 interface UserData {
@@ -36,7 +37,14 @@ export class LoginComponent {
     isWrongPassword: boolean = false;
     isSubmitted: boolean = false;
     
-    constructor(private formBuilder: FormBuilder, private authService: AuthService, private userservice: UserService, private router: Router, private searchservice: SearchService, private channelService: ChannelService) { 
+    constructor(private formBuilder: FormBuilder, 
+        private authService: AuthService, 
+        private userservice: UserService, 
+        private router: Router, 
+        private searchservice: SearchService, 
+        private channelService: ChannelService,
+        private chatService: ChatService
+        ) { 
         this.setLoginForm();
     }
 
@@ -104,8 +112,9 @@ export class LoginComponent {
                 this.userservice.setUserDetails('Gast', '', 'guest-profile.png');
                 this.isAnonymous = true;
                 await this.authService.setOnlineStatus(uid, true);
-                this.authService.setSession(uid)
-                this.router.navigate(['/main', uid]);
+                this.authService.setSession(uid);
+                this.chatService.createChatsForGuest(uid);
+                this.router.navigate(['/main', uid]);                
             }
         } catch (error: any) {
             this.handleAuthError(error);

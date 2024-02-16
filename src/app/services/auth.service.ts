@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, verifyBeforeUpdateEmail, getAuth, updateEmail, sendEmailVerification, onAuthStateChanged, user} from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';;
+import { Firestore, collection, doc, getDoc, getDocs, updateDoc } from '@angular/fire/firestore';import { ChatService } from './chat.service';
+;
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,11 @@ export class AuthService {
     userData$ = this.userDataSubject.asObservable();
     session: any;
 
-    constructor(){
+    constructor(private chatService: ChatService){
       let newSession: any = localStorage.getItem('session');
       if(newSession){
         newSession = JSON.parse(newSession)
       }
-
       this.session = newSession;
     }
 
@@ -49,7 +49,7 @@ export class AuthService {
 
     async logout(userId: string) {
         this.setAnonymousStatus(false);
-    
+        
         try {
             const user = this.auth.currentUser;
     
@@ -58,6 +58,7 @@ export class AuthService {
     
                 if (user.isAnonymous) {
                     await user.delete();
+                    this.chatService.deleteChatOfGuestUser(user.uid)
                 }
             }
             await this.auth.signOut();
@@ -120,8 +121,8 @@ export class AuthService {
       localStorage.removeItem('session');
     }
 
-
+  
     
-
+    
 
 }

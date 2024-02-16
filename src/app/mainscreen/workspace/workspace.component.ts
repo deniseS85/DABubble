@@ -599,44 +599,4 @@ export class WorkspaceComponent implements OnInit {
     this.channelDataService.channelName = '';
   }
 
-
-  /**
-   * genutzt um einmalig chats zu erstellen
-   */
-
-  // async newDMChat(){
-
-  //   let newPair: any[] = [];    
-
-  //   const allUsersQuery = query(this.channelService.getUsersRef())
-
-  //   onSnapshot(allUsersQuery, (querySnapshot) => {          
-
-  //         // build Array with allUsers
-  //         querySnapshot.forEach((doc: any) => {
-
-  //           if(this.allUsersDM.length > 0){
-
-  //             this.allUsersDM.forEach((user: any) => {
-
-  //               newPair = [];
-  //               newPair.push(user, doc.data())
-  //               const chatname = user.firstname + ' & ' + doc.data().firstname;
-  //               const chatUsers = newPair;
-
-
-  //             // this.chatService.createNewChat(chatname, chatUsers)
-
-
-  //             })
-  //           }
-  //            this.allUsersDM.push(doc.data())           
-
-  //         },
-  //         );          
-  //       });
-
-  //   this.allUsersDM = []
-  // }
-
 }

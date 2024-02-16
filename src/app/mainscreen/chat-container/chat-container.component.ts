@@ -66,9 +66,6 @@ export class ChatContainerComponent {
   }
 
 
- 
-
-
   setBooleanForSelfChat(){
     const chatPartnerID = this.chatService.userID;
     if(this.userID == chatPartnerID){
@@ -434,47 +431,6 @@ export class ChatContainerComponent {
 
   // ------------------------------------file upload function end---------------------------------------
 
-
-
-
-
-  newDMChat() {
-
-    const allUsersQuery = query(this.channelService.getUsersRef())
-
-    let newPair: any[] = [];
-
-    onSnapshot(allUsersQuery, (querySnapshot) => {
-
-      // build Array with allUsers
-      querySnapshot.forEach((doc: any) => {
-
-        this.allUsers.push(doc.data())
-
-        this.allUsers.forEach((user: any) => {
-
-          newPair = [];
-
-          if (user.id == doc.data().id) {
-            newPair.push(user.id)
-          } else {
-            newPair.push(user.id, doc.data().id)
-          }
-
-          const chatname = user.firstname + ' & ' + doc.data().firstname;
-          const chatUsers = newPair;
-          this.chatService.createNewChat(chatname, chatUsers)
-
-        })
-
-
-
-      },
-      );
-    });
-  }
-
-
   
   // -------------------------------------footer show/search @ members ---------------------------------
 
@@ -564,10 +520,48 @@ async getUserInfo(userID: string): Promise<any> {
 
   // -------------------------------------footer show/search @ members end---------------------------------
 
+/**
+ * BITTE NICHT LÖSCHEN, NOTFALLFUNKTION!!!
+ * Create new DM's when there is an Error
+ */
 
+// newDMChat() {
+
+//   const allUsersQuery = query(this.channelService.getUsersRef())
+
+//   let newPair: any[] = [];
+
+//   onSnapshot(allUsersQuery, (querySnapshot) => {
+
+//     // build Array with allUsers
+//     querySnapshot.forEach((doc: any) => {
+
+//       this.allUsers.push(doc.data())
+
+//       this.allUsers.forEach((user: any) => {
+
+//         newPair = [];
+
+//         if (user.id == doc.data().id) {
+//           newPair.push(user.id)
+//         } else {
+//           newPair.push(user.id, doc.data().id)
+//         }
+
+//         const chatname = user.firstname + ' & ' + doc.data().firstname;
+//         const chatUsers = newPair;
+//         this.chatService.createNewChat(chatname, chatUsers)
+
+//       })
+//     },
+//     );
+//   });
+// }
 
 }
 
 function unsubscribe() {
   throw new Error('Function not implemented.');
 }
+
+

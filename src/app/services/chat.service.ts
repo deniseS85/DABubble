@@ -118,7 +118,6 @@ export class ChatService {
           const chatUsers = chatData['chatUsers'];
 
           if (chatUsers.length === 1 && chatUsers.includes(user1ID)) {
-              console.log('Returning ChatID:', chatData['chatID']);
               return chatData['chatID'];
           }
       }
@@ -135,11 +134,11 @@ export class ChatService {
           const chatUsers = chatData['chatUsers'];
 
           if (chatUsers.length === 2 && chatUsers.includes(user1ID) && chatUsers.includes(user2ID)) {
-              console.log('Returning ChatID:', chatData['chatID']);
               return chatData['chatID'];
           }
       }
       return null;
   }
+
 
 }

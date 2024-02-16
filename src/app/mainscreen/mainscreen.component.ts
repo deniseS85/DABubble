@@ -429,8 +429,8 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             return { ...message, highlightedText: this.sanitizer.bypassSecurityTrustHtml(highlightedText), user };
         });
     }
-
-    /* erster user directMessage, von chat neuer user suchen, neuer chat öffnet sich nicht */
+   
+   
     searchfieldShowUser(user: User): void {
         const dialogRef = this.dialog.open(UserProfileCardComponent, {
             data: { user: user, chatOpen: { chatID: null, isOpen: false }, channelOpen: this.channelOpen, userID: this.userID }
@@ -439,10 +439,17 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         this.searchInput = '';
         this.closeSearch();
         this.workspaceComponent.removeSelectedChannels();
+        this.chatOpen = false;
+
+        if (!this.chatOpen) {
+            this.channelOpen = true;
+        }
 
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.chatOpen) {
                 this.chatOpen = result.chatOpen;
+            } else {
+                this.channelOpen = true;
             }
 
             if (result && result.channelOpen !== undefined) {

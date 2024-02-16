@@ -590,8 +590,8 @@ export class WorkspaceComponent implements OnInit {
     })
   }
 
-  openDirectMessage() {
-    console.log('direkt message')
+  OpenNewMessage() {
+    this.main.newMessageOpen = true;
   }
 
 

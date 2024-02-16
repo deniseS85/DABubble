@@ -44,6 +44,7 @@ import { ThreadQuestionComponent } from './mainscreen/thread/thread-question/thr
 import { ChatContainerComponent } from './mainscreen/chat-container/chat-container.component';
 import { EditChannelChatComponent } from './mainscreen/channel-chat/edit-channel-chat/edit-channel-chat.component';
 import { UserProfileCardComponent } from './mainscreen/user-profile-card/user-profile-card.component';
+import { NewMessageComponent } from './mainscreen/new-message/new-message.component';
 
 
 registerLocaleData(localeDe, 'de');
@@ -71,6 +72,7 @@ registerLocaleData(localeDe, 'de');
     ChatContainerComponent,
     EditChannelChatComponent,
     UserProfileCardComponent,
+    NewMessageComponent,
   ],
   imports: [
     BrowserModule,

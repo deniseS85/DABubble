@@ -592,8 +592,9 @@ export class WorkspaceComponent implements OnInit {
 
   OpenNewMessage() {
     this.main.newMessageOpen = true;
+    this.main.channelOpen = false;
+    this.main.chatOpen = false;
     this.channelDataService.channelName = '';
-    this.removeSelectedChannels();
   }
 
 

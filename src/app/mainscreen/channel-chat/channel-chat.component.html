@@ -2,8 +2,7 @@
 <div class="main-container">
     <div class="header-container">
         <header class="channel-chat-header">
-            <app-new-message *ngIf="main.newMessageOpen"></app-new-message>
-            <div class="header-left" *ngIf="!main.newMessageOpen" (click)=" editChannelOpen = true; openPopup(); checkUserIsCreator();">
+            <div class="header-left" (click)=" editChannelOpen = true; openPopup(); checkUserIsCreator();">
                 <!-- isUserMember && -->
                 <span>
                     <span class="hashtag">#</span> <!--  *ngIf="isUserMember" -->
@@ -13,7 +12,7 @@
                     <img src="../../../assets/img/keyboard_arrow_down.png" alt=""> <!-- *ngIf="isUserMember"  -->
                 </span>
             </div>
-            <div class="header-right" *ngIf="!main.newMessageOpen"> <!-- *ngIf="isUserMember" -->
+            <div class="header-right"> <!-- *ngIf="isUserMember" -->
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
                     <div *ngFor="let user of usersData">
                         <span class="profile">
@@ -31,7 +30,7 @@
         </header>
     </div>
 
-    <div class="channel-chat-container" #chatContainer *ngIf="!main.newMessageOpen">
+    <div class="channel-chat-container" #chatContainer>
         <!-- [ngStyle]="{'padding': isUserMember ? '100px 40px 40px 40px' : '40px 40px 40px 40px'}" -->
         <!--    <div *ngIf="isUserMember"> -->
         <div *ngFor="let message of allMessages; let chatIndex = index">

@@ -169,6 +169,7 @@
     <div class="mainContainerContent">
         <app-workspace *ngIf="workspaceOpen" [@leftRightAnimation]>
         </app-workspace>
+        <app-new-message *ngIf="(newMessageOpen && !chatOpen && !channelOpen)"></app-new-message>
         <app-chat-container *ngIf="(chatOpen && allChatSectionsOpen) || (chatOpen && !workspaceOpen)">
         </app-chat-container>
         <app-channel-chat *ngIf="(channelOpen && allChatSectionsOpen) || (channelOpen && !workspaceOpen)"

@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { getDocs, updateDoc } from 'firebase/firestore';
 import { ReactionsService } from '../../services/reactions.service';
+import { MainscreenComponent } from '../mainscreen.component';
 
 @Component({
   selector: 'app-chat-container',
@@ -56,6 +57,7 @@ export class ChatContainerComponent {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private reactionService: ReactionsService,
+    public main: MainscreenComponent,
   ) {
     this.userID = this.route.snapshot.paramMap.get('id');
     this.setBooleanForSelfChat();

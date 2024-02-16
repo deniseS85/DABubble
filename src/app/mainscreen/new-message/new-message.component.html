@@ -4,54 +4,54 @@
             <input type="text" placeholder="An: #channel oder @jemanden" id="searchInput" [(ngModel)]="main.searchChannel"
                 (input)="main.search()" maxlength="20" autocomplete="on">
         </header>
-    <!-- </div>     
+    </div>     
     <div class="footer-write-new-message"> 
         <div>
-            <textarea class="textarea" [placeholder]="chat.channelDataService.channelName ? 'Nachricht an #' + chat.channelDataService.channelName : 'Starte eine neue Nachricht'"
-                [(ngModel)]="chat.messagetext" (ngModelChange)="chat.onMessageChange()" (keyup.enter)="chat.handleEnterKey()"  cols="20" rows="5" maxlength="150">
+            <!-- <textarea class="textarea" [placeholder]="channelDataService.channelName ? 'Nachricht an #' + channelDataService.channelName : 'Starte eine neue Nachricht'"
+                [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()"  cols="20" rows="5" maxlength="150">
             </textarea>
         </div>
         <div class="footer-line-icons">
             <div class="footer-icons-left">
-                <label for="fileUpload" class="upload">
-                    <mat-icon (click)="chat.openFileUpload()">add</mat-icon>
+                <label for="fileUpload" class="uplo
+                    <mat-icon (click)="openFileUpload()">add</mat-icon>
                 </label>
-                <input type="file" id="fileUpload" style="display:none;" (change)="chat.uploadFiles($event)">
+                <input type="file" id="fileUpload" style="display:none;" (change)="uploadFiles($event)">
                 <div class="seperator-vert"></div>
-                <div class="emoji-footer-container" (mouseleave)="chat.closeEmojiFooter()">
-                    <div class="emoji-footer-selection" *ngIf="chat.isShowEmojiFooter">
+                <div class="emoji-footer-container" (mouseleave)="closeEmojiFooter()">
+                    <div class="emoji-footer-selection" *ngIf="isShowEmojiFooter">
                         <app-emoji-picker
-                            (emojiSelect)="chat.addEmojiToMessage($event); chat.toggleEmojiFooter()"></app-emoji-picker>
+                            (emojiSelect)="addEmojiToMessage($event); toggleEmojiFooter()"></app-emoji-picker>
                     </div>
-                    <mat-icon (click)="chat.toggleEmojiFooter()">mood</mat-icon>
+                    <mat-icon (click)="toggleEmojiFooter()">mood</mat-icon>
                 </div>
-                <mat-icon (click)="chat.toggleShowChannelMembersFooter()">alternate_email</mat-icon>
-                <div *ngIf="chat.isShowChannelMembersFooter" class="current-channel-member-footer-container"
-                    (mouseleave)="chat.closeShowChannelMembersFooter()">
-                    <div class="current-channel-member-footer-list" (click)="chat.addChannelMemberToMessageText(user)"
-                        *ngFor="let user of chat.usersData">
+                <mat-icon (click)="toggleShowChannelMembersFooter()">alternate_email</mat-icon>
+                <div *ngIf="isShowChannelMembersFooter" class="current-channel-member-footer-container"
+                    (mouseleave)="closeShowChannelMembersFooter()">
+                    <div class="current-channel-member-footer-list" (click)="addChannelMemberToMessageText(user)"
+                        *ngFor="let user of usersData">
                         <span>&#64; {{ user.firstname }} {{ user.lastname }}</span>
                     </div>
                 </div>
             </div>
             <div class="footer-icons-right">
-                <button class="add-btn" mat-icon-button [disabled]="chat.isButtonDisabled" (click)="chat.addMessage()">
+                <button class="add-btn" mat-icon-button [disabled]="isButtonDisabled" (click)="addMessage()">
                     <mat-icon
-                        [ngStyle]="{'color': chat.isButtonDisabled ? 'lightgrey' : '#444DF2', 'cursor': chat.isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
+                        [ngStyle]="{'color': isButtonDisabled ? 'lightgrey' : '#444DF2', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
                 </button>
             </div>
         </div>
-        <div class="image-preview-overlay" *ngIf="chat.fileToUpload">
-            <a class="uploaded-files-preview" *ngIf="chat.fileToUpload.type !== 'application/pdf'" target="_blank"
-                [href]="chat.imagePreview">
-                <img class="uploaded-files-preview" [src]="chat.imagePreview">
+        <div class="image-preview-overlay" *ngIf="fileToUpload">
+            <a class="uploaded-files-preview" *ngIf="fileToUpload.type !== 'application/pdf'" target="_blank"
+                [href]="imagePreview">
+                <img class="uploaded-files-preview" [src]="imagePreview">
             </a>
-            <a class="uploaded-files-preview" *ngIf="chat.fileToUpload.type === 'application/pdf'" target="_blank"
-                [href]="chat.imagePreview">
+            <a class="uploaded-files-preview" *ngIf="fileToUpload.type === 'application/pdf'" target="_blank"
+                [href]="imagePreview">
                 <img class="uploaded-files-preview" src="./assets/img/pdf-icon.png">
             </a>
-            <mat-icon (click)="chat.deleteFileUpload()">cancel</mat-icon>
-        </div>
-    </div> -->
+            <mat-icon (click)="deleteFileUpload()">cancel</mat-icon>
+        </div> -->
+    </div>
 </div>
 

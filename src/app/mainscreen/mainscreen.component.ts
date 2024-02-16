@@ -70,6 +70,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
     isProfileHovered: boolean = false;
     isLogoutHovered: boolean = false;
     searchInput: string = '';
+    searchChannel: string = '';
     isInputFilled: boolean = false;
     searchResults: { channels: Channel[], users: User[], messages: Message[] } = { channels: [], users: [], messages: [] };
     selectedUser: User = new User();
@@ -378,7 +379,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         let allMessages = await this.channelservice.getAllMessages();
         let allChannels = await this.channelservice.getAllChannels();
         let allUsers = await this.userservice.getAllUsers();
-        let trimmedInput = this.searchInput.trim();
+        let trimmedInput = this.searchInput.trim() || this.searchChannel.trim();
 
         this.allChannels = allChannels;
         this.searchResults.channels = [];
@@ -395,7 +396,10 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         } else if (trimmedInput.startsWith('#')) {
             this.filterChannels(trimmedInput, allChannels);
         } else if (/^[a-zA-Z]+$/.test(trimmedInput) && trimmedInput.length >= 2) {
-            this.filterMessages(trimmedInput, allMessages, allUsers);
+            if(trimmedInput = this.searchInput.trim()) {
+                this.filterMessages(trimmedInput, allMessages, allUsers);
+            }
+            
         }
         this.isInputFilled = true;
     }

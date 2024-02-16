@@ -1,0 +1,17 @@
+#searchInput {
+    width: clamp(15rem, -12.1143rem + 57.7667vw, 80.3125rem);
+    height: clamp(1.25rem, 0.7311rem + 1.1056vw, 2.5rem);
+    border: 1px solid #ADB0D9;
+    border-radius: 30px;
+    padding: 12px 0 12px 25px;
+    font-size: clamp(0.9375rem, 0.8078rem + 0.2764vw, 1.25rem);
+
+    &::placeholder {
+        font-size: clamp(0.9375rem, 0.8078rem + 0.2764vw, 1.25rem);
+    }
+
+    @media(max-width: 750px) {
+        width: calc(100% - 25px);
+        border: 1px solid #797EF340 !important;
+    }
+}

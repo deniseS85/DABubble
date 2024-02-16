@@ -13,7 +13,6 @@
                     <img src="../../../assets/img/keyboard_arrow_down.png" alt=""> <!-- *ngIf="isUserMember"  -->
                 </span>
             </div>
-
             <div class="header-right" *ngIf="!main.newMessageOpen"> <!-- *ngIf="isUserMember" -->
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
                     <div *ngFor="let user of usersData">
@@ -32,7 +31,7 @@
         </header>
     </div>
 
-    <div class="channel-chat-container" #chatContainer>
+    <div class="channel-chat-container" #chatContainer *ngIf="!main.newMessageOpen">
         <!-- [ngStyle]="{'padding': isUserMember ? '100px 40px 40px 40px' : '40px 40px 40px 40px'}" -->
         <!--    <div *ngIf="isUserMember"> -->
         <div *ngFor="let message of allMessages; let chatIndex = index">
@@ -66,14 +65,12 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="profile-message-img">
                     <img class="profile-img"
                         [src]="message.profileImg.startsWith('https') ? message.profileImg : './assets/img/' + message.profileImg"
                         alt="">
                     <p class="active-point" *ngIf="message.isOnline"></p>
                 </div>
-
                 <div class="textContainerNew">
                     <div
                         [ngClass]="isCurrentUser(chatIndex) ? 'name-and-time-container float-right' : 'name-and-time-container float-left'">
@@ -129,14 +126,12 @@
                         [href]="message.fileUpload">
                         <img class="uploaded-files" src="./assets/img/pdf-icon.png">
                     </a>
-
                     <div class="answer-container" *ngIf="message.answerInfo.counter != 0"
                         (click)="openThread(message.messageID)">
                         <div class="counter-answers fs-18 fw-400">{{ message.answerInfo.counter }} Antworten</div>
                         <div class="last-answer-time fs-14 fw-400">Letzte Antwort {{ message.answerInfo.lastAnswerTime
                             }}</div>
                     </div>
-
                     <div class="threadContainerTextReactions" [ngClass]="{'d-hidden': editMessages[chatIndex]}">
                         <div class="threadContainerTextReactionsEmojisWrapper">
                             <div class="threadContainerTextReactionsEmojis" *ngFor="let reaction of message.react">
@@ -174,10 +169,9 @@
            
         </div> -->
     </div>
-
     <div class="footer-write-new-message"> <!-- *ngIf="isUserMember" -->
         <div>
-            <textarea class="textarea" placeholder="Nachricht an # {{ this.channelDataService.channelName }}"
+            <textarea class="textarea" [placeholder]="channelDataService.channelName ? 'Nachricht an #' + channelDataService.channelName : 'Starte eine neue Nachricht'"
                 [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()"  cols="20" rows="5" maxlength="150">
             </textarea>
         </div>
@@ -225,10 +219,7 @@
     </div>
 </div>
 
-
 <!---------------------------------------------- POPUPS ---------------------------------------------->
-
-
 <div class="popup-background" *ngIf="addUSerOpen" (click)="addUSerOpen = false; closePopup()">
     <div class="popup-maincontainer smallPopup" (click)="doNotClose($event)">
         <div class="headline-container">
@@ -277,8 +268,6 @@
         </div>
     </div>
 </div>
-
-
 <div class="popup-background" *ngIf="showMembersOpen" (click)="showMembersOpen = false; closePopup()">
     <div class="popup-maincontainer smallPopup" (click)="doNotClose($event)">
         <div class="headline-container">
@@ -287,7 +276,6 @@
                 <mat-icon>close</mat-icon>
             </div>
         </div>
-
         <div class="current-channel-member-list">
             <div class="member-list-div" (click)="setUserProfileView(user); showProfil = true; openPopup()"
                 *ngFor="let user of usersData">
@@ -306,7 +294,6 @@
         </div>
     </div>
 </div>
-
 <!-- von mainscreen zugreifen -->
 <div class="popup-background profile-background" *ngIf="showProfil" (click)="showProfil = false; closePopup()">
     <div class="profile-popup" (click)="doNotClose($event)">
@@ -316,7 +303,6 @@
                 <mat-icon>close</mat-icon>
             </div>
         </div>
-
         <div class="profil-detail-view">
             <div class="profile-img-big-container">
                 <img [src]="getProfileImagePath(userProfileView)" />
@@ -346,12 +332,9 @@
                     <span>Nachricht</span>
                 </button>
             </div>
-
         </div>
     </div>
 </div>
-
-
 <!-- Channel Info -->
 <div class="popup-background" *ngIf="editChannelOpen" (click)="editChannelOpen = false; closePopup()">
     <div class="popup-maincontainer bigPopup" (click)="doNotClose($event)">
@@ -361,8 +344,6 @@
                 <mat-icon>close</mat-icon>
             </div>
         </div>
-
-
         <div class="edit-maincontainer">
             <div class="edit-channel-name-container" [@removeBorder]="channelNameChange">
                 <div class="subline-edit-channel">
@@ -382,8 +363,6 @@
                         class="input-change-channel-name">
                 </div>
             </div>
-
-
             <div class="edit-channel-description-container" [@removeBorder]="channelDescriptionChange">
                 <div class="subline-edit-channel">
                     <span class="fw-700">Beschreibung</span>
@@ -408,11 +387,9 @@
                 </div>
             </div>
         </div>
-
         <div class="btn-container">
             <button class="btn enabled" (click)="leaveChannel(); editChannelOpen = false; closePopup()">Channel
                 verlassen</button>
         </div>
-
     </div>
 </div>

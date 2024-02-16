@@ -282,16 +282,6 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
                     this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
                 }
             }
-
-            this.emailChanged = this.user.email !== oldEmail;
-            console.log(this.user.email)
-            console.log(oldEmail)
-
-            if (this.emailChanged) {
-                await this.authService.updateAndVerifyEmail(this.user.email);
-            }
-          
-            this.emailChanged = true;
             await this.updateData();
             setTimeout(() => {
                 this.closeEditUser();
@@ -301,6 +291,23 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             }, 3000);
         } catch (error) { }
     }
+
+    onEmailChange(newEmail: string): void {
+        console.log('newEmail', newEmail);
+        console.log('oldEmail', this.user.email);
+        if (newEmail !== this.user.email) {
+          this.user.email = newEmail;
+          this.authService.updateAndVerifyEmail(this.user.email)
+            .then(() => {
+              console.log('Eine Verifikations-Email wurde an Ihre neue Adresse gesendet');
+              this.emailChanged = true;
+              this.updateData();
+            })
+            .catch((error) => {
+              console.error('Fehler bei der Änderung der E-Mail:', error);
+            });
+        }
+      }
 
     async updateData() {
         let updatedData = { ...this.user.toUserJson() };

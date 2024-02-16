@@ -437,6 +437,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */{
 
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.chatOpen) {
+                
                 this.chatOpen = result.chatOpen;
               }
           

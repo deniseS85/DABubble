@@ -32,7 +32,7 @@ export class UserProfileCardComponent {
     }
 
     doNotClose(event: MouseEvent): void {
-      event.stopPropagation();
+        event.stopPropagation();
     }
 
     openDirectMessage(chatPartnerID: string): void {
@@ -41,25 +41,25 @@ export class UserProfileCardComponent {
     
         if (this.userID === chatPartnerID) {
             this.chatService.getChatIDForSameUser(this.userID, chatPartnerID).then(chatID => {
-                this.handleChatID(chatID, userFullName, chatPartnerID);
+              this.handleChatID(chatID, userFullName, chatPartnerID);
             });
         } else {
             this.chatService.getChatIDForDifferentUsers(this.userID, chatPartnerID).then(chatID => {
-                this.handleChatID(chatID, userFullName, chatPartnerID);
+              this.handleChatID(chatID, userFullName, chatPartnerID);
             });
         }
-  }
+    }
   
-  handleChatID(chatID: string | null, userFullName: string, chatPartnerID: string): void {
-      if (chatID) {
-          this.chatService.userID = chatPartnerID;
-          this.openChat(chatID, userFullName);
-      }
-  }
+    handleChatID(chatID: string | null, userFullName: string, chatPartnerID: string): void {
+        if (chatID) {
+            this.chatService.userID = chatPartnerID;
+            this.openChat(chatID, userFullName);
+        }
+    }
+
 
     openChat(chatID: string, userFullName: string): void {
-        this.chatService.loadChat(chatID).then(chatData => {
-        /*   console.log(chatData) */
+          this.chatService.loadChat(chatID).then(chatData => {
           this.channelDataService.highlightUserInWorkspace(userFullName);
           this.dialogRef.close({ chatOpen: { chatID: chatID, isOpen: true }, channelOpen: false });
         }).catch(error => {

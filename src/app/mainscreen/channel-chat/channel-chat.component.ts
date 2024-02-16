@@ -642,12 +642,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   setUserProfileView(user: User) {
     this.userProfileView = user;
-    this.removeChannels();
+    this.channelService.removeSelectedChannels();
     console.log(this.userProfileView)
-  }
-
-  removeChannels(): void {
-    this.channelService.removeSelectedChannelsHighlight();
   }
 
 

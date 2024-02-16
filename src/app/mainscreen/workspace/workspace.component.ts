@@ -263,22 +263,18 @@ export class WorkspaceComponent implements OnInit {
    * from all other elements and sets this class to clicked elements
    */
   handleClickChannel(event: MouseEvent | null, channel: Channel): void {
-    this.selectedChannelId = channel.channelID;
+   
     const selectableElement = document.getElementById(channel.channelID);
+    if (selectableElement?.classList.contains('selected')) {
+      // Der Channel ist bereits ausgewählt, hier kannst du entscheiden, ob du etwas anderes tun möchtest
+      return;
+    }
+    this.selectedChannelId = channel.channelID;
     this.renderer.addClass(selectableElement, 'selected');
-    this.removeSelectedChannels();
+    this.channelService.removeSelectedChannels();
     this.updateChannelDataAndOpen(channel);
   }
 
-  /* removeSelectedChannels() {
-    this.elRef.nativeElement
-      .querySelectorAll('.selectable')
-      .forEach((element: HTMLElement) => element.classList.remove('selected'));
-  } */
-
-  removeSelectedChannels(): void {
-    this.channelService.removeSelectedChannelsHighlight();
-  }
 
   async getChannelIdByName(channelname: string): Promise<Channel | null> {
     const channels = await this.channelService.getAllChannels();
@@ -317,7 +313,7 @@ export class WorkspaceComponent implements OnInit {
     const target = event.target as HTMLElement;
     this.selectedChannel(target);
     const selectableElement = this.findParentElement(target);
-    this.removeSelectedChannels();
+    this.channelService.removeSelectedChannels();
     this.renderer.addClass(selectableElement, 'selected');
     this.setAllChatSectionsOpen();
   }

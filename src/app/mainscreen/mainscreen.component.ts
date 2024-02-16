@@ -438,7 +438,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
 
         this.searchInput = '';
         this.closeSearch();
-        this.workspaceComponent.removeSelectedChannels();
+        this.workspaceComponent.channelService.removeSelectedChannels();
         this.chatOpen = false;
 
         if (!this.chatOpen) {

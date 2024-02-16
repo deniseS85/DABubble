@@ -175,8 +175,9 @@ export class ChannelService {
       return null;
     }
   }
+  
 
-  removeSelectedChannelsHighlight(): void {
+  removeSelectedChannels(): void {
     const selectableElements = document.querySelectorAll('.selectable');
     selectableElements.forEach((element: HTMLElement) => element.classList.remove('selected'));
   }

@@ -446,16 +446,30 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         }
 
         dialogRef.afterClosed().subscribe(result => {
-            if (result && result.chatOpen) {
-                this.chatOpen = result.chatOpen;
+            this.handleChatAndChannelIsOpen(result);
+        });
+    }
+
+    private handleChatAndChannelIsOpen(result: any) {
+        if (result && result.chatOpen) {
+            if (this.isMobileScreen && !this.chatOpen) {
+                this.chatOpen = true;
+                this.workspaceOpen = false;
             } else {
+                this.chatOpen = result.chatOpen;
                 this.channelOpen = true;
             }
+        } else {
+            this.channelOpen = true;
+        }
 
-            if (result && result.channelOpen !== undefined) {
-                this.channelOpen = result.channelOpen;
-            }
-        });
+        if (result && result.channelOpen !== undefined) {
+            this.channelOpen = result.channelOpen;
+        }
+
+        if (!this.chatOpen) {
+            this.workspaceOpen = true;
+        }
     }
     
 

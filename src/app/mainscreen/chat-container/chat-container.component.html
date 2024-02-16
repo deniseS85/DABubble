@@ -71,7 +71,7 @@
                 <div class="reactionContainer" [ngClass]="{'absoluteLeft' : message.activeUser, 'd-hidden': editMessages[messageindex]}" >
                     <div class="reactionMenu">
 
-                        <div class="emoji-container">
+                        <div class="emoji-container" (mouseleave)="closeEmojiContainers(messageindex)">
                             <img (click)="toggleEmoji($event, messageindex)" src="./assets/img/add_reaction.png">
                             <div *ngIf="message.isEmojiOpen"
                                 [ngClass]="isCurrentUser(messageindex) ? 'emoji-selection left-1' : 'emoji-selection right-43'">

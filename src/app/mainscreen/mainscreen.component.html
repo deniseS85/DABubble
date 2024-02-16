@@ -101,6 +101,7 @@
                 </div>
 
                 <div class="user-edit" *ngIf="isEditMode">
+                    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
                     <div class="user-info-header">
                         <p class="title">Dein Profil bearbeiten</p>
                         <mat-icon (click)="closeEditUser()" class="close-icon">close</mat-icon>
@@ -147,7 +148,7 @@
                                 <mat-icon>mail_outline</mat-icon>
                                 <p>E-Mail-Adresse</p>
                             </div>
-                            <input [(ngModel)]="user.email" name="email" placeholder="E-Mail-Adresse" maxlength="25" (ngModelChange)="onEmailChange($event)">
+                            <input [(ngModel)]="user.email" name="email" placeholder="E-Mail-Adresse" maxlength="25">
                         </div>
                     </div>
                     <div class="button-container">

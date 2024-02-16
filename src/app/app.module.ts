@@ -45,6 +45,7 @@ import { ChatContainerComponent } from './mainscreen/chat-container/chat-contain
 import { EditChannelChatComponent } from './mainscreen/channel-chat/edit-channel-chat/edit-channel-chat.component';
 import { UserProfileCardComponent } from './mainscreen/user-profile-card/user-profile-card.component';
 import { NewMessageComponent } from './mainscreen/new-message/new-message.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 registerLocaleData(localeDe, 'de');
@@ -90,6 +91,7 @@ registerLocaleData(localeDe, 'de');
     MatRadioModule,
     PickerComponent,
     MatSnackBarModule,
+    MatProgressBarModule,
     provideFirebaseApp(() => initializeApp({
       apiKey: "AIzaSyAmwp319uKefb1UBdYYCILbjLuE2F7n0nI",
       authDomain: "da-bubble2.firebaseapp.com",

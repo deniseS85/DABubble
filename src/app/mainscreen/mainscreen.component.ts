@@ -80,7 +80,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
     allChannels: Channel[] = [];
     messageID: string = '';
     newMessageOpen: boolean = false;
-
+    loading = false;
 
     constructor(
         public authService: AuthService,
@@ -268,7 +268,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             let [firstName, lastName] = this.userFullName.split(' ');
             this.user.firstname = firstName;
             this.user.lastname = lastName;
-            const oldEmail = this.user.email;
+            this.loading = true;
 
             if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
                 if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {
@@ -282,32 +282,20 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
                     this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
                 }
             }
+
+        
+            await this.authService.updateAndVerifyEmail(this.user.email);
+            this.emailChanged = true;
             await this.updateData();
             setTimeout(() => {
                 this.closeEditUser();
                 this.closeUserInfo();
                 this.isProfileMenuOpen = false;
                 this.emailChanged = false;
+                this.loading = false;
             }, 3000);
         } catch (error) { }
     }
-
-    onEmailChange(newEmail: string): void {
-        console.log('newEmail', newEmail);
-        console.log('oldEmail', this.user.email);
-        if (newEmail !== this.user.email) {
-          this.user.email = newEmail;
-          this.authService.updateAndVerifyEmail(this.user.email)
-            .then(() => {
-              console.log('Eine Verifikations-Email wurde an Ihre neue Adresse gesendet');
-              this.emailChanged = true;
-              this.updateData();
-            })
-            .catch((error) => {
-              console.error('Fehler bei der Änderung der E-Mail:', error);
-            });
-        }
-      }
 
     async updateData() {
         let updatedData = { ...this.user.toUserJson() };

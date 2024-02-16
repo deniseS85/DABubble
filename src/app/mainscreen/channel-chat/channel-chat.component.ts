@@ -643,8 +643,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   setUserProfileView(user: User) {
     this.userProfileView = user;
     this.channelService.removeSelectedChannels();
-    console.log(this.userProfileView)
   }
+
 
 
   /**
@@ -868,6 +868,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         lastname: user.lastname,
         profileImg: user.profileImg,
         isOnline: user.isOnline,
+        email: user.email,
+        id: user.id,
         unsubscribe: unsubscribe
       });
 

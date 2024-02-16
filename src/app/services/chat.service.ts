@@ -75,57 +75,71 @@ export class ChatService {
   }
 
 
-buildUserArray(querySnapshot: any){
-    querySnapshot.forEach((doc: any) => {
-    this.allUsers.push(doc.data())
-  });
-}
-
-buildNewChat(user: any, userData: any){
-  let newChat :any[] = [];
-
-  if (user.id == userData.id) {
-    newChat.push(userData.id)
-  } else {
-    newChat.push(user.id, userData.id)
+  buildUserArray(querySnapshot: any){
+      querySnapshot.forEach((doc: any) => {
+      this.allUsers.push(doc.data())
+    });
   }
 
-  const chatname = user.firstname + ' & ' + userData.firstname;
-  const chatUsers = newChat;
-  this.createNewChat(chatname, chatUsers)
-  console.warn("new Chat createt", chatname)
-}
+  buildNewChat(user: any, userData: any){
+    let newChat :any[] = [];
 
-async loadChat(chatID: string): Promise<any> {
-    const chatDocRef = doc(this.firestore, 'chats', chatID);
-    const chatDocSnapshot = await getDoc(chatDocRef);
-
-    if (chatDocSnapshot.exists()) {
-      return chatDocSnapshot.data();
+    if (user.id == userData.id) {
+      newChat.push(userData.id)
     } else {
-      console.error(`Chat mit ID ${chatID} nicht gefunden.`);
-      return null;
+      newChat.push(user.id, userData.id)
     }
-}
 
-async getChatIDByUserIDs(user1ID: string, user2ID: string): Promise<string | null> {
-  const querySnapshot1 = await getDocs(
-    query(collection(this.firestore, 'chats'), where('chatUsers', 'array-contains', user1ID))
-  );
-
-  const querySnapshot2 = await getDocs(
-    query(collection(this.firestore, 'chats'), where('chatUsers', 'array-contains', user2ID))
-  );
-
-  const matchingChats = querySnapshot1.docs.filter(doc1 =>
-    querySnapshot2.docs.some(doc2 => doc1.id === doc2.id)
-  );
-
-  if (matchingChats.length > 0) {
-    return matchingChats[0].data()['chatID'];
+    const chatname = user.firstname + ' & ' + userData.firstname;
+    const chatUsers = newChat;
+    this.createNewChat(chatname, chatUsers)
+    console.warn("new Chat createt", chatname)
   }
 
-  return null;
-}
+  async loadChat(chatID: string): Promise<any> {
+      const chatDocRef = doc(this.firestore, 'chats', chatID);
+      const chatDocSnapshot = await getDoc(chatDocRef);
+
+      if (chatDocSnapshot.exists()) {
+        return chatDocSnapshot.data();
+      } else {
+        console.error(`Chat mit ID ${chatID} nicht gefunden.`);
+        return null;
+      }
+  }
+
+  async getChatIDForSameUser(user1ID: string, user2ID: string): Promise<string | null> {
+      const querySnapshot = await getDocs(
+          query(collection(this.firestore, 'chats'), where('chatUsers', '==', [user1ID]))
+      );
+
+      for (const doc of querySnapshot.docs) {
+          const chatData = doc.data();
+          const chatUsers = chatData['chatUsers'];
+
+          if (chatUsers.length === 1 && chatUsers.includes(user1ID)) {
+              console.log('Returning ChatID:', chatData['chatID']);
+              return chatData['chatID'];
+          }
+      }
+      return null;
+  }
+
+  async getChatIDForDifferentUsers(user1ID: string, user2ID: string): Promise<string | null> {
+      const querySnapshot = await getDocs(
+          query(collection(this.firestore, 'chats'), where('chatUsers', '==', [user1ID, user2ID]))
+      );
+
+      for (const doc of querySnapshot.docs) {
+          const chatData = doc.data();
+          const chatUsers = chatData['chatUsers'];
+
+          if (chatUsers.length === 2 && chatUsers.includes(user1ID) && chatUsers.includes(user2ID)) {
+              console.log('Returning ChatID:', chatData['chatID']);
+              return chatData['chatID'];
+          }
+      }
+      return null;
+  }
 
 }

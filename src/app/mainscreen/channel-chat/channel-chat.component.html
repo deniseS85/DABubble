@@ -199,9 +199,9 @@
                 </div>
             </div>
             <div class="footer-icons-right">
-                <button class="add-btn" mat-icon-button [disabled]="isButtonDisabled" (click)="addMessage()">
+                <button class="add-btn" mat-icon-button [disabled]="isButtonDisabled || main.newMessageOpen" (click)="addMessage()">
                     <mat-icon
-                        [ngStyle]="{'color': isButtonDisabled ? 'lightgrey' : '#444DF2', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
+                        [ngStyle]="{'color': isButtonDisabled || main.newMessageOpen ? 'lightgrey' : '#444DF2', 'cursor': isButtonDisabled ? 'default' : 'pointer'}">send_icon</mat-icon>
                 </button>
             </div>
         </div>

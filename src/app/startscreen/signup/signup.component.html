@@ -30,7 +30,8 @@
         <input formControlName="password" type="password" name="password" maxlength="20" placeholder="Passwort ( Aa, 0-9, @$!%*#?&-)"
         [class.red-border]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" required>
         <mat-icon>lock_outline</mat-icon>
-        <p *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">Bitte geben Sie ein Passwort mit mindestens 8 Zeichen ein.</p>
+        <p *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">Passwort: mind. 8 Zeichen, 1 Großbuchstabe, 1 Zahl, 1 Sonderzeichen.</p>
+
     </div>
 
     <div class="checkbox-privacy-policy">

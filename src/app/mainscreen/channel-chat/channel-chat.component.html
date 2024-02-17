@@ -10,7 +10,7 @@
                     <!--   <mat-icon *ngIf="!isUserMember">lock_outline</mat-icon> -->
                     {{ this.channelDataService.channelName }}
                     <!--  <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span> -->
-                    <img src="../../../assets/img/keyboard_arrow_down.png" alt=""> <!-- *ngIf="isUserMember"  -->
+                    <img src="./assets/img/keyboard_arrow_down.png" alt=""> <!-- *ngIf="isUserMember"  -->
                 </span>
             </div>
             <div class="header-right" *ngIf="!main.newMessageOpen"> <!-- *ngIf="isUserMember" -->
@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="person-add-icon-container">
-                    <img src="../../../assets/img/person_add.png" alt="" (click)="addUSerOpen = true; openPopup()">
+                    <img src="./assets/img/person_add.png" alt="" (click)="addUSerOpen = true; openPopup()">
                 </div>
             </div>
         </header>

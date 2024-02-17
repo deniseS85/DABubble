@@ -42,7 +42,7 @@ export class ThreadQuestionComponent {
   async loadMessage() {
     const docRef = this.getAnswerRef(this.channelID, this.messageID);
 
-    const onsnap = onSnapshot(docRef, (message) => {      
+    onSnapshot(docRef, (message) => {      
       this.loadedMessage = message.data();
       this.getUserData(this.loadedMessage.messageUserID);
     })

@@ -3,7 +3,7 @@
         <textarea [(ngModel)]="answertex" rows="5" cols="20" maxlength="150"></textarea>
         <div class="footer-line-icons">
             <div class="emoji-container">
-                <img (click)="toggleEmojiAnswer()" src="../../../assets/img/add_reaction.png" alt="">
+                <img (click)="toggleEmojiAnswer()" src="./assets/img/add_reaction.png" alt="">
                     <div *ngIf="isAnswertextEmojiOpen" class="emoji-selection">
                         <emoji-mart class="emoji-mart" 
                         [style]="{ width: '240px', cursor: 'default' }"

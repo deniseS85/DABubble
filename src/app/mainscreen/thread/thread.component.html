@@ -50,7 +50,7 @@
                 <div class="reactionContainer" [ngClass]="{'absoluteLeft' : isCurrentUser(chatIndex), 'd-hidden': editAnswers[chatIndex]}" >
                     <div class="reactionMenu">
                         <div class="emoji-container" (mouseleave)="closeEmojiContainers(chatIndex)">
-                            <img (click)="toggleEmoji($event, chatIndex)" src="../../../assets/img/add_reaction.png"
+                            <img (click)="toggleEmoji($event, chatIndex)" src="./assets/img/add_reaction.png"
                                 alt="">
                             <div *ngIf="answer.isEmojiOpen" class="emoji-selection">
                                 <app-emoji-picker

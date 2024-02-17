@@ -2,7 +2,7 @@
     <textarea [(ngModel)]="messageText"></textarea>
     <div class="footer-line-icons">
         <div class="emoji-container">
-            <img (click)="toggleEmojiMessage()" src="../../../assets/img/add_reaction.png" alt="">
+            <img (click)="toggleEmojiMessage()" src="./assets/img/add_reaction.png" alt="">
             <div *ngIf="isMessageEmojiOpen" class="emoji-selection">
                 <app-emoji-picker (emojiSelect)="addEmojitoText($event)"></app-emoji-picker>
             </div>

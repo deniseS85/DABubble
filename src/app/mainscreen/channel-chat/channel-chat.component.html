@@ -375,7 +375,7 @@
                     <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{
                         this.channelDataService.channelDescription }}</span>
                     <input type="text" [(ngModel)]="newChannelDescription" autofocus *ngIf="channelDescriptionChange"
-                        placeholder="Dein Text hier" maxlength="70">
+                        placeholder="Dein Text hier" >
                     <div class="seperator"></div>
                     <span class="fw-700">Erstellt von</span>
                     <div class="channel-creator-container">

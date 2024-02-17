@@ -483,7 +483,6 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         }
     }
     
-
     async searchfieldShowMessage(message: any): Promise<void> {
         const messageID = message.messageID;
         const allMessages = await this.channelservice.getAllMessages();
@@ -494,8 +493,13 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             this.findChannelFromMessage(foundMessage.channelID);
             this.messageID = messageID;
             setTimeout(() => {
-                this.channelChatComponent.scrollToMessage(this.messageID)
+                if (window.innerWidth <= 1450 && this.channelChatComponent) {
+                    this.channelChatComponent.scrollToMessage(this.messageID);
+                }
             }, 400);
+            if (window.innerWidth < 1050) {
+                this.workspaceOpen = false;
+            }
         } else {
             console.error('Nachricht mit der ID ' + messageID + ' gefunden, aber keine gültige channelID vorhanden.');
         }

@@ -2,7 +2,7 @@
 <div class="main-container">
     <div class="header-container">
         <header class="channel-chat-header">
-            <app-new-message *ngIf="main.newMessageOpen"></app-new-message>
+            <app-new-message style="width: 100%; display: flex; align-items: center;" *ngIf="main.newMessageOpen"></app-new-message>
             <div class="header-left" *ngIf="!main.newMessageOpen" (click)=" editChannelOpen = true; openPopup(); checkUserIsCreator();">
                 <!-- isUserMember && -->
                 <span>

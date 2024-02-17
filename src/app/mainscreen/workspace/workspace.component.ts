@@ -600,10 +600,15 @@ export class WorkspaceComponent implements OnInit {
 
   OpenNewMessage() {
     this.main.searchChannel = '';
-    this.main.newMessageOpen = true;
+    this.main.newMessageOpen = !this.main.newMessageOpen;
     this.main.channelOpen = true;
     this.main.chatOpen = false;
-    this.channelDataService.channelName = '';
+    if (window.innerWidth < 1050) {
+      this.main.workspaceOpen = false;
+    }
+    
+
+   /*  this.channelDataService.channelName = ''; */
   }
 
 }

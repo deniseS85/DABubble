@@ -575,13 +575,13 @@ export class WorkspaceComponent implements OnInit {
     onSnapshot(chatsRef, (chats) => {
       chats.forEach((chat: any) => {
         chat.data().chatUsers.forEach((user: any) => {
-          console.log(user)
+          /* console.log(user) */
           if (user === this.userID) {
             this.chats.push(chat.data())
             if(chat.data()['chatname'].includes('Gast')){
-              console.log('gastOnline')
+              /* console.log('gastOnline') */
             } else {
-              console.warn('kein gastOnline')
+              /* console.warn('kein gastOnline') */
             }
             // hier können sie namen für die DM-Liste gezogen werden
             // chat.data().chatUsers.forEach((notMe: any) => {

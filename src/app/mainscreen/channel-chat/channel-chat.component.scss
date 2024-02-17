@@ -702,7 +702,6 @@
 .popup-maincontainer {
     background-color: white;
     z-index: 110;
-
     max-height: 80vh;
 }
 
@@ -717,6 +716,16 @@
     flex-direction: column;
     justify-content: space-between;
     cursor: default;
+    @media only screen and (max-width:750px) {
+        border: 1px solid rgb(173, 176, 217);
+        overflow-y: scroll;
+        overflow-x: hidden;
+        margin: 0px 10px;
+        padding: 10px;
+        border-radius: 30px;
+        width: auto;
+
+    }
 }
 
 .bigPopup {
@@ -724,12 +733,17 @@
     padding: 40px;
     border-radius: 0 30px 30px 30px;
     gap: 20px;
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     @media only screen and (max-width: 750px) {
-        width: 100%;
+        min-width: 100%;
+        max-height: 100%;
+        border-radius: unset;
+        justify-content: unset;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
     }
 }
 
@@ -739,6 +753,26 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media only screen and (max-width: 750px) {
+        padding: 10px 20px 0 20px;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
+        height: 55px;
+    }
+    .member {
+        @media only screen and (max-width: 750px) {
+           font-size: 16px;
+         }
+    }
+}
+
+.headline-container-member {
+    font-size: clamp(1.25rem, 1.064rem + 0.9302vw, 1.5rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media only screen and (max-width: 750px) {
+        padding: 10px 20px 0 20px;
+    }
 }
 
 .close-icon-container {
@@ -831,6 +865,9 @@ input {
     img {
         height: 50px;
     }
+    @media only screen and (max-width: 750px) {
+        margin-top: 0px;
+    }
 }
 
 .add-person-container {
@@ -874,11 +911,19 @@ input {
 .edit-channel-name-container {
     display: flex;
     flex-direction: column;
+    @media only screen and (max-width: 750px) {
+        margin: 0px 10px;
+        margin-top: 0;
+     }
 }
 
 .edit-channel-description-container {
     display: flex;
     flex-direction: column;
+    @media only screen and (max-width: 750px) {
+        margin: 0px 10px;
+        margin-top: 0;
+     }
 }
 
 .border-container {
@@ -1016,6 +1061,13 @@ input {
 .message-btn-container {
     display: flex;
     justify-content: center;
+}
+.btn-container {
+    @media only screen and (max-width: 750px) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .send-message-btn,

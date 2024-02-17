@@ -139,6 +139,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isChatOpen: boolean = true;
   imagePreview: string = '';
   isFirstTimeEmojiOpen: boolean = true;
+  isSmallScreen: boolean = false;
   /* isUserMember: boolean | undefined; */
 
   private subscriptions: Subscription[] = [];
@@ -174,6 +175,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         await this.loadMessagesOfThisChannel();
         await this.loadUsersOfThisChannel();
       }
+      this.checkScreenSize();
       /*   this.checkIsUserMember(); */
     }
 
@@ -192,6 +194,16 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         this.scrollToBottom();
       }
     } 
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth <= 750
+  }
   /* 
     checkIsUserMember() {
       this.userservice.getIsUserMember().subscribe((value) => {

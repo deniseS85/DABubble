@@ -271,29 +271,14 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             this.loading = true;
 
             if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
-                if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {
-                    this.user.profileImg = this.selectedAvatarNr;
-                } else {
-                    let oldFileName = this.extractFileNameFromPath(this.user.profileImg);
-                    if (this.user.profileImg.startsWith('https')) {
-                        let oldImgRef = ref(this.storage, `images/${oldFileName}`);
-                        await deleteObject(oldImgRef);
-                    }
-                    this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
-                }
+                this.checkProfileImage();
             }
 
-        
-          /*   await this.authService.updateAndVerifyEmail(this.user.email);
-            this.emailChanged = true; */
+/*             this.emailChanged = await this.authService.updateAndVerifyEmail(this.user.email);
+            console.log(this.emailChanged)
+ */
             await this.updateData();
-            setTimeout(() => {
-                this.closeEditUser();
-                this.closeUserInfo();
-                this.isProfileMenuOpen = false;
-                this.emailChanged = false;
-                this.loading = false;
-            }, 3000);
+            this.handleUserChangeCompletion();
         } catch (error) { }
     }
 
@@ -302,6 +287,29 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         await updateDoc(this.getUserID(), updatedData);
         this.userservice.setUserData(updatedData);
         this.updateUserNameInLocalStorage();
+    }
+
+    async checkProfileImage() {
+        if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {
+            this.user.profileImg = this.selectedAvatarNr;
+        } else {
+            let oldFileName = this.extractFileNameFromPath(this.user.profileImg);
+            if (this.user.profileImg.startsWith('https')) {
+                let oldImgRef = ref(this.storage, `images/${oldFileName}`);
+                await deleteObject(oldImgRef);
+            }
+            this.user.profileImg = `avatar${this.selectedAvatarNr}.png`;
+        }
+    }
+
+    handleUserChangeCompletion() {
+        setTimeout(() => {
+            this.closeEditUser();
+            this.closeUserInfo();
+            this.isProfileMenuOpen = false;
+            this.emailChanged = false;
+            this.loading = false;
+        }, 3000);
     }
 
     extractFileNameFromPath(path: string): string {

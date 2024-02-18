@@ -23,6 +23,7 @@ export class ChatContainerComponent {
   allAnswers: any[] = [];
   allMessages: any[] = [];
   message: any;
+  private unsubscribeSnapshot: Unsubscribe | undefined;
   unsubUser: Unsubscribe | undefined;
   messagetext: string = '';
   @ViewChild('chatContainer') chatContainer!: ElementRef;
@@ -64,6 +65,13 @@ export class ChatContainerComponent {
     this.loadChatID();    
     this.getUserData();
   }
+
+
+  ngOnDestroy() {
+    if (this.unsubscribeSnapshot) {
+        this.unsubscribeSnapshot();
+    }
+}
 
 
   setBooleanForSelfChat(){
@@ -131,7 +139,7 @@ export class ChatContainerComponent {
     let userIDofThisMessage;
     const queryAllAnswers = await query(collection(this.firestore, "chats", this.chatID, "messages"));
 
-    onSnapshot(queryAllAnswers, (querySnapshot) => {
+    this.unsubscribeSnapshot = onSnapshot(queryAllAnswers, (querySnapshot) => {
 
       this.allMessages = [];
       querySnapshot.forEach(async (message) => {

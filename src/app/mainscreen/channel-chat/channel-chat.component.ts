@@ -132,6 +132,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   isButtonDisabled: boolean = true;
   userList;
   unsubUser: Unsubscribe | undefined;
+  private unsubscribeSnapshot: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
 
    private shouldScrollToBottom: boolean = true;
@@ -235,6 +236,9 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   ngOnDestroy() {
     this.unsubUser;
+    if (this.unsubscribeSnapshot) {
+      this.unsubscribeSnapshot();
+  }
   }
 
   checkUserIsCreator() {
@@ -895,10 +899,10 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
   async loadUsersOfThisChannel() {
     let channelDocRef = doc(this.firestore, 'channels', this.channelDataService.channelID);
-    let channelDoc = await getDoc(channelDocRef);
+    // let channelDoc = await getDoc(channelDocRef);
     let userArray: any[] = [];
 
-    const unsub = onSnapshot(channelDocRef, async (channel) => {
+    this.unsubscribeSnapshot = onSnapshot(channelDocRef, async (channel) => {
       userArray = [];
       const channelUsers = channel.data()['channelUsers']
       

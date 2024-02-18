@@ -230,7 +230,7 @@
                 }
 
                 .user-edit {
-                    height: 505px;
+                    // height: 505px;
                     position: relative;
                     mat-progress-bar {
                         position: absolute;
@@ -303,8 +303,8 @@
                     }
 
                     img {
-                        width: 150px;
-                        height: 150px;
+                        width: clamp(7.8125rem, 7.4747rem + 1.6892vw, 9.375rem);
+                        height: clamp(7.8125rem, 7.4747rem + 1.6892vw, 9.375rem);
                         object-fit: cover;
                         border-radius: 100%;
                     }
@@ -478,7 +478,7 @@
                     }
 
                     input {
-                        width: 91%;
+                        width: calc(100% - 40px);
                         height: 15px;
                         border: 1px solid #ADB0D9;
                         border-radius: 30px;
@@ -502,7 +502,7 @@
                         height: clamp(2.625rem, 2.3396rem + 0.6081vw, 3.3125rem);
                         width: clamp(6.25rem, 5.4464rem + 4.0179vw, 11.875rem);
                         cursor: pointer;
-                        font-size: clamp(0.9375rem, 0.8482rem + 0.4464vw, 1.5625rem);
+                        font-size: clamp(0.875rem, 0.8393rem + 0.1786vw, 1.125rem);
                     }
 
                     .save-btn {

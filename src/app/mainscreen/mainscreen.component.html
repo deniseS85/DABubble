@@ -148,7 +148,7 @@
                                 <mat-icon>mail_outline</mat-icon>
                                 <p>E-Mail-Adresse</p>
                             </div>
-                            <input [(ngModel)]="user.email" name="email" placeholder="E-Mail-Adresse" maxlength="25">
+                            <input [(ngModel)]="user.email" name="text" placeholder="E-Mail-Adresse" maxlength="25">
                         </div>
                     </div>
                     <div class="button-container">
@@ -156,11 +156,11 @@
                         <button (click)="saveUserChange()" class="save-btn" type="button">Speichern</button>
                     </div>
 
-                 <!--    <div class="confirm-container" *ngIf="emailChanged">
+                    <div class="confirm-container" *ngIf="emailChanged">
                         <div class="confirm-text">E-Mail wurde gesendet.<br> Bitte bestätigen Sie<br> die neue
                             E-Mail-Adresse.
                         </div>
-                    </div> -->
+                    </div> 
                 </div>
             </div>
             <div class="overlay" *ngIf="isProfileMenuOpen" (click)="toggleProfileMenu()"></div>

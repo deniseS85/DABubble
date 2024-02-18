@@ -72,21 +72,22 @@ export class AuthService {
         }
     }
 
-   /*  async updateAndVerifyEmail(newEmail: string): Promise<boolean> {
+
+   /*  async updateAndVerifyEmail(newEmail: any) {
         const auth = getAuth();
         const user = auth.currentUser;
-    
         if (user) {
-            try {
-                const userCredential = await signInWithEmailAndPassword(auth, user.email, 'DeniseS85!');
-                await verifyBeforeUpdateEmail(userCredential.user, newEmail);
-                return true;
-            } catch (error) {
-                return false; 
-            }
-        }
-        return false;  
+          try {
+              await verifyBeforeUpdateEmail(user, newEmail);
+              
+          } catch (error) {
+              console.error('Fehler bei der E-Mail-Verifizierung:', error);
+              throw error; 
+          }
+      }
     } */
+  
+
   
     async setOnlineStatus(userId: string, isOnline: boolean): Promise<void> {
         try {

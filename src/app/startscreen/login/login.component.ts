@@ -77,6 +77,7 @@ export class LoginComponent {
             }
         } catch (error:any) {
             this.handleAuthError(error);
+            console.log(this.isWrongPassword)
         }
     }
 
@@ -180,10 +181,8 @@ export class LoginComponent {
     }
 
     private handleAuthError(error: any) {
-        if (error.code && error.code.startsWith('auth/')) {
-            if (error.code === 'auth/wrong-password') {
-                this.isWrongPassword = true;
-            }
-        } 
+        if (error.code === 'auth/invalid-credential') {
+            this.isWrongPassword = true;
+        }
     }
 }

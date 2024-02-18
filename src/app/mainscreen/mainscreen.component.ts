@@ -66,6 +66,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
     isChooseAvatarOpen: boolean = false;
     selectedAvatarNr!: number | string | null;
     emailChanged: boolean = false;
+    newEmail: string;
     screenWidth: number = window.innerWidth;
     isProfileHovered: boolean = false;
     isLogoutHovered: boolean = false;
@@ -273,10 +274,8 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
                 this.checkProfileImage();
             }
+            /* await this.changeNewMail(); */
 
-/*             this.emailChanged = await this.authService.updateAndVerifyEmail(this.user.email);
-            console.log(this.emailChanged)
- */
             await this.updateData();
             this.handleUserChangeCompletion();
         } catch (error) { }
@@ -288,6 +287,18 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         this.userservice.setUserData(updatedData);
         this.updateUserNameInLocalStorage();
     }
+
+    /* async changeNewMail() {
+        try {
+            await this.authService.updateAndVerifyEmail(this.user.email);
+            this.emailChanged = true;
+        } catch (error) {
+            console.error('Fehler bei der E-Mail-Verifizierung oder Aktualisierung:', error);
+        } finally {
+            this.emailChanged = false;
+        }
+    
+    } */
 
     async checkProfileImage() {
         if (typeof this.selectedAvatarNr === 'string' && this.selectedAvatarNr.startsWith('https')) {

@@ -3,7 +3,7 @@
     <div class="header-container">
         <header class="channel-chat-header">
             <app-new-message style="width: 100%; display: flex; align-items: center;" *ngIf="main.newMessageOpen"></app-new-message>
-            <div class="header-left" *ngIf="!main.newMessageOpen" (click)=" editChannelOpen = true; openPopup(); checkUserIsCreator();">
+            <div class="header-left" *ngIf="!main.newMessageOpen" (click)="editChannelOpen = true; openPopup(); checkUserIsCreator();">
                 <!-- isUserMember && -->
                 <span>
                     <span class="hashtag">#</span> <!--  *ngIf="isUserMember" -->
@@ -220,11 +220,11 @@
 </div>
 
 <!---------------------------------------------- POPUPS ---------------------------------------------->
-<div class="popup-background" *ngIf="addUSerOpen && !isSmallScreen" (click)="addUSerOpen = false; closePopup()">
-    <div class="popup-maincontainer smallPopup" (click)="doNotClose($event)">
-        <div class="headline-container">
+<div class="popup-background" *ngIf="addUSerOpen" (click)="addUSerOpen = false; closePopup()">
+    <div [ngClass]="isSmallScreen ? 'popup-maincontainer smallPopupResponsiv' : 'popup-maincontainer smallPopup'" (click)="doNotClose($event)">
+        <div [ngClass]="isSmallScreen ? 'headline-container-member' : 'headline-container'">
             <span class="fw-700">Leute hinzufügen</span>
-            <div class="close-icon-container" (click)="addUSerOpen = false; closePopup()">
+            <div class="close-icon-container" (click)="addUSerOpen = false; addUserResponsiv = false; closePopup()">
                 <mat-icon>close</mat-icon>
             </div>
         </div>
@@ -336,7 +336,13 @@
     </div>
 </div>
 <!-- Channel Info -->
-<div class="popup-background" *ngIf="editChannelOpen" (click)="editChannelOpen = false; closePopup()">
+
+
+
+
+
+
+<div class="popup-background" *ngIf="editChannelOpen && !addUserResponsiv" (click)="editChannelOpen = false; closePopup()">
     <div class="popup-maincontainer bigPopup" (click)="doNotClose($event)">
         <div class="headline-container">
             <span class="fw-700"><span>#</span><span> {{ this.channelDataService.channelName }}</span></span>
@@ -388,13 +394,13 @@
             </div>
         </div>
 
-
-        <div class="popup-maincontainer smallPopup" (click)="doNotClose($event)" *ngIf="isSmallScreen">
+<!-- Responsiv -->
+        <div class="popup-maincontainer smallPopup" *ngIf="isSmallScreen">
             <div class="headline-container-member">
                 <span class="fw-700 member">Mitglieder</span>
             </div>
             <div class="current-channel-member-list">
-                <div class="member-list-div" (click)="setUserProfileView(user); showProfil = true; openPopup()"
+                <div class="member-list-div" (click)="setUserProfileView(user); showProfil = true; editChannelOpen = false; openPopup()"
                     *ngFor="let user of usersData">
                     <span class="profile">
                         <img [src]="getProfileImagePath(user)" />
@@ -402,11 +408,11 @@
                     </span>
                     <span>{{ user.firstname }} {{ user.lastname }}</span>
                 </div>
-                <div class="add-person-container fs-18" (click)="addUSerOpen = true; showMembersOpen = false; openPopup()">
+                <div class="add-person-container fs-18" (click)="addUSerOpen = true; addUserResponsiv = true; showMembersOpen = false; openPopup()">
                     <div class="add-person-img-container">
                         <img src="./assets/img/person_add.png" alt="">
                     </div>
-                    <span>Mitglieder hinzufügen</span>
+                    <span class="member">Mitglieder hinzufügen</span>
                 </div>
             </div>
         </div>

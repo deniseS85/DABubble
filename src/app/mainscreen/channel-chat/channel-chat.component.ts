@@ -88,6 +88,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   body = this.elRef.nativeElement.ownerDocument.body;
   firestore: Firestore = inject(Firestore);
   addUSerOpen: boolean = false;
+  addUserResponsiv: boolean = false;
   showMembersOpen: boolean = false;
   editChannelOpen: boolean = false;
   enabled: boolean = false;

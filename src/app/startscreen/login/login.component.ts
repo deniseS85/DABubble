@@ -128,7 +128,7 @@ export class LoginComponent {
 
         try {
             let googleUser = await this.authService.signInWithGoogle();
-            
+            // this.authService.setSession(userId);
             let displayName = googleUser.user.displayName;
             let email = googleUser.user.email;
     
@@ -156,7 +156,7 @@ export class LoginComponent {
             let userDocument = querySnapshot.docs[0].data() as UserData;
             this.userservice.setUserDetails(userDocument.firstname, userDocument.lastname, userDocument.profileImg);
             let userId = await this.getUserIDFromFirebase(email);
-
+            this.authService.setSession(userId)
             if (userId) {
                 await this.authService.setOnlineStatus(userId, true);
                 this.router.navigate(['/main', userId]);

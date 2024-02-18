@@ -77,7 +77,6 @@ export class LoginComponent {
             }
         } catch (error:any) {
             this.handleAuthError(error);
-            console.log(this.isWrongPassword)
         }
     }
 

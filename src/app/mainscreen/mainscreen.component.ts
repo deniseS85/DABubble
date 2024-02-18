@@ -269,11 +269,20 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             let [firstName, lastName] = this.userFullName.split(' ');
             this.user.firstname = firstName;
             this.user.lastname = lastName;
+            this.newEmail = this.user.email;
             this.loading = true;
 
             if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
                 this.checkProfileImage();
             }
+            const userDataCopy = JSON.parse(JSON.stringify(this.user));
+            console.log(userDataCopy.email);
+            console.log(this.newEmail);
+            if (this.newEmail !== userDataCopy.email) {
+               
+                this.emailChanged = true;
+            }
+
             /* await this.changeNewMail(); */
 
             await this.updateData();

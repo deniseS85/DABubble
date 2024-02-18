@@ -76,7 +76,8 @@ export class LoginComponent {
                 this.userAlreadyExists = false;
             }
         } catch (error:any) {
-            this.handleAuthError(error);
+           /*  this.handleAuthError(error); */
+            this.isWrongPassword = true;
         }
     }
 
@@ -117,7 +118,7 @@ export class LoginComponent {
                 this.router.navigate(['/main', uid]);                
             }
         } catch (error: any) {
-            this.handleAuthError(error);
+          /*   this.handleAuthError(error); */
         }
     }
 
@@ -137,7 +138,7 @@ export class LoginComponent {
                 this.searchservice.loadUsers();
             }
         } catch (error: any) {
-            this.handleAuthError(error);
+          /*   this.handleAuthError(error); */
         }
     }
 
@@ -179,9 +180,9 @@ export class LoginComponent {
         }
     }
 
-    private handleAuthError(error: any) {
+   /*  private handleAuthError(error: any) {
         if (error.code === 'auth/invalid-credential') {
             this.isWrongPassword = true;
         }
-    }
+    } */
 }

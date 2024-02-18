@@ -789,7 +789,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     const queryAllAnswers = query(await this.channelService.getMessageRef(channelID));
     
 
-    onSnapshot(queryAllAnswers, async (querySnapshot) => {     
+    const unsubscribe = onSnapshot(queryAllAnswers, async (querySnapshot) => {     
       
       this.allMessages = [];
 
@@ -804,7 +804,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
             ...messageData,
             ...userData,
             isEmojiOpen: false,
-            dateAllreadyThere: this.isDateAllreadyThere
+            dateAllreadyThere: this.isDateAllreadyThere,
+            unsubscribe: unsubscribe
           };
 
           this.allMessages.push(message);
@@ -956,7 +957,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     let counter = 0;
     let answersTimes: any[] = [];
 
-    const subs = onSnapshot(answerRef, (answersDoc) => {
+    const unsubscribe = onSnapshot(answerRef, (answersDoc) => {
       answersTimes = [];
       counter = 0;      
       answersDoc.forEach((answer) => {
@@ -974,7 +975,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       if (counter >= 0) {
         this.updateAnswerInfoStatus(answerInfos, messageID);
       }
-    })
+    });
+    const result = await Promise.resolve({
+      unsubscribe: unsubscribe
+  });
+
+  return result;
   }
 
 

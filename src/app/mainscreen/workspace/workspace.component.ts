@@ -572,7 +572,7 @@ export class WorkspaceComponent implements OnInit {
   async loadChats() {
     const chatsRef = query(this.chatService.getChatsRef())
 
-    onSnapshot(chatsRef, (chats) => {
+    this.unsubscribeSnapshot = onSnapshot(chatsRef, (chats) => {
       chats.forEach((chat: any) => {
         chat.data().chatUsers.forEach((user: any) => {
           /* console.log(user) */

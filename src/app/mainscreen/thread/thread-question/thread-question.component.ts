@@ -42,10 +42,11 @@ export class ThreadQuestionComponent {
   async loadMessage() {
     const docRef = this.getAnswerRef(this.channelID, this.messageID);
 
-    onSnapshot(docRef, (message) => {      
+    const unsubscribe = onSnapshot(docRef, (message) => {      
       this.loadedMessage = message.data();
       this.getUserData(this.loadedMessage.messageUserID);
-    })
+    });
+    this.unsubscribeUserData = unsubscribe;
   }
 
 

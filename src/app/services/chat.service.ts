@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,17 @@ export class ChatService {
   userID: string = '';
   collectionChatRef = collection(this.firestore, 'chats');
   allUsers: any[] = [];
+  private unsubscribeSnapshot: Unsubscribe | undefined;
   /*   chatID: string | null = null; */
 
 
   constructor() { }
 
+  ngOnDestroy() {
+    if (this.unsubscribeSnapshot) {
+        this.unsubscribeSnapshot();
+    }
+  }
 
   /**
    * 
@@ -67,7 +73,7 @@ export class ChatService {
     userData = ({ ...userData, id: userID });
     const allUsersQuery = query(this.getUsersRef())
 
-    onSnapshot(allUsersQuery, (querySnapshot) => {
+    this.unsubscribeSnapshot = onSnapshot(allUsersQuery, (querySnapshot) => {
       this.buildUserArray(querySnapshot);
       this.allUsers.forEach((user: any) => {
         this.buildNewChat(user, userData);
@@ -147,7 +153,7 @@ export class ChatService {
 
     const allUsersQuery = query(this.getUsersRef())
 
-    onSnapshot(allUsersQuery, (querySnapshot) => {      
+    this.unsubscribeSnapshot = onSnapshot(allUsersQuery, (querySnapshot) => {      
       this.buildUserArray(querySnapshot);
       this.allUsers.forEach((user: any) => {
         this.buildNewChatGuest(user, guestID);

@@ -238,7 +238,7 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
   async loadAnswers() {
     const queryAllAnswers = await query(this.getAllAnswersRef(this.channelID, this.messageID));
 
-      onSnapshot(queryAllAnswers, async (querySnapshot) => {
+       const unsubscribe = onSnapshot(queryAllAnswers, async (querySnapshot) => {
       this.allAnswers = [];
       
       for (const doc of querySnapshot.docs) {
@@ -250,6 +250,7 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
                 ...answerData,
                 ...userData,
                 isEmojiOpen: false,
+                unsubscribe: unsubscribe
             };
             this.allAnswers.push(answer);
         }

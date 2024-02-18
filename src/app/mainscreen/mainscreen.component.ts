@@ -273,6 +273,9 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
                 this.checkProfileImage();
             }
+            const newEmail = this.inputEmail.nativeElement.value;
+            
+            this.user.email = newEmail;
             this.emailChanged = this.inputEmail.nativeElement.value.length > 0;
             await this.updateData();
             this.handleUserChangeCompletion();

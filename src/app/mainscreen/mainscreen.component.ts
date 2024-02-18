@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -40,7 +40,7 @@ import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
     @ViewChild(WorkspaceComponent) workspaceComponent!: WorkspaceComponent;
     @ViewChild(ChannelChatComponent) channelChatComponent!: ChannelChatComponent;
-
+    @ViewChild('inputEmail') inputEmail!: ElementRef;
     firestore: Firestore = inject(Firestore);
     user = new User();
     workspaceOpen: boolean = true;
@@ -66,7 +66,6 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
     isChooseAvatarOpen: boolean = false;
     selectedAvatarNr!: number | string | null;
     emailChanged: boolean = false;
-    newEmail: string;
     screenWidth: number = window.innerWidth;
     isProfileHovered: boolean = false;
     isLogoutHovered: boolean = false;
@@ -269,16 +268,12 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             let [firstName, lastName] = this.userFullName.split(' ');
             this.user.firstname = firstName;
             this.user.lastname = lastName;
-            this.newEmail = this.user.email;
             this.loading = true;
 
             if (this.selectedAvatarNr !== null && this.selectedAvatarNr !== undefined) {
                 this.checkProfileImage();
             }
-           
-            this.emailChanged = this.onChange(this.user.email);
-            console.log(this.emailChanged)
-
+            this.emailChanged = this.inputEmail.nativeElement.value.length > 0;
             await this.updateData();
             this.handleUserChangeCompletion();
            
@@ -292,16 +287,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         this.updateUserNameInLocalStorage();
     }
 
-    onChange(newValue: string): boolean {
-        console.log(newValue);
-        console.log(this.user.email)
-        if (newValue !== this.user.email) {
-            return true;
-        } else {
-           return false;
-        }
-      
-    }
+    
 
     /* async changeNewMail() {
         try {

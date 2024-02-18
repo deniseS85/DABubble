@@ -896,27 +896,39 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   async loadUsersOfThisChannel() {
     let channelDocRef = doc(this.firestore, 'channels', this.channelDataService.channelID);
     let channelDoc = await getDoc(channelDocRef);
+    let userArray: any[] = [];
 
-    if (channelDoc.exists()) {
-      let channelData = channelDoc.data();
-      let usersDataPromises = channelData['channelUsers'].map(async (userID: string) => {
-        return await this.getUserInfo(userID);
-      });
+    const unsub = onSnapshot(channelDocRef, async (channel) => {
+      userArray = [];
+      const channelUsers = channel.data()['channelUsers']
+      
+      channelUsers.forEach(user => {
+        userArray.push(this.getUserInfo(user))
+        
+      })
+      this.usersData = await Promise.all(userArray);
+    })
 
-      this.usersData = await Promise.all(usersDataPromises);
-    }
-    this.updateUserData();
+    // if (channelDoc.exists()) {
+    //   let channelData = channelDoc.data();
+    //   let usersDataPromises = channelData['channelUsers'].map(async (userID: string) => {
+    //     return await this.getUserInfo(userID);
+    //   });
+
+    //   this.usersData = await Promise.all(usersDataPromises);
+    // }
+    // this.updateUserData();
   }
 
-  updateUserData() {
-    this.channelService.userData$.subscribe((userData) => {
-      this.usersData.forEach((user) => {
-        if (user && user.id && userData && userData.id && user.id === userData.id) {
-          Object.assign(user, userData);
-        } 
-      });
-    });
-  }
+  // updateUserData() {
+  //   this.channelService.userData$.subscribe((userData) => {
+  //     this.usersData.forEach((user) => {
+  //       if (user && user.id && userData && userData.id && user.id === userData.id) {
+  //         Object.assign(user, userData);
+  //       }
+  //     });
+  //   });
+  // }
 
   async getUserInfo(userID: string): Promise<any> {
     const user = this.allUsers.find(u => u.id === userID);

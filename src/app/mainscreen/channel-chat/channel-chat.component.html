@@ -17,8 +17,8 @@
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
                     <div *ngFor="let user of usersData">
                         <span class="profile">
-                            <!-- <img [src]="getProfileImagePath(user)" />
-                            <p class="active-point" *ngIf="user.isOnline"></p> -->
+                            <img [src]="getProfileImagePath(user)" />
+                            <p class="active-point" *ngIf="user.isOnline"></p>
                         </span>
                     </div>
                     <div class="counter-channel-members">{{ usersData.length }}</div>

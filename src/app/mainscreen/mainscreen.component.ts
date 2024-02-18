@@ -276,17 +276,12 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
                 this.checkProfileImage();
             }
            
-           /*  console.log(userDataCopy.email);
-            console.log(this.newEmail);
-            if (this.newEmail !== userDataCopy.email) {
-               
-                this.emailChanged = true;
-            }
- */
-            /* await this.changeNewMail(); */
+            this.emailChanged = this.onChange(this.user.email);
+            console.log(this.emailChanged)
 
             await this.updateData();
             this.handleUserChangeCompletion();
+           
         } catch (error) { }
     }
 
@@ -295,6 +290,17 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         await updateDoc(this.getUserID(), updatedData);
         this.userservice.setUserData(updatedData);
         this.updateUserNameInLocalStorage();
+    }
+
+    onChange(newValue: string): boolean {
+        console.log(newValue);
+        console.log(this.user.email)
+        if (newValue !== this.user.email) {
+            return true;
+        } else {
+           return false;
+        }
+      
     }
 
     /* async changeNewMail() {

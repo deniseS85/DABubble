@@ -148,7 +148,7 @@
                                 <mat-icon>mail_outline</mat-icon>
                                 <p>E-Mail-Adresse</p>
                             </div>
-                            <input [(ngModel)]="user.email" name="text" placeholder="E-Mail-Adresse" maxlength="25">
+                            <input (ngModelChange)="onChange($event)" [(ngModel)]="user.email"  name="text" placeholder="E-Mail-Adresse" maxlength="25">
                         </div>
                     </div>
                     <div class="button-container">

@@ -913,7 +913,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       this.usersData.forEach((user) => {
         if (user && user.id && userData && userData.id && user.id === userData.id) {
           Object.assign(user, userData);
-        }
+        } 
       });
     });
   }

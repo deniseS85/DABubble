@@ -25,6 +25,7 @@ export class SelectAvatarComponent implements OnInit {
     hideElement: boolean = window.innerWidth <= 950;
     avatarSrc = './assets/img/profile.png';
     showConfirmation: boolean = false;
+    isSelectAvatar: boolean = false;
     firestore: Firestore = inject(Firestore);
     user = new User();
     isGoogleLogin: boolean = false;
@@ -56,6 +57,7 @@ export class SelectAvatarComponent implements OnInit {
     }
 
     selectAvatar(avatarNr: number) {
+        this.isSelectAvatar = true;
         this.avatarSrc = `./assets/img/avatar${avatarNr}.png`;
         let profileImg = `avatar${avatarNr}.png`;
         this.userData = {

@@ -22,7 +22,7 @@
         <label for="img" class="btn upload">Foto hochladen</label>
     </div>
     
-    <button class="next-btn" type="button" (click)="addNewUser()">Weiter</button>
+    <button class="next-btn" type="button" (click)="addNewUser()" [disabled]="!isSelectAvatar">Weiter</button>
     
     <div class="data-proteccion">
         <a (click)="openImprint.emit()">Impressum</a>

@@ -483,15 +483,17 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     let newUsersArray: any = [];
     this.selectedUsers.forEach((user) => {
       let newUserID = user.id;
-      userallreadyInChannel = this.checkIfMemberAllreadyIn(this.channelDataService.channelUsers, newUserID);
-
+      userallreadyInChannel = this.checkIfMemberAlreadyIn(this.channelDataService.channelUsers, newUserID);
+  
       if (userallreadyInChannel) {
         this.openSnackBar(`${user.firstname} is already a member of this channel`);
       } else {
-        newUsersArray.push(newUserID)
+        newUsersArray.push(newUserID);
 
       }
+
       this.addUserToChannel(newUsersArray);
+     
     })
   }
 
@@ -502,7 +504,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
  * @param newUser potential new Member
  * @returns a boolean if the potential member is allready a member of the channel
  */
-  checkIfMemberAllreadyIn(users: any[], newUserID: string): boolean {
+  checkIfMemberAlreadyIn(users: any[], newUserID: string): boolean {
     let allreadyThere = false;
 
     users.forEach((user: any) => {
@@ -512,6 +514,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         return
       }
     })
+    console.log('Already There:', allreadyThere);
     return allreadyThere
   }
 
@@ -528,6 +531,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
       newUserArray.forEach((user: any) => {
         channelUsersUpdated.push(user);
+        console.log(channelUsersUpdated)
       })
 
       await this.updateChannelUsers(channelUsersUpdated);

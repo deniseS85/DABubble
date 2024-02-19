@@ -119,14 +119,14 @@
         color: white;
         border: none;
         transition: 225ms ease-in-out;
-        &:not([disabled]):hover {
+        &/* :not([disabled]) */:hover {
             background-color: #797EF3;
             transition: 225ms ease-in-out;
         }
-        &[disabled] {
+      /*   &[disabled] {
             cursor: not-allowed;
             opacity: 0.6;
-        }
+        } */
     }
     .data-proteccion {
         position: absolute;

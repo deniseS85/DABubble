@@ -26,6 +26,7 @@ export class SelectAvatarComponent implements OnInit {
     avatarSrc = './assets/img/profile.png';
     showConfirmation: boolean = false;
     isSelectAvatar: boolean = false;
+    isUploadedImage: boolean = false;
     firestore: Firestore = inject(Firestore);
     user = new User();
     isGoogleLogin: boolean = false;
@@ -67,9 +68,16 @@ export class SelectAvatarComponent implements OnInit {
     }
 
     async addNewUser() {
-      
         this.showConfirmation = true;
-       
+
+        if (!this.isSelectAvatar && !this.isUploadedImage) {
+            this.avatarSrc = './assets/img/guest-profile.png';
+            this.userData = {
+                ...this.userData,
+                profileImg: 'guest-profile.png'
+            };
+        } 
+  
         let updatedUserData = {
             ...this.userData,
             id: ''
@@ -125,6 +133,7 @@ export class SelectAvatarComponent implements OnInit {
                 ...this.userData,
                 profileImg: this.avatarSrc
             };
+            this.isUploadedImage = true;
         });
     }
 

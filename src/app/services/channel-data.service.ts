@@ -38,7 +38,7 @@ export class ChannelDataService {
 
   ngOnDestroy() {
     if (this.unsubChannelUser) {
-      this.unsubChannelUser();
+       this.unsubChannelUser();
     }
   }
 
@@ -91,7 +91,7 @@ export class ChannelDataService {
         }
       });
     });
-    this.items.unsubscribe;
+    this.items.unsubscribe();
   }
   
 

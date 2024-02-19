@@ -478,23 +478,22 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   /**
    * get selected User, check if he/she is allready Member and add him/her
    */
-  async addNewMemberToChannelUsers() {
-    let userallreadyInChannel = false;
-    let newUsersArray: any = [];
-    this.selectedUsers.forEach((user) => {
-      let newUserID = user.id;
-      userallreadyInChannel = this.checkIfMemberAlreadyIn(this.channelDataService.channelUsers, newUserID);
+  async addNewMemberToChannelUsers(channelID: string) {
+    let userAlreadyInChannel = false;
+    let newUsersArray: any[] = [];
   
-      if (userallreadyInChannel) {
+    for (const user of this.selectedUsers) {
+      const newUserID = user.id;
+      userAlreadyInChannel = await this.checkIfMemberAlreadyIn(await this.channelService.getChannelUsers(channelID), newUserID);
+  
+      if (userAlreadyInChannel) {
         this.openSnackBar(`${user.firstname} is already a member of this channel`);
       } else {
         newUsersArray.push(newUserID);
-
       }
-
-      this.addUserToChannel(newUsersArray);
-     
-    })
+    }
+  
+    this.addUserToChannel(newUsersArray, channelID);
   }
 
 
@@ -514,7 +513,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         return
       }
     })
-    console.log('Already There:', allreadyThere);
     return allreadyThere
   }
 
@@ -523,52 +521,46 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
    * push new Member datas to the userArray and update
    * @param newUser new member
    */
-  async addUserToChannel(newUserArray: any) {
-    const refChannelUsers = await getDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID))
+  async addUserToChannel(newUserArray: any, channelID: string) {
+    const refChannelUsers = await getDoc(this.channelService.getSingelChannelRef(channelID));
 
     if (refChannelUsers.exists()) {
       let channelUsersUpdated = refChannelUsers.data()['channelUsers'];
 
       newUserArray.forEach((user: any) => {
         channelUsersUpdated.push(user);
-        console.log(channelUsersUpdated)
       })
 
-      await this.updateChannelUsers(channelUsersUpdated);
-      /*   this.userservice.setIsUserMember(true);
-        window.location.reload(); */
-
+      await this.updateChannelUsers(channelUsersUpdated, channelID);
     }
   }
 
-  leaveChannel() {
+  leaveChannel(channelID: string) {
     const currentUserIndex = this.channelDataService.channelUsers.indexOf(this.userID);
 
     if (currentUserIndex !== -1) {
       const newUsers = [...this.channelDataService.channelUsers];
       newUsers.splice(currentUserIndex, 1);
-      this.updateChannelUsers(newUsers);
-      /* this.userservice.setIsUserMember(false);
-      window.location.reload(); */
+      this.updateChannelUsers(newUsers, channelID);
     }
   }
 
-  updateChannelUsers(newUsers: string[]) {
-    this.updateChannel(this.channelDataService.channelID, {
+  updateChannelUsers(newUsers: string[], channelID: string) {
+    this.updateChannel(channelID, {
       channelUsers: newUsers
     });
 
   }
 
 
-  saveNewDescription() {
-    this.updateChannel(this.channelDataService.channelID, {
+  saveNewDescription(channelID: string) {
+    this.updateChannel(channelID, {
       channelDescription: this.newChannelDescription
     });
   }
 
-  saveNewChannelName() {
-    this.updateChannel(this.channelDataService.channelID, {
+  saveNewChannelName(channelID: string) {
+    this.updateChannel(channelID, {
       channelname: this.newChannelName
     });
   }
@@ -601,13 +593,12 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
     allAnswersDocs.forEach(answer => {
       deleteDoc(answer.ref)
-      console.log('answers gelöscht', answer.ref);
     })
   }
 
 
   async updateChannel(channelID: string, item: {}) {
-    await updateDoc(this.channelService.getSingelChannelRef(this.channelDataService.channelID), item);
+    await updateDoc(this.channelService.getSingelChannelRef(channelID), item);
   }
 
   /**

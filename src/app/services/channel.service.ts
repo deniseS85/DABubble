@@ -182,7 +182,17 @@ export class ChannelService {
     selectableElements.forEach((element: HTMLElement) => element.classList.remove('selected'));
   }
 
-
+  async getChannelUsers(channelID: string): Promise<any[]> {
+      const channelDoc = await getDoc(this.getSingleChannel(channelID));
+    
+      if (channelDoc.exists()) {
+        const channelData = channelDoc.data();
+        return channelData['channelUsers'] || [];
+      } else {
+        console.error(`Channel with ID ${channelID} not found.`);
+        return [];
+      }
+  }
 }
 
 

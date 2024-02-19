@@ -264,7 +264,7 @@
         <div class="message-btn-container">
             <button [disabled]="selectedUsers.length === 0" [class.disabled]="selectedUsers.length === 0"
                 class="btn enabled add-member-btn"
-                (click)="addNewMemberToChannelUsers(); addUSerOpen = false; closePopup()">Hinzufügen</button>
+                (click)="addNewMemberToChannelUsers(this.channelDataService.channelID); addUSerOpen = false; closePopup()">Hinzufügen</button>
         </div>
     </div>
 </div>
@@ -357,7 +357,7 @@
                     <span class="edit-btn" *ngIf="!channelNameChange"
                         (click)="channelNameChange = true">Bearbeiten</span>
                     <span class="edit-btn" *ngIf="channelNameChange"
-                        (click)="channelNameChange = false; saveNewChannelName()">Speichern</span>
+                        (click)="channelNameChange = false; saveNewChannelName(this.channelDataService.channelID)">Speichern</span>
                 </div>
                 <div class="channel-name-container" *ngIf="!channelNameChange">
                     <div class="fw-700">#</div> <span class="channel-name"> {{ this.channelDataService.channelName
@@ -365,7 +365,7 @@
                 </div>
                 <div>
                     <input type="text" [(ngModel)]="newChannelName" autofocus maxlength="20"
-                        placeholder="{{  this.channelDataService.channelName }}" *ngIf="channelNameChange"
+                        placeholder="{{ this.channelDataService.channelName }}" *ngIf="channelNameChange"
                         class="input-change-channel-name">
                 </div>
             </div>
@@ -375,11 +375,11 @@
                     <span class="edit-btn" *ngIf="!channelDescriptionChange"
                         (click)="channelDescriptionChange = true">Bearbeiten</span>
                     <span class="edit-btn" *ngIf="channelDescriptionChange"
-                        (click)="channelDescriptionChange = false; saveNewDescription()">Speichern</span>
+                        (click)="channelDescriptionChange = false; saveNewDescription(this.channelDataService.channelID)">Speichern</span> 
                 </div>
                 <div class="channel-description">
                     <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{
-                        this.channelDataService.channelDescription }}</span>
+                        this.channelDataService.channelDescription }}</span> 
                     <input type="text" [(ngModel)]="newChannelDescription" autofocus *ngIf="channelDescriptionChange"
                         placeholder="Dein Text hier" >
                     <div class="seperator"></div>
@@ -419,7 +419,7 @@
 
 
         <div class="btn-container">
-            <button class="btn enabled" (click)="leaveChannel(); editChannelOpen = false; closePopup()">Channel
+            <button class="btn enabled" (click)="leaveChannel(this.channelDataService.channelID); editChannelOpen = false; closePopup()">Channel
                 verlassen</button>
         </div>
     </div>

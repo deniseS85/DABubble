@@ -64,6 +64,7 @@ export class ChatContainerComponent {
     this.setBooleanForSelfChat();
     this.loadChatID();    
     this.getUserData();
+    // this.newDMChat();
   }
 
 
@@ -533,38 +534,38 @@ async getUserInfo(userID: string): Promise<any> {
  * Create new DM's when there is an Error
  */
 
-// newDMChat() {
+newDMChat() {
 
-//   const allUsersQuery = query(this.channelService.getUsersRef())
+  const allUsersQuery = query(this.channelService.getUsersRef())
 
-//   let newPair: any[] = [];
+  let newPair: any[] = [];
 
-//   onSnapshot(allUsersQuery, (querySnapshot) => {
+  onSnapshot(allUsersQuery, (querySnapshot) => {
 
-//     // build Array with allUsers
-//     querySnapshot.forEach((doc: any) => {
+    // build Array with allUsers
+    querySnapshot.forEach((doc: any) => {
 
-//       this.allUsers.push(doc.data())
+      this.allUsers.push(doc.data())
 
-//       this.allUsers.forEach((user: any) => {
+      this.allUsers.forEach((user: any) => {
 
-//         newPair = [];
+        newPair = [];
 
-//         if (user.id == doc.data().id) {
-//           newPair.push(user.id)
-//         } else {
-//           newPair.push(user.id, doc.data().id)
-//         }
+        if (user.id == doc.data().id) {
+          newPair.push(user.id)
+        } else {
+          newPair.push(user.id, doc.data().id)
+        }
 
-//         const chatname = user.firstname + ' & ' + doc.data().firstname;
-//         const chatUsers = newPair;
-//         this.chatService.createNewChat(chatname, chatUsers)
+        const chatname = user.firstname + ' & ' + doc.data().firstname;
+        const chatUsers = newPair;
+        this.chatService.createNewChat(chatname, chatUsers)
 
-//       })
-//     },
-//     );
-//   });
-// }
+      })
+    },
+    );
+  });
+}
 
 }
 

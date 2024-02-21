@@ -6,14 +6,12 @@
             <div class="header-left" *ngIf="!main.newMessageOpen" (click)="editChannelOpen = true; openPopup(); checkUserIsCreator();">
                 <!-- isUserMember && -->
                 <span>
-                    <span class="hashtag">#</span> <!--  *ngIf="isUserMember" -->
-                    <!--   <mat-icon *ngIf="!isUserMember">lock_outline</mat-icon> -->
+                    <span class="hashtag">#</span>
                     {{ this.channelDataService.channelName }}
-                    <!--  <span class="close-info" *ngIf="!isUserMember">(geschlossen)</span> -->
-                    <img src="./assets/img/keyboard_arrow_down.png" alt=""> <!-- *ngIf="isUserMember"  -->
+                    <img src="./assets/img/keyboard_arrow_down.png" alt="">
                 </span>
             </div>
-            <div class="header-right" *ngIf="!main.newMessageOpen"> <!-- *ngIf="isUserMember" -->
+            <div class="header-right" *ngIf="!main.newMessageOpen">
                 <div class="all-avatar-channel-members" (click)="showMembersOpen = true; openPopup()">
                     <div *ngFor="let user of usersData">
                         <span class="profile">

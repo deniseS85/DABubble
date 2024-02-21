@@ -178,7 +178,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         await this.loadUsersOfThisChannel();
       }
       this.checkScreenSize();
-      /*   this.checkIsUserMember(); */
     }
 
   
@@ -816,7 +815,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       }
 
     });
-    // this.updateMessagesWithUserData();
+    this.updateMessagesWithUserData();
   }
 
 
@@ -907,27 +906,18 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       })
       this.usersData = await Promise.all(userArray);
     })
-
-    // if (channelDoc.exists()) {
-    //   let channelData = channelDoc.data();
-    //   let usersDataPromises = channelData['channelUsers'].map(async (userID: string) => {
-    //     return await this.getUserInfo(userID);
-    //   });
-
-    //   this.usersData = await Promise.all(usersDataPromises);
-    // }
-    // this.updateUserData();
+     this.updateUserData();
   }
-
-  // updateUserData() {
-  //   this.channelService.userData$.subscribe((userData) => {
-  //     this.usersData.forEach((user) => {
-  //       if (user && user.id && userData && userData.id && user.id === userData.id) {
-  //         Object.assign(user, userData);
-  //       }
-  //     });
-  //   });
-  // }
+  
+  updateUserData() {
+      this.channelService.userData$.subscribe((userData) => {
+      this.usersData.forEach((user) => {
+        if (user && user.id && userData && userData.id && user.id === userData.id) {
+          Object.assign(user, userData);
+        }
+        });
+    });
+ } 
 
   async getUserInfo(userID: string): Promise<any> {
     const user = this.allUsers.find(u => u.id === userID);

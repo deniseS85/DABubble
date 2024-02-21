@@ -260,7 +260,7 @@ export class ThreadComponent implements AfterViewChecked, AfterViewInit{
       this.editAnswers.push(false)
       
   });
-  // this.updateMessagesWithUserData();
+  this.updateMessagesWithUserData();
   }
 
 

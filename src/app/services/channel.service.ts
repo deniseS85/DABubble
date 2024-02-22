@@ -2,9 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Message } from '../models/message.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot, Unsubscribe, addDoc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { AuthService } from './auth.service';
-import { UserService } from './user.service';
+import { addDoc, getDoc, updateDoc } from 'firebase/firestore';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,7 @@ export class ChannelService {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private authService: AuthService, private userservice: UserService) { }
+  constructor() { }
 
   public userDataSubject = new BehaviorSubject<any>(null);
   userData$ = this.userDataSubject.asObservable();
@@ -127,7 +126,6 @@ export class ChannelService {
     const updateObject = {
       isUserMember: isUserMember,
     };
-    console.log('Updating channel isUserMember status:', updateObject);
     await this.updateChannel(channelID, updateObject);
   }
 

@@ -158,14 +158,6 @@
                 </div>
             </div>
         </div>
-        <!--    </div> -->
-        <!--  <div *ngIf="!isUserMember" class="nonmember-content">
-            <h3>Wende dich an den Channelcreator, um dich einzuladen.</h3>
-            <div class="seperator"></div>
-            <div>{{this.channelDataService.channelCreator}}</div>
-            {{this.channelDataService.channelUsers}}
-           
-        </div> -->
     </div>
     <div class="footer-write-new-message"> <!-- *ngIf="isUserMember" -->
         <div>
@@ -376,8 +368,7 @@
                         (click)="channelDescriptionChange = false; saveNewDescription(this.channelDataService.channelID)">Speichern</span> 
                 </div>
                 <div class="channel-description">
-                    <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{
-                        this.channelDataService.channelDescription }}</span> 
+                    <span class="channel-description-text" *ngIf="!channelDescriptionChange">{{ this.channelDataService.channelDescription }}</span> 
                     <input type="text" [(ngModel)]="newChannelDescription" autofocus *ngIf="channelDescriptionChange"
                         placeholder="Dein Text hier" >
                     <div class="seperator"></div>

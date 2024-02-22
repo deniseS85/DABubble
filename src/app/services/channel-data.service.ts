@@ -3,7 +3,7 @@ import { Channel } from '../models/channel.class';
 import { Firestore, Unsubscribe, collectionData, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs";
-import {  DocumentData } from 'firebase/firestore';
+import {  DocumentData, doc, updateDoc } from 'firebase/firestore';
 
 
 @Injectable({
@@ -93,6 +93,5 @@ export class ChannelDataService {
     });
     this.items.unsubscribe();
   }
-  
 
 }

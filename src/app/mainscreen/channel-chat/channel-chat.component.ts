@@ -108,7 +108,8 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   userID: any;
 
   allUsers: User[] = [];
-  channelInfo: Channel[] = [];
+  allChannels: Channel[] = [];
+  /* channelInfo: Channel[] = []; */
   channelUsers: any[] = [];
   channelName: string = '';
   channelCreator: string = '';
@@ -266,6 +267,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
       });
     });
   }
+
 
   /**
  * Toggles the animation state of messages.
@@ -544,26 +546,31 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
+/* ############################ */
   updateChannelUsers(newUsers: string[], channelID: string) {
     this.updateChannel(channelID, {
       channelUsers: newUsers
-    });
+    }); 
 
   }
-
 
   saveNewDescription(channelID: string) {
     this.updateChannel(channelID, {
-      channelDescription: this.newChannelDescription
+        channelDescription: this.newChannelDescription
     });
+    this.channelDataService.channelDescription = this.newChannelDescription;
+    console.log(this.channelDataService.channelDescription)
   }
-
+  
   saveNewChannelName(channelID: string) {
     this.updateChannel(channelID, {
       channelname: this.newChannelName
     });
   }
 
+
+
+  /* ############################ */
   async deleteCurrentChannel() {
 
     this.deleteChannelMessages();

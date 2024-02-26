@@ -510,7 +510,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
             this.findChannelFromMessage(foundMessage.channelID);
             this.messageID = messageID;
             setTimeout(() => {
-                if (window.innerWidth <= 1450 && this.channelChatComponent) {
+                if (/* window.innerWidth <= 1450 && */ this.channelChatComponent) {
                     this.channelChatComponent.scrollToMessage(this.messageID);
                 }
             }, 400);

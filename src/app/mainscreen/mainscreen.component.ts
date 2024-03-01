@@ -81,6 +81,7 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
     messageID: string = '';
     newMessageOpen: boolean = false;
     loading = false;
+    isGuestInfoOpen: boolean = false;
 
     constructor(
         public authService: AuthService,
@@ -102,6 +103,9 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         if (this.userID) {
             this.checkIsGuestLogin();
             this.subscribeToUserChanges();
+        }
+        if(this.authService.isUserAnonymous()) {
+            this.isGuestInfoOpen = true;
         }
     }
 
@@ -563,4 +567,14 @@ export class MainscreenComponent implements OnInit/* , AfterViewInit  */ {
         this.allChatSectionsOpen = false;
         this.workspaceOpen = true;
     }
+
+    closeGuestInfo() {
+        this.isGuestInfoOpen = false;
+    }
+
+    stopPropagation(event: Event) {
+        event.stopPropagation();
+      }
+
+   
 }

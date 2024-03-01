@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 import { collection, getDocs, query, where, Firestore } from '@angular/fire/firestore';
 import { UserService } from '../../services/user.service';
 import { SearchService } from '../../services/search-service.service';
-import { ChannelService } from '../../services/channel.service';
-import { ChatService } from '../../services/chat.service';
+/* import { ChannelService } from '../../services/channel.service';
+import { ChatService } from '../../services/chat.service'; */
 
 
 interface UserData {
@@ -42,8 +42,8 @@ export class LoginComponent {
         private userservice: UserService, 
         private router: Router, 
         private searchservice: SearchService, 
-        private channelService: ChannelService,
-        private chatService: ChatService
+        /* private channelService: ChannelService,
+        private chatService: ChatService */
         ) { 
         this.setLoginForm();
     }
@@ -69,7 +69,7 @@ export class LoginComponent {
                         this.authService.setOnlineStatus(userId, true);
                         this.router.navigate(['/main', userId]);
                         this.searchservice.loadUsers();
-                        this.authService.setSession(userId)
+                       /*  this.authService.setSession(userId) */
                     } 
                 }
             } else {
@@ -113,8 +113,8 @@ export class LoginComponent {
                 this.userservice.setUserDetails('Gast', '', 'guest-profile.png');
                 this.isAnonymous = true;
                 await this.authService.setOnlineStatus(uid, true);
-                this.authService.setSession(uid);
-                this.chatService.createChatsForGuest(uid);
+                /* this.authService.setSession(uid);
+                this.chatService.createChatsForGuest(uid); */
                 this.router.navigate(['/main', uid]);                
             }
         } catch (error: any) {
@@ -156,7 +156,7 @@ export class LoginComponent {
             let userDocument = querySnapshot.docs[0].data() as UserData;
             this.userservice.setUserDetails(userDocument.firstname, userDocument.lastname, userDocument.profileImg);
             let userId = await this.getUserIDFromFirebase(email);
-            this.authService.setSession(userId)
+           /*  this.authService.setSession(userId) */
             if (userId) {
                 await this.authService.setOnlineStatus(userId, true);
                 this.router.navigate(['/main', userId]);

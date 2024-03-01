@@ -179,6 +179,14 @@
         <app-thread *ngIf="(threadOpen && allChatSectionsOpen) || (threadOpen && !workspaceOpen)" [@leftRightAnimation]>
         </app-thread>
     </div>
+
+    <div class="guest-info-popup" *ngIf="isGuestInfoOpen" (click)="closeGuestInfo()">
+        <div class="guest-info" (click)="stopPropagation($event)">
+            <h2>Info</h2>
+            <p>Als Gast kannst du dich hier etwas umschauen.<br> Du kannst jedoch keine Channel erstellen oder Nachrichten schreiben.</p>
+            <button (click)="closeGuestInfo()" class="okay-btn">Okay</button>
+        </div>
+    </div>
 </div>
 
 

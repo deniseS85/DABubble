@@ -14,6 +14,9 @@
         transform: translate(-50%, -50%);
         animation: logoContainerAnimation 1000ms ease-in-out 1500ms forwards;
         z-index: 2;
+        @media only screen and (max-height: 800px) {
+            transform: unset;
+        }
         img {
             width: 150px;
             animation: logoAnimation 2500ms ease-in-out 800ms forwards;
@@ -205,22 +208,3 @@
         }
     }
 }
-
-// @media (max-height: 740px) {
-//     .login-animation {
-//         animation: logoContainerAnimationResponsivSmall 1000ms ease-in-out 1500ms;
-//         @keyframes logoContainerAnimationResponsiv {
-//             0% {
-//                 top: 50%;
-//                 left: 50%;
-//                 transform: translate(-50%, -50%);
-//                 opacity: 1;
-//             }
-//             100% {
-//                 top: 40px;
-//                 left: 160px;
-//                 opacity: 0;
-//             }
-//         }
-//     }
-// }

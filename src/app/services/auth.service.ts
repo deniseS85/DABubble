@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, getAuth, updateEmail, sendEmailVerification, signInWithEmailAndPassword, User} from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';import { ChatService } from './chat.service';
-import { verifyBeforeUpdateEmail } from 'firebase/auth';
-;
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +16,16 @@ export class AuthService {
     private userDataSubject = new BehaviorSubject<any>({});
     isGoogleLogin$ = this.isGoogleLoginSource.asObservable();
     userData$ = this.userDataSubject.asObservable();
-    session: any;
+    
+   /*  session: any; */
 
-    constructor(private chatService: ChatService){
+   /*  constructor(private chatService: ChatService){
       let newSession: any = localStorage.getItem('session');
       if(newSession){
         newSession = JSON.parse(newSession)
       }
       this.session = newSession;
-    }
+    } */
 
     setAnonymousStatus(isAnonymous: boolean): void {
         this.isAnonymous = isAnonymous;
@@ -59,14 +59,14 @@ export class AuthService {
     
                 if (user.isAnonymous) {
                     await user.delete();
-                    this.chatService.deleteChatOfGuestUser(user.uid)
+                   /*  this.chatService.deleteChatOfGuestUser(user.uid) */
                 }
             }
             await this.auth.signOut();
             localStorage.removeItem('userFirstName');
             localStorage.removeItem('userLastName');
             localStorage.removeItem('userImg');
-            this.deleteSession()
+           /*  this.deleteSession() */
         } catch (error) {
             console.error('Fehler beim Ausloggen:', error);
         }
@@ -115,7 +115,7 @@ export class AuthService {
     }
 
 
-    setSession(userID: string){
+   /*  setSession(userID: string){
       this.session = userID;
       localStorage.setItem('session', JSON.stringify(this.session))
     }
@@ -124,7 +124,7 @@ export class AuthService {
     deleteSession(){
       this.session = undefined;
       localStorage.removeItem('session');
-    }
+    } */
 
   
     

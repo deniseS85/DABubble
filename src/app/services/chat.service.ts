@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, Unsubscribe, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from '@angular/fire/firestore';
+import { Firestore, Unsubscribe, addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class ChatService {
   collectionChatRef = collection(this.firestore, 'chats');
   allUsers: any[] = [];
   private unsubscribeSnapshot: Unsubscribe | undefined;
-  /*   chatID: string | null = null; */
+  chatID: string | null = null;
 
 
   constructor() { }
@@ -42,7 +42,6 @@ export class ChatService {
   createNewChat(chatname: string, chatUsers: any[]) {
     const newChatRef = doc(this.getChatsRef())
 
-  /*   console.log(newChatRef.id, chatname, chatUsers) */
 
     setDoc(newChatRef, {
       chatID: newChatRef.id,
@@ -149,7 +148,7 @@ export class ChatService {
   }
 
 
-  createChatsForGuest(guestID) {
+ /*  createChatsForGuest(guestID) {
 
     const allUsersQuery = query(this.getUsersRef())
 
@@ -159,33 +158,33 @@ export class ChatService {
         this.buildNewChatGuest(user, guestID);
       })
     });
-  }
+  } */
 
-  buildNewChatGuest(user: any, guestID: any) {
+ /*  buildNewChatGuest(user: any, guestID: any) {
     let newChat: any[] = [];
 
     newChat.push(user.id, guestID);    
 
     const chatname = user.firstname + ' & Gast';
     const chatUsers = newChat;
-    this.createNewChat(chatname, chatUsers)
+    this.createNewChat(chatname, chatUsers) */
    /*  console.warn("new Chat createt", chatname) */
-  }
+  /* } */
 
 
-  async deleteChatOfGuestUser(id: string) {
+ /*  async deleteChatOfGuestUser(id: string) {
 
     const querySnapshot = await getDocs(
       query(collection(this.firestore, 'chats'), where('chatUsers', 'array-contains', id))
     );
     if (!querySnapshot.empty) {
       querySnapshot.forEach(async (chat) => {
-        await deleteDoc(chat.ref)
+        await deleteDoc(chat.ref) */
       /*   console.log("GuestChat deleted ", chat.data()['chatname']) */
-      })
-    } else {
+      /* })
+    } else { */
      /*  console.warn('no Guest Chats to delete') */
-    }
+   /*  }
 
-  }
+  } */
 }

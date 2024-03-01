@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChatService } from '../../services/chat.service';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { getDocs, updateDoc } from 'firebase/firestore';
+import { getDocs, updateDoc, where } from 'firebase/firestore';
 import { ReactionsService } from '../../services/reactions.service';
 import { MainscreenComponent } from '../mainscreen.component';
 
@@ -46,7 +46,6 @@ export class ChatContainerComponent {
 
   messagesLoaded: boolean = false;
   unsubscribeUserData: Unsubscribe | undefined;
-
   firestore: Firestore = inject(Firestore);
 
   constructor(
@@ -64,7 +63,7 @@ export class ChatContainerComponent {
     this.setBooleanForSelfChat();
     this.loadChatID();    
     this.getUserData();
-    // this.newDMChat();
+    this.newDMChat();
   }
 
 
@@ -72,14 +71,17 @@ export class ChatContainerComponent {
     if (this.unsubscribeSnapshot) {
         this.unsubscribeSnapshot();
     }
-}
+    if (this.unsubscribeSnapshot) {
+      this.unsubscribeSnapshot();
+    }
+  }
 
 
   setBooleanForSelfChat(){
     const chatPartnerID = this.chatService.userID;
     if(this.userID == chatPartnerID){
       this.selfChat = true
-    } 
+    }
   }
 
 
@@ -116,6 +118,7 @@ export class ChatContainerComponent {
 
     this.loadMessagesOfThisChat()
   } 
+
 
 
   async getUserData() {
@@ -540,9 +543,8 @@ newDMChat() {
 
   let newPair: any[] = [];
 
-  onSnapshot(allUsersQuery, (querySnapshot) => {
+  const unsubscribe = onSnapshot(allUsersQuery, (querySnapshot) => {
 
-    // build Array with allUsers
     querySnapshot.forEach((doc: any) => {
 
       this.allUsers.push(doc.data())
@@ -565,12 +567,9 @@ newDMChat() {
     },
     );
   });
+  this.unsubscribeSnapshot = unsubscribe;
 }
 
-}
-
-function unsubscribe() {
-  throw new Error('Function not implemented.');
 }
 
 

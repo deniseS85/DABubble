@@ -161,7 +161,7 @@
     </div>
     <div class="footer-write-new-message"> <!-- *ngIf="isUserMember" -->
         <div>
-            <textarea class="textarea" [placeholder]="channelDataService.channelName ? 'Nachricht an #' + channelDataService.channelName : 'Starte eine neue Nachricht'"
+            <textarea #inputField class="textarea" [placeholder]="channelDataService.channelName ? 'Nachricht an #' + channelDataService.channelName : 'Starte eine neue Nachricht'"
                 [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="handleEnterKey()"  cols="20" rows="5" maxlength="150">
             </textarea>
         </div>

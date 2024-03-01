@@ -135,7 +135,7 @@
 
     <div class="footer-write-new-message">
         <div>
-          <textarea class="textarea" placeholder="Nachricht an {{ chatPartnerName }}"
+          <textarea #inputField class="textarea" placeholder="Nachricht an {{ chatPartnerName }}"
             [(ngModel)]="messagetext" (ngModelChange)="onMessageChange()" (keyup.enter)="sendMessage()" rows="5" cols="20" maxlength="150"></textarea>
         </div>
         <div class="footer-line-icons">

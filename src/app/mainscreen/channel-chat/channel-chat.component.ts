@@ -135,6 +135,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
   unsubUser: Unsubscribe | undefined;
   private unsubscribeSnapshot: Unsubscribe | undefined;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+  @ViewChild('inputField') inputField!: ElementRef;
 
    private shouldScrollToBottom: boolean = true;
 
@@ -194,6 +195,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
           this.chatContainer.nativeElement.addEventListener('scroll', this.handleScroll.bind(this))
         );
         this.scrollToBottom();
+        this.inputField.nativeElement.focus();
       }
     } 
 

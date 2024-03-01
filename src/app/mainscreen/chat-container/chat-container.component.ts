@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ChannelService } from '../../services/channel.service';
 import { Firestore, Unsubscribe, collection, deleteDoc, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
 import { ChannelDataService } from '../../services/channel-data.service';
@@ -17,7 +17,7 @@ import { MainscreenComponent } from '../mainscreen.component';
   templateUrl: './chat-container.component.html',
   styleUrl: './chat-container.component.scss'
 })
-export class ChatContainerComponent {
+export class ChatContainerComponent implements AfterViewInit{
 
   allUsers: any[] = [];
   allAnswers: any[] = [];
@@ -28,6 +28,7 @@ export class ChatContainerComponent {
   messagetext: string = '';
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild('answerContainer') answerContainer!: ElementRef;
+  @ViewChild('inputField') inputField!: ElementRef;
 
   isShowFileUpload: boolean = false;
   isShowEmojiFooter: boolean = false;
@@ -64,6 +65,10 @@ export class ChatContainerComponent {
     this.loadChatID();    
     this.getUserData();
     this.newDMChat();
+  }
+
+  ngAfterViewInit() {
+    this.inputField.nativeElement.focus();
   }
 
 

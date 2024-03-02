@@ -512,7 +512,7 @@
     padding: 0 33px;
 
     .threadContainerAnswers{
-        font-size: 18px;
+        font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
         line-height: 24.5px;
         color: #ADB0D9;
     }
@@ -526,13 +526,13 @@
 
 
 .threadContainerInfoPerson{
-    font-size: 18px;
+    font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
     font-weight: 700;
     line-height: 24.5px;
 }
 
 .threadContainerInfoTime{
-    font-size: 14px;
+    font-size: clamp(0.75rem, 0.657rem + 0.4651vw, 0.875rem);
     color:#686868;
     line-height: 19.5px;
 }
@@ -542,7 +542,7 @@
     padding: 15px;
     border-radius: 0 20px 20px 20px;
     background-color: #ECEEFE;
-    font-size: 18px;
+    font-size: clamp(0.8125rem, 0.673rem + 0.6977vw, 1rem);
     line-height: 24.5px;
     word-break: break-word;
 }

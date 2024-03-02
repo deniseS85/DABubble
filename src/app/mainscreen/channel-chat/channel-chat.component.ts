@@ -561,7 +561,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
         channelDescription: this.newChannelDescription
     });
     this.channelDataService.channelDescription = this.newChannelDescription;
-    console.log(this.channelDataService.channelDescription)
   }
   
   saveNewChannelName(channelID: string) {
@@ -590,7 +589,6 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
 
       this.deleteMessagesAnswers(message.id)
       deleteDoc(message.ref);
-      console.log('messages gelöscht', message.ref)
     })
   }
 
@@ -767,7 +765,7 @@ export class ChannelChatComponent implements OnInit, OnDestroy, AfterViewChecked
           messagetext: this.messagetext,
           messageUserID: this.userID,
           messageID: '',
-          timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
+          timestamp: this.datePipe.transform(new Date(), 'HH:mm:ss'),
           date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
           react: [],
           answerInfo: {

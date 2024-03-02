@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
 import { ChannelService } from '../../services/channel.service';
 import { Firestore, Unsubscribe, collection, deleteDoc, doc, getDoc, onSnapshot, query } from '@angular/fire/firestore';
 import { ChannelDataService } from '../../services/channel-data.service';
@@ -11,13 +11,14 @@ import { DatePipe } from '@angular/common';
 import { getDocs, updateDoc, where } from 'firebase/firestore';
 import { ReactionsService } from '../../services/reactions.service';
 import { MainscreenComponent } from '../mainscreen.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat-container',
   templateUrl: './chat-container.component.html',
   styleUrl: './chat-container.component.scss'
 })
-export class ChatContainerComponent implements AfterViewInit{
+export class ChatContainerComponent implements AfterViewInit, AfterViewChecked{
 
   allUsers: any[] = [];
   allAnswers: any[] = [];
@@ -48,6 +49,8 @@ export class ChatContainerComponent implements AfterViewInit{
   messagesLoaded: boolean = false;
   unsubscribeUserData: Unsubscribe | undefined;
   firestore: Firestore = inject(Firestore);
+  private subscriptions: Subscription[] = [];
+  private shouldScrollToBottom: boolean = true;
 
   constructor(
     private channelService: ChannelService,
@@ -64,12 +67,47 @@ export class ChatContainerComponent implements AfterViewInit{
     this.setBooleanForSelfChat();
     this.loadChatID();    
     this.getUserData();
-    this.newDMChat();
+    /* nur ausgrauen, wenn DB leer ist */
+   /*  this.newDMChat(); */
+  }
+
+  ngAfterViewChecked() {
+    if (this.shouldScrollToBottom) {
+      this.scrollToBottom();
+    }
   }
 
   ngAfterViewInit() {
+    if (this.answerContainer) {
+      this.subscriptions.push(
+        this.answerContainer.nativeElement.addEventListener('scroll', this.handleScroll.bind(this))
+      );
+      this.scrollToBottom();
+      
+    }
     this.inputField.nativeElement.focus();
   }
+
+  private handleScroll() {
+    const element = this.answerContainer.nativeElement;
+    const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+
+    this.shouldScrollToBottom = atBottom;
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.answerContainer.nativeElement.scrollTop = this.answerContainer.nativeElement.scrollHeight;
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    } catch (err) { }
+  }
+
+ @HostListener('scroll', ['$event'])
+ onScroll(event: Event): void {
+   let element = event.target as HTMLElement;
+   let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+   this.shouldScrollToBottom = atBottom;
+ }
 
 
   ngOnDestroy() {
@@ -149,7 +187,6 @@ export class ChatContainerComponent implements AfterViewInit{
     const queryAllAnswers = await query(collection(this.firestore, "chats", this.chatID, "messages"));
 
     this.unsubscribeSnapshot = onSnapshot(queryAllAnswers, (querySnapshot) => {
-
       this.allMessages = [];
       querySnapshot.forEach(async (message) => {
         // let messageData = ({...message.data(), editMessage: false})
@@ -186,13 +223,27 @@ export class ChatContainerComponent implements AfterViewInit{
       })
       this.editMessages.push(false)
     });
+
+    this.updateMessagesWithUserData();
     
+  }
+
+  updateMessagesWithUserData() {
+    this.channelService.userData$.subscribe((userData) => {
+      this.allMessages.forEach((message) => {
+        if (message.messageUserID === userData.id) {
+          Object.assign(message, userData);
+        }
+      });
+    });
   }
 
   sortMessagesByTimeStamp() {
     this.allMessages.sort((a, b) => {
       const timestampA = new Date(`${a.date} ${a.timestamp}`);
       const timestampB = new Date(`${b.date} ${b.timestamp}`);
+      console.log(timestampA)
+      console.log(timestampB)
       return timestampA.getTime() - timestampB.getTime();
     });
   }
@@ -313,7 +364,7 @@ export class ChatContainerComponent implements AfterViewInit{
       messagetext: this.messagetext,
       messageUserID: this.userID,
       messageID: '',
-      timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
+      timestamp: this.datePipe.transform(new Date(), 'HH:mm:ss'),
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       react: [],
       fileUpload: this.fileToUpload,
@@ -329,12 +380,6 @@ export class ChatContainerComponent implements AfterViewInit{
     }, 10);
   }
 
-
-  scrollToBottom(): void {
-    try {
-      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
-    } catch (err) { }
-  }
 
   toggleFileUpload() {
     this.isShowFileUpload = !this.isShowFileUpload;

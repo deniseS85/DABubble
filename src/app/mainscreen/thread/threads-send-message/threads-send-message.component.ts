@@ -109,7 +109,7 @@ export class ThreadsSendMessageComponent {
             answertext: this.answertext,
             answerUserID: this.userID,
             answerID: '',
-            timestamp: this.datePipe.transform(new Date(), 'HH:mm'),
+            timestamp: this.datePipe.transform(new Date(), 'HH:mm:ss'),
             date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
             react: [],
             fileUpload: this.fileToUpload,

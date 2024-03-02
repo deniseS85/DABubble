@@ -594,7 +594,10 @@
     height: 145px;
     padding: 10px;
     position: relative;
-    
+    @media (max-width: 1049px) {
+        height: 87px;
+        padding-bottom: 0;
+    }
     @media (max-width: 750px) {
         margin: 10px 16px 40px 16px;
     }
@@ -609,6 +612,14 @@
     padding: 12px 0 12px 25px;
     font-size: 18px;
     box-sizing: border-box;
+    @media (max-width: 1049px) {
+        &::placeholder {
+            font-size: 16px;
+        }
+        height: 45px;
+        padding: 0 10px;
+        font-size: 16px;
+    }
 }
 
 .footer-line-icons {
@@ -616,7 +627,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
 }
 
 .footer-icons-left {
@@ -629,10 +640,19 @@
     &:hover {
         color: black;
     }
+    @media (max-width: 1049px) {
+        padding: 0;
+        gap: 5px;
+    }
 
     mat-icon {
         padding: 5px;
         cursor: pointer;
+        @media (max-width: 1049px) {
+           width: 16px;
+           height: 16px;
+           font-size: 16px;
+        }
 
         &:hover {
             border-radius: 50%;
@@ -647,11 +667,23 @@
 .seperator-vert {
     width: 1px;
     background-color: #ADB0D9;
+    @media (max-width: 1049px) {
+        height: 25px;
+    }
 }
 
 .footer-icons-right {
     padding: 10px;
     color: #444DF2;
+    @media (max-width: 1049px) {
+        padding: 0;
+        gap: 5px;
+        mat-icon {
+            width: 16px;
+            height: 16px;
+            font-size: 16px;
+        }
+    }
 
     button {
         border: none;
